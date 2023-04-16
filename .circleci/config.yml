@@ -1,0 +1,133 @@
+version: 2.1
+
+#create Python env
+orbs:
+  python: circleci/python@2.1.1
+  # codecov: codecov/codecov@1.0.2
+
+jobs:
+  #run unittests
+  build-and-test:
+    executor: python/default
+    steps:
+      - checkout
+      - run:
+          name: Run tests
+          command: |
+            if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+            python -m unittest discover tests/
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
+
+  #linter and code coverage
+  lint-and-coverage:
+    executor: python/default
+    description: |
+      Running lint using flake8 and coverage report on package.
+    steps:
+      - checkout
+      - python/install-packages:
+          pkg-manager: pip 
+      - run:
+          name: Linter
+          command: |
+            pip install flake8
+            flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics > /tmp/flake8_output.txt || true
+            flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics >> /tmp/flake8_output.txt || true
+      - run:
+          name: Coverage
+          command: |
+            pip install coverage
+            pip install codecov
+            pip install pytest-cov
+        # pytest --cov-report term --cov=test_iso3166_2 tests/ > /tmp/coverage_report.txt || true
+        # coverage run 
+        # coverage report > /tmp/coverage_report.txt || true
+      #store linter and coverage artifacts in tmp folder
+      - store_artifacts:
+          path: /tmp/coverage_report.txt
+          destination: artifacts-file
+      - store_artifacts:
+          path: /tmp/flake8_output.txt
+          destination: flake8-output.txt
+
+  #package safety and bandit security check
+  safety-and-bandit:
+      executor: python/default
+      description: |
+        Running package safety and bandit security check on package.
+      #install python dependancies and libraries, checkout repo
+      steps:
+        - checkout
+        - python/install-packages:
+            pkg-manager: pip 
+        - run:
+            name: Safety
+            command: |
+              pip install safety
+              safety check > /tmp/package_safety_output.txt || true
+        - run:
+            name: Bandit
+            command: |
+              pip install bandit
+              bandit -r . > /tmp/bandit_output.txt || true
+        #store safety and bandit artifacts in tmp folder
+        - store_artifacts:
+            path: /tmp/package_safety_output.txt
+            destination: safety-output.txt
+        - store_artifacts:
+            path: /tmp/bandit_output.txt
+            destination: bandit-output.txt
+
+  #verify installation of iso3166-2
+  iso3166_2-pipeline:
+      executor: python/default
+      description: |
+        Running iso3166_2 pipeline to check installation and version of package.
+      #checkout repo
+      steps:
+        - checkout
+        - python/install-packages:
+            pkg-manager: pip 
+        - run:
+            name: iso3166_2 pipeline test
+            command: |
+              pip3 install iso3166_2
+              echo -e "import iso3166_2 as iso\nprint(iso.__version__)" | python3
+
+#initialise all above jobs into a workflow
+workflows:
+  main:
+    jobs:
+      - build-and-test:
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              only:
+                - master
+      - lint-and-coverage:
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              only:
+                - master
+      - safety-and-bandit:
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              only:
+                - master
+      - iso3166_2-pipeline:
+          requires:
+            - build-and-test
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              only:
+                - master
