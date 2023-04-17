@@ -71,8 +71,7 @@ def export_iso3166_2(output_folder="", json_filename=""):
         os.mkdir(output_folder)
 
     #iterate over all country codes, getting country and subdivision info, append to json objects
-    for alpha2 in tqdm(all_alpha2, unit=" ", position=0, 
-        desc="Alpha2 Country Codes", mininterval=45):
+    for alpha2 in tqdm(all_alpha2, unit=" ", position=0, mininterval=45, miniters=10):
         
         #get rest countries api url 
         country_url = base_restcountries_url + alpha2.upper()
@@ -103,8 +102,6 @@ def export_iso3166_2(output_folder="", json_filename=""):
 
         #create subdivisions and country name keys in json objects
         all_country_data[alpha2]["subdivisions"] = {}
-        # all_country_data_min[alpha2]["name"] = countryName
-        # all_country_data_min[alpha2]["subdivisions"] = {}
         
         sortedDict = {}
 
@@ -116,29 +113,31 @@ def export_iso3166_2(output_folder="", json_filename=""):
             all_country_data[alpha2]["subdivisions"][subd.code]["type"] = subd.type
             all_country_data[alpha2]["subdivisions"][subd.code]["parent_code"] = subd.parent_code
 
-            # all_country_data_min[alpha2]["subdivisions"][subd.code] = {}
-            # all_country_data_min[alpha2]["subdivisions"][subd.code]["name"] = subd.name
-            # all_country_data_min[alpha2]["subdivisions"][subd.code]["type"] = subd.type
-            # all_country_data_min[alpha2]["subdivisions"][subd.code]["parent_code"] = subd.parent_code
             all_country_data_min[alpha2][subd.code] = {}
             all_country_data_min[alpha2][subd.code]["name"] = subd.name
             all_country_data_min[alpha2][subd.code]["type"] = subd.type
             all_country_data_min[alpha2][subd.code]["parent_code"] = subd.parent_code
 
-            #url to flag in iso3166-flag-icons repo
-            alpha2_flag_url = flag_icons_base_url + alpha2 + "/" + subd.code + ".svg"
-            
-            #if subdivision has an valid flag in flag icons repo set to its Github url
-            if (requests.get(alpha2_flag_url, headers=USER_AGENT_HEADER).status_code != 404):
-                all_country_data[alpha2]["subdivisions"][subd.code]["flag_url"] = alpha2_flag_url
-                all_country_data_min[alpha2][subd.code]["flag_url"] = alpha2_flag_url
-            else:
-                all_country_data[alpha2]["subdivisions"][subd.code]["flag_url"] = None
-                all_country_data_min[alpha2][subd.code]["flag_url"] = None
+            #list of flag file extensions in order of preference 
+            flag_file_extensions = ['.svg', '.png', '.jpeg', '.jpg', '.gif']
+
+            #iterate over all image extensions checking existence of flag in repo
+            for extension in range(0, len(flag_file_extensions)):
+                
+                #url to flag in iso3166-flag-icons repo
+                alpha2_flag_url = flag_icons_base_url + alpha2 + "/" + subd.code + flag_file_extensions[extension]
+                
+                #if subdivision has an valid flag in flag icons repo set to its Github url
+                if (requests.get(alpha2_flag_url, headers=USER_AGENT_HEADER).status_code != 404):
+                    all_country_data[alpha2]["subdivisions"][subd.code]["flag_url"] = alpha2_flag_url
+                    all_country_data_min[alpha2][subd.code]["flag_url"] = alpha2_flag_url
+                    break
+                elif (extension == 4):
+                    all_country_data[alpha2]["subdivisions"][subd.code]["flag_url"] = None
+                    all_country_data_min[alpha2][subd.code]["flag_url"] = None
 
         #sort subdivision codes in json objects in alphabetical/numerical order
         all_country_data[alpha2]["subdivisions"] = dict(sorted(all_country_data[alpha2]["subdivisions"].items()))
-        # all_country_data_min[alpha2]["subdivisions"] = dict(sorted(all_country_data_min[alpha2]["subdivisions"].items()))
         all_country_data_min[alpha2] = dict(sorted(all_country_data_min[alpha2].items()))
 
     #write json data with all country info to json output file

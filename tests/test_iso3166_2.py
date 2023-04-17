@@ -171,22 +171,22 @@ class ISO3166_2_Updates(unittest.TestCase):
         self.assertIsInstance(test_alpha2_ba, dict)
         self.assertEqual(len(test_alpha2_ba), 3)
         self.assertEqual(list(test_alpha2_ba.keys()), ba_subdivision_codes)
-        self.assertEqual(list(test_alpha2_ba['BA-BIH'].keys()), ['name', 'type', 'parent_code'])
+        self.assertEqual(list(test_alpha2_ba['BA-BIH'].keys()), ['name', 'type', 'parent_code', 'flag_url'])
         for key in test_alpha2_ba:
             self.assertIn(test_alpha2_ba[key].name, ba_subdivision_names)
             if ((test_alpha2_ba[key].flag_url is not None) or (test_alpha2_ba[key].flag_url == "")):
-                self.assertEqual(requests.get(test_alpha2_ba[key].flag_url, headers=USER_AGENT_HEADER).status_code == 200)
+                self.assertEqual(requests.get(test_alpha2_ba[key].flag_url, headers=self.user_agent_header).status_code, 200)
 #2.)
         cy_subdivision_codes = ['CY-01', 'CY-02', 'CY-03', 'CY-04', 'CY-05', 'CY-06']
         cy_subdivision_names = ['Lefkosia', 'Lemesos', 'Larnaka', 'Ammochostos', 'Baf', 'Girne']
         self.assertIsInstance(test_alpha2_cy, dict)
         self.assertEqual(len(test_alpha2_cy), 6)
         self.assertEqual(list(test_alpha2_cy.keys()), cy_subdivision_codes)
-        self.assertEqual(list(test_alpha2_cy['CY-01'].keys()), ['name', 'type', 'parent_code'])
+        self.assertEqual(list(test_alpha2_cy['CY-01'].keys()), ['name', 'type', 'parent_code', 'flag_url'])
         for key in test_alpha2_cy:
             self.assertIn(test_alpha2_cy[key].name, cy_subdivision_names)
             if ((test_alpha2_cy[key].flag_url is not None) or (test_alpha2_cy[key].flag_url == "")):
-                self.assertEqual(requests.get(test_alpha2_cy[key].flag_url, headers=USER_AGENT_HEADER).status_code == 200)
+                self.assertEqual(requests.get(test_alpha2_cy[key].flag_url, headers=self.user_agent_header).status_code, 200)
 #3.)
         ga_subdivision_codes = ['GA-1', 'GA-2', 'GA-3', 'GA-4', 'GA-5', 'GA-6', 'GA-7', 'GA-8', 'GA-9']
         ga_subdivision_names = ['Estuaire', 'Haut-Ogooué', 'Moyen-Ogooué', 'Ngounié', 'Nyanga', 'Ogooué-Ivindo', 
@@ -194,22 +194,22 @@ class ISO3166_2_Updates(unittest.TestCase):
         self.assertIsInstance(test_alpha2_ga, dict)
         self.assertEqual(len(test_alpha2_ga), 9)
         self.assertEqual(list(test_alpha2_ga.keys()), ga_subdivision_codes)
-        self.assertEqual(list(test_alpha2_ga['GA-1'].keys()), ['name', 'type', 'parent_code'])
+        self.assertEqual(list(test_alpha2_ga['GA-1'].keys()), ['name', 'type', 'parent_code', 'flag_url'])
         for key in test_alpha2_ga:
             self.assertIn(test_alpha2_ga[key].name, ga_subdivision_names)
             if ((test_alpha2_ga[key].flag_url is not None) or (test_alpha2_ga[key].flag_url == "")):
-                self.assertEqual(requests.get(test_alpha2_ga[key].flag_url, headers=USER_AGENT_HEADER).status_code == 200)
+                self.assertEqual(requests.get(test_alpha2_ga[key].flag_url, headers=self.user_agent_header).status_code, 200)
 #4.)
         rw_subdivision_codes = ['RW-01', 'RW-02', 'RW-03', 'RW-04', 'RW-05']
         rw_subdivision_names = ['City of Kigali', 'Eastern', 'Northern', 'Western', 'Southern']
         self.assertIsInstance(test_alpha2_rw, dict)
         self.assertEqual(len(test_alpha2_rw), 5)
         self.assertEqual(list(test_alpha2_rw.keys()), rw_subdivision_codes)
-        self.assertEqual(list(test_alpha2_rw['RW-01'].keys()), ['name', 'type', 'parent_code'])
+        self.assertEqual(list(test_alpha2_rw['RW-01'].keys()), ['name', 'type', 'parent_code', 'flag_url'])
         for key in test_alpha2_rw:
             self.assertIn(test_alpha2_rw[key].name, rw_subdivision_names)
             if ((test_alpha2_rw[key].flag_url is not None) or (test_alpha2_rw[key].flag_url == "")):
-                self.assertEqual(requests.get(test_alpha2_rw[key].flag_url, headers=USER_AGENT_HEADER).status_code == 200)
+                self.assertEqual(requests.get(test_alpha2_rw[key].flag_url, headers=self.user_agent_header).status_code, 200)
 #5.)
         with (self.assertRaises(ValueError)):
             invalid_country = iso.subdivisions["ZZ"]

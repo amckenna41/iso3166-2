@@ -39,4 +39,6 @@
 - [X] Remove name and subdivisions key from min json.
 - [X] Add tqdm progress bar to getISO3166-2.py
 - [ ] Need to recall getISO3166-2.py when flag icon repo is public so flag url can be added to JSONs. 
+- [ ] When checking flag_url endpoints, try .svg then .jpg then .png then .gif. Need to update JSON file.
+- [ ] How long does getISO3166_2.py script take? 1h 56, 116 mins
 <!-- https://github.com/smucode/react-world-flags -->

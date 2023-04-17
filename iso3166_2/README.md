@@ -7,18 +7,44 @@
 
 Usage
 -----
-## Import package
+Download all ISO3166-2 subdivision data using getISO3166_2.py script, export to two JSONs:
+```bash
+python3 getISO3166_2.py --json_filename=iso3166_2.json --output_folder=iso3166_2
+```
+
+Import ISO3166_2 class and access the country and subdivision data:
 ```python
 import iso3166_2 as iso
+
+#access all country data
+canada_iso3166_2 = iso.country["CA"]
+denmark_iso3166_2 = iso.country["DK"]
+estonia_iso3166_2 = iso.country["EE"]
+fiji_iso3166_2 = iso.country["FJ"]
+
+#access all country subdivision data
+canada_iso3166_2 = iso.subdivisions["CA"]
+denmark_iso3166_2 = iso.subdivisions["DK"]
+estonia_iso3166_2 = iso.subdivisions["EE"]
+fiji_iso3166_2 = iso.subdivisions["FJ"]
 ```
 
-## Get full ISO-3166 country data
+Get country data:
 ```python
-iso.country
+import iso3166_2 as iso
+
+canada_iso3166_2.name #country name
+denmark_iso3166_2.currencies #country currencies
+estonia_iso3166_2.capital #country capital 
+fiji_iso3166_2.population #country population 
 ```
 
-## Get full ISO-3166 country subdivision data
+Get a specific subdivision's info:
 ```python
-iso.subdivision
-```
+import iso3166_2 as iso
 
+canada_iso3166_2.subdivisions['CA-AB'] #Alberta subdivision
+denmark_iso3166_2.subdivisions['DK-81'] #Nordjylland subdivision
+estonia_iso3166_2.subdivisions['EE-899'] #Viljandi subdivision
+fiji_iso3166_2.subdivisions['FJ-03'] #Cakaudrove subdivision 
+```
