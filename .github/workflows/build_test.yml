@@ -104,3 +104,4 @@ jobs:
           artifacts/package_safety_output.txt
           artifacts/bandit_output.txt
           artifacts/coverage.txt
+       if-no-files-found: error 

@@ -4,7 +4,7 @@ import requests
 import json
 import os
 import getpass
-import importlib_metadata as metadata
+from importlib import metadata
 import unittest
 unittest.TestLoader.sortTestMethodsUsing = None
 
