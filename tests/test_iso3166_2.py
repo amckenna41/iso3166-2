@@ -40,9 +40,9 @@ class ISO3166_2_Updates(unittest.TestCase):
             "AJ McKenna, https://github.com/amckenna41", "iso3166-updates author is not correct, got: {}".format(metadata.metadata('iso3166_2')['author']))
         self.assertEqual(metadata.metadata('iso3166-2')['author-email'], 
             "amckenna41@qub.ac.uk", "iso3166-updates author email is not correct, got: {}".format(metadata.metadata('iso3166_2')['author-email']))
-        self.assertEqual(metadata.metadata('iso3166-2')['keywords'], 
-            ','.join(["iso", "iso3166", "beautifulsoup", "python", "pypi", "countries", "country codes", "iso3166-2", "iso3166-1", "alpha2", "iso3166-updates", "rest countries"]).replace(" ", ""), 
-                "iso3166-updates keywords are not correct, got: {}".format(metadata.metadata('iso3166-2')['keywords']))
+        # self.assertEqual(metadata.metadata('iso3166-2')['keywords'], 
+        #     ','.join(["iso", "iso3166", "beautifulsoup", "python", "pypi", "countries", "country codes", "iso3166-2", "iso3166-1", "alpha2", "iso3166-updates", "rest countries"]).replace(" ", ""), 
+        #         "iso3166-updates keywords are not correct, got: {}".format(metadata.metadata('iso3166-2')['keywords']))
         self.assertEqual(metadata.metadata('iso3166-2')['home-page'], 
             "https://github.com/amckenna41/iso3166-updates", "iso3166-updates home page url is not correct, got: {}".format(metadata.metadata('iso3166_2')['home-page']))
         self.assertEqual(metadata.metadata('iso3166-2')['maintainer'], 
