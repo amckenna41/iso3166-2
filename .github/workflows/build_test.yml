@@ -85,10 +85,6 @@ jobs:
         echo "Testing using pytest..."
         python3 -m pytest tests/
         
-    #generate coverage report, output to file 
-    # - name: Generate Report
-      # run: pytest --cov=iso3166_2 tests/ > artifacts/coverage.txt
-
     #upload to Code Coverage
     - name: Upload Coverage Report to Codecov
       uses: codecov/codecov-action@v3

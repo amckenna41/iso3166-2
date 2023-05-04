@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 old/
+test-iso3166_2/
 
 # C extensions
 *.so

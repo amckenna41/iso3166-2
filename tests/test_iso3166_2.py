@@ -32,7 +32,7 @@ class ISO3166_2_Updates(unittest.TestCase):
     @unittest.skip("")
     def test_iso3166_2_metadata(self): 
         """ Testing correct iso3166-2 software version and metadata. """
-        self.assertEqual(metadata.metadata('iso3166-2')['version'], "1.0.0", 
+        self.assertEqual(metadata.metadata('iso3166-2')['version'], "1.0.1", 
             "iso3166-2 version is not correct, got: {}".format(metadata.metadata('iso3166-2')['version']))
         self.assertEqual(metadata.metadata('iso3166-2')['name'], "iso3166-2", 
             "iso3166-2 software name is not correct, got: {}".format(metadata.metadata('iso3166-2')['name']))
@@ -104,6 +104,7 @@ class ISO3166_2_Updates(unittest.TestCase):
         self.assertEqual(list(test_alpha2_au.languages.keys())[0], "eng")        
         self.assertEqual(test_alpha2_au.area, 7692024)        
         self.assertEqual(test_alpha2_au.population, 25687041)        
+        self.assertEqual(test_alpha2_au.latlng, [-27.0, 133.0], "")        
         self.assertEqual(len(test_alpha2_au.subdivisions), 8, "")
         self.assertEqual(test_alpha2_au, iso.country['AUS']) #test objects match if using either alpha2/alpha3 codes
 #2.)
@@ -119,6 +120,7 @@ class ISO3166_2_Updates(unittest.TestCase):
         self.assertEqual(test_alpha2_lu.area, 2586)        
         self.assertEqual(test_alpha2_lu.population, 632275)        
         self.assertEqual(len(test_alpha2_lu.subdivisions), 12, "")
+        self.assertEqual(test_alpha2_lu.latlng, [49.75, 6.16666666], "")        
         self.assertEqual(test_alpha2_lu, iso.country['LUX']) #test objects match if using either alpha2/alpha3 codes
 #3.)
         self.assertIsInstance(test_alpha2_mg, dict, "")
@@ -132,6 +134,7 @@ class ISO3166_2_Updates(unittest.TestCase):
         self.assertEqual(list(test_alpha2_mg.languages.keys()), ["fra", "mlg"])        
         self.assertEqual(test_alpha2_mg.area, 587041)        
         self.assertEqual(test_alpha2_mg.population, 27691019)        
+        self.assertEqual(test_alpha2_mg.latlng, [-20.0, 47.0], "")        
         self.assertEqual(len(test_alpha2_mg.subdivisions), 6, "")
         self.assertEqual(test_alpha2_mg, iso.country['MDG']) #test objects match if using either alpha2/alpha3 codes
 #4.)
@@ -146,6 +149,7 @@ class ISO3166_2_Updates(unittest.TestCase):
         self.assertEqual(list(test_alpha2_om.languages.keys()), ["ara"])        
         self.assertEqual(test_alpha2_om.area, 309500)        
         self.assertEqual(test_alpha2_om.population, 5106622)        
+        self.assertEqual(test_alpha2_om.latlng, [21.0, 57.0], "")        
         self.assertEqual(len(test_alpha2_om.subdivisions), 11, "")
         self.assertEqual(test_alpha2_om, iso.country['OMN']) #test objects match if using either alpha2/alpha3 codes
 #5.)
@@ -171,22 +175,26 @@ class ISO3166_2_Updates(unittest.TestCase):
         self.assertIsInstance(test_alpha2_ba, dict)
         self.assertEqual(len(test_alpha2_ba), 3)
         self.assertEqual(list(test_alpha2_ba.keys()), ba_subdivision_codes)
-        self.assertEqual(list(test_alpha2_ba['BA-BIH'].keys()), ['name', 'type', 'parent_code', 'flag_url'])
+        self.assertEqual(list(test_alpha2_ba['BA-BIH'].keys()), ['name', 'type', 'parent_code', 'latlng', 'flag_url'])
         for key in test_alpha2_ba:
             self.assertIn(test_alpha2_ba[key].name, ba_subdivision_names)
             if ((test_alpha2_ba[key].flag_url is not None) or (test_alpha2_ba[key].flag_url == "")):
                 self.assertEqual(requests.get(test_alpha2_ba[key].flag_url, headers=self.user_agent_header).status_code, 200)
+            self.assertIsNone(test_alpha2_ba[key]['parent_code'], "")
+            self.assertEqual(len(test_alpha2_ba[key].latlng), 2, "")        
 #2.)
         cy_subdivision_codes = ['CY-01', 'CY-02', 'CY-03', 'CY-04', 'CY-05', 'CY-06']
         cy_subdivision_names = ['Lefkosia', 'Lemesos', 'Larnaka', 'Ammochostos', 'Baf', 'Girne']
         self.assertIsInstance(test_alpha2_cy, dict)
         self.assertEqual(len(test_alpha2_cy), 6)
         self.assertEqual(list(test_alpha2_cy.keys()), cy_subdivision_codes)
-        self.assertEqual(list(test_alpha2_cy['CY-01'].keys()), ['name', 'type', 'parent_code', 'flag_url'])
+        self.assertEqual(list(test_alpha2_cy['CY-01'].keys()), ['name', 'type', 'parent_code', 'latlng', 'flag_url'])
         for key in test_alpha2_cy:
             self.assertIn(test_alpha2_cy[key].name, cy_subdivision_names)
             if ((test_alpha2_cy[key].flag_url is not None) or (test_alpha2_cy[key].flag_url == "")):
                 self.assertEqual(requests.get(test_alpha2_cy[key].flag_url, headers=self.user_agent_header).status_code, 200)
+            self.assertIsNone(test_alpha2_cy[key]['parent_code'], "")
+            self.assertEqual(len(test_alpha2_cy[key].latlng), 2, "")        
 #3.)
         ga_subdivision_codes = ['GA-1', 'GA-2', 'GA-3', 'GA-4', 'GA-5', 'GA-6', 'GA-7', 'GA-8', 'GA-9']
         ga_subdivision_names = ['Estuaire', 'Haut-Ogooué', 'Moyen-Ogooué', 'Ngounié', 'Nyanga', 'Ogooué-Ivindo', 
@@ -194,22 +202,27 @@ class ISO3166_2_Updates(unittest.TestCase):
         self.assertIsInstance(test_alpha2_ga, dict)
         self.assertEqual(len(test_alpha2_ga), 9)
         self.assertEqual(list(test_alpha2_ga.keys()), ga_subdivision_codes)
-        self.assertEqual(list(test_alpha2_ga['GA-1'].keys()), ['name', 'type', 'parent_code', 'flag_url'])
+        self.assertEqual(list(test_alpha2_ga['GA-1'].keys()), ['name', 'type', 'parent_code', 'latlng', 'flag_url'])
         for key in test_alpha2_ga:
             self.assertIn(test_alpha2_ga[key].name, ga_subdivision_names)
             if ((test_alpha2_ga[key].flag_url is not None) or (test_alpha2_ga[key].flag_url == "")):
                 self.assertEqual(requests.get(test_alpha2_ga[key].flag_url, headers=self.user_agent_header).status_code, 200)
+            self.assertIsNone(test_alpha2_ga[key]['parent_code'], "")
+            self.assertEqual(len(test_alpha2_ga[key].latlng), 2, "")        
 #4.)
         rw_subdivision_codes = ['RW-01', 'RW-02', 'RW-03', 'RW-04', 'RW-05']
         rw_subdivision_names = ['City of Kigali', 'Eastern', 'Northern', 'Western', 'Southern']
+        rw_latlng = [[], [], [], [], []]
         self.assertIsInstance(test_alpha2_rw, dict)
         self.assertEqual(len(test_alpha2_rw), 5)
         self.assertEqual(list(test_alpha2_rw.keys()), rw_subdivision_codes)
-        self.assertEqual(list(test_alpha2_rw['RW-01'].keys()), ['name', 'type', 'parent_code', 'flag_url'])
+        self.assertEqual(list(test_alpha2_rw['RW-01'].keys()), ['name', 'type', 'parent_code', 'latlng', 'flag_url'])
         for key in test_alpha2_rw:
             self.assertIn(test_alpha2_rw[key].name, rw_subdivision_names)
             if ((test_alpha2_rw[key].flag_url is not None) or (test_alpha2_rw[key].flag_url == "")):
                 self.assertEqual(requests.get(test_alpha2_rw[key].flag_url, headers=self.user_agent_header).status_code, 200)
+        self.assertIsNone(test_alpha2_rw[key]['parent_code'], "")
+        self.assertEqual(len(test_alpha2_rw[key].latlng), 2, "")        
 #5.)
         with (self.assertRaises(ValueError)):
             invalid_country = iso.subdivisions["ZZ"]
@@ -223,7 +236,6 @@ class ISO3166_2_Updates(unittest.TestCase):
 
     def tearDown(self):
         """ Delete all iso3166-2 json objects or instances. """
-        # del self.all_subdivisions
         del self.all_iso3166_2_data
         del self.all_iso3166_2_min_data
     

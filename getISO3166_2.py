@@ -1,11 +1,6 @@
-"""
-Download all ISO3166-2 data using the restcountries api, export all data
-to JSON files. 
-
-This module is working and done.
-"""
 import os
 import sys
+import time
 import json
 import argparse
 import requests
@@ -13,6 +8,7 @@ import logging
 import getpass
 import pycountry
 import iso3166
+import googlemaps
 from tqdm import tqdm
 
 #initialise logging library 
@@ -23,6 +19,8 @@ log = logging.getLogger(__name__)
 USER_AGENT_HEADER = {'User-Agent': 'iso3166-2/{} ({}; {})'.format(__version__,
                                        'https://github.com/amckenna41/iso3166-2', getpass.getuser())}
 
+#initialise google maps client 
+gmaps = googlemaps.Client(key=os.environ["GOOGLE_MAPS_API_KEY"])
 
 def export_iso3166_2(output_folder="", json_filename=""):
     """
@@ -70,6 +68,9 @@ def export_iso3166_2(output_folder="", json_filename=""):
     if not (os.path.isdir(output_folder)):
         os.mkdir(output_folder)
 
+    #start counter
+    start = time.time() 
+
     #iterate over all country codes, getting country and subdivision info, append to json objects
     for alpha2 in tqdm(all_alpha2, unit=" ", position=0, mininterval=45, miniters=10):
         
@@ -108,15 +109,27 @@ def export_iso3166_2(output_folder="", json_filename=""):
         #iterate over all countrys' subdivisions, assigning subdiv code, name, type and parent code, where applicable
         #for both json objects
         for subd in allSubdivisions:
+            
+            #get subdivision coordinates using googlemaps api python client
+            gmaps_latlng = gmaps.geocode(subd.name + ", " + countryName, region=alpha2, language="en")
+
+            #set coordinates to None if not found using maps api
+            if (gmaps_latlng != []):
+                subdivision_coords = [gmaps_latlng[0]['geometry']['location']['lat'], gmaps_latlng[0]['geometry']['location']['lng']]
+            else:
+                subdivision_coords = None
+
             all_country_data[alpha2]["subdivisions"][subd.code] = {}
             all_country_data[alpha2]["subdivisions"][subd.code]["name"] = subd.name
             all_country_data[alpha2]["subdivisions"][subd.code]["type"] = subd.type
             all_country_data[alpha2]["subdivisions"][subd.code]["parent_code"] = subd.parent_code
+            all_country_data[alpha2]["subdivisions"][subd.code]["latlng"] = subdivision_coords
 
             all_country_data_min[alpha2][subd.code] = {}
             all_country_data_min[alpha2][subd.code]["name"] = subd.name
             all_country_data_min[alpha2][subd.code]["type"] = subd.type
             all_country_data_min[alpha2][subd.code]["parent_code"] = subd.parent_code
+            all_country_data_min[alpha2][subd.code]["latlng"] = subdivision_coords
 
             #list of flag file extensions in order of preference 
             flag_file_extensions = ['.svg', '.png', '.jpeg', '.jpg', '.gif']
@@ -147,6 +160,13 @@ def export_iso3166_2(output_folder="", json_filename=""):
     #write min json data with subdivision info to output file
     with open(json_min_filepath, 'w', encoding='utf-8') as f:
         json.dump(all_country_data_min, f, ensure_ascii=False, indent=4)
+
+    #stop counter and calculate elapsed time
+    end = time.time()           
+    elapsed = end - start
+    
+    print('\n##########################################################')
+    print('Elapsed Time for exporting all ISO3166-2 data: {0:.2f} minutes.'.format(elapsed / 60))
 
 if __name__ == '__main__':
 

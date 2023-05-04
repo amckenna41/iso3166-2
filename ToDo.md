@@ -7,29 +7,29 @@
 - [ ] Add demo of software using Python notebook, put on Google Colab.
 - [ ] Add front-end demo.
 - [ ] Check variable naming conventions.
-- [ ] Check output of bandit and flake8 check.
-- [ ] Remove .DS_Store or pycache from repo.
+- [X] Check output of bandit and flake8 check.
+- [X] Remove .DS_Store or pycache from repo.
 - [ ] Add code coverage.
-- [ ] Add green MIT logo to Readme (https://shields.io/category/license).
+- [X] Add green MIT logo to Readme (https://shields.io/category/license).
 - [ ] Documentation on readthedocs.
 - [X] Add "python3 -m twine upload --repository testpypi dist/*" to test pypi workflow.
 - [X] Update build/test workflow, similar to pySAR.
 - [ ] read the docs.
 - [ ] Add readthedocs badge - [![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](http://ansicolortags.readthedocs.io/?badge=latest)
 - [ ] Add emojis to readme
-- [ ] Change "secrets.PY_PI..." to "secrets.PYPI...".
+- [X] Change "secrets.PY_PI..." to "secrets.PYPI...".
 - [ ] Add documentation section in readme.
 - [X] Add path-ignore keywords to GitHub Action.
 - [X] Add type of subdivision to object.
 - [X] Add alpha2 key to each entry in iso3166-2.json and min.json.
-- [ ] Go through iso3166 updates for 2019 - 2022 to double check they're included in json.
+- [X] Go through iso3166 updates for 2019 - 2022 to double check they're included in json.
 - [X] Add parent code to subdivison json
 - [X] Reorder software metadata in setup.py to be in order of main func, create __description__ var.
 - [ ] Add spcae in between ISO3166
 - [X] Reorder subdivision codes in json output - alphabetically and or numerically.
-- [ ] In unit tests, reorder subdivision names/codes arrays into alphabetcal/numerical order.
+- [X] In unit tests, reorder subdivision names/codes arrays into alphabetcal/numerical order.
 - [ ] In the future, implement more info about each subdivision if possible - area, pop, capital etc.
-- [ ] In subdivisions in json, add link to flag in iso3166-flag-icons, if no flag then null, skip if status code != 200.
+- [X] In subdivisions in json, add link to flag in iso3166-flag-icons, if no flag then null, skip if status code != 200.
 - [ ] Check for updates by calling export function and comparing new and old jsons.
 - [ ] Mention size of 2 json's in readme.
 - [ ] Remove all camel casing function names/vars, change to underscores and lowercase (https://peps.python.org/pep-0008/#function-and-variable-names).
@@ -38,7 +38,18 @@
 - [X] Lowercase keys in min json.
 - [X] Remove name and subdivisions key from min json.
 - [X] Add tqdm progress bar to getISO3166-2.py
-- [ ] Need to recall getISO3166-2.py when flag icon repo is public so flag url can be added to JSONs. 
-- [ ] When checking flag_url endpoints, try .svg then .jpg then .png then .gif. Need to update JSON file.
-- [ ] How long does getISO3166_2.py script take? 1h 56, 116 mins
+- [X] Need to recall getISO3166-2.py when flag icon repo is public so flag url can be added to JSONs. 
+- [X] When checking flag_url endpoints, try .svg then .jpg then .png then .gif. Need to update JSON file.
+- [ ] How long does getISO3166_2.py script take? 1h 56, 116 mins (update this on script rerun).
+- [ ] Fix pytest badge on readme.
+- [ ] Automatted script that updates json every so often.
+- [ ] Add geonames (geonames.org), openstreetmap relation ID, openstreetmap administrarive division level (https://wiki.openstreetmap.org/wiki/Key:admin%20level?uselang=en-GB), boundary (https://wiki.openstreetmap.org/wiki/Key:boundary?uselang=en-GB), FIPS code, to subdivisions.
+- [X] Add lat and long for each subdivision using google maps api (https://github.com/googlemaps/google-maps-services-python). Recall script to implement.
+- [ ] Future feature: add subdivision borders for each.
+- [ ] Implement codecov.
+- [X] Add latlng unit tests to check they are approximately correct - The latitude must be a number between -90 and 90 and the longitude between -180 and 180.
+- [X] Add latlng examples and comments to readme.
+- [ ] Double check that no latlng of the jsons contain invalid values or []. Put any invalids to null.
+- [ ] Make ISO3166-2 info accessible via an API, similar to restcountries.
+- [ ] Add github release.
 <!-- https://github.com/smucode/react-world-flags -->

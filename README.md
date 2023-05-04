@@ -1,13 +1,13 @@
 # ISO3166-2
 
-[![iso3166_updates](https://img.shields.io/pypi/v/iso3166-2)](https://pypi.org/project/iso3166-2/)
-[![Build](https://img.shields.io/github/workflow/status/amckenna41/iso3166-2/Deploy%20to%20PyPI%20📦)](https://github.com/amckenna41/iso3166-2/actions)
+[![iso3166_2](https://img.shields.io/pypi/v/iso3166-2)](https://pypi.org/project/iso3166-2/)
+[![pytest](https://github.com/amckenna41/iso3166-2/workflows/Building%20and%20Testing%20%F0%9F%90%8D/badge.svg)](https://github.com/amckenna41/iso3166-2/actions?query=workflowBuilding%20and%20Testing%20%F0%9F%90%8D)
 [![Platforms](https://img.shields.io/badge/platforms-linux%2C%20macOS%2C%20Windows-green)](https://pypi.org/project/iso3166-2/)
 [![License: MIT](https://img.shields.io/github/license/amckenna41/iso3166-2)](https://opensource.org/licenses/MIT)
 [![Issues](https://img.shields.io/github/issues/amckenna41/iso3166-2)](https://github.com/amckenna41/iso3166-2/issues)
-[![Size](https://img.shields.io/github/repo-size/amckenna41/iso3166-2)](https://github.com/amckenna41/iso3166-2)
-[![Commits](https://img.shields.io/github/commit-activity/w/amckenna41/iso3166-2)](https://github.com/iso3166-2)
-[![codecov](https://codecov.io/gh/amckenna41/pySAR/branch/master/graph/badge.svg?token=4PQDVGKGYN)](https://codecov.io/gh/amckenna41/pySAR)
+<!-- [![Size](https://img.shields.io/github/repo-size/amckenna41/iso3166-2)](https://github.com/amckenna41/iso3166-2) -->
+<!-- [![Commits](https://img.shields.io/github/commit-activity/w/amckenna41/iso3166-2)](https://github.com/iso3166-2) -->
+<!-- [![codecov](https://codecov.io/gh/amckenna41/pySAR/branch/master/graph/badge.svg?token=4PQDVGKGYN)](https://codecov.io/gh/amckenna41/pySAR) -->
 
 <div alt="images" style="justify-content: center; display:flex; margin-left=10px;">
   <img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/Flag-map_of_the_world_%282017%29.png" alt="globe" height="300" width="600"/>
@@ -61,9 +61,14 @@ Requirements
 
 Usage
 -----
-Download all ISO 3166-2 subdivision data using getISO3166_2.py script, export to two JSONs:
-```bash
+There are two main JSONs that `iso3166-2` utilises, <i>iso3166-2.json</i> and <i>iso3166-2-min.json</i>. The first JSON contains all country information, including all data pulled from the restcountries API as well as the country's subdivision data, this file is <b>3.4 MB</b>. The <i>iso3166-2-min.json</i> file is a minimised version of the first JSON, only containing each country's ISO3166-2 data, this file is <b>1.6 MB</b>. In the main module <i>iso3166_2.py</i>, all data from the <i>iso3166-2.json</i> is accessible via the `iso.country` object and all data from the <i>iso3166-2-min.json</i> is accessible via the `iso.subdivisions` object.
+
+The script `getISO3166_2.py` is used for gathering and exporting all country and subdivision data to the mentioned JSONs. It uses the restcountries api and pycountry package to assemble all of the data together. To download all of the latest ISO 3166-2 subdivision data run the `getISO3166_2.py` in a terminal or cmd, the script takes around 2 hours to execute (the script requires the additional pacakges: pycountry, tqdm and googlemaps):
+```
 python3 getISO3166_2.py --json_filename=iso3166_2.json --output_folder=iso3166_2
+
+--json_filename: output filename for exported JSONs.
+--output_folder: output folder to store JSONs.
 ```
 
 Import ISO3166_2 class and access the country and subdivision data:
@@ -131,26 +136,10 @@ Support
 [requests]: https://requests.readthedocs.io/
 [iso3166]: https://github.com/deactivated/python-iso3166
 [pycountry]: https://github.com/flyingcircusio/pycountry
+[rest]: https://restcountries.com/
+[google-maps-api]: https://github.com/googlemaps/google-maps-services-python
 [PyPi]: https://pypi.org/project/iso3166-2/
 [iso3166-updates]: https://github.com/amckenna41/iso3166-updates
-[demo]: https://github.com/amckenna41/iso3166-2
+[demo]: https://colab.research.google.com/drive/1btfEx23bgWdkUPiwdwlDqKkmUp1S-_7U?usp=sharing
 [attributes]: https://github.com/amckenna41/iso3166-2/ATTRIBUTES.md 
 [issues]: https://github.com/amckenna41/iso3166-2/issues
-
-<!-- 
-Look over below...
-iso3166-updates is a repo that consists of a series of scripts that check for any updates/changes to the ISO3166-1 and ISO 3166-2 country codes and naming conventions, as per the ISO3166 newsletter (https://www.iso.org/iso-3166-country-codes.html). The ISO3166 standard by the ISO defines codes for the names of countries, dependent territories, special areas of geographical interest, consolidated into the ISO3166-1 standard [[1]](#references), and their principal subdivisions (e.g., provinces, states, departments, regions), which compromise the ISO 3166-2 standard [[2]](#references). 
-
-**Problem Statement**
-
-The ISO is a very dynamic organisation and regularly change/update/remove entries within its library of standards, this includes the ISO3166. Additions/changes/deletions to country/territorial codes in the ISO3166-1 are a lot less frequent, but changes are much more frequent for the ISO 3166-2 codes due to there being thousands more entries, thus it can be difficult to keep up with any changes to these codes. These changes can occur for a variety of geopolitical and bureaucratic reasons and are usually communicated via Newsletters on the ISO platform or Online Browsing Platform or via a database, which usually costs money to subscribe to [[3]](#references), usually being released at the end of the year, with amendments and updates throughout the year. [[4]](#references)
-
-This software and accompanying API makes it extremely easy to check for any new or historic updates to a country or set of countrys' ISO 3166-2 codes for free with an easy to use interface and Python package.
-This software is for anyone working on projects working directly with country codes and who want up-to-date and accurate ISO 3166-2 codes and naming conventions.
-
-**Intended Audience**
-This software and accompanying API is for anyone working with country data at the ISO3166 level. It's of high importance that the data that data you are working with is correct and up-to-date, especially with consistent changes being posted every year since 2000 (except 2001 and 2006). iso3166-updates not only 
- 
-Also, it's aimed not just at developers of ISO3166 applications but for anyone working in that space, hence the creation of an easy to use API. 
-
-<em> The earliest date for any ISO3166 updates is 2000-06-21, and the most recent is 2022-11-29 </em> -->

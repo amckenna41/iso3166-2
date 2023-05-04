@@ -8,14 +8,15 @@ class ISO3166_2():
     This class is used to access all the ISO-3166 and ISO-3166-2 country data and attributes.
     There are two JSON's available in the package, iso3166-2-min.json and iso3166-2.json. The 
     former is a minified JSON of all country's ISO3166-2 subdivision info including subdivision
-    name, code, parent code and type. The latter contains a verbose collection of all country 
-    data pulled from the restcountries API as well as the country's subdivision data appened to 
-    each. Both JSONs are generated using the getISO3166_2.py script in the main directory. All 
-    of the keys and objects in the JSON are accessible via dot notation using the Map class.
+    name, type, code, parent code, lat/longitude and URL to its flag (if applicable). The latter 
+    contains a verbose collection of all country data pulled from the restcountries API as well 
+    as the country's subdivision data appened to each. Both JSONs are generated using the 
+    getISO3166_2.py script in the main directory. All of the keys and objects in the JSON are 
+    accessible via dot notation using the Map class.
     
     Parameters
     ----------
-    :iso3166_json_filename : str (default=iso3166-2-min.json)
+    : iso3166_json_filename : str (default=iso3166-2-min.json)
         filename of iso3166-2 JSON data to import from data folder. Can either be the
         iso3166-2-min or iso3166-2 JSON files. 
 
