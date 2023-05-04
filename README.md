@@ -40,7 +40,7 @@ The iso3166-updates repo is another software pacakge and accompanying API that p
 
 Installaion
 -----------
-Install the latest version of <b>iso3166-2</b> via [PyPi][PyPi] using pip:
+Install the latest version of `iso3166-2` via [PyPi][PyPi] using pip:
 
 ```bash
 pip3 install iso3166-2 --upgrade
