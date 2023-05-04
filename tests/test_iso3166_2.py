@@ -5,6 +5,10 @@ import json
 import os
 import getpass
 from importlib import metadata
+try:
+    from importlib import metadata
+except ImportError:
+    import importlib_metadata as metadata  
 import unittest
 unittest.TestLoader.sortTestMethodsUsing = None
 
