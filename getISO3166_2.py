@@ -173,9 +173,9 @@ if __name__ == '__main__':
     #parse input arguments using ArgParse 
     parser = argparse.ArgumentParser(description='Script for exporting iso3166-2 data using pycountry package and restcountries api.')
 
-    parser.add_argument('-json_filename', '--json_filename', type=str, required=False, default="test-iso3166-2.json", 
+    parser.add_argument('-json_filename', '--json_filename', type=str, required=False, default="test_iso3166-2.json", 
         help='Output filename for both iso3166-2 jsons.')
-    parser.add_argument('-output_folder', '--output_folder', type=str, required=False, default="test-iso3166_2", 
+    parser.add_argument('-output_folder', '--output_folder', type=str, required=False, default="test_iso3166-2", 
         help='Output folder to store output jsons.')
 
     #parse input args

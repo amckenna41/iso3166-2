@@ -39,7 +39,7 @@ Latest Updates
 --------------
 An important thing to note about the ISO 3166-2 and its subdivision codes/names is that changes are made consistently to it, from a small subdivision name change to an addition/deletion of a whole subdivision. Therefore, it's important that this library and its JSONs have the most up to date data. To achieve this, the [iso3166-updates][iso3166-updates] repo was created.
 
-The <b>iso3166-updates</b> repo is another software package and accompanying API that pulls the latest updates and changes for any and all countries in the ISO3166. The API is called every few months to check for any updates, which will then be manually incorporated into this repo. Similarly, the <i>getISO3166_2.py</i> script is called regularly to check for any updates for all country data using the restcountries API. 
+The <b>iso3166-updates</b> repo is another software package and accompanying API that pulls the latest updates and changes for any and all countries in the ISO3166. The API is called every few months to check for any updates, which will then be manually incorporated into this repo.
 
 Installation
 ------------
@@ -66,7 +66,7 @@ Usage
 -----
 There are two main JSONs that `iso3166-2` utilises, <i>iso3166-2.json</i> and <i>iso3166-2-min.json</i>. The first JSON contains all country information, including all data pulled from the restcountries API as well as the country's subdivision data, this file is <b>3.4 MB</b>. The <i>iso3166-2-min.json</i> file is a minimised version of the first JSON, only containing each country's ISO3166-2 subdivision data, this file is <b>1.6 MB</b>. In the main module <i>iso3166_2.py</i>, all data from the <i>iso3166-2.json</i> is accessible via the `iso.country` object and all data from the <i>iso3166-2-min.json</i> is accessible via the `iso.subdivisions` object.
 
-The script `getISO3166_2.py` is used for gathering and exporting all country and subdivision data to the mentioned JSONs. It uses the restcountries api and pycountry package to assemble all of the data together. To download all of the latest ISO 3166-2 subdivision data, run the `getISO3166_2.py` in a terminal or cmd below; (the script takes around 2 hours to execute):
+The script `getISO3166_2.py` is used for gathering and exporting all country and subdivision data to the mentioned JSONs. It uses the [restcountries api][rest] as well as the [pycountry][pycountry] and [googlemaps][googlemaps] packages to gather and export all the required info. To download all of the latest ISO 3166-2 subdivision data, run the `getISO3166_2.py` in a terminal or cmd below; (the script takes around 2 hours to execute):
 ```
 python3 getISO3166_2.py --json_filename=iso3166_2.json --output_folder=iso3166_2
 
@@ -136,7 +136,7 @@ Support
 [iso3166]: https://github.com/deactivated/python-iso3166
 [pycountry]: https://github.com/flyingcircusio/pycountry
 [rest]: https://restcountries.com/
-[google-maps-api]: https://github.com/googlemaps/google-maps-services-python
+[google]: https://github.com/googlemaps/google-maps-services-python
 [PyPi]: https://pypi.org/project/iso3166-2/
 [iso3166-updates]: https://github.com/amckenna41/iso3166-updates
 [demo]: https://colab.research.google.com/drive/1btfEx23bgWdkUPiwdwlDqKkmUp1S-_7U?usp=sharing

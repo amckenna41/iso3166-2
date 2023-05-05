@@ -51,5 +51,5 @@
 - [X] Add latlng examples and comments to readme.
 - [ ] Double check that no latlng of the jsons contain invalid values or []. Put any invalids to null.
 - [ ] Make ISO3166-2 info accessible via an API, similar to restcountries.
-- [ ] Add github release.
+- [ ] Add github release (need to make repo public first).
 <!-- https://github.com/smucode/react-world-flags -->
