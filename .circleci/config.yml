@@ -42,6 +42,9 @@ jobs:
             pip install coverage
             pip install codecov
             pip install pytest-cov
+        # pytest --cov-report term --cov=test_iso3166_2 tests/ > /tmp/coverage_report.txt || true
+        # coverage run 
+        # coverage report > /tmp/coverage_report.txt || true
       #store linter and coverage artifacts in tmp folder
       - store_artifacts:
           path: /tmp/coverage_report.txt
@@ -78,21 +81,21 @@ jobs:
             path: /tmp/bandit_output.txt
             destination: bandit-output.txt
 
-  #verify installation of iso3166-2
+  #verify installation of iso3166_2
   iso3166_2-pipeline:
       executor: python/default
       description: |
-        Running iso3166_2 pipeline to check installation and version of package.
+        Running iso3166-2 pipeline to check installation and version of package.
       #checkout repo
       steps:
         - checkout
         - python/install-packages:
             pkg-manager: pip 
         - run:
-            name: iso3166_2 pipeline test
+            name: iso3166-2 pipeline test
             command: |
-              pip3 install iso3166_2
-              echo -e "import iso3166_2 as iso\nprint(iso.__version__)" | python3
+              pip3 install iso3166-2
+              echo -e "import iso3166_2 as iso\nprint(iso3166_2.__version__)" | python3
 
 #initialise all above jobs into a workflow
 workflows:
