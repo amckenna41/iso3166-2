@@ -1,0 +1,31 @@
+iso3166-2
+------------------
+
+.. image:: your-package-logo.png
+
+your package's description here
+
+Installation
+-----------------
+
+Install with pip
+::
+
+    pip install iso3166-2
+
+API
+----
+
+.. automodule:: iso3166-2
+   :members:
+   
+Authors
+----------
+
+AJ McKenna
+
+License
+---------------
+
+The package is released under the `MIT
+License <https://opensource.org/licenses/MIT>`__.

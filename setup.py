@@ -8,7 +8,7 @@ import sys
 
 #software metadata
 __name__ = 'iso3166-2'
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 __description__ = "A Python package to access the most up-to-date and accurate info about countries and their associated subdivisons using the ISO3166-2 standard."
 __author__ = 'AJ McKenna, https://github.com/amckenna41'
 __authorEmail__ = 'amckenna41@qub.ac.uk'
@@ -18,7 +18,7 @@ __url__ = 'https://github.com/amckenna41/iso3166-2'
 __download_url__ = "https://github.com/amckenna41/iso3166-2/archive/refs/heads/main.zip"
 __status__ = 'Development'
 __keywords__ = ["iso", "iso3166", "beautifulsoup", "python", "pypi", "countries", "country codes", \
-            "iso3166-2", "iso3166-1", "alpha2", "iso3166-updates", "rest countries"]
+            "iso3166-2", "iso3166-1", "alpha-2", "iso3166-updates", "rest countries"]
 __test_suite__ = "tests"
 
 #ensure python version is greater than 3
@@ -63,8 +63,7 @@ setup(name=__name__,
     ],
       install_requires=[
           'requests>=2.28.1',
-          'iso3166',
-          'googlemaps'
+          'iso3166'
       ],
      test_suite=__test_suite__,
      packages=find_packages(),

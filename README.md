@@ -14,7 +14,7 @@
   <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/ISO_Logo_%28Red_square%29.svg" alt="iso" height="300" width="400"/> -->
 </div>
 
-> Custom-built Python wrapper for RestCountries API (https://restcountries.com/) which includes an abundance of information about all ISO3166 countries. But this package also includes information about all countrys' ISO 3166-2 subdivision codes & names, which is absent from RestCountries. Available via a Python software package; a demo is available [colab][demo].
+> Custom-built Python wrapper for RestCountries API (https://restcountries.com/) which includes an abundance of information about all ISO3166 countries. But this package also includes information about all countrys' ISO 3166-2 subdivision codes & names, which is absent from RestCountries. Available via a Python software package; a demo is available [here][demo].
 
 Table of Contents
 -----------------
@@ -22,24 +22,26 @@ Table of Contents
   * [Requirements](#requirements)
   * [Installation](#installation)
   * [Usage](#usage)
-  * [Issues](#Issues)
+  * [Issues](#issuesorcontributing)
   * [Contact](#contact)
   * [References](#references)
 
 Introduction
 ------------
-<b>iso3166-2</b> is a custom-built Python wrapper for RestCountries (https://restcountries.com/) API which includes an abundance of information about all ISO3166 countries. But this package also includes information about all countrys' ISO 3166-2 subdivision codes & names, which is absent from RestCountries. The International Organisation for Standards defines codes for the names of countries, dependent territories, special areas of geographical interest, and their principal subdivisions [[1]](#references). This repo focuses on the ISO 3166-2 standard.
+`iso3166-2` is a custom-built Python wrapper for the RestCountries (https://restcountries.com/) API which includes an abundance of information about all ISO3166 countries. But this package also includes information about all countrys' ISO 3166-2 subdivision codes & names, which is absent from RestCountries. The International Organisation for Standards defines codes for the names of countries, dependent territories, special areas of geographical interest, and their principal subdivisions [[1]](#references). This repo focuses on the ISO 3166-2 standard.
 
 The ISO 3166-2 defines codes for identifying the principal subdivisions (e.g., provinces, states, municipality etc) of all countries coded in ISO 3166-1. The official name of the standard is "Codes for the representation of names of countries and their subdivisions – Part 2: Country subdivision code." It was first published in 1998 [[2]](#references). As of 29 November 2022 there are 5,043 codes defined in ISO 3166-2. For some countries, codes are defined for more than one level of subdivisions.
+
+The full list of attributes/fields available in `iso3166-2` can be viewed in the [ATTRIBUTES.md][attributes] file.
 
 Latest Updates
 --------------
 An important thing to note about the ISO 3166-2 and its subdivision codes/names is that changes are made consistently to it, from a small subdivision name change to an addition/deletion of a whole subdivision. Therefore, it's important that this library and its JSONs have the most up to date data. To achieve this, the [iso3166-updates][iso3166-updates] repo was created.
 
-The iso3166-updates repo is another software pacakge and accompanying API that pulls the latest updates and changes for any and all countries in the ISO3166. The API is called every few months to check for any updates, which will then be manually incorporated into this repo. Similarly, the getISO3166_2.py script is called regularly to check for any updates for all country data using the restcountries API. 
+The <b>iso3166-updates</b> repo is another software package and accompanying API that pulls the latest updates and changes for any and all countries in the ISO3166. The API is called every few months to check for any updates, which will then be manually incorporated into this repo. Similarly, the <i>getISO3166_2.py</i> script is called regularly to check for any updates for all country data using the restcountries API. 
 
-Installaion
------------
+Installation
+------------
 Install the latest version of `iso3166-2` via [PyPi][PyPi] using pip:
 
 ```bash
@@ -61,9 +63,9 @@ Requirements
 
 Usage
 -----
-There are two main JSONs that `iso3166-2` utilises, <i>iso3166-2.json</i> and <i>iso3166-2-min.json</i>. The first JSON contains all country information, including all data pulled from the restcountries API as well as the country's subdivision data, this file is <b>3.4 MB</b>. The <i>iso3166-2-min.json</i> file is a minimised version of the first JSON, only containing each country's ISO3166-2 data, this file is <b>1.6 MB</b>. In the main module <i>iso3166_2.py</i>, all data from the <i>iso3166-2.json</i> is accessible via the `iso.country` object and all data from the <i>iso3166-2-min.json</i> is accessible via the `iso.subdivisions` object.
+There are two main JSONs that `iso3166-2` utilises, <i>iso3166-2.json</i> and <i>iso3166-2-min.json</i>. The first JSON contains all country information, including all data pulled from the restcountries API as well as the country's subdivision data, this file is <b>3.4 MB</b>. The <i>iso3166-2-min.json</i> file is a minimised version of the first JSON, only containing each country's ISO3166-2 subdivision data, this file is <b>1.6 MB</b>. In the main module <i>iso3166_2.py</i>, all data from the <i>iso3166-2.json</i> is accessible via the `iso.country` object and all data from the <i>iso3166-2-min.json</i> is accessible via the `iso.subdivisions` object.
 
-The script `getISO3166_2.py` is used for gathering and exporting all country and subdivision data to the mentioned JSONs. It uses the restcountries api and pycountry package to assemble all of the data together. To download all of the latest ISO 3166-2 subdivision data run the `getISO3166_2.py` in a terminal or cmd, the script takes around 2 hours to execute (the script requires the additional pacakges: pycountry, tqdm and googlemaps):
+The script `getISO3166_2.py` is used for gathering and exporting all country and subdivision data to the mentioned JSONs. It uses the restcountries api and pycountry package to assemble all of the data together. To download all of the latest ISO 3166-2 subdivision data, run the `getISO3166_2.py` in a terminal or cmd below; (the script takes around 2 hours to execute):
 ```
 python3 getISO3166_2.py --json_filename=iso3166_2.json --output_folder=iso3166_2
 
@@ -108,18 +110,14 @@ estonia_iso3166_2.subdivisions['EE-899'] #Viljandi subdivision
 fiji_iso3166_2.subdivisions['FJ-03'] #Cakaudrove subdivision 
 ```
 
-Attributes
-----------
-You can check the [ATTRIBUTES.md][attributes] file to get a description for each attribute/field in the JSIN exports.
-
 Issues or Contributing
 ----------------------
-Any issues, errors or bugs can be raised via the [Issues][issues] tab in the repository. Due to the nature of the ISO consistently updating the ISO 3166-2 codes/names every year the data in the JSONs may slightly lag behind these changes. My [iso3166-updates][iso3166-updates] repo was created to check for these updates periodically and implement them in the relevant repo's. Although, if you notice any out of date or missing subdivision info then please similarly raise an Issue in the [Issues][issues] tab.
+Any issues, errors or bugs can be raised via the [Issues][issues] tab in the repository. Due to the nature of the ISO consistently updating the ISO 3166-2 codes/names every year, the data in the JSONs may slightly lag behind these changes. My [iso3166-updates][iso3166-updates] repo was created to check for these updates periodically and implement them in the relevant repo's. Although, if you notice any out of date or missing subdivision info then please similarly raise an Issue in the [Issues][issues] tab.
 
 Contact
 -------
-If you have any questions or comments, please contact amckenna41@qub.ac.uk. <br><br>
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/adam-mckenna-7a5b22151/)
+If you have any questions or comments, please contact amckenna41@qub.ac.uk or raise an issue in the [Issues][issues] tab.  <br><br>
+<!-- [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/adam-mckenna-7a5b22151/) -->
 
 References
 ----------

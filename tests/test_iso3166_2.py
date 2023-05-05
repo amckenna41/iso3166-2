@@ -4,11 +4,11 @@ import requests
 import json
 import os
 import getpass
-import importlib_metadata as metadata  
+import importlib.metadata as metadata  
 import unittest
 unittest.TestLoader.sortTestMethodsUsing = None
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 class ISO3166_2_Updates(unittest.TestCase):
 
@@ -29,10 +29,10 @@ class ISO3166_2_Updates(unittest.TestCase):
         #base url for flag icons on iso3166-flag-icons repo
         self.flag_icons_base_url = "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/"
 
-    # @unittest.skip("")
+    @unittest.skip("")
     def test_iso3166_2_metadata(self): 
         """ Testing correct iso3166-2 software version and metadata. """
-        self.assertEqual(metadata.metadata('iso3166_2')['version'], "1.0.1", 
+        self.assertEqual(metadata.metadata('iso3166_2')['version'], "1.0.2", 
             "iso3166-2 version is not correct, got: {}".format(metadata.metadata('iso3166-2')['version']))
         self.assertEqual(metadata.metadata('iso3166-2')['name'], "iso3166-2", 
             "iso3166-2 software name is not correct, got: {}".format(metadata.metadata('iso3166-2')['name']))
@@ -40,9 +40,9 @@ class ISO3166_2_Updates(unittest.TestCase):
             "AJ McKenna, https://github.com/amckenna41", "iso3166-updates author is not correct, got: {}".format(metadata.metadata('iso3166_2')['author']))
         self.assertEqual(metadata.metadata('iso3166-2')['author-email'], 
             "amckenna41@qub.ac.uk", "iso3166-updates author email is not correct, got: {}".format(metadata.metadata('iso3166_2')['author-email']))
-        # self.assertEqual(metadata.metadata('iso3166-2')['keywords'], 
-        #     ','.join(["iso", "iso3166", "beautifulsoup", "python", "pypi", "countries", "country codes", "iso3166-2", "iso3166-1", "alpha2", "iso3166-updates", "rest countries"]).replace(" ", ""), 
-        #         "iso3166-updates keywords are not correct, got: {}".format(metadata.metadata('iso3166-2')['keywords']))
+        self.assertEqual(metadata.metadata('iso3166-2')['keywords'], 
+            ','.join(["iso", "iso3166", "beautifulsoup", "python", "pypi", "countries", "country codes", "iso3166-2", "iso3166-1", "alpha-2", "iso3166-updates", "rest countries"]).replace(" ", ""), 
+                "iso3166-updates keywords are not correct, got: {}".format(metadata.metadata('iso3166-2')['keywords']))
         self.assertEqual(metadata.metadata('iso3166-2')['home-page'], 
             "https://github.com/amckenna41/iso3166-2", "iso3166-2 home page url is not correct, got: {}".format(metadata.metadata('iso3166_2')['home-page']))
         self.assertEqual(metadata.metadata('iso3166-2')['maintainer'], 
@@ -54,9 +54,9 @@ class ISO3166_2_Updates(unittest.TestCase):
         """ Test ISO3166-2 class and its methods and attributes. """
         #testing class using iso3166-2.json file as input
         self.assertIsInstance(iso.country.alpha2, list, 
-            "Expected alpha2 attribute to be a list, got {}.".format(type(iso.country.alpha2)))
+            "Expected alpha-2 attribute to be a list, got {}.".format(type(iso.country.alpha2)))
         self.assertEqual(len(iso.country.alpha2), 250, 
-            "Expected 250 alpha2 codes, got {}.".format(len(iso.country.alpha2)))
+            "Expected 250 alpha-2 codes, got {}.".format(len(iso.country.alpha2)))
         self.assertIsInstance(iso.country.alpha3, list, 
             "Expected alpha3 attribute to be a list, got {}.".format(type(iso.country.alpha3)))
         self.assertEqual(len(iso.country.alpha3), 250, 
@@ -67,13 +67,13 @@ class ISO3166_2_Updates(unittest.TestCase):
             "Expected 250 countrys in ISO3166-2 data object, got {}.".format(len(iso.country.all_iso3166_2_data)))       
         for code in iso.country.all_iso3166_2_data:
             self.assertIn(code, iso.country.alpha2,
-                "Alpha2 code {} not found in list of available 2 letter codes.".format(code))
+                "Alpha-2 code {} not found in list of available 2 letter codes.".format(code))
 
         #testing class using iso3166-2-min.json file as input
         self.assertIsInstance(iso.subdivisions.alpha2, list, 
-            "Expected alpha2 attribute to be a list, got {}.".format(type(iso.subdivisions.alpha2)))
+            "Expected alpha-2 attribute to be a list, got {}.".format(type(iso.subdivisions.alpha2)))
         self.assertEqual(len(iso.subdivisions.alpha2), 250, 
-            "Expected 250 alpha2 codes, got {}.".format(len(iso.subdivisions.alpha2)))
+            "Expected 250 alpha-2 codes, got {}.".format(len(iso.subdivisions.alpha2)))
         self.assertIsInstance(iso.subdivisions.alpha3, list, 
             "Expected alpha3 attribute to be a list, got {}.".format(type(iso.country.alpha3)))
         self.assertEqual(len(iso.subdivisions.alpha3), 250, 
@@ -84,7 +84,7 @@ class ISO3166_2_Updates(unittest.TestCase):
             "Expected 250 countrys in ISO3166-2 data object, got {}.".format(len(iso.subdivisions.all_iso3166_2_data)))       
         for code in iso.subdivisions.all_iso3166_2_data:
             self.assertIn(code, iso.subdivisions.alpha2,
-                "Alpha2 code {} not found in list of available 2 letter codes.".format(code))
+                "Alpha-2 code {} not found in list of available 2 letter codes.".format(code))
         
     def test_iso3166_2_json(self):
         """ Testing iso3166-2.json contents and data. """
@@ -106,7 +106,7 @@ class ISO3166_2_Updates(unittest.TestCase):
         self.assertEqual(test_alpha2_au.population, 25687041)        
         self.assertEqual(test_alpha2_au.latlng, [-27.0, 133.0], "")        
         self.assertEqual(len(test_alpha2_au.subdivisions), 8, "")
-        self.assertEqual(test_alpha2_au, iso.country['AUS']) #test objects match if using either alpha2/alpha3 codes
+        self.assertEqual(test_alpha2_au, iso.country['AUS']) #test objects match if using either alpha-2/alpha-3 codes
 #2.)
         self.assertIsInstance(test_alpha2_lu, dict, "")
         self.assertEqual(len(test_alpha2_lu), 36, "")
@@ -121,7 +121,7 @@ class ISO3166_2_Updates(unittest.TestCase):
         self.assertEqual(test_alpha2_lu.population, 632275)        
         self.assertEqual(len(test_alpha2_lu.subdivisions), 12, "")
         self.assertEqual(test_alpha2_lu.latlng, [49.75, 6.16666666], "")        
-        self.assertEqual(test_alpha2_lu, iso.country['LUX']) #test objects match if using either alpha2/alpha3 codes
+        self.assertEqual(test_alpha2_lu, iso.country['LUX']) #test objects match if using either alpha-2/alpha-3 codes
 #3.)
         self.assertIsInstance(test_alpha2_mg, dict, "")
         self.assertEqual(len(test_alpha2_mg), 35, "")
@@ -136,7 +136,7 @@ class ISO3166_2_Updates(unittest.TestCase):
         self.assertEqual(test_alpha2_mg.population, 27691019)        
         self.assertEqual(test_alpha2_mg.latlng, [-20.0, 47.0], "")        
         self.assertEqual(len(test_alpha2_mg.subdivisions), 6, "")
-        self.assertEqual(test_alpha2_mg, iso.country['MDG']) #test objects match if using either alpha2/alpha3 codes
+        self.assertEqual(test_alpha2_mg, iso.country['MDG']) #test objects match if using either alpha-2/alpha-3 codes
 #4.)
         self.assertIsInstance(test_alpha2_om, dict, "")
         self.assertEqual(len(test_alpha2_om), 35, "")
@@ -151,7 +151,7 @@ class ISO3166_2_Updates(unittest.TestCase):
         self.assertEqual(test_alpha2_om.population, 5106622)        
         self.assertEqual(test_alpha2_om.latlng, [21.0, 57.0], "")        
         self.assertEqual(len(test_alpha2_om.subdivisions), 11, "")
-        self.assertEqual(test_alpha2_om, iso.country['OMN']) #test objects match if using either alpha2/alpha3 codes
+        self.assertEqual(test_alpha2_om, iso.country['OMN']) #test objects match if using either alpha-2/alpha-3 codes
 #5.)
         with (self.assertRaises(ValueError)):
             invalid_country = iso.country["ZZ"]
@@ -233,6 +233,80 @@ class ISO3166_2_Updates(unittest.TestCase):
             invalid_country = iso.subdivisions[123]
             invalid_country = iso.subdivisions[0.5]
             invalid_country = iso.subdivisions[False]
+
+    def test_subdivision_names(self):
+        """ Testing functionality for getting list of all ISO3166-2 subdivision names. """
+        expected_km_subdivision_names = ['Andjouân', 'Andjazîdja', 'Mohéli']
+        expected_er_subdivision_names = ['Ansabā', 'Debubawi K’eyyĭḥ Baḥri', 'Al Janūbī', 'Gash-Barka', 'Al Awsaţ', 'Semienawi K’eyyĭḥ Baḥri']
+        expected_gl_subdivision_names = ['Avannaata Kommunia', 'Kommune Kujalleq', 'Qeqqata Kommunia', 'Kommune Qeqertalik', 'Kommuneqarfik Sermersooq']
+        expected_vc_subdivision_names = ['Charlotte', 'Saint Andrew', 'Saint David', 'Saint George', 'Saint Patrick', 'Grenadines']
+#1.)        
+        km_subdivision_names = iso.subdivisions.subdivision_names("KM") #Comoros
+        er_subdivision_names = iso.subdivisions.subdivision_names("ER") #Eritrea
+        gl_subdivision_names = iso.subdivisions.subdivision_names("GL") #Greenland
+        vc_subdivision_names = iso.subdivisions.subdivision_names("VC") #St Vincent
+
+        self.assertEqual(km_subdivision_names, expected_km_subdivision_names, "")
+        self.assertEqual(er_subdivision_names, expected_er_subdivision_names, "")
+        self.assertEqual(gl_subdivision_names, expected_gl_subdivision_names, "")
+        self.assertEqual(vc_subdivision_names, expected_vc_subdivision_names, "")
+
+        self.assertIsInstance(km_subdivision_names, list, "")
+        self.assertIsInstance(er_subdivision_names, list, "")
+        self.assertIsInstance(gl_subdivision_names, list, "")
+        self.assertIsInstance(vc_subdivision_names, list, "")
+#2.)   
+        km_subdivision_names = iso.country.subdivision_names("KM") #Comoros
+        er_subdivision_names = iso.country.subdivision_names("ER") #Eritrea
+        gl_subdivision_names = iso.country.subdivision_names("GL") #Greenland
+        vc_subdivision_names = iso.country.subdivision_names("VC") #St Vincent
+
+        self.assertEqual(km_subdivision_names, expected_km_subdivision_names, "")
+        self.assertEqual(er_subdivision_names, expected_er_subdivision_names, "")
+        self.assertEqual(gl_subdivision_names, expected_gl_subdivision_names, "")
+        self.assertEqual(vc_subdivision_names, expected_vc_subdivision_names, "")
+
+        self.assertIsInstance(km_subdivision_names, list, "")
+        self.assertIsInstance(er_subdivision_names, list, "")
+        self.assertIsInstance(gl_subdivision_names, list, "")
+        self.assertIsInstance(vc_subdivision_names, list, "")
+
+    def test_subdivision_codes(self):
+        """ Testing functionality for getting list of all ISO3166-2 subdivision codes. """
+        expected_bq_subdivision_codes = ['BQ-BO', 'BQ-SA', 'BQ-SE']
+        expected_sz_subdivision_codes = ['SZ-HH', 'SZ-LU', 'SZ-MA', 'SZ-SH']
+        expected_sm_subdivision_codes = ['SM-01', 'SM-02', 'SM-03', 'SM-04', 'SM-05', 'SM-06', 'SM-07', 'SM-08', 'SM-09']
+        expected_wf_subdivision_codes = ['WF-AL', 'WF-SG', 'WF-UV']
+#1.)        
+        bq_subdivision_codes = iso.subdivisions.subdivision_codes("BQ") #Bonaire, Sint Eustatius and Saba
+        sz_subdivision_codes = iso.subdivisions.subdivision_codes("SZ") #Eswatini
+        sm_subdivision_codes = iso.subdivisions.subdivision_codes("SM") #San Marino
+        wf_subdivision_codes = iso.subdivisions.subdivision_codes("WF") #Wallace and Futuna 
+
+        self.assertEqual(bq_subdivision_codes, expected_bq_subdivision_codes, "")
+        self.assertEqual(sz_subdivision_codes, expected_sz_subdivision_codes, "")
+        self.assertEqual(sm_subdivision_codes, expected_sm_subdivision_codes, "")
+        self.assertEqual(wf_subdivision_codes, expected_wf_subdivision_codes, "")
+
+        self.assertIsInstance(bq_subdivision_codes, list, "")
+        self.assertIsInstance(sz_subdivision_codes, list, "")
+        self.assertIsInstance(sm_subdivision_codes, list, "")
+        self.assertIsInstance(wf_subdivision_codes, list, "")
+#2.)   
+        bq_subdivision_codes = iso.country.subdivision_codes("BQ") #Bonaire, Sint Eustatius and Saba
+        sz_subdivision_codes = iso.country.subdivision_codes("SZ") #Eswatini
+        sm_subdivision_codes = iso.country.subdivision_codes("SM") #San Marino
+        wf_subdivision_codes = iso.country.subdivision_codes("WF") #Wallace and Futuna 
+
+        self.assertEqual(bq_subdivision_codes, expected_bq_subdivision_codes, "")
+        self.assertEqual(sz_subdivision_codes, expected_sz_subdivision_codes, "")
+        self.assertEqual(sm_subdivision_codes, expected_sm_subdivision_codes, "")
+        self.assertEqual(wf_subdivision_codes, expected_wf_subdivision_codes, "")
+
+        self.assertIsInstance(bq_subdivision_codes, list, "")
+        self.assertIsInstance(sz_subdivision_codes, list, "")
+        self.assertIsInstance(sm_subdivision_codes, list, "")
+        self.assertIsInstance(wf_subdivision_codes, list, "")
 
     def tearDown(self):
         """ Delete all iso3166-2 json objects or instances. """

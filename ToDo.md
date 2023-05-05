@@ -9,7 +9,7 @@
 - [ ] Check variable naming conventions.
 - [X] Check output of bandit and flake8 check.
 - [X] Remove .DS_Store or pycache from repo.
-- [ ] Add code coverage.
+- [X] Add code coverage.
 - [X] Add green MIT logo to Readme (https://shields.io/category/license).
 - [ ] Documentation on readthedocs.
 - [X] Add "python3 -m twine upload --repository testpypi dist/*" to test pypi workflow.
@@ -31,10 +31,10 @@
 - [ ] In the future, implement more info about each subdivision if possible - area, pop, capital etc.
 - [X] In subdivisions in json, add link to flag in iso3166-flag-icons, if no flag then null, skip if status code != 200.
 - [ ] Check for updates by calling export function and comparing new and old jsons.
-- [ ] Mention size of 2 json's in readme.
+- [X] Mention size of 2 json's in readme.
 - [ ] Remove all camel casing function names/vars, change to underscores and lowercase (https://peps.python.org/pep-0008/#function-and-variable-names).
-- [ ] Function, getSubdivisionNames(alpha2) - returns list of subdivision names. import iso3166_2 as iso, iso.subdivisions.getListofSubdivisionNames()
-- [ ] Function, getSubdivisionCodes(alpha2) - returns list of subdivision codes. import iso3166_2 as iso, iso.subdivisions.getListofSubdivisionCodes()
+- [X] Function, getSubdivisionNames(alpha2) - returns list of subdivision names. import iso3166_2 as iso, iso.subdivisions.getListofSubdivisionNames()
+- [X] Function, getSubdivisionCodes(alpha2) - returns list of subdivision codes. import iso3166_2 as iso, iso.subdivisions.getListofSubdivisionCodes()
 - [X] Lowercase keys in min json.
 - [X] Remove name and subdivisions key from min json.
 - [X] Add tqdm progress bar to getISO3166-2.py
