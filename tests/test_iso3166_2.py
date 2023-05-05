@@ -4,7 +4,7 @@ import requests
 import json
 import os
 import getpass
-import importlib.metadata as metadata  
+# import importlib.metadata as metadata  
 import unittest
 unittest.TestLoader.sortTestMethodsUsing = None
 
@@ -29,26 +29,26 @@ class ISO3166_2_Updates(unittest.TestCase):
         #base url for flag icons on iso3166-flag-icons repo
         self.flag_icons_base_url = "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/"
 
-    @unittest.skip("")
-    def test_iso3166_2_metadata(self): 
-        """ Testing correct iso3166-2 software version and metadata. """
-        self.assertEqual(metadata.metadata('iso3166_2')['version'], "1.0.2", 
-            "iso3166-2 version is not correct, got: {}".format(metadata.metadata('iso3166-2')['version']))
-        self.assertEqual(metadata.metadata('iso3166-2')['name'], "iso3166-2", 
-            "iso3166-2 software name is not correct, got: {}".format(metadata.metadata('iso3166-2')['name']))
-        self.assertEqual(metadata.metadata('iso3166-2')['author'], 
-            "AJ McKenna, https://github.com/amckenna41", "iso3166-updates author is not correct, got: {}".format(metadata.metadata('iso3166_2')['author']))
-        self.assertEqual(metadata.metadata('iso3166-2')['author-email'], 
-            "amckenna41@qub.ac.uk", "iso3166-updates author email is not correct, got: {}".format(metadata.metadata('iso3166_2')['author-email']))
-        self.assertEqual(metadata.metadata('iso3166-2')['keywords'], 
-            ','.join(["iso", "iso3166", "beautifulsoup", "python", "pypi", "countries", "country codes", "iso3166-2", "iso3166-1", "alpha-2", "iso3166-updates", "rest countries"]).replace(" ", ""), 
-                "iso3166-updates keywords are not correct, got: {}".format(metadata.metadata('iso3166-2')['keywords']))
-        self.assertEqual(metadata.metadata('iso3166-2')['home-page'], 
-            "https://github.com/amckenna41/iso3166-2", "iso3166-2 home page url is not correct, got: {}".format(metadata.metadata('iso3166_2')['home-page']))
-        self.assertEqual(metadata.metadata('iso3166-2')['maintainer'], 
-            "AJ McKenna", "iso3166-updates maintainer is not correct, got: {}".format(metadata.metadata('iso3166-2')['maintainer']))
-        self.assertEqual(metadata.metadata('iso3166-2')['license'], "MIT", 
-            "iso3166-updates license type is not correct, got: {}".format(metadata.metadata('iso3166-2')['license']))
+    # @unittest.skip("")
+    # def test_iso3166_2_metadata(self): 
+    #     """ Testing correct iso3166-2 software version and metadata. """
+    #     self.assertEqual(metadata.metadata('iso3166_2')['version'], "1.0.2", 
+    #         "iso3166-2 version is not correct, got: {}".format(metadata.metadata('iso3166-2')['version']))
+    #     self.assertEqual(metadata.metadata('iso3166-2')['name'], "iso3166-2", 
+    #         "iso3166-2 software name is not correct, got: {}".format(metadata.metadata('iso3166-2')['name']))
+    #     self.assertEqual(metadata.metadata('iso3166-2')['author'], 
+    #         "AJ McKenna, https://github.com/amckenna41", "iso3166-updates author is not correct, got: {}".format(metadata.metadata('iso3166_2')['author']))
+    #     self.assertEqual(metadata.metadata('iso3166-2')['author-email'], 
+    #         "amckenna41@qub.ac.uk", "iso3166-updates author email is not correct, got: {}".format(metadata.metadata('iso3166_2')['author-email']))
+    #     self.assertEqual(metadata.metadata('iso3166-2')['keywords'], 
+    #         ','.join(["iso", "iso3166", "beautifulsoup", "python", "pypi", "countries", "country codes", "iso3166-2", "iso3166-1", "alpha-2", "iso3166-updates", "rest countries"]).replace(" ", ""), 
+    #             "iso3166-updates keywords are not correct, got: {}".format(metadata.metadata('iso3166-2')['keywords']))
+    #     self.assertEqual(metadata.metadata('iso3166-2')['home-page'], 
+    #         "https://github.com/amckenna41/iso3166-2", "iso3166-2 home page url is not correct, got: {}".format(metadata.metadata('iso3166_2')['home-page']))
+    #     self.assertEqual(metadata.metadata('iso3166-2')['maintainer'], 
+    #         "AJ McKenna", "iso3166-updates maintainer is not correct, got: {}".format(metadata.metadata('iso3166-2')['maintainer']))
+    #     self.assertEqual(metadata.metadata('iso3166-2')['license'], "MIT", 
+    #         "iso3166-updates license type is not correct, got: {}".format(metadata.metadata('iso3166-2')['license']))
 
     def test_iso3166_2(self):
         """ Test ISO3166-2 class and its methods and attributes. """
