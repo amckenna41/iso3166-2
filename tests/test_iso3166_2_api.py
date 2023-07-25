@@ -22,7 +22,7 @@ class ISO3166_2_API_Tests(unittest.TestCase):
     def setUp(self):
         """ Initialise test variables, import json. """
         #initalise User-agent header for requests library 
-        self.__version__ = "1.0.2"
+        self.__version__ = "1.1.0"
         self.user_agent_header = {'User-Agent': 'iso3166-2/{} ({}; {})'.format(self.__version__,
                                             'https://github.com/amckenna41/iso3166-2', getpass.getuser())}
 

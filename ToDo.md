@@ -77,4 +77,5 @@
 - [X] Double check correct files are being uploaded to pacakge, use Manifest file.
 - [X] In unit tests when testing languages, test against the list of all languages.
 - [ ] Add link to medium article on readme.
+- [ ] Split up build and test workflow into different sections such as build, linter etc.
 <!-- https://github.com/smucode/react-world-flags -->

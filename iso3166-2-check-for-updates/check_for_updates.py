@@ -15,7 +15,7 @@ from flask import jsonify
 import googlemaps
 
 #initialise version 
-__version__ = "1.0.2"
+__version__ = "1.1.0"
 
 #initalise User-agent header for requests library 
 USER_AGENT_HEADER = {'User-Agent': 'iso3166-2/{} ({}; {})'.format(__version__,
