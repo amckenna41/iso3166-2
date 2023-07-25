@@ -1,0 +1,8 @@
+iso3166
+iso3166-2
+pycountry
+google-cloud-storage
+requests
+emoji-country-flag
+tqdm
+googlemaps

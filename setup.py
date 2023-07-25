@@ -8,8 +8,8 @@ import sys
 
 #software metadata
 __name__ = 'iso3166-2'
-__version__ = "1.0.2"
-__description__ = "A Python package to access the most up-to-date and accurate info about countries and their associated subdivisons using the ISO3166-2 standard."
+__version__ = "1.1.0"
+__description__ = "A Python package to access the most up-to-date and accurate info about countries and their associated subdivison data using the ISO 3166-2 standard."
 __author__ = 'AJ McKenna, https://github.com/amckenna41'
 __authorEmail__ = 'amckenna41@qub.ac.uk'
 __maintainer__ = "AJ McKenna"

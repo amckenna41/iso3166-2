@@ -3,7 +3,7 @@ version: 2.1
 #create Python env
 orbs:
   python: circleci/python@2.1.1
-  # codecov: codecov/codecov@1.0.2
+  codecov: codecov/codecov@1.0.2
 
 jobs:
   #run unittests
@@ -36,15 +36,9 @@ jobs:
             pip install flake8
             flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics > /tmp/flake8_output.txt || true
             flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics >> /tmp/flake8_output.txt || true
-      - run:
-          name: Coverage
-          command: |
-            pip install coverage
-            pip install codecov
-            pip install pytest-cov
-        # pytest --cov-report term --cov=test_iso3166_2 tests/ > /tmp/coverage_report.txt || true
-        # coverage run 
-        # coverage report > /tmp/coverage_report.txt || true
+      - codecov/upload:
+          file: coverage.xml
+          flags: iso3166_2_coverage
       #store linter and coverage artifacts in tmp folder
       - store_artifacts:
           path: /tmp/coverage_report.txt
@@ -103,31 +97,23 @@ workflows:
     jobs:
       - build-and-test:
           filters:
-            tags:
-              only: /.*/
             branches:
               only:
-                - master
+                - main
       - lint-and-coverage:
           filters:
-            tags:
-              only: /.*/
             branches:
               only:
-                - master
+                - main
       - safety-and-bandit:
           filters:
-            tags:
-              only: /.*/
             branches:
               only:
-                - master
+                - main
       - iso3166_2-pipeline:
           requires:
             - build-and-test
           filters:
-            tags:
-              only: /.*/
             branches:
               only:
-                - master
+                - main

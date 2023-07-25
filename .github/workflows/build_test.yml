@@ -84,14 +84,16 @@ jobs:
     - name: Test with pytest
       run: |
         echo "Testing using pytest..."
-        python3 -m pytest tests/
+        python3 -m pytest tests/ -v
         
     #upload to Code Coverage
     - name: Upload Coverage Report to Codecov
       uses: codecov/codecov-action@v3
+      env: 
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       with:
         flags: iso3166_2_workflow
-    
+   
     #upload test artifacts to workflow
     - name: Upload Test Artifacts
       uses: actions/upload-artifact@v3

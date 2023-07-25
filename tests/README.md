@@ -4,6 +4,7 @@ All of the modules and functionalities of iso3166-2 are thoroughly tested using 
 ## Module tests:
 
 * `test_iso3166_2` - unit tests for iso3166-2 package.
+* `test_iso3166_2_api` - unit tests for iso3166-2 API, hosted on Vercel.
 
 ## Running Tests
 

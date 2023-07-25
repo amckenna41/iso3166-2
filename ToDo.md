@@ -14,7 +14,6 @@
 - [ ] Documentation on readthedocs.
 - [X] Add "python3 -m twine upload --repository testpypi dist/*" to test pypi workflow.
 - [X] Update build/test workflow, similar to pySAR.
-- [ ] read the docs.
 - [ ] Add readthedocs badge - [![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](http://ansicolortags.readthedocs.io/?badge=latest)
 - [ ] Add emojis to readme
 - [X] Change "secrets.PY_PI..." to "secrets.PYPI...".
@@ -25,7 +24,7 @@
 - [X] Go through iso3166 updates for 2019 - 2022 to double check they're included in json.
 - [X] Add parent code to subdivison json
 - [X] Reorder software metadata in setup.py to be in order of main func, create __description__ var.
-- [ ] Add spcae in between ISO3166
+- [X] Add spcae in between ISO3166
 - [X] Reorder subdivision codes in json output - alphabetically and or numerically.
 - [X] In unit tests, reorder subdivision names/codes arrays into alphabetcal/numerical order.
 - [ ] In the future, implement more info about each subdivision if possible - area, pop, capital etc.
@@ -41,15 +40,41 @@
 - [X] Need to recall getISO3166-2.py when flag icon repo is public so flag url can be added to JSONs. 
 - [X] When checking flag_url endpoints, try .svg then .jpg then .png then .gif. Need to update JSON file.
 - [ ] How long does getISO3166_2.py script take? 1h 56, 116 mins (update this on script rerun).
-- [ ] Fix pytest badge on readme.
-- [ ] Automatted script that updates json every so often.
+- [X] Fix pytest badge on readme.
 - [ ] Add geonames (geonames.org), openstreetmap relation ID, openstreetmap administrarive division level (https://wiki.openstreetmap.org/wiki/Key:admin%20level?uselang=en-GB), boundary (https://wiki.openstreetmap.org/wiki/Key:boundary?uselang=en-GB), FIPS code, to subdivisions.
 - [X] Add lat and long for each subdivision using google maps api (https://github.com/googlemaps/google-maps-services-python). Recall script to implement.
-- [ ] Future feature: add subdivision borders for each.
+- [ ] Future feature: add subdivision borders for each, subdivison names in their native language.
 - [ ] Implement codecov.
 - [X] Add latlng unit tests to check they are approximately correct - The latitude must be a number between -90 and 90 and the longitude between -180 and 180.
 - [X] Add latlng examples and comments to readme.
-- [ ] Double check that no latlng of the jsons contain invalid values or []. Put any invalids to null.
-- [ ] Make ISO3166-2 info accessible via an API, similar to restcountries.
+- [X] Double check that no latlng of the jsons contain invalid values or []. Put any invalids to null.
+- [X] Make ISO3166-2 info accessible via an API, similar to restcountries.
 - [ ] Add github release (need to make repo public first).
+- [X] Create frontend API, hosted on Vercel. 
+- [X] Frontend will pull iso3166-2.json from GCP Storage backend.
+- [ ] Implement some sort of update functionality that updates the iso3166-2.json for API every so often, use a CRON scheduler to call this update func every 3 - 6 months etc.
+- [X] Mention frontend API in Readme, create readme for API documentation.
+- [X] Country names with spaces arent working on API.
+- [ ] Run vulture library to search package and remove any unused code/vars.
+- [ ] Pull request for django-countries (https://github.com/SmileyChris/django-countries/tree/main)
+- [ ] Geodjango.
+- [ ] Go over check_for_updates function, remove any instances of min object as it derives from main object.
+- [ ] In api unit tests, change test_request var to something more intuitive .
+- [ ] Reorder subdivision codes such that order doesn't go e.g. PA-1, PA-10, PA-2, PA,3 etc is incorrect.
+- [X] In getISO3166_2.py script, add parameter in main func allowing user to pass in one or more alpha-2 codes to get data for.
+- [X] Update all unit tests for line: "Expected output object of API to contain only the BJ key"
+- [ ] Is there any other data fields each country could have?
+- [X] Adding multiple alpha-2 codes or names seperated by comma doesnt't return space.
+- [X] Add test cases comments to test class.
+- [X] subdivision_names() and subdvision_codes() functions can accept multiple alpha-2 codes as input - add unit tests for testing multiple.
+- [X] Update API.md file to include new /name path.
+- [X] If specific updates are made to a country's subdivision data then raise issue in iso3166-flag-icons repo from Cloud Function.
+- [X] Maybe move check_for_update functions from GCP to Vercel to save money.
+- [X] Add comment in iso3166.py script mentioning total number of countries currently supported.
+- [X] Allow for multiple codes to be passed in using dot notation in __getitem__ func.
+- [X] Go through attributes.md fields, see if can add more info to field description, e.g adding "(km^2)" to area field.
+- [X] Set latlng attribute to 4 d.p for subdivisons.
+- [X] Double check correct files are being uploaded to pacakge, use Manifest file.
+- [X] In unit tests when testing languages, test against the list of all languages.
+- [ ] Add link to medium article on readme.
 <!-- https://github.com/smucode/react-world-flags -->

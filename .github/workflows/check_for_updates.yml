@@ -1,0 +1,56 @@
+name: Checking for ISO 3166-2 Updates
+
+on:
+  schedule:
+    # Run on first of month, every 6 months (https://crontab.guru)
+    - cron: '0 0 1 */6 *'
+
+  # allow for workflow to be manually initiated from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  check_updates:
+    runs-on: ubuntu-latest
+    steps:  
+      - uses: actions/checkout@v3 #checkout repo 
+      
+      #setup python env 
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+      
+      #export gcloud related Python environment variable
+      - name: Export CLOUDSDK_PYTHON
+        run: export CLOUDSDK_PYTHON="/usr/bin/python3"
+
+      #setup gcloud SDK with env vars
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v0.2.0
+        with:
+            service_account_email: ${{ secrets.GCP_SA_EMAIL }} 
+            service_account_key: ${{ secrets.GCP_SA_KEY }} 
+            project_id: ${{ secrets.GCP_PROJECT }}
+            # service_account_email: ${{ secrets.GCP_SA_EMAIL }}
+            # service_account_key: ${{ secrets.GCP_SA_KEY }}
+            export_default_credentials: true
+      
+      #call Cloud Func using gcloud cli
+      - name: Call Updates Func
+        run: |
+          gcloud functions call check-for-iso3166-2-updates --region us-central1
+
+# gcloud functions add-iam-policy-binding iso3166-updates --member=serviceAccount:${{ secrets.GCP_SA_EMAIL }} --role=roles/cloudfunctions.invoker
+# curl -H "Authorization: bearer $(gcloud auth print-identity-token)" ${{ secrets.GCP_CHECK_FOR_UPDATES_URL }}
+
+# curl -m 460 -X POST https://us-central1-iso3166-updates.cloudfunctions.net/check-for-iso3166-updates \
+# -H "Authorization: bearer $(gcloud auth print-identity-token)" \
+# -H "Content-Type: application/json" \
+# -d '{}'
+
+#1.) https://cloud.google.com/functions/docs/securing/authenticating#functions-bearer-token-example-python
+#2.) curl -H "Authorization: bearer $(gcloud auth print-identity-token)" https://us-central1-iso3166-updates.cloudfunctions.net/check-for-iso3166-updates
+#3.)curl -m 460 -X POST https://us-central1-iso3166-updates.cloudfunctions.net/check-for-iso3166-updates \
+# -H "Authorization: bearer $(gcloud auth print-identity-token)" \
+# -H "Content-Type: application/json" \
+# -d '{}'

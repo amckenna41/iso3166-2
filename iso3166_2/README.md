@@ -11,10 +11,11 @@
 
 Usage
 -----
-There are two main JSONs that `iso3166-2` utilises, <i>iso3166-2.json</i> and <i>iso3166-2-min.json</i>. The first JSON contains all country information, including all data pulled from the restcountries API as well as the country's subdivision data, this file is <b>3.4 MB</b>. The <i>iso3166-2-min.json</i> file is a minimised version of the first JSON, only containing each country's ISO3166-2 subdivision data, this file is <b>1.6 MB</b>. In the main module <i>iso3166_2.py</i>, all data from the <i>iso3166-2.json</i> is accessible via the `iso.country` object and all data from the <i>iso3166-2-min.json</i> is accessible via the `iso.subdivisions` object.
+There are two main JSONs that `iso3166-2` utilises, <i>iso3166-2.json</i> and <i>iso3166-2-min.json</i>. The first JSON contains all country information, including all data pulled from the restcountries API as well as the country's subdivision data, this file is <b>X MB</b>. The <i>iso3166-2-min.json</i> file is a minimised version of the first JSON, only containing each country's ISO3166-2 subdivision data, this file is <b>1.6 MB</b>. In the main module <i>iso3166_2.py</i>, all data from the <i>iso3166-2.json</i> is accessible via the `iso.country` object and all data from the <i>iso3166-2-min.json</i> is accessible via the `iso.subdivisions` object.
 
 The script `getISO3166_2.py` is used for gathering and exporting all country and subdivision data to the mentioned JSONs. It uses the [restcountries api][rest] as well as the [pycountry][pycountry] and [googlemaps][googlemaps] packages to gather and export all the required info. To download all of the latest ISO 3166-2 subdivision data, run the `getISO3166_2.py` in a terminal or cmd below; (the script takes around 2 hours to execute):
-```
+
+```bash
 python3 getISO3166_2.py --json_filename=iso3166_2.json --output_folder=iso3166_2
 
 --json_filename: output filename for exported JSONs.
@@ -29,13 +30,13 @@ import iso3166_2 as iso
 canada_iso3166_2 = iso.country["CA"]
 denmark_iso3166_2 = iso.country["DK"]
 estonia_iso3166_2 = iso.country["EE"]
-fiji_iso3166_2 = iso.country["FJ"]
+fiji_haiti_guyana_iso3166_2 = iso.country["FJ, HT, GY"]
 
 #access all country subdivision data
 canada_iso3166_2 = iso.subdivisions["CA"]
 denmark_iso3166_2 = iso.subdivisions["DK"]
 estonia_iso3166_2 = iso.subdivisions["EE"]
-fiji_iso3166_2 = iso.subdivisions["FJ"]
+fiji_haiti_guyana_iso3166_2 = iso.subdivisions["FJ, HT, GY"]
 ```
 
 Get country data:

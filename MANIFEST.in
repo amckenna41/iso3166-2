@@ -1,1 +1,3 @@
 graft iso3166_2/iso3166-2-data*
+include README.md
+recursive-exclude __pycache__ *
