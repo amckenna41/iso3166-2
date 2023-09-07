@@ -49,7 +49,7 @@ jobs:
         pip3 install pycountry
         pip3 install googlemaps
         pip3 install natsort
-        pip3 instal tqdm
+        pip3 install tqdm
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         python3 setup.py install
     
@@ -75,6 +75,8 @@ jobs:
 
     #unit tests using pytest, unittest, flake8 and bandit frameworks
     - name: Testing with unittest
+      env:
+        GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
       run: |
         echo "Testing using unittest..."
         python3 -m unittest discover tests -b
