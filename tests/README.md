@@ -5,6 +5,7 @@ All of the modules and functionalities of iso3166-2 are thoroughly tested using 
 
 * `test_iso3166_2` - unit tests for iso3166-2 package.
 * `test_iso3166_2_api` - unit tests for iso3166-2 API, hosted on Vercel.
+* `test_get_iso3166_2` - unit tests for testing get_iso3166_2.py script that pulls the ISO 3166-2 country data from the data sources.
 
 ## Running Tests
 

@@ -127,8 +127,8 @@
             "type": "Emirate",
             "parent_code": null,
             "latlng": [
-                25.346,
-                55.421
+                25.357,
+                55.403
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/AE/AE-SH.svg"
         },
@@ -965,8 +965,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                -7.61,
-                15.062
+                -7.174,
+                15.407
             ],
             "flag_url": null
         },
@@ -1457,8 +1457,8 @@
             "type": "Rayon",
             "parent_code": null,
             "latlng": [
-                40.528,
-                48.365
+                40.574,
+                48.39
             ],
             "flag_url": null
         },
@@ -2353,7 +2353,7 @@
             "type": "District",
             "parent_code": "BD-E",
             "latlng": [
-                24.848,
+                24.853,
                 89.373
             ],
             "flag_url": null
@@ -2363,8 +2363,8 @@
             "type": "District",
             "parent_code": "BD-B",
             "latlng": [
-                23.968,
-                91.112
+                23.997,
+                91.109
             ],
             "flag_url": null
         },
@@ -2383,8 +2383,8 @@
             "type": "District",
             "parent_code": "BD-A",
             "latlng": [
-                22.701,
-                90.353
+                22.713,
+                90.35
             ],
             "flag_url": null
         },
@@ -2403,8 +2403,8 @@
             "type": "District",
             "parent_code": "BD-B",
             "latlng": [
-                23.461,
-                91.181
+                23.45,
+                91.185
             ],
             "flag_url": null
         },
@@ -2413,8 +2413,8 @@
             "type": "District",
             "parent_code": "BD-B",
             "latlng": [
-                23.232,
-                90.663
+                23.225,
+                90.655
             ],
             "flag_url": null
         },
@@ -2423,8 +2423,8 @@
             "type": "District",
             "parent_code": "BD-B",
             "latlng": [
-                22.357,
-                91.783
+                22.375,
+                91.835
             ],
             "flag_url": null
         },
@@ -2433,8 +2433,8 @@
             "type": "District",
             "parent_code": "BD-B",
             "latlng": [
-                21.427,
-                92.006
+                21.451,
+                92.009
             ],
             "flag_url": null
         },
@@ -2443,8 +2443,8 @@
             "type": "District",
             "parent_code": "BD-D",
             "latlng": [
-                23.642,
-                88.858
+                23.632,
+                88.848
             ],
             "flag_url": null
         },
@@ -2453,8 +2453,8 @@
             "type": "District",
             "parent_code": "BD-C",
             "latlng": [
-                23.81,
-                90.413
+                23.804,
+                90.415
             ],
             "flag_url": null
         },
@@ -2463,8 +2463,8 @@
             "type": "District",
             "parent_code": "BD-F",
             "latlng": [
-                25.628,
-                88.633
+                25.622,
+                88.644
             ],
             "flag_url": null
         },
@@ -2473,8 +2473,8 @@
             "type": "District",
             "parent_code": "BD-C",
             "latlng": [
-                23.602,
-                89.833
+                23.606,
+                89.839
             ],
             "flag_url": null
         },
@@ -2483,8 +2483,8 @@
             "type": "District",
             "parent_code": "BD-B",
             "latlng": [
-                23.016,
-                91.398
+                23.013,
+                91.397
             ],
             "flag_url": null
         },
@@ -2493,8 +2493,8 @@
             "type": "District",
             "parent_code": "BD-C",
             "latlng": [
-                23.013,
-                89.822
+                22.995,
+                89.821
             ],
             "flag_url": null
         },
@@ -2503,8 +2503,8 @@
             "type": "District",
             "parent_code": "BD-C",
             "latlng": [
-                24.0,
-                90.42
+                23.991,
+                90.388
             ],
             "flag_url": null
         },
@@ -2523,8 +2523,8 @@
             "type": "District",
             "parent_code": "BD-G",
             "latlng": [
-                24.384,
-                91.417
+                24.39,
+                91.413
             ],
             "flag_url": null
         },
@@ -2533,8 +2533,8 @@
             "type": "District",
             "parent_code": "BD-H",
             "latlng": [
-                24.925,
-                89.946
+                24.927,
+                89.948
             ],
             "flag_url": null
         },
@@ -2543,8 +2543,8 @@
             "type": "District",
             "parent_code": "BD-D",
             "latlng": [
-                23.178,
-                89.18
+                23.164,
+                89.206
             ],
             "flag_url": null
         },
@@ -2553,8 +2553,8 @@
             "type": "District",
             "parent_code": "BD-D",
             "latlng": [
-                23.553,
-                89.175
+                23.545,
+                89.173
             ],
             "flag_url": null
         },
@@ -2583,8 +2583,8 @@
             "type": "District",
             "parent_code": "BD-C",
             "latlng": [
-                24.433,
-                90.787
+                24.434,
+                90.785
             ],
             "flag_url": null
         },
@@ -2593,7 +2593,7 @@
             "type": "District",
             "parent_code": "BD-D",
             "latlng": [
-                22.846,
+                22.837,
                 89.54
             ],
             "flag_url": null
@@ -2603,8 +2603,8 @@
             "type": "District",
             "parent_code": "BD-F",
             "latlng": [
-                25.81,
-                89.649
+                25.813,
+                89.648
             ],
             "flag_url": null
         },
@@ -2653,8 +2653,8 @@
             "type": "District",
             "parent_code": "BD-C",
             "latlng": [
-                23.864,
-                90.005
+                23.861,
+                90.0
             ],
             "flag_url": null
         },
@@ -2663,8 +2663,8 @@
             "type": "District",
             "parent_code": "BD-H",
             "latlng": [
-                24.747,
-                90.42
+                24.746,
+                90.418
             ],
             "flag_url": null
         },
@@ -2673,8 +2673,8 @@
             "type": "District",
             "parent_code": "BD-C",
             "latlng": [
-                23.542,
-                90.531
+                23.545,
+                90.53
             ],
             "flag_url": null
         },
@@ -2683,8 +2683,8 @@
             "type": "District",
             "parent_code": "BD-C",
             "latlng": [
-                23.165,
-                90.194
+                23.167,
+                90.195
             ],
             "flag_url": null
         },
@@ -2693,8 +2693,8 @@
             "type": "District",
             "parent_code": "BD-D",
             "latlng": [
-                23.485,
-                89.42
+                23.495,
+                89.414
             ],
             "flag_url": null
         },
@@ -2703,8 +2703,8 @@
             "type": "District",
             "parent_code": "BD-G",
             "latlng": [
-                24.484,
-                91.768
+                24.486,
+                91.776
             ],
             "flag_url": null
         },
@@ -2713,8 +2713,8 @@
             "type": "District",
             "parent_code": "BD-D",
             "latlng": [
-                23.805,
-                88.672
+                23.778,
+                88.631
             ],
             "flag_url": null
         },
@@ -2723,8 +2723,8 @@
             "type": "District",
             "parent_code": "BD-C",
             "latlng": [
-                23.624,
-                90.5
+                23.643,
+                90.488
             ],
             "flag_url": null
         },
@@ -2734,7 +2734,7 @@
             "parent_code": "BD-H",
             "latlng": [
                 24.882,
-                90.727
+                90.723
             ],
             "flag_url": null
         },
@@ -2743,8 +2743,8 @@
             "type": "District",
             "parent_code": "BD-C",
             "latlng": [
-                23.919,
-                90.718
+                23.935,
+                90.723
             ],
             "flag_url": null
         },
@@ -2753,8 +2753,8 @@
             "type": "District",
             "parent_code": "BD-D",
             "latlng": [
-                23.166,
-                89.499
+                23.173,
+                89.5
             ],
             "flag_url": null
         },
@@ -2763,8 +2763,8 @@
             "type": "District",
             "parent_code": "BD-E",
             "latlng": [
-                24.408,
-                88.975
+                24.412,
+                88.976
             ],
             "flag_url": null
         },
@@ -2773,8 +2773,8 @@
             "type": "District",
             "parent_code": "BD-E",
             "latlng": [
-                24.58,
-                88.27
+                24.593,
+                88.271
             ],
             "flag_url": null
         },
@@ -2793,8 +2793,8 @@
             "type": "District",
             "parent_code": "BD-B",
             "latlng": [
-                22.872,
-                91.092
+                22.865,
+                91.097
             ],
             "flag_url": null
         },
@@ -2803,8 +2803,8 @@
             "type": "District",
             "parent_code": "BD-E",
             "latlng": [
-                24.794,
-                88.932
+                24.806,
+                88.935
             ],
             "flag_url": null
         },
@@ -2813,8 +2813,8 @@
             "type": "District",
             "parent_code": "BD-E",
             "latlng": [
-                24.013,
-                89.259
+                24.012,
+                89.247
             ],
             "flag_url": null
         },
@@ -2834,7 +2834,7 @@
             "parent_code": "BD-A",
             "latlng": [
                 22.359,
-                90.332
+                90.328
             ],
             "flag_url": null
         },
@@ -2864,7 +2864,7 @@
             "parent_code": "BD-E",
             "latlng": [
                 24.375,
-                88.604
+                88.6
             ],
             "flag_url": null
         },
@@ -2873,8 +2873,8 @@
             "type": "District",
             "parent_code": "BD-F",
             "latlng": [
-                25.744,
-                89.275
+                25.749,
+                89.261
             ],
             "flag_url": null
         },
@@ -2893,8 +2893,8 @@
             "type": "District",
             "parent_code": "BD-H",
             "latlng": [
-                25.019,
-                90.014
+                25.02,
+                90.017
             ],
             "flag_url": null
         },
@@ -2903,8 +2903,8 @@
             "type": "District",
             "parent_code": "BD-D",
             "latlng": [
-                22.718,
-                89.07
+                22.722,
+                89.068
             ],
             "flag_url": null
         },
@@ -2913,8 +2913,8 @@
             "type": "District",
             "parent_code": "BD-E",
             "latlng": [
-                24.453,
-                89.682
+                24.456,
+                89.702
             ],
             "flag_url": null
         },
@@ -2923,8 +2923,8 @@
             "type": "District",
             "parent_code": "BD-G",
             "latlng": [
-                24.895,
-                91.869
+                24.905,
+                91.86
             ],
             "flag_url": null
         },
@@ -2954,7 +2954,7 @@
             "parent_code": "BD-C",
             "latlng": [
                 24.251,
-                89.917
+                89.92
             ],
             "flag_url": null
         },
@@ -2973,8 +2973,8 @@
             "type": "Division",
             "parent_code": null,
             "latlng": [
-                22.701,
-                90.353
+                22.713,
+                90.35
             ],
             "flag_url": null
         },
@@ -2983,8 +2983,8 @@
             "type": "Division",
             "parent_code": null,
             "latlng": [
-                22.357,
-                91.783
+                22.375,
+                91.835
             ],
             "flag_url": null
         },
@@ -2993,8 +2993,8 @@
             "type": "Division",
             "parent_code": null,
             "latlng": [
-                23.81,
-                90.413
+                23.804,
+                90.415
             ],
             "flag_url": null
         },
@@ -3003,7 +3003,7 @@
             "type": "Division",
             "parent_code": null,
             "latlng": [
-                22.846,
+                22.837,
                 89.54
             ],
             "flag_url": null
@@ -3014,7 +3014,7 @@
             "parent_code": null,
             "latlng": [
                 24.375,
-                88.604
+                88.6
             ],
             "flag_url": null
         },
@@ -3023,8 +3023,8 @@
             "type": "Division",
             "parent_code": null,
             "latlng": [
-                25.744,
-                89.275
+                25.749,
+                89.261
             ],
             "flag_url": null
         },
@@ -3033,8 +3033,8 @@
             "type": "Division",
             "parent_code": null,
             "latlng": [
-                24.895,
-                91.869
+                24.905,
+                91.86
             ],
             "flag_url": null
         },
@@ -3043,8 +3043,8 @@
             "type": "Division",
             "parent_code": null,
             "latlng": [
-                24.747,
-                90.42
+                24.746,
+                90.418
             ],
             "flag_url": null
         }
@@ -3187,8 +3187,8 @@
             "type": "Region",
             "parent_code": null,
             "latlng": [
-                13.13,
-                -3.369
+                12.417,
+                -3.42
             ],
             "flag_url": null
         },
@@ -5544,8 +5544,8 @@
             "type": "Oblast",
             "parent_code": null,
             "latlng": [
-                52.431,
-                30.994
+                52.165,
+                29.133
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/BY/BY-HO.svg"
         },
@@ -5658,8 +5658,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                53.933,
-                -116.577
+                54.498,
+                -115.001
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/CA/CA-AB.svg"
         },
@@ -5678,8 +5678,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                53.761,
-                -98.814
+                54.499,
+                -95.494
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/CA/CA-MB.svg"
         },
@@ -5688,8 +5688,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                46.565,
-                -66.462
+                46.291,
+                -66.412
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/CA/CA-NB.svg"
         },
@@ -5698,8 +5698,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                53.136,
-                -57.66
+                53.494,
+                -60.221
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/CA/CA-NL.svg"
         },
@@ -5708,8 +5708,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                44.692,
-                -62.657
+                45.308,
+                -63.028
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/CA/CA-NS.svg"
         },
@@ -5718,8 +5718,8 @@
             "type": "Territory",
             "parent_code": null,
             "latlng": [
-                64.826,
-                -124.846
+                69.402,
+                -119.234
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/CA/CA-NT.svg"
         },
@@ -5748,8 +5748,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                46.511,
-                -63.417
+                46.504,
+                -63.235
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/CA/CA-PE.svg"
         },
@@ -5768,8 +5768,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                52.94,
-                -106.451
+                54.499,
+                -105.686
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/CA/CA-SK.svg"
         },
@@ -5778,8 +5778,8 @@
             "type": "Territory",
             "parent_code": null,
             "latlng": [
-                64.282,
-                -135
+                64.822,
+                -132.396
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/CA/CA-YT.svg"
         }
@@ -5861,8 +5861,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                -7.263,
-                19.623
+                -6.251,
+                22.238
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/CD/CD-KC.png"
         },
@@ -7974,8 +7974,8 @@
             "type": "Municipality",
             "parent_code": "CV-S",
             "latlng": [
-                15.133,
-                -23.558
+                15.103,
+                -23.561
             ],
             "flag_url": null
         },
@@ -9324,8 +9324,8 @@
             "type": "City",
             "parent_code": null,
             "latlng": [
-                11.572,
-                43.146
+                11.825,
+                42.59
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/DJ/DJ-DJ.png"
         },
@@ -9920,8 +9920,8 @@
             "type": "Region",
             "parent_code": null,
             "latlng": [
-                18.47,
-                -68.685
+                18.736,
+                -70.163
             ],
             "flag_url": null
         }
@@ -10766,8 +10766,8 @@
             "type": "County",
             "parent_code": null,
             "latlng": [
-                58.406,
-                26.802
+                58.378,
+                26.729
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/EE/EE-79.svg"
         },
@@ -11921,8 +11921,8 @@
             "type": "Region",
             "parent_code": null,
             "latlng": [
-                15.179,
-                39.782
+                16.258,
+                38.821
             ],
             "flag_url": null
         }
@@ -12503,7 +12503,7 @@
             "type": "Province",
             "parent_code": "ES-CL",
             "latlng": [
-                41.767,
+                41.766,
                 -2.479
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ES/ES-SO.svg"
@@ -12625,8 +12625,8 @@
             "type": "Administration",
             "parent_code": null,
             "latlng": [
-                8.981,
-                38.758
+                9.019,
+                38.752
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ET/ET-AA.svg"
         },
@@ -12665,8 +12665,8 @@
             "type": "Administration",
             "parent_code": null,
             "latlng": [
-                9.601,
-                41.85
+                9.605,
+                41.859
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ET/ET-DD.png"
         },
@@ -12929,8 +12929,8 @@
             "type": "Province",
             "parent_code": "FJ-W",
             "latlng": [
-                -17.562,
-                177.776
+                -17.608,
+                177.658
             ],
             "flag_url": null
         },
@@ -12950,7 +12950,7 @@
             "parent_code": "FJ-N",
             "latlng": [
                 -16.581,
-                179.512
+                179.436
             ],
             "flag_url": null
         },
@@ -12959,8 +12959,8 @@
             "type": "Province",
             "parent_code": "FJ-E",
             "latlng": [
-                -18.896,
-                178.402
+                -19.013,
+                178.188
             ],
             "flag_url": null
         },
@@ -12969,8 +12969,8 @@
             "type": "Province",
             "parent_code": "FJ-E",
             "latlng": [
-                -18.807,
-                -179.399
+                -18.891,
+                -179.251
             ],
             "flag_url": null
         },
@@ -13029,8 +13029,8 @@
             "type": "Province",
             "parent_code": "FJ-W",
             "latlng": [
-                -17.519,
-                178.207
+                -17.518,
+                178.129
             ],
             "flag_url": null
         },
@@ -13039,8 +13039,8 @@
             "type": "Province",
             "parent_code": "FJ-C",
             "latlng": [
-                -18.065,
-                178.382
+                -18.1,
+                178.353
             ],
             "flag_url": null
         },
@@ -13050,7 +13050,7 @@
             "parent_code": "FJ-C",
             "latlng": [
                 -18.18,
-                178.051
+                177.973
             ],
             "flag_url": null
         },
@@ -13059,8 +13059,8 @@
             "type": "Province",
             "parent_code": "FJ-C",
             "latlng": [
-                -17.827,
-                178.293
+                -17.782,
+                178.498
             ],
             "flag_url": null
         },
@@ -13122,8 +13122,8 @@
             "type": "State",
             "parent_code": null,
             "latlng": [
-                5.31,
-                162.981
+                7.426,
+                150.551
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/FM/FM-KSA.svg"
         },
@@ -13132,8 +13132,8 @@
             "type": "State",
             "parent_code": null,
             "latlng": [
-                6.854,
-                158.262
+                6.852,
+                158.215
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/FM/FM-PNI.svg"
         },
@@ -13142,8 +13142,8 @@
             "type": "State",
             "parent_code": null,
             "latlng": [
-                5.454,
-                153.51
+                7.134,
+                151.507
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/FM/FM-TRK.svg"
         },
@@ -14165,8 +14165,8 @@
             "type": "Overseas department",
             "parent_code": "FR-RE",
             "latlng": [
-                -21.115,
-                55.536
+                46.228,
+                2.214
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/FR/FR-974.svg"
         },
@@ -14395,8 +14395,8 @@
             "type": "Overseas region",
             "parent_code": null,
             "latlng": [
-                -21.115,
-                55.536
+                46.228,
+                2.214
             ],
             "flag_url": null
         },
@@ -15249,8 +15249,8 @@
             "type": "Unitary authority",
             "parent_code": null,
             "latlng": [
-                53.229,
-                -3.069
+                53.167,
+                -3.142
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/GB/GB-FLN.svg"
         },
@@ -15889,8 +15889,8 @@
             "type": "Two-tier county",
             "parent_code": null,
             "latlng": [
-                52.954,
-                -1.155
+                53.1,
+                -0.994
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/GB/GB-NTT.svg"
         },
@@ -15959,8 +15959,8 @@
             "type": "Two-tier county",
             "parent_code": null,
             "latlng": [
-                51.752,
-                -1.258
+                51.761,
+                -1.246
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/GB/GB-OXF.svg"
         },
@@ -16099,8 +16099,8 @@
             "type": "Metropolitan district",
             "parent_code": null,
             "latlng": [
-                53.433,
-                -1.364
+                55.378,
+                -3.436
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/GB/GB-ROT.png"
         },
@@ -16329,8 +16329,8 @@
             "type": "London borough",
             "parent_code": null,
             "latlng": [
-                55.378,
-                -3.436
+                51.361,
+                -0.194
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/GB/GB-STN.svg"
         },
@@ -18331,8 +18331,8 @@
             "type": "Department",
             "parent_code": null,
             "latlng": [
-                13.864,
-                -86.553
+                14.041,
+                -86.57
             ],
             "flag_url": null
         },
@@ -18573,8 +18573,8 @@
             "type": "County",
             "parent_code": null,
             "latlng": [
-                44.147,
-                15.616
+                44.132,
+                15.456
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/HR/HR-13.png"
         },
@@ -19691,8 +19691,8 @@
             "type": "County",
             "parent_code": "IE-L",
             "latlng": [
-                53.159,
-                -6.91
+                53.16,
+                -6.909
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/IE/IE-KE.svg"
         },
@@ -20479,8 +20479,8 @@
             "type": "Governorate",
             "parent_code": null,
             "latlng": [
-                31.583,
-                44.5
+                32.044,
+                45.149
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/IQ/IQ-QA.png"
         },
@@ -20701,8 +20701,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                28.914,
-                50.828
+                28.762,
+                51.515
             ],
             "flag_url": null
         },
@@ -20913,8 +20913,8 @@
             "type": "Municipality",
             "parent_code": "IS-5",
             "latlng": [
-                64.963,
-                -19.021
+                65.389,
+                -18.902
             ],
             "flag_url": null
         },
@@ -23302,8 +23302,8 @@
             "type": "Prefecture",
             "parent_code": null,
             "latlng": [
-                37.518,
-                138.927
+                37.916,
+                139.036
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/JP/JP-15.svg"
         },
@@ -23644,8 +23644,8 @@
             "type": "County",
             "parent_code": null,
             "latlng": [
-                -0.778,
-                35.336
+                -0.802,
+                35.303
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/KE/KE-02.png"
         },
@@ -24136,8 +24136,8 @@
             "type": "City",
             "parent_code": null,
             "latlng": [
-                40.505,
-                72.848
+                40.514,
+                72.816
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/KG/KG-GO.svg"
         },
@@ -24686,8 +24686,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                40.373,
-                128.299
+                40.34,
+                127.51
             ],
             "flag_url": null
         },
@@ -24746,8 +24746,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                40.373,
-                128.299
+                40.34,
+                127.51
             ],
             "flag_url": null
         },
@@ -26025,8 +26025,8 @@
             "type": "County",
             "parent_code": null,
             "latlng": [
-                6.83,
-                -9.367
+                6.909,
+                -9.634
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/LR/LR-BG.svg"
         },
@@ -26035,8 +26035,8 @@
             "type": "County",
             "parent_code": null,
             "latlng": [
-                6.756,
-                -10.845
+                6.717,
+                -10.71
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/LR/LR-BM.svg"
         },
@@ -26115,8 +26115,8 @@
             "type": "County",
             "parent_code": null,
             "latlng": [
-                6.553,
-                -10.53
+                6.51,
+                -10.575
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/LR/LR-MO.svg"
         },
@@ -26125,8 +26125,8 @@
             "type": "County",
             "parent_code": null,
             "latlng": [
-                4.726,
-                -7.742
+                4.603,
+                -7.698
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/LR/LR-MY.svg"
         },
@@ -26187,8 +26187,8 @@
             "type": "District",
             "parent_code": null,
             "latlng": [
-                -28.802,
-                28.533
+                -28.765,
+                28.247
             ],
             "flag_url": null
         },
@@ -26207,8 +26207,8 @@
             "type": "District",
             "parent_code": null,
             "latlng": [
-                -29.175,
-                27.831
+                -29.207,
+                27.878
             ],
             "flag_url": null
         },
@@ -27773,8 +27773,8 @@
             "type": "Municipality",
             "parent_code": null,
             "latlng": [
-                56.787,
-                23.942
+                56.795,
+                24.015
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/LV/LV-068.png"
         },
@@ -29418,10 +29418,7 @@
             "name": "La Gare",
             "type": "Quarter",
             "parent_code": null,
-            "latlng": [
-                43.738,
-                7.425
-            ],
+            "latlng": null,
             "flag_url": null
         },
         "MC-JE": {
@@ -29449,7 +29446,7 @@
             "type": "Quarter",
             "parent_code": null,
             "latlng": [
-                43.737,
+                43.736,
                 7.416
             ],
             "flag_url": null
@@ -30468,8 +30465,8 @@
             "type": "Municipality",
             "parent_code": "MH-T",
             "latlng": [
-                11.28,
-                169.807
+                11.225,
+                169.848
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/MH/MH-UTI.png"
         },
@@ -31811,8 +31808,8 @@
             "type": "Region",
             "parent_code": null,
             "latlng": [
-                16.776,
-                -11.525
+                16.58,
+                -11.707
             ],
             "flag_url": null
         },
@@ -31821,8 +31818,8 @@
             "type": "Region",
             "parent_code": null,
             "latlng": [
-                15.972,
-                -12.622
+                15.95,
+                -12.99
             ],
             "flag_url": null
         },
@@ -31831,8 +31828,8 @@
             "type": "Region",
             "parent_code": null,
             "latlng": [
-                17.232,
-                -13.174
+                17.405,
+                -13.359
             ],
             "flag_url": null
         },
@@ -31851,8 +31848,8 @@
             "type": "Region",
             "parent_code": null,
             "latlng": [
-                19.865,
-                -12.805
+                21.64,
+                -8.484
             ],
             "flag_url": null
         },
@@ -31861,8 +31858,8 @@
             "type": "Region",
             "parent_code": null,
             "latlng": [
-                20.599,
-                -16.252
+                20.939,
+                -15.594
             ],
             "flag_url": null
         },
@@ -31901,8 +31898,8 @@
             "type": "Region",
             "parent_code": null,
             "latlng": [
-                20.028,
-                -15.407
+                19.52,
+                -14.845
             ],
             "flag_url": null
         },
@@ -31911,7 +31908,7 @@
             "type": "Region",
             "parent_code": null,
             "latlng": [
-                18.151,
+                18.105,
                 -15.993
             ],
             "flag_url": null
@@ -31921,8 +31918,8 @@
             "type": "Region",
             "parent_code": null,
             "latlng": [
-                18.113,
-                -15.899
+                18.101,
+                -15.911
             ],
             "flag_url": null
         },
@@ -31931,8 +31928,8 @@
             "type": "Region",
             "parent_code": null,
             "latlng": [
-                17.971,
-                -15.946
+                18.013,
+                -15.993
             ],
             "flag_url": null
         }
@@ -32798,8 +32795,8 @@
             "type": "Administrative atoll",
             "parent_code": null,
             "latlng": [
-                1.943,
-                73.418
+                3.203,
+                73.221
             ],
             "flag_url": null
         },
@@ -33654,8 +33651,8 @@
             "type": "State",
             "parent_code": null,
             "latlng": [
-                5.414,
-                100.329
+                5.263,
+                100.485
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/MY/MY-07.svg"
         },
@@ -34274,8 +34271,8 @@
             "type": "State",
             "parent_code": null,
             "latlng": [
-                10.502,
-                7.441
+                10.504,
+                7.434
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/NG/NG-KD.png"
         },
@@ -34374,8 +34371,8 @@
             "type": "State",
             "parent_code": null,
             "latlng": [
-                6.915,
-                5.148
+                7.1,
+                4.842
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/NG/NG-ON.jpg"
         },
@@ -34466,8 +34463,8 @@
             "type": "Autonomous region",
             "parent_code": null,
             "latlng": [
-                13.839,
-                -83.932
+                14.028,
+                -84.101
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/NI/NI-AN.svg"
         },
@@ -34476,7 +34473,7 @@
             "type": "Autonomous region",
             "parent_code": null,
             "latlng": [
-                12.192,
+                12.557,
                 -84.101
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/NI/NI-AS.svg"
@@ -34516,7 +34513,7 @@
             "type": "Department",
             "parent_code": null,
             "latlng": [
-                11.939,
+                12.122,
                 -85.189
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/NI/NI-CO.svg"
@@ -34566,8 +34563,8 @@
             "type": "Department",
             "parent_code": null,
             "latlng": [
-                13.473,
-                -86.459
+                13.471,
+                -86.378
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/NI/NI-MD.svg"
         },
@@ -34626,8 +34623,8 @@
             "type": "Department",
             "parent_code": null,
             "latlng": [
-                11.478,
-                -84.773
+                11.202,
+                -84.522
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/NI/NI-SJ.svg"
         }
@@ -34678,8 +34675,8 @@
             "type": "Country",
             "parent_code": null,
             "latlng": [
-                52.133,
-                5.291
+                12.17,
+                -68.99
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/NL/NL-CW.svg"
         },
@@ -34850,8 +34847,8 @@
             "type": "County",
             "parent_code": null,
             "latlng": [
-                68.667,
-                14.947
+                67.693,
+                12.707
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/NO/NO-18.svg"
         },
@@ -34940,8 +34937,8 @@
             "type": "County",
             "parent_code": null,
             "latlng": [
-                70.483,
-                26.014
+                60.472,
+                8.469
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/NO/NO-54.svg"
         }
@@ -35224,8 +35221,8 @@
             "type": "District",
             "parent_code": null,
             "latlng": [
-                -0.511,
-                166.954
+                -0.513,
+                166.948
             ],
             "flag_url": null
         },
@@ -35711,8 +35708,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                8.982,
-                -79.52
+                8.538,
+                -80.782
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/PA/PA-8.png"
         },
@@ -36588,8 +36585,8 @@
             "type": "Province",
             "parent_code": "PH-03",
             "latlng": [
-                14.997,
-                121.171
+                14.794,
+                120.88
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/PH/PH-BUL.png"
         },
@@ -36628,8 +36625,8 @@
             "type": "Province",
             "parent_code": "PH-06",
             "latlng": [
-                11.553,
-                122.741
+                11.389,
+                122.628
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/PH/PH-CAP.png"
         },
@@ -36848,8 +36845,8 @@
             "type": "Province",
             "parent_code": "PH-08",
             "latlng": [
-                11.35,
-                124.464
+                10.862,
+                124.881
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/PH/PH-LEY.png"
         },
@@ -37018,8 +37015,8 @@
             "type": "Province",
             "parent_code": "PH-01",
             "latlng": [
-                15.895,
-                120.286
+                16.343,
+                119.893
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/PH/PH-PAN.svg"
         },
@@ -38083,8 +38080,8 @@
             "type": "Department",
             "parent_code": null,
             "latlng": [
-                -26.174,
-                -57.101
+                -25.626,
+                -57.152
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/PY/PY-9.jpg"
         },
@@ -38215,8 +38212,8 @@
             "type": "Municipality",
             "parent_code": null,
             "latlng": [
-                24.997,
-                51.054
+                25.286,
+                51.42
             ],
             "flag_url": null
         },
@@ -39382,8 +39379,8 @@
             "type": "Administrative region",
             "parent_code": null,
             "latlng": [
-                61.524,
-                105.319
+                52.526,
+                39.203
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/RU/RU-LIP.svg"
         },
@@ -40098,8 +40095,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                -11.613,
-                160.169
+                -11.66,
+                160.217
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/SB/SB-RB.svg"
         },
@@ -40108,7 +40105,7 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                -10.687,
+                -10.731,
                 166.062
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/SB/SB-TE.svg"
@@ -41540,8 +41537,8 @@
             "type": "Municipality",
             "parent_code": null,
             "latlng": [
-                46.354,
-                14.747
+                46.355,
+                14.746
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/SI/SI-067.png"
         },
@@ -41680,8 +41677,8 @@
             "type": "Municipality",
             "parent_code": null,
             "latlng": [
-                46.627,
-                15.135
+                46.61,
+                15.163
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/SI/SI-081.png"
         },
@@ -42090,8 +42087,8 @@
             "type": "Municipality",
             "parent_code": null,
             "latlng": [
-                46.138,
-                14.149
+                46.167,
+                14.306
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/SI/SI-122.png"
         },
@@ -42220,8 +42217,8 @@
             "type": "Municipality",
             "parent_code": null,
             "latlng": [
-                45.849,
-                14.695
+                46.364,
+                15.878
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/SI/SI-135.png"
         },
@@ -43063,8 +43060,8 @@
             "type": "Region",
             "parent_code": null,
             "latlng": [
-                48.809,
-                18.232
+                48.885,
+                18.034
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/SK/SK-TC.svg"
         },
@@ -43319,8 +43316,8 @@
             "type": "Region",
             "parent_code": null,
             "latlng": [
-                12.884,
-                -15.594
+                12.705,
+                -15.556
             ],
             "flag_url": null
         },
@@ -43391,8 +43388,8 @@
             "type": "Region",
             "parent_code": null,
             "latlng": [
-                2.119,
-                45.337
+                2.107,
+                45.393
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/SO/SO-BN.svg"
         },
@@ -43401,8 +43398,8 @@
             "type": "Region",
             "parent_code": null,
             "latlng": [
-                10.12,
-                49.691
+                10.216,
+                50.348
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/SO/SO-BR.svg"
         },
@@ -43421,8 +43418,8 @@
             "type": "Region",
             "parent_code": null,
             "latlng": [
-                5.185,
-                46.825
+                5.411,
+                46.516
             ],
             "flag_url": null
         },
@@ -43431,8 +43428,8 @@
             "type": "Region",
             "parent_code": null,
             "latlng": [
-                3.504,
-                42.236
+                2.558,
+                41.601
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/SO/SO-GE.png"
         },
@@ -43451,8 +43448,8 @@
             "type": "Region",
             "parent_code": null,
             "latlng": [
-                2.078,
-                41.601
+                1.588,
+                42.236
             ],
             "flag_url": null
         },
@@ -43461,8 +43458,8 @@
             "type": "Region",
             "parent_code": null,
             "latlng": [
-                0.224,
-                41.601
+                0.448,
+                41.92
             ],
             "flag_url": null
         },
@@ -43471,8 +43468,8 @@
             "type": "Region",
             "parent_code": null,
             "latlng": [
-                6.566,
-                47.764
+                6.631,
+                48.399
             ],
             "flag_url": null
         },
@@ -43481,8 +43478,8 @@
             "type": "Region",
             "parent_code": null,
             "latlng": [
-                8.217,
-                49.203
+                8.178,
+                48.88
             ],
             "flag_url": null
         },
@@ -43511,8 +43508,8 @@
             "type": "Region",
             "parent_code": null,
             "latlng": [
-                1.877,
-                44.248
+                1.867,
+                44.55
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/SO/SO-SH.svg"
         },
@@ -43745,8 +43742,8 @@
             "type": "State",
             "parent_code": null,
             "latlng": [
-                8.089,
-                28.641
+                8.091,
+                28.64
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/SS/SS-WR.png"
         }
@@ -44157,8 +44154,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                31.104,
-                45.885
+                13.937,
+                18.428
             ],
             "flag_url": null
         },
@@ -44569,8 +44566,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                12.42,
-                102.53
+                12.243,
+                102.515
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/TH/TH-23.png"
         },
@@ -45049,8 +45046,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                13.1,
-                99.944
+                12.904,
+                99.634
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/TH/TH-76.png"
         },
@@ -45710,7 +45707,7 @@
             "type": "Division",
             "parent_code": null,
             "latlng": [
-                -21.363,
+                -21.387,
                 -174.93
             ],
             "flag_url": null
@@ -46062,8 +46059,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                36.204,
-                36.162
+                36.203,
+                36.16
             ],
             "flag_url": null
         },
@@ -46868,8 +46865,8 @@
             "type": "County",
             "parent_code": null,
             "latlng": [
-                24.702,
-                121.738
+                35.862,
+                104.195
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/TW/TW-ILA.svg"
         },
@@ -46978,8 +46975,8 @@
             "type": "Special municipality",
             "parent_code": null,
             "latlng": [
-                23.0,
-                120.227
+                35.862,
+                104.195
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/TW/TW-TNN.svg"
         },
@@ -47040,8 +47037,8 @@
             "type": "Region",
             "parent_code": null,
             "latlng": [
-                -6.792,
-                39.208
+                -6.817,
+                39.289
             ],
             "flag_url": null
         },
@@ -47050,8 +47047,8 @@
             "type": "Region",
             "parent_code": null,
             "latlng": [
-                -6.163,
-                35.752
+                -6.181,
+                35.747
             ],
             "flag_url": null
         },
@@ -47624,8 +47621,8 @@
             "type": "City",
             "parent_code": "UG-C",
             "latlng": [
-                0.348,
-                32.583
+                0.315,
+                32.582
             ],
             "flag_url": null
         },
@@ -48234,8 +48231,8 @@
             "type": "District",
             "parent_code": "UG-E",
             "latlng": [
-                1.815,
-                33.34
+                1.892,
+                33.304
             ],
             "flag_url": null
         },
@@ -48654,8 +48651,8 @@
             "type": "District",
             "parent_code": "UG-W",
             "latlng": [
-                0.65,
-                30.267
+                0.683,
+                30.297
             ],
             "flag_url": null
         },
@@ -48804,8 +48801,8 @@
             "type": "District",
             "parent_code": "UG-W",
             "latlng": [
-                -0.296,
-                30.343
+                -0.356,
+                30.39
             ],
             "flag_url": null
         },
@@ -49268,8 +49265,8 @@
             "type": "State",
             "parent_code": null,
             "latlng": [
-                39.768,
-                -86.158
+                40.551,
+                -85.602
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/US/US-IN.svg"
         },
@@ -50871,8 +50868,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                21.804,
-                103.108
+                21.406,
+                103.032
             ],
             "flag_url": null
         },
@@ -50953,8 +50950,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                -16.401,
-                167.608
+                -16.303,
+                167.516
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/VU/VU-MAP.svg"
         },
@@ -50963,7 +50960,7 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                -15.38,
+                -15.334,
                 167.905
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/VU/VU-PAM.svg"
@@ -50973,7 +50970,7 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                -15.484,
+                -15.3,
                 166.918
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/VU/VU-SAM.svg"
@@ -50993,7 +50990,7 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                -18.724,
+                -18.818,
                 169.065
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/VU/VU-TAE.svg"
@@ -51300,8 +51297,8 @@
             "type": "Governorate",
             "parent_code": null,
             "latlng": [
-                15.396,
-                43.561
+                15.469,
+                43.546
             ],
             "flag_url": null
         },
@@ -51310,8 +51307,8 @@
             "type": "Governorate",
             "parent_code": null,
             "latlng": [
-                14.628,
-                43.714
+                14.883,
+                43.55
             ],
             "flag_url": null
         },
@@ -51320,7 +51317,7 @@
             "type": "Municipality",
             "parent_code": null,
             "latlng": [
-                15.433,
+                15.469,
                 44.229
             ],
             "flag_url": null
@@ -51475,8 +51472,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                -15.676,
-                23.798
+                -15.945,
+                23.382
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ZM/ZM-01.png"
         },
@@ -51485,8 +51482,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                -13.878,
-                28.376
+                -14.311,
+                28.299
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ZM/ZM-02.png"
         },
@@ -51495,8 +51492,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                -12.659,
-                31.844
+                -13.806,
+                31.993
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ZM/ZM-03.png"
         },
@@ -51505,8 +51502,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                -10.419,
-                29.425
+                -11.565,
+                29.046
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ZM/ZM-04.jpeg"
         },
@@ -51515,8 +51512,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                -9.855,
-                30.718
+                -9.767,
+                30.896
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ZM/ZM-05.png"
         },
@@ -51525,8 +51522,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                -12.811,
-                24.815
+                -13.005,
+                24.904
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ZM/ZM-06.png"
         },
@@ -51535,8 +51532,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                -16.681,
-                26.953
+                -16.962,
+                26.419
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ZM/ZM-07.png"
         },
@@ -51545,8 +51542,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                -13.079,
-                27.926
+                -13.057,
+                27.55
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ZM/ZM-08.png"
         },
@@ -51565,8 +51562,8 @@
             "type": "Province",
             "parent_code": null,
             "latlng": [
-                -11.246,
-                31.738
+                -11.957,
+                31.263
             ],
             "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ZM/ZM-10.png"
         }

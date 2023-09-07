@@ -2,7 +2,7 @@ from .iso3166_2 import *
 
 #software metadata
 __name__ = 'iso3166-2'
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 __description__ = "A Python package to access the most up-to-date and accurate info about countries and their associated subdivison data using the ISO 3166-2 standard."
 __author__ = 'AJ McKenna, https://github.com/amckenna41'
 __authorEmail__ = 'amckenna41@qub.ac.uk'

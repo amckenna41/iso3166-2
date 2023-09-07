@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 old/
 test-iso3166_2/
+.DS_Store
 
 # C extensions
 *.so

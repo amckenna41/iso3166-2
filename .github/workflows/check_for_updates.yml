@@ -24,33 +24,25 @@ jobs:
       - name: Export CLOUDSDK_PYTHON
         run: export CLOUDSDK_PYTHON="/usr/bin/python3"
 
-      #setup gcloud SDK with env vars
+      #setup and authenticate GCP SDK
       - name: Setup gcloud
         uses: google-github-actions/setup-gcloud@v0.2.0
         with:
             service_account_email: ${{ secrets.GCP_SA_EMAIL }} 
             service_account_key: ${{ secrets.GCP_SA_KEY }} 
             project_id: ${{ secrets.GCP_PROJECT }}
-            # service_account_email: ${{ secrets.GCP_SA_EMAIL }}
-            # service_account_key: ${{ secrets.GCP_SA_KEY }}
             export_default_credentials: true
-      
-      #call Cloud Func using gcloud cli
-      - name: Call Updates Func
+        
+      #create, call and delete Cloud Function using gcloud cli
+      - name: Create, call and delete check-for-updates Cloud Function
         run: |
-          gcloud functions call check-for-iso3166-2-updates --region us-central1
-
-# gcloud functions add-iam-policy-binding iso3166-updates --member=serviceAccount:${{ secrets.GCP_SA_EMAIL }} --role=roles/cloudfunctions.invoker
-# curl -H "Authorization: bearer $(gcloud auth print-identity-token)" ${{ secrets.GCP_CHECK_FOR_UPDATES_URL }}
-
-# curl -m 460 -X POST https://us-central1-iso3166-updates.cloudfunctions.net/check-for-iso3166-updates \
-# -H "Authorization: bearer $(gcloud auth print-identity-token)" \
-# -H "Content-Type: application/json" \
-# -d '{}'
-
-#1.) https://cloud.google.com/functions/docs/securing/authenticating#functions-bearer-token-example-python
-#2.) curl -H "Authorization: bearer $(gcloud auth print-identity-token)" https://us-central1-iso3166-updates.cloudfunctions.net/check-for-iso3166-updates
-#3.)curl -m 460 -X POST https://us-central1-iso3166-updates.cloudfunctions.net/check-for-iso3166-updates \
-# -H "Authorization: bearer $(gcloud auth print-identity-token)" \
-# -H "Content-Type: application/json" \
-# -d '{}'
+          gcloud functions deploy ${{ secrets.GCP_FUNCTION_NAME }} --gen2 --runtime=python3.10 \
+              --region=${{ secrets.GCP_REGION }} --source=../iso3166-2-check-for-updates \
+              --entry-point=check_for_updates_main --trigger-http --memory=2048MB --timeout=3600 \
+              --service-account=${{ secrets.GCP_SA_EMAIL }} \
+              --set-env-vars=GOOGLE_MAPS_API_KEY=${{ secrets.GOOGLE_MAPS_API_KEY }},GITHUB_API_TOKEN=\
+              ${{ secrets.REPO_API_TOKEN }},GITHUB_OWNER=${{ secrets.REPO_OWNER }},GITHUB_REPOS=test_readme,
+              BUCKET_NAME=${{ secrets.GCP_BUCKET_NAME }},BLOB_NAME=${{ secrets.GCP_BLOB_NAME }},\
+              ARCHIVE_FOLDER=${{ secrets.ARCHIVE_FOLDER }}
+          gcloud functions call ${{ secrets.GCP_FUNCTION_NAME }}  --region ${{ secrets.GCP_REGION }} 
+          gcloud functions delete ${{ secrets.GCP_FUNCTION_NAME }} --region ${{ secrets.GCP_REGION }} --gen2

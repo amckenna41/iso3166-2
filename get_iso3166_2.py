@@ -1,5 +1,4 @@
 import os
-import re
 import time
 import json
 import argparse
@@ -22,19 +21,21 @@ USER_AGENT_HEADER = {'User-Agent': 'iso3166-2/{} ({}; {})'.format(__version__,
 #initialise google maps client 
 gmaps = googlemaps.Client(key=os.environ["GOOGLE_MAPS_API_KEY"])
 
-def export_iso3166_2(alpha2_codes="", output_folder="", json_filename="", verbose=1):
+def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", json_filename="test-iso3166-2", verbose=1):
     """
     Export the two ISO 3166-2 jsons with fields including all subdivision related data using the pycountry
     library and all country data using the restcountries api (https://restcountries.com/). Also get the
-    lat/longitude info for each country and subdivision using the googlemaps API. The iso3166-2.json stores 
+    lat/longitude info for each country and subdivision using the Google Maps API. The iso3166-2.json stores 
     all country data + subdivisions data, the iso3166-2-min.json contains just country name, 2 letter alpha-2 
-    code and subdivisions info. The full list of attributed exported can be viewed in the ATTRIBUTES.md file.
+    code and subdivisions info. The full list of attributes exported can be viewed in the ATTRIBUTES.md file.
 
     Parameters
     ----------
-    :output_folder : str (default = "")
+    :alpha2_codes: str (default="")
+        string of 1 or more 2 letter alpha-2 country codes to pull their latest ISO 3166-2 data.
+    :output_folder : str (default="iso3166-2-output")
         output folder to store exported iso3166-2 jsons.
-    :json_filename : str (default = "")
+    :json_filename : str (default="iso3166-2")
         filename for both country data json exports. 
     :verbose: int (default=1)
         Set to 1 to print out progress of export functionality, 0 will not print progress.
@@ -43,14 +44,6 @@ def export_iso3166_2(alpha2_codes="", output_folder="", json_filename="", verbos
     -------
     None
     """
-    #append .json to filename if just filename input
-    if (os.path.splitext(json_filename)[1] == ''):
-        json_filename = json_filename + ".json"
-
-    #path to json file will be in the main repo dir by default
-    json_filepath = os.path.join(output_folder, json_filename)
-    json_min_filepath = os.path.join(output_folder, os.path.splitext(json_filename)[0] + '-min.json')
-
     def convert_to_alpha2(alpha3_code):
         """ 
         Convert an ISO 3166 country's 3 letter alpha-3 code into its 2 letter
@@ -59,29 +52,28 @@ def export_iso3166_2(alpha2_codes="", output_folder="", json_filename="", verbos
         Parameters 
         ----------
         :alpha3_code: str
-            3 letter ISO 3166-1 country code.
+            3 letter ISO 3166-1 alpha-3 country code.
         
         Returns
         -------
         :iso3166.countries_by_alpha3[alpha3_code].alpha2: str
-            2 letter ISO 3166 country code. 
+            2 letter ISO 3166 alpha-2 country code. 
         """
         #return None if 3 letter alpha-3 code not found
         if not (alpha3_code in list(iso3166.countries_by_alpha3.keys())):
             return None
         else:
-            #use iso3166 package to find corresponding alpha-2 code from its alpha-3
+            #use iso3166 package to find corresponding alpha-2 code from its alpha-3 code
             return iso3166.countries_by_alpha3[alpha3_code].alpha2
     
+    #split multiple alpha-2 codes into list, remove any whitespace
+    alpha2_codes = alpha2_codes.replace(' ', '').split(',')
+
     #parse input alpha2_codes parameter, use all alpha-2 codes if parameter not set
-    if (alpha2_codes == ""):
-        #use list of all 2 letter alpha-2 codes, according to ISO 3166-1
+    if (alpha2_codes == ['']):
+        #use list of all 2 letter alpha-2 codes, according to ISO 3166-1 
         all_alpha2 = sorted(list(iso3166.countries_by_alpha2.keys()))
     else:
-        #cast parameter to a list
-        if not (isinstance(alpha2_codes, list)):
-            alpha2_codes = [alpha2_codes]
-
         #iterate over all codes, validating they're valid, convert alpha-3 to alpha-2 if applicable
         for code in range(0, len(alpha2_codes)):
 
@@ -95,7 +87,21 @@ def export_iso3166_2(alpha2_codes="", output_folder="", json_filename="", verbos
         
         all_alpha2 = alpha2_codes
 
-    print("Exporting {} ISO 3166-2 country's data to folder {}.".format(len(all_alpha2), output_folder))
+    #if 10 or less alpha-2 codes input then append to filename
+    if (len(all_alpha2) <= 10):
+        json_filename = os.path.splitext(json_filename)[0] + "-" + ",".join(all_alpha2)
+
+    #append .json to filename if just filename input
+    if (os.path.splitext(json_filename)[1] == ''):
+        json_filename = json_filename + ".json"
+    
+    #path to json file will be in the main repo dir by default
+    json_filepath = os.path.join(output_folder, json_filename)
+    json_min_filepath = os.path.join(output_folder, os.path.splitext(json_filename)[0] + '-min.json')
+    
+    if (verbose):
+        print("Exporting {} ISO 3166-2 country's data to folder {}.".format(len(all_alpha2), output_folder))
+        print('#################################################################\n')
 
     #base url for rest countries api
     base_restcountries_url = "https://restcountries.com/v3.1/alpha/"
@@ -114,8 +120,13 @@ def export_iso3166_2(alpha2_codes="", output_folder="", json_filename="", verbos
     #start counter
     start = time.time() 
 
+    #if less than 5 input alpha-2 codes then don't display progress bar, or print elapsed time
+    tqdm_disable = False
+    if (len(all_alpha2) < 5):
+        tqdm_disable = True
+
     #iterate over all country codes, getting country and subdivision info, append to json objects
-    for alpha2 in tqdm(all_alpha2, unit=" ", position=0, mininterval=45, miniters=10):
+    for alpha2 in tqdm(all_alpha2, ncols=50, disable=tqdm_disable):
         
         #get rest countries api url 
         country_url = base_restcountries_url + alpha2.upper()
@@ -138,11 +149,20 @@ def export_iso3166_2(alpha2_codes="", output_folder="", json_filename="", verbos
         
         #print out progress if verbose set to true
         if (verbose):
-            print("{} ({})".format(countryName, alpha2))
+            if (tqdm_disable):
+                print("{} ({})".format(countryName, alpha2))
+            else:
+                print(" - {} ({})".format(countryName, alpha2))
 
         #add all country data from rest countries api response to json object
         all_country_data[alpha2] = rest_countries_response.json()[0]
-        
+
+        #round latitude/longitude coords to 3 d.p
+        all_country_data[alpha2]["latlng"] = [round(all_country_data[alpha2]["latlng"][0], 3), round(all_country_data[alpha2]["latlng"][1], 3)]
+
+        #round area (km^2) to nearest whole number
+        all_country_data[alpha2]["area"] = int(all_country_data[alpha2]["area"])
+
         #for min json object, create empty object with alpha-2 as key
         all_country_data_min[alpha2] = {}
 
@@ -196,26 +216,38 @@ def export_iso3166_2(alpha2_codes="", output_folder="", json_filename="", verbos
         all_country_data[alpha2]["subdivisions"] = dict(OrderedDict(natsort.natsorted(all_country_data[alpha2]["subdivisions"].items())))
         all_country_data_min[alpha2] = dict(OrderedDict(natsort.natsorted(all_country_data_min[alpha2].items())))
 
+        #sort keys in main output dict into alphabetical order
+        all_country_data[alpha2] = {key: value for key, value in sorted(all_country_data[alpha2].items())}
+
     #write json data with all country info to json output file
     with open(json_filepath, 'w', encoding='utf-8') as f:
-        json.dump(all_country_data, f, ensure_ascii=False, indent=4)
+        if (len(all_alpha2) == 1):
+            json.dump(all_country_data[all_alpha2[0]], f, ensure_ascii=False, indent=4)
+        else:
+            json.dump(all_country_data, f, ensure_ascii=False, indent=4)
 
-    #write min json data with subdivision info to output file
-    with open(json_min_filepath, 'w', encoding='utf-8') as f:
-        json.dump(all_country_data_min, f, ensure_ascii=False, indent=4)
+    #dont export min json if no subdivisions listed
+    if (any(all_country_data_min.values())):
+        #write min json data with subdivision info to output file
+        with open(json_min_filepath, 'w', encoding='utf-8') as f:
+            if (len(all_alpha2) == 1):
+                json.dump(all_country_data_min[all_alpha2[0]], f, ensure_ascii=False, indent=4)
+            else:
+                json.dump(all_country_data_min, f, ensure_ascii=False, indent=4)
 
     #stop counter and calculate elapsed time
     end = time.time()           
     elapsed = end - start
     
-    if (verbose):
-        print('\n##########################################################')
-        print('Elapsed Time for exporting all ISO 3166-2 data: {0:.2f} minutes.'.format(elapsed / 60))
+    if (verbose and not tqdm_disable):
+        print('\n##########################################################\n')
+        print("ISO 3166 data successfully exported the following files to the {} folder:\n{} and {}.".format(output_folder, json_filepath, json_min_filepath))
+        print('\nElapsed Time for exporting all ISO 3166-2 data: {0:.2f} minutes.'.format(elapsed / 60))
 
 if __name__ == '__main__':
 
     #parse input arguments using ArgParse 
-    parser = argparse.ArgumentParser(description='Script for exporting iso3166-2 data using pycountry package and restcountries api.')
+    parser = argparse.ArgumentParser(description='Script for exporting iso3166-2 country data using pycountry package and restcountries api.')
 
     parser.add_argument('-alpha2_codes', '--alpha2_codes', type=str, required=False, default="", 
         help='One or more 2 letter alpha-2 country codes, by default all ISO 3166-2 data for all countries will be exported.')

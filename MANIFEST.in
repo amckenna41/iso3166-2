@@ -1,3 +1,9 @@
 graft iso3166_2/iso3166-2-data*
 include README.md
 recursive-exclude __pycache__ *
+exclude API.md
+exclude ATTRIBUTES.md
+exclude get_iso3166_2.py
+recursive-exclude iso3166-2-check-for-updates
+exclude ToDo.md
+exclude setup.cfg

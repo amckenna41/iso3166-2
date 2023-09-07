@@ -7,17 +7,17 @@ class ISO3166_2():
     """
     This class is used to access all the ISO 3166 and ISO 3166-2 country data and attributes.
     There are two JSON's available in the package, iso3166-2-min.json and iso3166-2.json. The 
-    former is a minified JSON of all country's ISO3166-2 subdivision info including subdivision
+    former is a minified JSON of all country's ISO 3166-2 subdivision info including subdivision
     name, type, code, parent code, lat/longitude and URL to its flag (if applicable). The latter 
     contains a verbose collection of all country data pulled from the restcountries API as well 
     as the country's subdivision data mentioned appened to each. Both JSONs are generated using 
-    the getISO3166_2.py script in the main directory. All of the keys and objects in the JSON 
+    the get_iso3166_2.py script in the main directory. All of the keys and objects in the JSON 
     are accessible via dot notation via the Map class. The plethora of attributes available
     in this class are described in the ATTRIBUTES.md file on the main repo dir 
     (https://github.com/amckenna41/iso3166-2/blob/main/ATTRIBUTES.md).
 
     Currently, this package supports data from 250 countries/territories, according to the 
-    ISO 3166-1.
+    ISO 3166-1 standard.
     
     Parameters
     ----------
@@ -120,7 +120,7 @@ class ISO3166_2():
                     subdivision_codes_[key] = list(self.all_iso3166_2_data[key])
             return subdivision_codes_
         else:
-            #sepetate list of alpha-2 codes into iterable list
+            #seperate list of alpha-2 codes into iterable comma seperated list
             alpha2_code = alpha2_code.replace(' ', '').split(',')
 
             #iterate over all input alpha-2 codes, append their subdivision codes to dict 
@@ -186,7 +186,7 @@ class ISO3166_2():
                     subdivision_names_[key] = [self.all_iso3166_2_data[key][country]["name"] for country in self.all_iso3166_2_data[key]]
             return subdivision_names_
         else:
-            #sepetate list of alpha-2 codes into iterable list
+            #seperate list of alpha-2 codes into iterable comma seperated list
             alpha2_code = alpha2_code.replace(' ', '').split(',')
 
             #iterate over all input alpha-2 codes, append their subdivision names to dict 
@@ -218,10 +218,10 @@ class ISO3166_2():
         
     def __getitem__(self, alpha2_code):
         """
-        Return all of a country's data and subdivision by making the class
+        Return all of a country's and subdivision data by making the class
         subscriptable. A list of country data can be returned if a comma
         seperated list of alpha-2 codes are input. The 2 letter alpha-2 code 
-        is expected as input, although, for redundancy, the 3 letter alpha-3 
+        is expected as input, although for redundancy, the 3 letter alpha-3 
         code can be input which will be converted into its alpha-2 counterpart.
         If no value input then an error is raised.
 
@@ -229,9 +229,10 @@ class ISO3166_2():
         ----------
         :alpha2_code : str
             2 letter alpha-2 code for sought country/territory e.g (AD, EG, DE).
-            Multiple country coded can be input in a comma seperated list. Can 
-            also accept 3 letter alpha-3 code e.g (AND, EGT, DEU), this will 
-            be converted into its alpha-2 counterpart.
+            Multiple country codes can be input in a comma seperated list. Can 
+            also accept the 3 letter alpha-3 code e.g (AND, EGT, DEU), this will 
+            be converted into its alpha-2 counterpart. If no value input then an
+            error will be raised
 
         Returns
         -------
@@ -267,7 +268,7 @@ class ISO3166_2():
             raise TypeError('Input parameter {} is not of correct datatype string, got {}.' \
                 .format(alpha2_code, type(alpha2_code)))       
 
-        #stripping input of whitespace, uppercasing and seperating using a comma
+        #stripping input of whitespace, uppercasing and seperating into comma seperated list
         alpha2_code = alpha2_code.replace(' ', '').upper().split(',')
 
         #object to store country data
@@ -320,18 +321,18 @@ def convert_to_alpha2(alpha3_code):
     Parameters 
     ----------
     :alpha3_code: str
-        3 letter ISO 3166-1 country code.
+        3 letter ISO 3166-1 alpha-3 country code.
     
     Returns
     -------
     :iso3166.countries_by_alpha3[alpha3_code].alpha2: str
-        2 letter ISO 3166 country code. 
+        2 letter ISO 3166 alpha-2 country code. 
     """
     #return None if 3 letter alpha-3 code not found
     if not (alpha3_code in list(iso3166.countries_by_alpha3.keys())):
         return None
     else:
-        #use iso3166 package to find corresponding alpha-2 code from its alpha-3
+        #use iso3166 package to find corresponding alpha-2 code from its alpha-3 code
         return iso3166.countries_by_alpha3[alpha3_code].alpha2
     
 class Map(dict):

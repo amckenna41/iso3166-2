@@ -1,14 +1,14 @@
-import iso3166_2 as iso
 import iso3166
 import os
 import json
 import flag
 import getpass
 import time
+from collections import OrderedDict
+import natsort
 import pycountry
 from tqdm import tqdm
 from datetime import datetime
-from operator import itemgetter
 import requests
 from google.cloud import storage
 from flask import jsonify
@@ -24,29 +24,201 @@ USER_AGENT_HEADER = {'User-Agent': 'iso3166-2/{} ({}; {})'.format(__version__,
 #initialise google maps client 
 gmaps = googlemaps.Client(key=os.environ["GOOGLE_MAPS_API_KEY"])
 
-def export_iso3166_2(verbose=1):
+#json object storing the error message and status code 
+error_message = {}
+error_message["status"] = 400
+
+#json object storing the success message and status code
+success_message = {}
+success_message["status"] = 200
+
+#get current date and time on function execution
+current_datetime = datetime.strptime(datetime.today().strftime('%Y-%m-%d'), "%Y-%m-%d")
+
+def check_iso3166_2_main(request):
     """
-    Export the two ISO 3166-2 jsons with fields including all subdivisions related data using the pycountry
-    library and all country data using the restcountries api (https://restcountries.com/). The 
-    iso3166-2.json stores all country data + subdivisions data, the iso3166-2-min.json contains just 
-    country name, 2 letter alpha2 code and subdivisions.
+    Google Cloud Function that pulls the latest ISO 3166 from the various data
+    sources, comparing against the existing ISO 3166 object for any new/missing data.
+    It uses the get_iso3166_2.py script to web scrape all country's ISO 3166 data
+    from the various data sources, checking for any new/missing ISO 3166 not present
+    in the blob/object on GCP Storage.
+    
+    If any new/missing data is found that is not already present in the JSON object
+    within the GCP Storage bucket then a GitHub Issue is automatically created that 
+    tabulates and formats all the latest data in the iso3166-2 repository that itself 
+    stores all the latest info and data relating to the ISO 3166 standard. Additionally, 
+    if changes are found then the ISO 3166 JSON file in the GCP Storage bucket is updated 
+    which is the data source for the iso3166-2 Python package and accompanying API.
 
     Parameters
     ----------
+    :request : flask.Request
+        Flask request object.
+    
+    Returns
+    -------
+    :success_message/error_message : json
+       jsonified response indicating whether the Function has completed successfully or
+       an error has arose during execution.
+    """
+    #initialise storage client
+    storage_client = storage.Client()
+    try:
+        #create a bucket object for the bucket, raise error if env var not set or bucket not found
+        if (os.environ.get("BUCKET_NAME") is None or os.environ.get("BUCKET_NAME") == ""):
+            error_message["message"] = "Bucket name environment variable not set."
+            return jsonify(error_message), 400
+        bucket = storage_client.get_bucket(os.environ["BUCKET_NAME"])
+    except google.cloud.exceptions.NotFound:
+        error_message["message"] = "Error retrieving updates data json storage bucket: {}.".format(os.environ["BUCKET_NAME"])
+        return jsonify(error_message), 400
+    
+    #create a blob object from the filepath, raise error if env var not set
+    if (os.environ.get("BLOB_NAME") is None or os.environ.get("BLOB_NAME") == ""):
+        error_message["message"] = "Blob name environment variable not set."
+        return jsonify(error_message), 400
+    blob = bucket.blob(os.environ["BLOB_NAME"])  
+    
+    #raise error if iso3166-2 file not found in bucket
+    if not (blob.exists()):
+        raise ValueError("Error retrieving ISO 3166 data json: {}.".format(os.environ["BLOB_NAME"]))
+    
+    #download current ISO 3166 JSON file from storage bucket 
+    current_iso3166_2 = json.loads(blob.download_as_string(client=None))
+
+    #get create_issue bool env var which determines if GitHub Issues are created each time new/missing ISO 3166 data is found
+    if (os.environ.get("CREATE_ISSUE") is None or os.environ.get("CREATE_ISSUE") == ""):
+        create_issue = True
+    else:
+        create_issue = os.environ["CREATE_ISSUE"]
+
+    #parse alpha-2 country code/codes from request json
+    input_alpha2 = request.args.get("ALPHA_2")
+
+    #use all alpha-2 country codes if env var empty else use specificed alpha-2 codes
+    if (input_alpha2 is None or input_alpha2 == ['']):
+        #get list of all country's 2 letter alpha-2 codes
+        alpha2_codes = sorted(list(iso3166.countries_by_alpha2.keys()))
+    else:
+        alpha2_codes = input_alpha2.replace(' ', '').split(',')
+
+    #sort codes into alphabetical order and uppercase
+    alpha2_codes.sort()
+    alpha2_codes = [code.upper() for code in alpha2_codes]
+
+    #get latest ISO 3166 data for both json objects
+    latest_iso3166_2 = export_iso3166_2(alpha2_codes=alpha2_codes)
+    
+    #return all updates and new/missing data from newly exported latest_iso3166_2 compared with current one being used in API
+    updates_found, new_iso3166_2, missing_individual_updates, previous_iso3166_updates = update_json(current_iso3166_2, latest_iso3166_2)
+
+    #temp path for exported json
+    tmp_updated_json_path = os.path.join("/tmp", os.environ["BLOB_NAME"])
+
+    #export updated json to temp folder
+    with open(tmp_updated_json_path, 'w', encoding='utf-8') as output_json:
+        json.dump(new_iso3166_2, output_json, ensure_ascii=False, indent=4)
+
+    #create blob for updated ISO 3166 JSON
+    blob = bucket.blob(os.environ["BLOB_NAME"])
+
+    #upload new updated json using gcp sdk, replacing current updates json 
+    blob.upload_from_filename(tmp_updated_json_path)
+    
+    #if updates found, update blob object on GCP storage and create GitHub Issue outlining new data found
+    if (updates_found):
+
+        #move current ISO 3166 jsons in bucket to an archive folder, append datetime to it
+        if (os.environ.get("ARCHIVE_FOLDER") is None or os.environ.get("ARCHIVE_FOLDER") == ""):
+            os.environ["ARCHIVE_FOLDER"] = "archive_iso3166_2"
+
+        #move current ISO 3166 json in bucket to an archive folder, append datetime to it
+        archive_filepath = os.path.splitext(os.environ["BLOB_NAME"])[0] \
+            + "_" + str(current_datetime.strftime('%Y-%m-%d')) + ".json"
+        
+        #export updated json to temp folder
+        with open(os.path.join("/tmp", archive_filepath), 'w', encoding='utf-8') as output_json:
+            json.dump(current_iso3166_2, output_json, ensure_ascii=False, indent=4)
+
+        #create blob for archive updates json 
+        archive_blob = bucket.blob(os.path.join(os.environ["ARCHIVE_FOLDER"], archive_filepath))
+
+        #upload old ISO 3166 json to archive folder 
+        archive_blob.upload_from_filename(os.path.join("/tmp", archive_filepath))
+
+        #create GitHub Issue on relevant repositories if any new data found
+        if (create_issue):
+            create_github_issue(missing_individual_updates, previous_iso3166_updates)
+            success_message["message"] = "New ISO 3166 data found and successfully exported to bucket and GitHub Issues created."
+            print(success_message["message"])
+        else:
+            success_message["message"] = "New ISO 3166 data found and successfully exported to bucket."
+            print(success_message["message"])
+    else:
+        success_message["message"] = "No new ISO 3166 updates found."
+        print(success_message["message"])
+
+    return jsonify(success_message), 200
+
+def export_iso3166_2(alpha2_codes="", verbose=1):
+    """
+    Export the latest ISO 3166 data including all subdivision related data using the pycountry
+    library and all country data using the restcountries api (https://restcountries.com/). Also get the
+    lat/longitude info for each country and subdivision using the Google Maps API. The exported data
+    is returned and used to compare against the current data object in the GCP Storage bucket. The full 
+    list of attributes being exported can be viewed on the main repo in the ATTRIBUTES.md file. Code 
+    taken from the same function in the get_iso3166_2.py script.
+
+    Parameters
+    ----------
+    :alpha2_codes: str (default="")
+        string of 1 or more 2 letter alpha-2 country codes to pull their latest ISO 3166 data.
     :verbose: int (default=1)
         Set to 1 to print out progress of export functionality, 0 will not print progress.
 
     Returns
     -------
-    :latest_iso3166_2_updates: dict
-        dict of all of the latest ISO 3166-2 data pulled from data sources.
-    :latest_iso3166_2_min_updates: dict
-        minified dict of all of the latest ISO 3166-2 data pulled from data sources.
+    :all_country_data : dict
+        object storing all exported ISO 3166 country data.
     """
-    print("Exporting ISO 3166-2 country data....")
+    def convert_to_alpha2(alpha3_code):
+        """ 
+        Convert an ISO 3166 country's 3 letter alpha-3 code into its 2 letter
+        alpha-2 counterpart. 
 
-    #get list of all 2 letter alpha2 codes
-    all_alpha2 = sorted(list(iso3166.countries_by_alpha2.keys()))
+        Parameters 
+        ----------
+        :alpha3_code: str
+            3 letter ISO 3166-1 alpha-3 country code.
+        
+        Returns
+        -------
+        :iso3166.countries_by_alpha3[alpha3_code].alpha2: str
+            2 letter ISO 3166 alpha-2 country code. 
+        """
+        #return None if 3 letter alpha-3 code not found
+        if not (alpha3_code in list(iso3166.countries_by_alpha3.keys())):
+            return None
+        else:
+            #use iso3166 package to find corresponding alpha-2 code from its alpha-3 code
+            return iso3166.countries_by_alpha3[alpha3_code].alpha2
+    
+    #iterate over all codes, validating they're valid, convert alpha-3 to alpha-2 if applicable
+    for code in range(0, len(alpha2_codes)):
+
+        #convert 3 letter alpha-3 code into its 2 letter alpha-2 counterpart
+        if len(alpha2_codes[code]) == 3:
+            alpha2_codes[code] = convert_to_alpha2(alpha2_codes[code])
+        
+        #raise error if invalid alpha-2 code found
+        if (alpha2_codes[code] not in list(iso3166.countries_by_alpha2.keys())):
+            raise ValueError("Input alpha-2 country code {} not found.".format(alpha2_codes[code]))
+    
+    all_alpha2 = alpha2_codes
+
+    if (verbose):
+        print("Exporting {} ISO 3166 country's data.".format(len(all_alpha2)))
+        print('#####################################\n')
 
     #base url for rest countries api
     base_restcountries_url = "https://restcountries.com/v3.1/alpha/"
@@ -54,19 +226,23 @@ def export_iso3166_2(verbose=1):
     #base url for flag icons repo
     flag_icons_base_url = "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/"
 
-    #objects to store all country output data
-    latest_country_data = {}
-    latest_country_data_min = {}
-
+    #object to store all country output data
+    all_country_data = {}
+    
     #start counter
     start = time.time() 
 
+    #if less than 5 input alpha-2 codes then don't display progress bar, or print elapsed time
+    tqdm_disable = False
+    if (len(all_alpha2) < 5):
+        tqdm_disable = True
+
     #iterate over all country codes, getting country and subdivision info, append to json objects
-    for alpha2 in tqdm(all_alpha2, unit=" ", position=0, mininterval=45, miniters=10):
+    for alpha2 in tqdm(all_alpha2, disable=tqdm_disable):
         
         #get rest countries api url 
         country_url = base_restcountries_url + alpha2.upper()
-        
+
         #get country info from restcountries api
         rest_countries_response = requests.get(country_url, stream=True, headers=USER_AGENT_HEADER)
         
@@ -85,43 +261,40 @@ def export_iso3166_2(verbose=1):
         
         #print out progress if verbose set to true
         if (verbose):
-            print("{} ({})".format(countryName, alpha2))
+            if (tqdm_disable):
+                print("{} ({})".format(countryName, alpha2))
+            else:
+                print(" - {} ({})".format(countryName, alpha2))
 
         #add all country data from rest countries api response to json object
-        latest_country_data[alpha2] = rest_countries_response.json()[0]
-        
-        #for min json object, create empty object with alpha2 as key
-        latest_country_data_min[alpha2] = {}
+        all_country_data[alpha2] = rest_countries_response.json()[0]
+
+        #round latitude/longitude coords to 3 d.p
+        all_country_data[alpha2]["latlng"] = [round(all_country_data[alpha2]["latlng"][0], 3), round(all_country_data[alpha2]["latlng"][1], 3)]
+
+        #round area (km^2) to nearest whole number
+        all_country_data[alpha2]["area"] = int(all_country_data[alpha2]["area"])
 
         #create subdivisions and country name keys in json objects
-        latest_country_data[alpha2]["subdivisions"] = {}
+        all_country_data[alpha2]["subdivisions"] = {}
         
-        sortedDict = {}
-
-        #iterate over all countrys' subdivisions, assigning subdiv code, name, type, parent code, flag_url and each subdivisions
-        # latitude and longitude, where applicable, for both objects
+        #iterate over all countrys' subdivisions, assigning subdiv code, name, type and parent code and flag URL, where applicable for both json objects
         for subd in allSubdivisions:
             
             #get subdivision coordinates using googlemaps api python client
             gmaps_latlng = gmaps.geocode(subd.name + ", " + countryName, region=alpha2, language="en")
 
-            #set coordinates to None if not found using maps api
+            #set coordinates to None if not found using maps api, round to 3 decimal places
             if (gmaps_latlng != []):
-                subdivision_coords = [gmaps_latlng[0]['geometry']['location']['lat'], gmaps_latlng[0]['geometry']['location']['lng']]
+                subdivision_coords = [round(gmaps_latlng[0]['geometry']['location']['lat'], 3), round(gmaps_latlng[0]['geometry']['location']['lng'], 3)]
             else:
                 subdivision_coords = None
 
-            latest_country_data[alpha2]["subdivisions"][subd.code] = {}
-            latest_country_data[alpha2]["subdivisions"][subd.code]["name"] = subd.name
-            latest_country_data[alpha2]["subdivisions"][subd.code]["type"] = subd.type
-            latest_country_data[alpha2]["subdivisions"][subd.code]["parent_code"] = subd.parent_code
-            latest_country_data[alpha2]["subdivisions"][subd.code]["latlng"] = subdivision_coords
-
-            latest_country_data_min[alpha2][subd.code] = {}
-            latest_country_data_min[alpha2][subd.code]["name"] = subd.name
-            latest_country_data_min[alpha2][subd.code]["type"] = subd.type
-            latest_country_data_min[alpha2][subd.code]["parent_code"] = subd.parent_code
-            latest_country_data_min[alpha2][subd.code]["latlng"] = subdivision_coords
+            all_country_data[alpha2]["subdivisions"][subd.code] = {}
+            all_country_data[alpha2]["subdivisions"][subd.code]["name"] = subd.name
+            all_country_data[alpha2]["subdivisions"][subd.code]["type"] = subd.type
+            all_country_data[alpha2]["subdivisions"][subd.code]["parent_code"] = subd.parent_code
+            all_country_data[alpha2]["subdivisions"][subd.code]["latlng"] = subdivision_coords
 
             #list of flag file extensions in order of preference 
             flag_file_extensions = ['.svg', '.png', '.jpeg', '.jpg', '.gif']
@@ -132,269 +305,212 @@ def export_iso3166_2(verbose=1):
                 #url to flag in iso3166-flag-icons repo
                 alpha2_flag_url = flag_icons_base_url + alpha2 + "/" + subd.code + flag_file_extensions[extension]
                 
-                #if subdivision has a valid flag in flag icons repo set to its GitHub url
+                #if subdivision has a valid flag in flag icons repo set to its GitHub url, else set to None
                 if (requests.get(alpha2_flag_url, headers=USER_AGENT_HEADER).status_code != 404):
-                    latest_country_data[alpha2]["subdivisions"][subd.code]["flag_url"] = alpha2_flag_url
-                    latest_country_data_min[alpha2][subd.code]["flag_url"] = alpha2_flag_url
+                    all_country_data[alpha2]["subdivisions"][subd.code]["flag_url"] = alpha2_flag_url
                     break
-                #if searched for flag using all possible extensions set to None in object
                 elif (extension == 4):
-                    latest_country_data[alpha2]["subdivisions"][subd.code]["flag_url"] = None
-                    latest_country_data_min[alpha2][subd.code]["flag_url"] = None
+                    all_country_data[alpha2]["subdivisions"][subd.code]["flag_url"] = None
 
-        #sort subdivision codes in json objects in alphabetical/numerical order
-        latest_country_data[alpha2]["subdivisions"] = dict(sorted(latest_country_data[alpha2]["subdivisions"].items()))
-        latest_country_data_min[alpha2] = dict(sorted(latest_country_data_min[alpha2].items()))
+        #sort subdivision codes in json objects in natural alphabetical/numerical order using natsort library
+        all_country_data[alpha2]["subdivisions"] = dict(OrderedDict(natsort.natsorted(all_country_data[alpha2]["subdivisions"].items())))
+    
+        #sort keys in main output dict into alphabetical order
+        all_country_data[alpha2] = {key: value for key, value in sorted(all_country_data[alpha2].items())}
 
     #stop counter and calculate elapsed time
     end = time.time()           
     elapsed = end - start
     
-    if (verbose):
+    if (verbose and not tqdm_disable):
         print('\n##########################################################')
-        print('Elapsed Time for exporting all ISO 3166-2 data: {0:.2f} minutes.'.format(elapsed / 60))
+        print('Elapsed Time for exporting all ISO 3166 data: {0:.2f} minutes.'.format(elapsed / 60))
+        
+    return all_country_data
 
-    return latest_country_data, latest_country_data_min
-
-def check_iso3166_2_main(request):
+def update_json(current_iso3166_2, latest_iso3166_2):
     """
-    Google Cloud Function that checks for any updates within specified date range
-    for the iso3166-2 API. It uses the accompanying iso3166-2 Python
-    software package to web scrape all ISO 3166 country and subdivision data from
-    the various sources used by the iso3166-2 package, it then checks for any
-    changes/updates to the data in the specified date range.
-
-    If any updates are found that are not already present in the JSON object
-    within the GCP Storage bucket then a GitHub Issue is automatically created in the 
-    iso3166-2 repository that itself stores all the latest info and data relating to the 
-    ISO 3166-2 standard. Additionally, if changes are found then the ISO 3166-2 JSON file 
-    in the GCP Storage bucket is updated which is the data source for the iso3166-2 
-    Python package and accompanying API.
+    Iterate through the latest ISO 3166 data exported using the export_iso3166_2
+    function. Add any new/missing changes found to the updated_json object that
+    aren't in the current JSON object currently being used by the iso3166-2 API.
+    Also keep track of the individual new/missing updates found per country and 
+    their previous values, to be used in the create_github_issue() function when 
+    communicating the latest updates.
 
     Parameters
     ----------
-    :request : (flask.Request)
-       HTTP request object.
-    
+    :current_iso3166_2 : dict
+        object with all the current ISO 3166 data that is currently used in the 
+        software and API.
+    :latest_iso3166_2 : dict
+        object with all the latest ISO 3166 country data using the various
+        data sources from the export_iso3166_2() function.
+
     Returns
     -------
-    :success_message/error_message : json
-       jsonified response indicating whether the Function has completed successfully or
-       an error has arose during execution.
+    :updates_found : bool
+        bool to track if updates/changes have been found in ISO 3166 objects.
+    :updated_json : dict 
+        object of all the up-to-date ISO 3166 data including any new/missing
+        data found.
+    :individual_updates_json : dict
+        dictionary of individual ISO 3166 updates that aren't in existing 
+        updates object in JSON.
+    :previous_iso3166_2_updates : dict
+        if new/missing data are found for a particular attribute, it's previous
+        values are stored in this object and returned, to be used in the 
+        create_github_issue() function.
     """
-    #json object storing the error message and status code 
-    error_message = {}
-    error_message["status"] = 400
+    #set new json object to original one imported from gcp storage
+    updated_json = current_iso3166_2
+    updates_found = False
 
-    #json object storing the success message and status code
-    success_message = {}
-    success_message["status"] = 200
-
-    #get list of any input parameters to function
-    request_json = request.get_json()
-
-    #get current date and time on function execution
-    current_datetime = datetime.strptime(datetime.today().strftime('%Y-%m-%d'), "%Y-%m-%d")
+    #seperate object that holds individual updates found for ISO 3166 data, used in create_issue function
+    individual_iso3166_2_updates = {}
     
-    #get list of all country's 2 letter alpha-2 codes
-    alpha2_codes = sorted(list(iso3166.countries_by_alpha2.keys()))
+    #object to keep track of previous attribute values if new value found for them
+    previous_iso3166_2_updates = {}
 
-    #sort codes in alphabetical order and uppercase
-    alpha2_codes.sort()
-    alpha2_codes = [code.upper() for code in alpha2_codes]
+    #iterate over all data in object, if row not found in original json, pulled from GCP storage, 
+    # append to new updated_json object
+    for code in latest_iso3166_2:   
+        individual_iso3166_2_updates[code] = {}
+        previous_iso3166_2_updates[code] = {}
+        for update in latest_iso3166_2[code]:
 
-    #get latest ISO 3166-2 data for both json objects
-    latest_iso3166_2, latest_iso3166_2_min = export_iso3166_2()
+            #if key/attribute not found in existing object then add to new ISO 3166 object with correct value, if applicable
+            if not (update in current_iso3166_2[code]):
+                updated_json[code][update] = latest_iso3166_2[code][update]
+                individual_iso3166_2_updates[code][update] = latest_iso3166_2[code][update]
+                previous_iso3166_2_updates[code][update] = "No listed value"
+                updates_found = True
+            
+            #update new ISO 3166 object with the new value present in latest data from export function, if applicable
+            if (latest_iso3166_2[code][update] != current_iso3166_2[code][update]):
+                updated_json[code][update] = latest_iso3166_2[code][update]
+                individual_iso3166_2_updates[code][update] = latest_iso3166_2[code][update]
+                previous_iso3166_2_updates[code][update] = current_iso3166_2[code][update]
+                updates_found = True
+
+        #if current alpha-2 code has no updates associated with it, remove from individual_iso3166_2_updates object
+        if (individual_iso3166_2_updates[code] == {}):
+            individual_iso3166_2_updates.pop(code, None)
     
-    def update_json(latest_iso3166_2):
-        """
-        If changes have been found for any countrys in the ISO 3166-2 using the 
-        check_iso3166_2_main function then the JSON in the storage bucket is 
-        updated with the new JSON and the old one is stored in an archive folder 
-        on the same bucket.
+        #if current alpha-2 code has no updates associated with it, remove from previous_iso3166_2_updates object
+        if (previous_iso3166_2_updates[code] == {}):
+            previous_iso3166_2_updates.pop(code, None)
 
-        Parameters
-        ----------
-        :latest_iso3166_2 : dict
-            object with all the latest ISO 3166-2 country data using the various
-            data sources from the export_iso3166_2() function.
+    #sort object keys into natural order using natsort
+    updated_json = dict(OrderedDict(natsort.natsorted(updated_json.items())))
+    individual_iso3166_2_updates = dict(OrderedDict(natsort.natsorted(individual_iso3166_2_updates.items())))
+    previous_iso3166_2_updates = dict(OrderedDict(natsort.natsorted(previous_iso3166_2_updates.items())))
 
-        Returns
-        -------
-        :updates_found : bool
-            bool to track if updates/changes have been found in ISO 3166-2 objects.
-        individual_updates_json: dict
-            dictionary of individual ISO 3166-2 updates that aren't in existing 
-            updates object in JSON.
-        """
-        #initialise storage client
-        storage_client = storage.Client()
-        try:
-            #create a bucket object for the bucket
-            bucket = storage_client.get_bucket(os.environ["BUCKET_NAME"])
-        except google.cloud.exceptions.NotFound:
-            error_message["message"] = "Error retrieving ISO 3166-2 data json storage bucket: {}.".format(os.environ["BUCKET_NAME"])
-            return jsonify(error_message), 400
-        #create blob objects from the filepath for the two 
-        blob = bucket.blob(os.environ["BLOB_NAME"])  
-        # blob_min = bucket.blob(os.environ["BLOB_NAME_MIN"])  
+    return updates_found, updated_json, individual_iso3166_2_updates, previous_iso3166_2_updates
 
-        # **probs don't need to use min object, cause it derives from main object...
-        #raise error if updates file not found in bucket
-        if not (blob.exists()):
-            raise ValueError("Error retrieving ISO 3166-2 data json: {}.".format(os.environ["BLOB_NAME"]))
-        
-        #download current ISO 3166-2 JSON file from storage bucket 
-        current_iso3166_2_data = json.loads(blob.download_as_string(client=None))
-        # current_iso3166_2_data_min = json.loads(blob_min.download_as_string(client=None))
+def create_github_issue(individual_iso3166_2_updates, previous_iso3166_updates):
+    """
+    Create a GitHub issue on the repositories specified by the GITHUB_REPOS env var,
+    using the GitHub api, if any updates/changes were found in the ISO 3166 that aren't 
+    in the current object. The Issue will be formatted and tabulated in a way to 
+    clearly outline any of the updates/changes to be made to the JSONs.
 
-        #set new json object to original one imported from gcp storage
-        updated_json = current_iso3166_2_data
-        updates_found = False
+    Parameters
+    ----------
+    :individual_iso3166_2_updates : dict
+        object of all the new/missing individual country data found from the 
+        update_json() function.
+    :previous_iso3166_updates : dict
+        if new/missing data are found for a particular attribute, it's previous
+        values are stored in this object and returned, to be used in the 
+        create_github_issue() function.
 
-        #seperate object that holds individual updates found for ISO 3166-2 data, used in create_issue function
-        individual_updates_json = {}
+    Returns
+    -------
+    None
 
-        #iterate over all data in object, if update/row not found in original json, pulled from GCP storage, 
-        # append to new updated_json object
-        for code in latest_iso3166_2:   
-            individual_updates_json[code] = []
-            for update in latest_iso3166_2[code]:
-                if not (update in current_iso3166_2_data[code]):
-                    updated_json[code].append(update)
-                    updates_found = True
-                    individual_updates_json[code].append(update)
+    References
+    ----------
+    [1]: https://developer.github.com/v3/issues/#create-an-issue
+    """
+    issue_json = {}
+    issue_json["title"] = "ISO 3166 Data: " + str(current_datetime.strftime('%Y-%m-%d')) + " (" + \
+        ', '.join(list(individual_iso3166_2_updates.keys()))+ ")"
 
-            #if current alpha-2 code has no updates associated with it, remove from temp object
-            if (individual_updates_json[code] == []):
-                individual_updates_json.pop(code, None)
+    #body of GitHub Issue
+    body = "# ISO 3166 Data Updates\n"
 
-        #if updates found in new updates json compared to current one
-        if (updates_found):
+    #get total sum of updates for all countrys in json
+    total_country_updates = sum([len(individual_iso3166_2_updates[code]) for code in individual_iso3166_2_updates])
+    total_missing_updates = len(individual_iso3166_2_updates)
 
-            #temp path for exported json
-            tmp_updated_json_path = os.path.join("/tmp", os.environ["BLOB_NAME"])
-            # tmp_updated_json_path_min = os.path.join("/tmp", os.environ["BLOB_NAME_MIN"])
-            
-            #export updated json to temp folder
-            with open(tmp_updated_json_path, 'w', encoding='utf-8') as output_json:
-                json.dump(latest_iso3166_2, output_json, ensure_ascii=False, indent=4)
-                
-            #export updated json to temp folder
-            with open(tmp_updated_json_path, 'w', encoding='utf-8') as output_json:
-                json.dump(latest_iso3166_2_min, output_json, ensure_ascii=False, indent=4)
-
-            #create blob for updated JSON
-            blob = bucket.blob(os.environ["BLOB_NAME"])
-            # blob_min = bucket.blob(os.environ["BLOB_NAME_MIN"])
-
-            #move current ISO 3166-2 jsons in bucket to an archive folder, append datetime to it
-            archive_filepath = os.environ["ARCHIVE_FOLDER"] + "/" + os.path.splitext(os.environ["BLOB_NAME"])[0] \
-                + "_" + str(current_datetime.strftime('%Y-%m-%d')) + ".json"
-            # archive_filepath_min = os.path.splitext(archive_filepath)[0] + "-min.json"
-
-            #create blob for archive updates json 
-            archive_blob = bucket.blob(archive_filepath)
-            
-            #upload old ISO 3166-2 jsons to archive folder 
-            archive_blob.upload_from_filename(tmp_updated_json_path)
-
-            #upload new updated json using gcp sdk, replacing current updates json 
-            blob.upload_from_filename(tmp_updated_json_path)
-
-        return updates_found, individual_updates_json
-        
-    def create_issue(latest_iso3166_2):
-        """
-        Create a GitHub issue on the iso3166-2, iso3166-updates and 
-        iso3166-flag-icons repository, using the GitHub api, if any updates/changes 
-        are made to any entries in the ISO 3166-2. The Issue will be formatted in 
-        a way to clearly outline any of the updates/changes to be made to the JSONs 
-        in the iso3166-2, iso3166-updates and iso3166-flag-icons repos. 
-
-        Parameters
-        ----------
-        :latest_iso3166_2 : json
-           json object with all listed iso3166-2 updates after month date filter
-           applied.
-        :month_range : int
-            number of past months updates were pulled from.
-
-        Returns
-        -------
-        :message : str
-            response message from GitHub api post request.
-
-        References
-        ----------
-        [1]: https://developer.github.com/v3/issues/#create-an-issue
-        """
-        issue_json = {}
-        issue_json["title"] = "ISO 3166-2 Updates: " + str(current_datetime.strftime('%Y-%m-%d')) + " (" + ', '.join(list(latest_iso3166_2)) + ")" 
-        
-        #body of Github Issue
-        body = "# ISO 3166-2 Updates\n"
-
-        #get total sum of updates for all countrys in json
-        total_updates = sum([len(latest_iso3166_2[code]) for code in latest_iso3166_2])
-        total_countries = len(latest_iso3166_2)
-        
-        #change body text if more than 1 country 
-        if (total_countries == 1):
-            body += "### " + str(total_updates) + " updates found for " + str(total_countries) + " country between the "
-        else:
-            body += "### " + str(total_updates) + " updates found for " + str(total_countries) + " countries between the "
+    #append any updates data to body
+    if (total_country_updates != 0):
 
         #display number of updates for countrys and the date period
-        # body += "### " + str(total_updates) + " updates found for " + str(total_countries) + " countries between the " + str(month_range) + " month period of " + \
-        #     str((current_datetime + relativedelta(months=-month_range)).strftime('%Y-%m-%d')) + " to " + str(current_datetime.strftime('%d-%m-%Y')) + ".\n"
+        body += "<h2>" + str(total_country_updates) + " missing update(s) found for " + str(total_missing_updates) + " country/countries</h2>"
 
         #iterate over updates in json, append to updates object
-        for code in list(latest_iso3166_2.keys()):
+        for code in list(individual_iso3166_2_updates.keys()):
             
             #header displaying current country name, code and flag icon using emoji-country-flag library
-            body += "\n### " + "Country - " + iso3166.countries_by_alpha2[code].name + " (" + code + ") " + flag.flag(code) + ":\n"
+            body += "<h3>" + iso3166.countries_by_alpha2[code].name + " (" + code + ") " + flag.flag(code) + ":</h3>"
 
-            row_count = 0
+            #create table element to store output data, including each attribute name, its new value and its previous value
+            body += "<table><tr><th>Attribute</th><th>Value Before</th><th>Value After</th></tr>"
 
-            #iterate over all update rows for each country in object, appending to html body
-            for row in latest_iso3166_2[code]:
+            #iterate over all update rows for each country in object, appending to table row 
+            for key, val in individual_iso3166_2_updates[code].items():
+
+                temp_previous_value = previous_iso3166_updates[code][key]
+                body += "<tr>"
                 
-                #increment row count which numbers each country's updates if more than 1
-                if (len(latest_iso3166_2[code]) > 1):
-                    row_count = row_count + 1
-                    body += str(row_count) + ".)"
+                #if value in object is not of type string then convert to string
+                if (isinstance(val, list)):
+                    val = ''.join(val)
+                if (isinstance(val, dict) or isinstance(val, bool) or isinstance(val, int) or isinstance(val, float)):
+                    val = str(val)
+                if (isinstance(previous_iso3166_updates[code][key], list)):
+                    temp_previous_value = ''.join(previous_iso3166_updates[code][key])
+                if (isinstance(previous_iso3166_updates[code][key], dict) or isinstance(previous_iso3166_updates[code][key], bool) \
+                    or isinstance(previous_iso3166_updates[code][key], int) or isinstance(previous_iso3166_updates[code][key], float)):
+                    temp_previous_value = str(previous_iso3166_updates[code][key])
+                
+                body += "<td>" + key + "</td><td>" + temp_previous_value + "</td><td>" + val + "</td>"
+                body += "</tr>"
+    
+            #close table element 
+            body += "</table>"
 
-                #output all row field values 
-                for key, val in row.items():
-                    body += "<ins>" + str(key) + ":</ins> " + str(val) + "<br>"
+    #add attributes to data json 
+    issue_json["body"] = body
+    issue_json["assignee"] = "amckenna41"
+    issue_json["labels"] = ["iso3166-updates", "iso", "iso3166", "iso366-2", "subdivisions", "iso3166-flag-icons", str(current_datetime.strftime('%Y-%m-%d'))]
 
-        #add attributes to data json 
-        issue_json["body"] = body
-        issue_json["assignee"] = "amckenna41"
-        issue_json["labels"] = ["iso3166-updates", "iso3166", "iso366-2", "subdivisions", "iso3166-flag-icons", str(current_datetime.strftime('%Y-%m-%d'))]
+    #raise error if GitHub related env vars not set
+    if (os.environ.get("GITHUB_OWNER") is None or os.environ.get("GITHUB_OWNER") == "" or \
+        os.environ.get("GITHUB_API_TOKEN") is None or os.environ.get("GITHUB_API_TOKEN") == ""):
+        error_message["message"] = "GitHub owner name and or API token environment variables not set."
+        return jsonify(error_message), 400
+    
+    #http request headers for GitHub API
+    headers = {'Content-Type': "application/vnd.github+json", 
+        "Authorization": "token " + os.environ["GITHUB_API_TOKEN"]}
+    github_repos = os.environ.get("GITHUB_REPOS")
+    
+    #make post request to create issue in repos using GitHub api url and headers, if github_repo env vars set
+    if not (github_repos is None and github_repos != ""): 
+        #split into list of repos 
+        github_repos = github_repos.replace(' ', '').split(',')
 
-        #api url and headers
-        issue_url = "https://api.github.com/repos/" + os.environ["github-owner"] + "/" + os.environ["github-repo-1"] + "/issues"
-        issue_url_2 = "https://api.github.com/repos/" + os.environ["github-owner"] + "/" + os.environ["github-repo-2"] + "/issues"
-        # issue_url_3 = "https://api.github.com/repos/" + os.environ["github-owner"] + "/" + os.environ["github-repo-3"] + "/issues"
-        headers = {'Content-Type': "application/vnd.github+json", 
-            "Authorization": "token " + os.environ["github-api-token"]}
+        #iterate over each repo listed in env var, making post request with issue_json data 
+        for repo in github_repos:
+            
+            issue_url = "https://api.github.com/repos/" + os.environ["GITHUB_OWNER"] + "/" + repo + "/issues"
+            github_request = requests.post(issue_url, data=json.dumps(issue_json), headers=headers)    
 
-        #make post request to github repos using api
-        requests.post(issue_url, data=json.dumps(issue_json), headers=headers)
-        requests.post(issue_url_2, data=json.dumps(issue_json), headers=headers)
-        # requests.post(issue_url_3, data=json.dumps(issue_json), headers=headers)
-
-    #if update object not empty (i.e there are updates), call update_json and create_issue functions
-    if (latest_iso3166_2 != {}):
-        updates_found, filtered_updates = update_json(latest_iso3166_2)
-    if (updates_found):
-        create_issue(filtered_updates)
-        print("ISO 3166-2 updates found and successfully exported.")
-        success_message["message"] = "ISO 3166-2 updates found and successfully exported."
-    else:
-        print("No ISO 3166-2 updates found.")
-        success_message["message"] = "No ISO 3166-2 updates found."
-
-    return jsonify(success_message), 200
+            #print error message if success status code not returned            
+            if (github_request.status_code != 200):  
+                if (github_request.status_code == 401):
+                    print("Authorisation issue when creating GitHub Issue in repository {}, could be an issue with the GitHub PAT.".format(repo))
+                else:
+                    print("Issue when creating GitHub Issue in repository {}, got status code {}.".format(repo, github_request.status_code))   

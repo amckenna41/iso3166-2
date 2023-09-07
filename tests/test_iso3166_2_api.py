@@ -6,8 +6,7 @@ unittest.TestLoader.sortTestMethodsUsing = None
 
 class ISO3166_2_API_Tests(unittest.TestCase):
     """
-    Test suite for testing ISO 3166-2 api created to accompany
-    the iso3166-2 Python software package. 
+    Test suite for testing ISO 3166-2 api created to accompany the iso3166-2 Python software package. 
 
     Test Cases
     ----------
@@ -67,8 +66,8 @@ class ISO3166_2_API_Tests(unittest.TestCase):
         self.assertEqual(len(test_request_au), 1, "Expected output object of API to be of length 1, got {}.".format(len(test_request_au)))
         self.assertEqual(list(test_request_au.keys()), ["AU"], "Expected output object of API to contain only the AU key, got {}.".format(list(test_request_au.keys())))
 
-        self.assertEqual(test_request_au["AU"]["area"], 7692024, "")        
-        self.assertEqual(test_request_au["AU"]["name"]["common"], "Australia", "")        
+        self.assertEqual(test_request_au["AU"]["area"], 7692024, "Expected area to be 7692024, got {}.".format(test_request_au["AU"]["area"]))        
+        self.assertEqual(test_request_au["AU"]["name"]["common"], "Australia", "Expected country name to be Australis, got {}.".format(test_request_au["AU"]["name"]["common"]))        
         self.assertEqual(test_request_au["AU"]["capital"][0], "Canberra", "")
         self.assertEqual(test_request_au["AU"]["cca2"], "AU", "")
         self.assertEqual(test_request_au["AU"]["cca3"], "AUS", "")
@@ -91,7 +90,7 @@ class ISO3166_2_API_Tests(unittest.TestCase):
         self.assertEqual(len(test_request_cy), 1, "Expected output object of API to be of length 1, got {}.".format(len(test_request_cy)))
         self.assertEqual(list(test_request_cy.keys()), ["CY"], "Expected output object of API to contain only the CY key, got {}.".format(list(test_request_cy.keys())))
 
-        self.assertEqual(test_request_cy["CY"]["area"], 9251, "")        
+        self.assertEqual(test_request_cy["CY"]["area"], 9251, "Expected area to be 9251, got {}.".format(test_request_cy["CY"]["area"]))              
         self.assertEqual(test_request_cy["CY"]["name"]["common"], "Cyprus", "")       
         self.assertEqual(test_request_cy["CY"]["capital"][0], "Nicosia", "")
         self.assertEqual(test_request_cy["CY"]["cca2"], "CY", "")
@@ -115,14 +114,14 @@ class ISO3166_2_API_Tests(unittest.TestCase):
         self.assertEqual(len(test_request_lu), 1, "Expected output object of API to be of length 1, got {}.".format(len(test_request_lu)))
         self.assertEqual(list(test_request_lu.keys()), ["LU"], "Expected output object of API to contain only the LU key, got {}.".format(list(test_request_lu.keys())))
 
-        self.assertEqual(test_request_lu["LU"]["area"], 2586.0, "")        
+        self.assertEqual(test_request_lu["LU"]["area"], 2586, "Expected area to be 2586, got {}.".format(test_request_lu["LU"]["area"]))             
         self.assertEqual(test_request_lu["LU"]["name"]["common"], "Luxembourg", "")        
         self.assertEqual(test_request_lu["LU"]["capital"][0], "Luxembourg", "")
         self.assertEqual(test_request_lu["LU"]["cca2"], "LU", "")
         self.assertEqual(test_request_lu["LU"]["cca3"], "LUX", "")
         self.assertEqual(test_request_lu["LU"]["currencies"]["EUR"]['name'], "Euro", "")        
         self.assertEqual(list(test_request_lu["LU"]["languages"].keys()), ["deu", "fra", "ltz"], "")        
-        self.assertEqual(test_request_lu["LU"]["latlng"], [49.75, 6.16666666], "")        
+        self.assertEqual(test_request_lu["LU"]["latlng"], [49.75, 6.167], "")        
         self.assertEqual(test_request_lu["LU"]["population"], 632275, "")        
         self.assertEqual(test_request_lu["LU"]["region"], "Europe", "")
         self.assertEqual(list(test_request_lu["LU"]["subdivisions"].keys()), 
@@ -139,7 +138,7 @@ class ISO3166_2_API_Tests(unittest.TestCase):
         self.assertEqual(len(test_request_pa_rw), 2, "Expected output object of API to be of length 2, got {}.".format(len(test_request_pa_rw)))
         self.assertEqual(list(test_request_pa_rw.keys()), ["PA", "RW"], "Expected output object of API to contain only the PA and RW keys, got {}.".format(list(test_request_pa_rw.keys())))
 
-        self.assertEqual(test_request_pa_rw["PA"]["area"], 75417, "")        
+        self.assertEqual(test_request_pa_rw["PA"]["area"], 75417, "Expected area to be 75417, got {}.".format(test_request_pa_rw["PA"]["area"]))        
         self.assertEqual(test_request_pa_rw["PA"]["name"]["common"], "Panama", "")        
         self.assertEqual(test_request_pa_rw["PA"]["capital"][0], "Panama City", "")
         self.assertEqual(test_request_pa_rw["PA"]["cca2"], "PA", "")
@@ -157,7 +156,7 @@ class ISO3166_2_API_Tests(unittest.TestCase):
         for col in list(test_request_pa_rw["PA"].keys()):
             self.assertIn(col, self.correct_output_cols, "Column {} not found in list of correct columns:\n{}.".format(col, self.correct_output_cols))
 
-        self.assertEqual(test_request_pa_rw["RW"]["area"], 26338, "")        
+        self.assertEqual(test_request_pa_rw["RW"]["area"], 26338, "Expected area to be 26338, got {}.".format(test_request_pa_rw["RW"]["area"]))        
         self.assertEqual(test_request_pa_rw["RW"]["name"]["common"], "Rwanda", "")        
         self.assertEqual(test_request_pa_rw["RW"]["capital"][0], "Kigali", "")
         self.assertEqual(test_request_pa_rw["RW"]["cca2"], "RW", "")
@@ -181,20 +180,20 @@ class ISO3166_2_API_Tests(unittest.TestCase):
         self.assertEqual(len(test_request_mac_mys), 2, "Expected output object of API to be of length 2, got {}.".format(len(test_request_mac_mys)))
         self.assertEqual(list(test_request_mac_mys.keys()), ["MO", "MY"], "Expected output object of API to contain only the MO and MY keys, got {}.".format(list(test_request_mac_mys.keys())))
 
-        self.assertEqual(test_request_mac_mys["MO"]["area"], 30, "")        
+        self.assertEqual(test_request_mac_mys["MO"]["area"], 30, "Expected area to be 30, got {}.".format(test_request_mac_mys["MO"]["area"]))                
         self.assertEqual(test_request_mac_mys["MO"]["name"]["common"], "Macau", "")        
         self.assertEqual(test_request_mac_mys["MO"]["cca2"], "MO", "")
         self.assertEqual(test_request_mac_mys["MO"]["cca3"], "MAC", "")
         self.assertEqual(test_request_mac_mys["MO"]["currencies"]["MOP"]['name'], "Macanese pataca", "")        
         self.assertEqual(list(test_request_mac_mys["MO"]["languages"].keys()), ["por", "zho"], "")        
-        self.assertEqual(test_request_mac_mys["MO"]["latlng"], [22.16666666, 113.55], "")        
+        self.assertEqual(test_request_mac_mys["MO"]["latlng"], [22.167, 113.55], "")        
         self.assertEqual(test_request_mac_mys["MO"]["population"], 649342, "")        
         self.assertEqual(test_request_mac_mys["MO"]["region"], "Asia", "")
         self.assertEqual(test_request_mac_mys["MO"]["subdivisions"], {}, "")
         for col in list(test_request_mac_mys["MO"].keys()):
             self.assertIn(col, self.correct_output_cols, "Column {} not found in list of correct columns:\n{}.".format(col, self.correct_output_cols))
 
-        self.assertEqual(test_request_mac_mys["MY"]["area"], 330803, "")        
+        self.assertEqual(test_request_mac_mys["MY"]["area"], 330803, "Expected area to be 330803, got {}.".format(test_request_mac_mys["MY"]["area"]))                        
         self.assertEqual(test_request_mac_mys["MY"]["name"]["common"], "Malaysia", "")        
         self.assertEqual(test_request_mac_mys["MY"]["capital"][0], "Kuala Lumpur", "")
         self.assertEqual(test_request_mac_mys["MY"]["cca2"], "MY", "")
@@ -404,7 +403,7 @@ class ISO3166_2_API_Tests(unittest.TestCase):
         self.assertEqual(test_request_error["status"], 400, 
                 "Error status does not match expected:\n{}".format(test_request_error["status"]))
 
-    # @unittest.skip("Skipping to not overload server as this test returns all data.")
+    @unittest.skip("Skipping to not overload server as this test returns all data.")
     def test_all(self):
         """ Test 'all' endpoint which returns all data for all ISO 3166 countries. """
 #1.)

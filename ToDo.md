@@ -4,7 +4,7 @@
 - [X] Add last updated section to readme.
 - [X] Add latest updates section to reame - mention if they've been implemented or not.
 - [X] Create software package via pypi.
-- [ ] Add demo of software using Python notebook, put on Google Colab.
+- [X] Add demo of software using Python notebook, put on Google Colab.
 - [ ] Add front-end demo.
 - [ ] Check variable naming conventions.
 - [X] Check output of bandit and flake8 check.
@@ -39,7 +39,7 @@
 - [X] Add tqdm progress bar to getISO3166-2.py
 - [X] Need to recall getISO3166-2.py when flag icon repo is public so flag url can be added to JSONs. 
 - [X] When checking flag_url endpoints, try .svg then .jpg then .png then .gif. Need to update JSON file.
-- [ ] How long does getISO3166_2.py script take? 1h 56, 116 mins (update this on script rerun).
+- [X] How long does getISO3166_2.py script take? 1h 56, 116 mins (update this on script rerun).
 - [X] Fix pytest badge on readme.
 - [ ] Add geonames (geonames.org), openstreetmap relation ID, openstreetmap administrarive division level (https://wiki.openstreetmap.org/wiki/Key:admin%20level?uselang=en-GB), boundary (https://wiki.openstreetmap.org/wiki/Key:boundary?uselang=en-GB), FIPS code, to subdivisions.
 - [X] Add lat and long for each subdivision using google maps api (https://github.com/googlemaps/google-maps-services-python). Recall script to implement.
@@ -52,15 +52,15 @@
 - [ ] Add github release (need to make repo public first).
 - [X] Create frontend API, hosted on Vercel. 
 - [X] Frontend will pull iso3166-2.json from GCP Storage backend.
-- [ ] Implement some sort of update functionality that updates the iso3166-2.json for API every so often, use a CRON scheduler to call this update func every 3 - 6 months etc.
+- [X] Implement some sort of update functionality that updates the iso3166-2.json for API every so often, use a CRON scheduler to call this update func every 3 - 6 months etc.
 - [X] Mention frontend API in Readme, create readme for API documentation.
 - [X] Country names with spaces arent working on API.
-- [ ] Run vulture library to search package and remove any unused code/vars.
+- [X] Run vulture library to search package and remove any unused code/vars.
 - [ ] Pull request for django-countries (https://github.com/SmileyChris/django-countries/tree/main)
 - [ ] Geodjango.
-- [ ] Go over check_for_updates function, remove any instances of min object as it derives from main object.
-- [ ] In api unit tests, change test_request var to something more intuitive .
-- [ ] Reorder subdivision codes such that order doesn't go e.g. PA-1, PA-10, PA-2, PA,3 etc is incorrect.
+- [X] Go over check_for_updates function, remove any instances of min object as it derives from main object.
+- [X] In api unit tests, change test_request var to something more intuitive .
+- [X] Reorder subdivision codes such that order doesn't go e.g. PA-1, PA-10, PA-2, PA,3 etc is incorrect.
 - [X] In getISO3166_2.py script, add parameter in main func allowing user to pass in one or more alpha-2 codes to get data for.
 - [X] Update all unit tests for line: "Expected output object of API to contain only the BJ key"
 - [ ] Is there any other data fields each country could have?
@@ -78,4 +78,27 @@
 - [X] In unit tests when testing languages, test against the list of all languages.
 - [ ] Add link to medium article on readme.
 - [ ] Split up build and test workflow into different sections such as build, linter etc.
+- [X] Go through all unit tests, any tests that are wrapped in with.selfAssertRaises()... , remove var assignment and just call function.
+- [X] Double check area attribute, should have no d.p, if so round up.
+- [ ] Finish messages with test case. 
+- [X] If <10 alpha-2 codes input to export_iso3166_2 function then append to filename.
+- [X] Double check, if no subdivisons etc for country then min.json shouldn't be exported.
+- [X] Create colab notebook demo for software and API as well as get_all script.
+- [X] If exporting 5 or less countries in get_iso3166_2.py script, don't show progress bar or elapsed time.
+- [ ] Double check softwre keywords on pypi, should there be spaces between keywords?
+- [X] Test check-for-updates using subset of alpha-2 codes.
+- [ ] Might need to switch from Cloud Function to Compute Engine/Cloud Run as check-for-updates script takes ~2 hours to execute.
+- [ ] Double check Pypi package only contains wanted files/folders.
+- [X] Double check check-for-updates func checks the values of each key and doesnt just check if key is present etc.
+- [ ] Run check-for-updates with a more optimised machine to allow it to fully execute in max timeout allowed.
+- [X] Rerun get_all script.
+- [X] Reorder output JSON keys into alphabetical order.
+- [X] In check-for-updates, don't save files to archive folder, return from function and upload object directly.
+- [X] In check-for-updates yml, create, call and delete cloud func each time since it's only called every 3-6 months.
+- [X] In check-for-updates instead of seperate Github repo env vars, just pass in single string of comma seperated repos.
+- [X] In create_iisue, show before and after for each attribute.
+- [X] Add iso3166-2.json filesize to readme.
+- [X] Create GCP_architecture for check_for_updates readme showing Cloud Function, scheduler and bucket.
+- [X] In check-for-updates, upload archive blob first.
+- [ ] Run check-for-updates one more time, don't think AD on API object is correct.
 <!-- https://github.com/smucode/react-world-flags -->
