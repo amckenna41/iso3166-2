@@ -46,6 +46,10 @@ jobs:
         pip3 install bandit
         pip3 install safety
         pip3 install importlib-metadata
+        pip3 install pycountry
+        pip3 install googlemaps
+        pip3 install natsort
+        pip3 instal tqdm
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         python3 setup.py install
     
