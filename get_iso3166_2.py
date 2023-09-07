@@ -197,18 +197,24 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
             #list of flag file extensions in order of preference 
             flag_file_extensions = ['.svg', '.png', '.jpeg', '.jpg', '.gif']
 
-            #iterate over all image extensions checking existence of flag in repo
-            for extension in range(0, len(flag_file_extensions)):
+            #url to flag in iso3166-flag-icons repo
+            alpha2_flag_url = flag_icons_base_url + alpha2 + "/" + subd.code #+ flag_file_extensions[extension]
+            
+            #verify that path on flag icons repo exists, if not set flag url value to None
+            if (requests.get(alpha2_flag_url, headers=USER_AGENT_HEADER).status_code != 404):
                 
-                #url to flag in iso3166-flag-icons repo
-                alpha2_flag_url = flag_icons_base_url + alpha2 + "/" + subd.code + flag_file_extensions[extension]
-                
-                #if subdivision has a valid flag in flag icons repo set to its GitHub url, else set to None
-                if (requests.get(alpha2_flag_url, headers=USER_AGENT_HEADER).status_code != 404):
-                    all_country_data[alpha2]["subdivisions"][subd.code]["flag_url"] = alpha2_flag_url
-                    all_country_data_min[alpha2][subd.code]["flag_url"] = alpha2_flag_url
-                    break
-                elif (extension == 4):
+                #iterate over all image extensions checking existence of flag in repo
+                for extension in range(0, len(flag_file_extensions)):
+                    
+                        #if subdivision has a valid flag in flag icons repo set to its GitHub url, else set to None
+                        if (requests.get(alpha2_flag_url + flag_file_extensions[extension], headers=USER_AGENT_HEADER).status_code != 404):
+                            all_country_data[alpha2]["subdivisions"][subd.code]["flag_url"] = alpha2_flag_url
+                            all_country_data_min[alpha2][subd.code]["flag_url"] = alpha2_flag_url
+                            break
+                        elif (extension == 4):
+                            all_country_data[alpha2]["subdivisions"][subd.code]["flag_url"] = None
+                            all_country_data_min[alpha2][subd.code]["flag_url"] = None
+            else:
                     all_country_data[alpha2]["subdivisions"][subd.code]["flag_url"] = None
                     all_country_data_min[alpha2][subd.code]["flag_url"] = None
 
