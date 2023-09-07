@@ -80,10 +80,6 @@ jobs:
       run: |
         echo "Testing using unittest..."
         python3 -m unittest discover tests -b
-    - name: Test with pytest
-      run: |
-        echo "Testing using pytest..."
-        python3 -m pytest tests/ -v
         
     #upload to Code Coverage
     - name: Upload Coverage Report to Codecov
