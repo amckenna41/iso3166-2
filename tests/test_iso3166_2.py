@@ -45,10 +45,9 @@ class ISO3166_2_Tests(unittest.TestCase):
             "subdivisions", "subregion", "timezones", "tld", "translations", "unMember"
         ]
 
-    @unittest.skip("")
     def test_iso3166_2_metadata(self): 
         """ Testing correct iso3166-2 software version and metadata. """
-        self.assertEqual(metadata('iso3166-2')['version'], "1.2.0", 
+        self.assertEqual(metadata('iso3166-2')['version'], "1.2.1", 
             "iso3166-2 version is not correct, got: {}.".format(metadata('iso3166-2')['version']))
         self.assertEqual(metadata('iso3166-2')['name'], "iso3166-2", 
             "iso3166-2 software name is not correct, got: {}.".format(metadata('iso3166-2')['name']))

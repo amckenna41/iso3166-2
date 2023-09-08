@@ -198,7 +198,7 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
             flag_file_extensions = ['.svg', '.png', '.jpeg', '.jpg', '.gif']
 
             #url to flag in iso3166-flag-icons repo
-            alpha2_flag_url = flag_icons_base_url + alpha2 + "/" + subd.code #+ flag_file_extensions[extension]
+            alpha2_flag_url = flag_icons_base_url + alpha2 + "/" + subd.code
             
             #verify that path on flag icons repo exists, if not set flag url value to None
             if (requests.get(alpha2_flag_url, headers=USER_AGENT_HEADER).status_code != 404):

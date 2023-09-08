@@ -7,3 +7,4 @@ exclude get_iso3166_2.py
 recursive-exclude iso3166-2-check-for-updates
 exclude ToDo.md
 exclude setup.cfg
+prune __pycache__ tests

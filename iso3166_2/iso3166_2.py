@@ -79,8 +79,7 @@ class ISO3166_2():
         #get list of all countries by 2 letter alpha-2 code
         self.alpha2 = sorted(list(iso3166.countries_by_alpha2.keys()))
         
-        #get list of all countries by 3 letter alpha-3 code
-        self.alpha3 = sorted(list(iso3166.countries_by_alpha3.keys()))
+        self.attributes = list(self.all_iso3166_2_data["IE"])
 
     def subdivision_codes(self, alpha2_code=""):
         """

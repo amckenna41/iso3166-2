@@ -1,11 +1,11 @@
 - [X] Create API similar to restcountries where user can input alpha2 or country and return country info and subdivisions.
-- [ ] CRON job that runs on schedule that polls iso3166-updates json on GCP to check for any updates in codes.
+- [X] CRON job that runs on schedule that polls iso3166-updates json on GCP to check for any updates in codes.
 - [ ] Incorporate iso3166-updates-api 
 - [X] Add last updated section to readme.
 - [X] Add latest updates section to reame - mention if they've been implemented or not.
 - [X] Create software package via pypi.
 - [X] Add demo of software using Python notebook, put on Google Colab.
-- [ ] Add front-end demo.
+- [X] Add front-end demo.
 - [ ] Check variable naming conventions.
 - [X] Check output of bandit and flake8 check.
 - [X] Remove .DS_Store or pycache from repo.
@@ -77,7 +77,7 @@
 - [X] Double check correct files are being uploaded to pacakge, use Manifest file.
 - [X] In unit tests when testing languages, test against the list of all languages.
 - [ ] Add link to medium article on readme.
-- [ ] Split up build and test workflow into different sections such as build, linter etc.
+- [X] Split up build and test workflow into different sections such as build, linter etc.
 - [X] Go through all unit tests, any tests that are wrapped in with.selfAssertRaises()... , remove var assignment and just call function.
 - [X] Double check area attribute, should have no d.p, if so round up.
 - [ ] Finish messages with test case. 
@@ -85,10 +85,10 @@
 - [X] Double check, if no subdivisons etc for country then min.json shouldn't be exported.
 - [X] Create colab notebook demo for software and API as well as get_all script.
 - [X] If exporting 5 or less countries in get_iso3166_2.py script, don't show progress bar or elapsed time.
-- [ ] Double check softwre keywords on pypi, should there be spaces between keywords?
+- [X] Double check softwre keywords on pypi, should there be spaces between keywords?
 - [X] Test check-for-updates using subset of alpha-2 codes.
-- [ ] Might need to switch from Cloud Function to Compute Engine/Cloud Run as check-for-updates script takes ~2 hours to execute.
-- [ ] Double check Pypi package only contains wanted files/folders.
+- [X] Might need to switch from Cloud Function to Compute Engine/Cloud Run as check-for-updates script takes ~2 hours to execute.
+- [X] Double check Pypi package only contains wanted files/folders.
 - [X] Double check check-for-updates func checks the values of each key and doesnt just check if key is present etc.
 - [ ] Run check-for-updates with a more optimised machine to allow it to fully execute in max timeout allowed.
 - [X] Rerun get_all script.
@@ -100,5 +100,4 @@
 - [X] Add iso3166-2.json filesize to readme.
 - [X] Create GCP_architecture for check_for_updates readme showing Cloud Function, scheduler and bucket.
 - [X] In check-for-updates, upload archive blob first.
-- [ ] Run check-for-updates one more time, don't think AD on API object is correct.
 <!-- https://github.com/smucode/react-world-flags -->
