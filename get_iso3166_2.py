@@ -12,7 +12,7 @@ import natsort
 from collections import OrderedDict
 
 #initialise version 
-__version__ = "1.1.0"
+__version__ = "1.2.1"
 
 #initalise User-agent header for requests library 
 USER_AGENT_HEADER = {'User-Agent': 'iso3166-2/{} ({}; {})'.format(__version__,

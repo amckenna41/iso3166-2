@@ -239,7 +239,7 @@ class ISO3166_2_Tests(unittest.TestCase):
         for key in test_alpha2_ba:
             self.assertIn(test_alpha2_ba[key].name, ba_subdivision_names, "Subdivision name {} not found in list of subdivision names:\n{}.".format(test_alpha2_ba[key].name, ba_subdivision_names))
             if ((test_alpha2_ba[key].flag_url is not None) or (test_alpha2_ba[key].flag_url == "")):
-                self.assertEqual(requests.get(test_alpha2_ba[key].flag_url, headers=self.user_agent_header).status_code, 200, "Flag URL invalid: {}.".format(test_alpha2_ba[key].flag_url))
+                self.assertEqual(requests.get(test_alpha2_ba[key].flag_url, headers=self.user_agent_header).status_code, 200, "Flag URL invalid: {}".format(test_alpha2_ba[key].flag_url))
             self.assertIsNone(test_alpha2_ba[key]['parent_code'], "Parent code key cannot be None.")
             self.assertEqual(len(test_alpha2_ba[key].latlng), 2, "Expected key should have both lat/longitude.")        
 #2.)
@@ -253,7 +253,7 @@ class ISO3166_2_Tests(unittest.TestCase):
         for key in test_alpha2_cy:
             self.assertIn(test_alpha2_cy[key].name, cy_subdivision_names, "Subdivision name {} not found in list of subdivision names:\n{}.".format(test_alpha2_cy[key].name, cy_subdivision_names))
             if ((test_alpha2_cy[key].flag_url is not None) or (test_alpha2_cy[key].flag_url == "")):
-                self.assertEqual(requests.get(test_alpha2_cy[key].flag_url, headers=self.user_agent_header).status_code, 200, "Flag URL invalid: {}.".format(test_alpha2_cy[key].flag_url))
+                self.assertEqual(requests.get(test_alpha2_cy[key].flag_url, headers=self.user_agent_header).status_code, 200, "Flag URL invalid: {}".format(test_alpha2_cy[key].flag_url))
             self.assertIsNone(test_alpha2_cy[key]['parent_code'], "Parent code key cannot be None.")
             self.assertEqual(len(test_alpha2_cy[key].latlng), 2, "Expected key should have both lat/longitude.")              
 #3.)
@@ -268,7 +268,7 @@ class ISO3166_2_Tests(unittest.TestCase):
         for key in test_alpha2_ga:
             self.assertIn(test_alpha2_ga[key].name, ga_subdivision_names, "Subdivision name {} not found in list of subdivision names:\n{}.".format(test_alpha2_ga[key].name, ga_subdivision_names))
             if ((test_alpha2_ga[key].flag_url is not None) or (test_alpha2_ga[key].flag_url == "")):
-                self.assertEqual(requests.get(test_alpha2_ga[key].flag_url, headers=self.user_agent_header).status_code, 200, "Flag URL invalid: {}.".format(test_alpha2_ga[key].flag_url))
+                self.assertEqual(requests.get(test_alpha2_ga[key].flag_url, headers=self.user_agent_header).status_code, 200, "Flag URL invalid: {}".format(test_alpha2_ga[key].flag_url))
             self.assertIsNone(test_alpha2_ga[key]['parent_code'], "Parent code key cannot be None.")
             self.assertEqual(len(test_alpha2_ga[key].latlng), 2, "Expected key should have both lat/longitude.")        
 #4.)
@@ -288,13 +288,13 @@ class ISO3166_2_Tests(unittest.TestCase):
         for key in test_alpha2_rw_vu["RW"]:
             self.assertIn(test_alpha2_rw_vu["RW"][key].name, rw_subdivision_names, "Subdivision name {} not found in list of subdivision names:\n{}.".format(test_alpha2_rw_vu["RW"][key].name, rw_subdivision_names))
             if ((test_alpha2_rw_vu["RW"][key].flag_url is not None) or (test_alpha2_rw_vu["RW"][key].flag_url == "")):
-                self.assertEqual(requests.get(test_alpha2_rw_vu["RW"][key].flag_url, headers=self.user_agent_header).status_code, 200, "Flag URL invalid: {}.".format(test_alpha2_rw_vu["RW"][key].flag_url))
+                self.assertEqual(requests.get(test_alpha2_rw_vu["RW"][key].flag_url, headers=self.user_agent_header).status_code, 200, "Flag URL invalid: {}".format(test_alpha2_rw_vu["RW"][key].flag_url))
             self.assertIsNone(test_alpha2_rw_vu["RW"][key]['parent_code'], "Parent code key cannot be None.")
             self.assertEqual(len(test_alpha2_rw_vu["RW"][key].latlng), 2, "Expected key should have both lat/longitude.")        
         for key in test_alpha2_rw_vu["VU"]:
             self.assertIn(test_alpha2_rw_vu["VU"][key].name, vu_subdivision_names, "Subdivision name {} not found in list of subdivision names:\n{}.".format(test_alpha2_rw_vu["VU"][key].name, vu_subdivision_names))
             if ((test_alpha2_rw_vu["VU"][key].flag_url is not None) or (test_alpha2_rw_vu["VU"][key].flag_url == "")):
-                self.assertEqual(requests.get(test_alpha2_rw_vu["VU"][key].flag_url, headers=self.user_agent_header).status_code, 200, "Flag URL invalid: {}.".format(test_alpha2_rw_vu["VU"][key].flag_url))
+                self.assertEqual(requests.get(test_alpha2_rw_vu["VU"][key].flag_url, headers=self.user_agent_header).status_code, 200, "Flag URL invalid: {}".format(test_alpha2_rw_vu["VU"][key].flag_url))
             self.assertIsNone(test_alpha2_rw_vu["VU"][key]['parent_code'], "Parent code key cannot be None.")
             self.assertEqual(len(test_alpha2_rw_vu["VU"][key].latlng), 2, "Expected key should have both lat/longitude.")              
 #5.)
@@ -316,13 +316,13 @@ class ISO3166_2_Tests(unittest.TestCase):
         for key in test_alpha2_gg_kw_vc["KW"]:
             self.assertIn(test_alpha2_gg_kw_vc["KW"][key].name, kw_subdivision_names, "Subdivision name {} not found in list of subdivision names:\n{}.".format(test_alpha2_gg_kw_vc["KW"][key].name, kw_subdivision_names))
             if ((test_alpha2_gg_kw_vc["KW"][key].flag_url is not None) or (test_alpha2_gg_kw_vc["KW"][key].flag_url == "")):
-                self.assertEqual(requests.get(test_alpha2_gg_kw_vc["KW"][key].flag_url, headers=self.user_agent_header).status_code, 200, "Flag URL invalid: {}.".format(test_alpha2_gg_kw_vc["KW"][key].flag_url))
+                self.assertEqual(requests.get(test_alpha2_gg_kw_vc["KW"][key].flag_url, headers=self.user_agent_header).status_code, 200, "Flag URL invalid: {}".format(test_alpha2_gg_kw_vc["KW"][key].flag_url))
             self.assertIsNone(test_alpha2_gg_kw_vc["KW"][key]['parent_code'], "Parent code key cannot be None.")
             self.assertEqual(len(test_alpha2_gg_kw_vc["KW"][key].latlng), 2, "Expected key should have both lat/longitude.")        
         for key in test_alpha2_gg_kw_vc["VC"]:
             self.assertIn(test_alpha2_gg_kw_vc["VC"][key].name, vc_subdivision_names, "Subdivision name {} not found in list of subdivision names:\n{}.".format(test_alpha2_gg_kw_vc["VC"][key].name, vc_subdivision_names))
             if ((test_alpha2_gg_kw_vc["VC"][key].flag_url is not None) or (test_alpha2_gg_kw_vc["VC"][key].flag_url == "")):
-                self.assertEqual(requests.get(test_alpha2_gg_kw_vc["VC"][key].flag_url, headers=self.user_agent_header).status_code, 200, "Flag URL invalid: {}.".format(test_alpha2_gg_kw_vc["VC"][key].flag_url))
+                self.assertEqual(requests.get(test_alpha2_gg_kw_vc["VC"][key].flag_url, headers=self.user_agent_header).status_code, 200, "Flag URL invalid: {}".format(test_alpha2_gg_kw_vc["VC"][key].flag_url))
             self.assertIsNone(test_alpha2_gg_kw_vc["VC"][key]['parent_code'], "Parent code key cannot be None.")
             self.assertEqual(len(test_alpha2_gg_kw_vc["VC"][key].latlng), 2, "Expected key should have both lat/longitude.")        
 #6.)
