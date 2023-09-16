@@ -13,7 +13,7 @@ class Get_ISO3166_2_Tests(unittest.TestCase):
     data for all countries from the data sources. 
 
     Test Cases
-    ----------
+    ==========
     test_export_iso3166_2:
         testing correct ISO 3166-2 data is exported and pulled from data sources.
     """

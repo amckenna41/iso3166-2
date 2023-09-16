@@ -1,4 +1,3 @@
-
 name: Building and Testing
 
 on:
@@ -100,7 +99,6 @@ jobs:
           artifacts/bandit_output.txt
           artifacts/coverage.txt
         if-no-files-found: error 
-        
 
   #linter check on repo
   linter:

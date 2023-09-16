@@ -6,13 +6,14 @@ import requests
 import getpass
 import pycountry
 import iso3166
+import iso3166_2 as iso
 import googlemaps
 from tqdm import tqdm
 import natsort
 from collections import OrderedDict
 
 #initialise version 
-__version__ = "1.2.1"
+__version__ = "1.2.2"
 
 #initalise User-agent header for requests library 
 USER_AGENT_HEADER = {'User-Agent': 'iso3166-2/{} ({}; {})'.format(__version__,
@@ -30,7 +31,7 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
     code and subdivisions info. The full list of attributes exported can be viewed in the ATTRIBUTES.md file.
 
     Parameters
-    ----------
+    ==========
     :alpha2_codes: str (default="")
         string of 1 or more 2 letter alpha-2 country codes to pull their latest ISO 3166-2 data.
     :output_folder : str (default="iso3166-2-output")
@@ -41,7 +42,7 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
         Set to 1 to print out progress of export functionality, 0 will not print progress.
 
     Returns
-    -------
+    =======
     None
     """
     def convert_to_alpha2(alpha3_code):
@@ -50,12 +51,12 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
         alpha-2 counterpart. 
 
         Parameters 
-        ----------
+        ==========
         :alpha3_code: str
             3 letter ISO 3166-1 alpha-3 country code.
         
         Returns
-        -------
+        =======
         :iso3166.countries_by_alpha3[alpha3_code].alpha2: str
             2 letter ISO 3166 alpha-2 country code. 
         """
@@ -217,6 +218,11 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
             else:
                     all_country_data[alpha2]["subdivisions"][subd.code]["flag_url"] = None
                     all_country_data_min[alpha2][subd.code]["flag_url"] = None
+
+        #if no data found for attribute, set it's value to NA
+        for attribute in iso.country.attributes:
+            if not (attribute in all_country_data[alpha2]):
+                all_country_data[alpha2][attribute] = "NA"
 
         #sort subdivision codes in json objects in natural alphabetical/numerical order using natsort library
         all_country_data[alpha2]["subdivisions"] = dict(OrderedDict(natsort.natsorted(all_country_data[alpha2]["subdivisions"].items())))

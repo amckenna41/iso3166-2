@@ -1,4 +1,5 @@
 import iso3166
+import iso3166_2 as iso
 import os
 import json
 import flag
@@ -51,12 +52,12 @@ def check_iso3166_2_main(request):
     which is the data source for the iso3166-2 Python package and accompanying API.
 
     Parameters
-    ----------
+    ==========
     :request : flask.Request
         Flask request object.
     
     Returns
-    -------
+    =======
     :success_message/error_message : json
        jsonified response indicating whether the Function has completed successfully or
        an error has arose during execution.
@@ -170,14 +171,14 @@ def export_iso3166_2(alpha2_codes="", verbose=1):
     taken from the same function in the get_iso3166_2.py script.
 
     Parameters
-    ----------
+    ==========
     :alpha2_codes: str (default="")
         string of 1 or more 2 letter alpha-2 country codes to pull their latest ISO 3166 data.
     :verbose: int (default=1)
         Set to 1 to print out progress of export functionality, 0 will not print progress.
 
     Returns
-    -------
+    =======
     :all_country_data : dict
         object storing all exported ISO 3166 country data.
     """
@@ -187,12 +188,12 @@ def export_iso3166_2(alpha2_codes="", verbose=1):
         alpha-2 counterpart. 
 
         Parameters 
-        ----------
+        ==========
         :alpha3_code: str
             3 letter ISO 3166-1 alpha-3 country code.
         
         Returns
-        -------
+        =======
         :iso3166.countries_by_alpha3[alpha3_code].alpha2: str
             2 letter ISO 3166 alpha-2 country code. 
         """
@@ -312,6 +313,11 @@ def export_iso3166_2(alpha2_codes="", verbose=1):
                 elif (extension == 4):
                     all_country_data[alpha2]["subdivisions"][subd.code]["flag_url"] = None
 
+        #if no data found for attribute, set it's value to NA
+        for attribute in iso.country.attributes:
+            if not (attribute in all_country_data[alpha2]):
+                all_country_data[alpha2][attribute] = "NA"
+
         #sort subdivision codes in json objects in natural alphabetical/numerical order using natsort library
         all_country_data[alpha2]["subdivisions"] = dict(OrderedDict(natsort.natsorted(all_country_data[alpha2]["subdivisions"].items())))
     
@@ -338,7 +344,7 @@ def update_json(current_iso3166_2, latest_iso3166_2):
     communicating the latest updates.
 
     Parameters
-    ----------
+    ==========
     :current_iso3166_2 : dict
         object with all the current ISO 3166 data that is currently used in the 
         software and API.
@@ -347,7 +353,7 @@ def update_json(current_iso3166_2, latest_iso3166_2):
         data sources from the export_iso3166_2() function.
 
     Returns
-    -------
+    =======
     :updates_found : bool
         bool to track if updates/changes have been found in ISO 3166 objects.
     :updated_json : dict 
@@ -415,7 +421,7 @@ def create_github_issue(individual_iso3166_2_updates, previous_iso3166_updates):
     clearly outline any of the updates/changes to be made to the JSONs.
 
     Parameters
-    ----------
+    ==========
     :individual_iso3166_2_updates : dict
         object of all the new/missing individual country data found from the 
         update_json() function.
@@ -425,11 +431,11 @@ def create_github_issue(individual_iso3166_2_updates, previous_iso3166_updates):
         create_github_issue() function.
 
     Returns
-    -------
+    =======
     None
 
     References
-    ----------
+    ==========
     [1]: https://developer.github.com/v3/issues/#create-an-issue
     """
     issue_json = {}

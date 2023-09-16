@@ -11,7 +11,7 @@ class ISO3166_2_Tests(unittest.TestCase):
     Test suite for testing the iso3166-2 Python software package. 
 
     Test Cases
-    ----------
+    ==========
     test_iso3166_2_metadata:
         testing correct software metdata for the iso3166-2 package. 
     test_iso3166_2:
@@ -30,7 +30,7 @@ class ISO3166_2_Tests(unittest.TestCase):
         """ Initialise test variables, import json. """
         #initalise User-agent header for requests library 
         # self.__version__ = metadata('iso3166-2')['version']
-        self.__version__ = "1.1.0"
+        self.__version__ = "1.2.1"
         self.user_agent_header = {'User-Agent': 'iso3166-2/{} ({}; {})'.format(self.__version__,
                                             'https://github.com/amckenna41/iso3166-2', getpass.getuser())}
     
@@ -47,7 +47,7 @@ class ISO3166_2_Tests(unittest.TestCase):
 
     def test_iso3166_2_metadata(self): 
         """ Testing correct iso3166-2 software version and metadata. """
-        self.assertEqual(metadata('iso3166-2')['version'], "1.2.1", 
+        self.assertEqual(metadata('iso3166-2')['version'], "1.2.2", 
             "iso3166-2 version is not correct, got: {}.".format(metadata('iso3166-2')['version']))
         self.assertEqual(metadata('iso3166-2')['name'], "iso3166-2", 
             "iso3166-2 software name is not correct, got: {}.".format(metadata('iso3166-2')['name']))
@@ -72,15 +72,15 @@ class ISO3166_2_Tests(unittest.TestCase):
             "Expected alpha-2 attribute to be a list, got {}.".format(type(iso.country.alpha2)))
         self.assertEqual(len(iso.country.alpha2), 250, 
             "Expected 250 alpha-2 codes, got {}.".format(len(iso.country.alpha2)))
-        self.assertIsInstance(iso.country.alpha3, list, 
-            "Expected alpha-3 attribute to be a list, got {}.".format(type(iso.country.alpha3)))
-        self.assertEqual(len(iso.country.alpha3), 250, 
-            "Expected 250 alpha-3 codes, got {}.".format(len(iso.country.alpha3)))
         self.assertIsInstance(iso.country.all_iso3166_2_data, dict,
             "Expected ISO 3166-2 data object to be a dict, got {}.".format(type(iso.country.all_iso3166_2_data)))
         self.assertEqual(len(iso.country.all_iso3166_2_data), 250, 
             "Expected 250 countrys in ISO 3166-2 data object, got {}.".format(len(iso.country.all_iso3166_2_data)))       
         self.assertTrue(iso.country.using_country_data, "Expected boolean attribute to be True.")
+        self.assertIsInstance(iso.country.attributes, list, "Expected attributes class variable to be a list, got {}.".format(type(iso.country.attributes)))
+        self.assertEqual(set(iso.country.attributes), set(self.correct_output_cols), "List of attributes in class do not match expected.")
+        # for attribute in iso.country.attributes:
+        #     self.assertIn(attribute, self.correct_output_cols, "Attribute {} not found in list of correct attributes\n{}".format(attribute, self.correct_output_cols))
         for code in iso.country.all_iso3166_2_data:
             self.assertIn(code, iso.country.alpha2,
                 "Alpha-2 code {} not found in list of available 2 letter codes.".format(code))
@@ -90,15 +90,13 @@ class ISO3166_2_Tests(unittest.TestCase):
             "Expected alpha-2 attribute to be a list, got {}.".format(type(iso.subdivisions.alpha2)))
         self.assertEqual(len(iso.subdivisions.alpha2), 250, 
             "Expected 250 alpha-2 codes, got {}.".format(len(iso.subdivisions.alpha2)))
-        self.assertIsInstance(iso.subdivisions.alpha3, list, 
-            "Expected alpha-3 attribute to be a list, got {}.".format(type(iso.country.alpha3)))
-        self.assertEqual(len(iso.subdivisions.alpha3), 250, 
-            "Expected 250 alpha-3 codes, got {}.".format(len(iso.subdivisions.alpha3)))
         self.assertIsInstance(iso.subdivisions.all_iso3166_2_data, dict,
             "Expected ISO3166-2 data object to be a dict, got {}.".format(type(iso.subdivisions.all_iso3166_2_data)))
         self.assertEqual(len(iso.subdivisions.all_iso3166_2_data), 250, 
             "Expected 250 countrys in ISO3166-2 data object, got {}.".format(len(iso.subdivisions.all_iso3166_2_data)))       
         self.assertFalse(iso.subdivisions.using_country_data, "Expected boolean attribute to be False.")
+        self.assertIsInstance(iso.subdivisions.attributes, list, "Expected attributes class variable to be a list, got {}.".format(type(iso.subdivisions.attributes)))
+        self.assertEqual(set(iso.subdivisions.attributes), set(self.correct_output_cols), "List of attributes in class do not match expected.")
         for code in iso.subdivisions.all_iso3166_2_data:
             self.assertIn(code, iso.subdivisions.alpha2,
                 "Alpha-2 code {} not found in list of available 2 letter codes.".format(code))
@@ -113,7 +111,7 @@ class ISO3166_2_Tests(unittest.TestCase):
         test_alpha2_irn_jam_kaz = iso.country["IRN, JAM, KAZ"] #Iran, Jamaica, Kazakhstan
 #1.)    
         self.assertIsInstance(test_alpha2_au, dict, "Expected output to be type dict, got {}.".format(type(test_alpha2_au)))
-        self.assertEqual(len(test_alpha2_au), 35, "Expected 35 keys/attributes in output dict, got {}.".format(len(test_alpha2_au)))
+        self.assertEqual(len(test_alpha2_au), 36, "Expected 36 keys/attributes in output dict, got {}.".format(len(test_alpha2_au)))
         self.assertEqual(test_alpha2_au.name.common, "Australia", "Name expected to be Australia, got {}.".format(test_alpha2_au.name.common))        
         self.assertEqual(test_alpha2_au.cca2, "AU", "Expected alpha-2 code to be AU, got {}.".format(test_alpha2_au.cca2))        
         self.assertEqual(test_alpha2_au.cca3, "AUS", "Expected alpha-3 code to be AUS, got {}.".format(test_alpha2_au.cca3))         
@@ -147,7 +145,7 @@ class ISO3166_2_Tests(unittest.TestCase):
             self.assertIn(col, self.correct_output_cols, "Column {} not found in list of correct columns.".format(col))
 #3.)
         self.assertIsInstance(test_alpha2_mg, dict, "Expected output to be type dict, got {}.".format(type(test_alpha2_mg)))
-        self.assertEqual(len(test_alpha2_mg), 35, "Expected 35 keys/attributes in output dict, got {}.".format(len(test_alpha2_mg)))
+        self.assertEqual(len(test_alpha2_mg), 36, "Expected 36 keys/attributes in output dict, got {}.".format(len(test_alpha2_mg)))
         self.assertEqual(test_alpha2_mg.name.common, "Madagascar", "Name expected to be Madagascar, got {}.".format(test_alpha2_mg.name.common))           
         self.assertEqual(test_alpha2_mg.cca2, "MG", "Expected alpha-2 code to be MG, got {}.".format(test_alpha2_mg.cca2))    
         self.assertEqual(test_alpha2_mg.cca3, "MDG", "Expected alpha-3 code to be MDG, got {}.".format(test_alpha2_mg.cca3))          
@@ -164,7 +162,7 @@ class ISO3166_2_Tests(unittest.TestCase):
             self.assertIn(col, self.correct_output_cols, "Column {} not found in list of correct columns.".format(col))
 #4.)
         self.assertIsInstance(test_alpha2_om, dict, "Expected output to be type dict, got {}.".format(type(test_alpha2_om)))
-        self.assertEqual(len(test_alpha2_om), 35, "Expected 35 keys/attributes in output dict, got {}.".format(len(test_alpha2_om)))
+        self.assertEqual(len(test_alpha2_om), 36, "Expected 36 keys/attributes in output dict, got {}.".format(len(test_alpha2_om)))
         self.assertEqual(test_alpha2_om.name.common, "Oman", "Name expected to be Oman, got {}.".format(test_alpha2_om.name.common))   
         self.assertEqual(test_alpha2_om.cca2, "OM", "Expected alpha-2 code to be OM, got {}.".format(test_alpha2_om.cca2))         
         self.assertEqual(test_alpha2_om.cca3, "OMN", "Expected alpha-2 code to be OMN, got {}.".format(test_alpha2_om.cca2))          
@@ -182,7 +180,7 @@ class ISO3166_2_Tests(unittest.TestCase):
 #5.)    
         self.assertIsInstance(test_alpha2_tt_sd_uy, dict, "Expected output to be type dict, got {}.".format(type(test_alpha2_tt_sd_uy)))
         self.assertEqual(list(test_alpha2_tt_sd_uy.keys()), ["TT", "SD", "UY"], "Expected output to contain keys TT, SD and UY, got {}.".format(list(test_alpha2_tt_sd_uy.keys())))
-        self.assertEqual(len(test_alpha2_tt_sd_uy["TT"]), 34, "Expected 34 keys/attributes in output dict, got {}.".format(len(test_alpha2_tt_sd_uy["TT"])))
+        self.assertEqual(len(test_alpha2_tt_sd_uy["TT"]), 36, "Expected 36 keys/attributes in output dict, got {}.".format(len(test_alpha2_tt_sd_uy["TT"])))
         self.assertEqual(len(test_alpha2_tt_sd_uy["SD"]), 36, "Expected 36 keys/attributes in output dict, got {}.".format(len(test_alpha2_tt_sd_uy["SD"])))
         self.assertEqual(len(test_alpha2_tt_sd_uy["UY"]), 36, "Expected 36 keys/attributes in output dict, got {}.".format(len(test_alpha2_tt_sd_uy["UY"])))
         self.assertEqual(test_alpha2_tt_sd_uy["TT"].name.common, "Trinidad and Tobago", "Name expected to be Trinidad and Tabago, got {}.".format(test_alpha2_tt_sd_uy["TT"].name.common))   
@@ -198,7 +196,7 @@ class ISO3166_2_Tests(unittest.TestCase):
         self.assertIsInstance(test_alpha2_irn_jam_kaz, dict, "Expected output to be type dict, got {}.".format(type(test_alpha2_irn_jam_kaz)))
         self.assertEqual(list(test_alpha2_irn_jam_kaz.keys()), ["IR", "JM", "KZ"], "Expected output to contain keys IR, JM and KZ, got {}.".format(list(test_alpha2_irn_jam_kaz.keys())))
         self.assertEqual(len(test_alpha2_irn_jam_kaz["IR"]), 36, "Expected 36 keys/attributes in output dict, got {}.".format(len(test_alpha2_irn_jam_kaz["IR"])))
-        self.assertEqual(len(test_alpha2_irn_jam_kaz["JM"]), 34, "Expected 34 keys/attributes in output dict, got {}.".format(len(test_alpha2_irn_jam_kaz["JM"])))
+        self.assertEqual(len(test_alpha2_irn_jam_kaz["JM"]), 36, "Expected 36 keys/attributes in output dict, got {}.".format(len(test_alpha2_irn_jam_kaz["JM"])))
         self.assertEqual(len(test_alpha2_irn_jam_kaz["KZ"]), 36, "Expected 36 keys/attributes in output dict, got {}.".format(len(test_alpha2_irn_jam_kaz["KZ"])))
         self.assertEqual(test_alpha2_irn_jam_kaz["IR"].name.common, "Iran", "Name expected to be Iran, got {}.".format(test_alpha2_irn_jam_kaz["IR"].name.common))   
         self.assertEqual(test_alpha2_irn_jam_kaz["JM"].name.common, "Jamaica", "Name expected to be Jamaica, got {}.".format(test_alpha2_irn_jam_kaz["JM"].name.common))   

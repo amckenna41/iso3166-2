@@ -9,7 +9,7 @@ class ISO3166_2_API_Tests(unittest.TestCase):
     Test suite for testing ISO 3166-2 api created to accompany the iso3166-2 Python software package. 
 
     Test Cases
-    ----------
+    ==========
     test_alpha2:
         testing correct objects are returned from /alpha2 API endpoint using a variety of inputs.
     test_name:

@@ -20,13 +20,25 @@ class ISO3166_2():
     ISO 3166-1 standard.
     
     Parameters
-    ----------
+    ==========
     :iso3166_json_filename : str (default=iso3166-2-min.json)
         filename of iso3166-2 JSON data to import from data folder. Can either be the
         iso3166-2-min or iso3166-2 JSON files. 
+    
+    Methods
+    =======
+    subdivision_codes(alpha2_code=""):
+        return a list or dict of all ISO 3166-2 subdivision codes for one or more
+        countries specified by their 2 letter alpha-2 code.
+    subdivision_names(alpha2_code=""):
+        return a list or dict of all ISO 3166-2 subdivision names for one or more
+        countries specified by their 2 letter alpha-2 code.
+    __getitem__(alpha2_code):
+        return all of a ISO 3166 country's and subdivision data by making the class
+        subscriptable, according to its 2 letter alpha-2 code.
 
     Usage
-    -----
+    =====
     import iso3166_2 as iso
 
     #get ALL country data (including subdivision data) for Ireland, Colombia, Denmark and Finland
@@ -79,7 +91,8 @@ class ISO3166_2():
         #get list of all countries by 2 letter alpha-2 code
         self.alpha2 = sorted(list(iso3166.countries_by_alpha2.keys()))
         
-        self.attributes = list(self.all_iso3166_2_data["IE"])
+        #list of data attributes available for each country
+        self.attributes = list(self.all_iso3166_2_data[next(self.all_iso3166_2_data)])
 
     def subdivision_codes(self, alpha2_code=""):
         """
@@ -93,13 +106,13 @@ class ISO3166_2():
         error.
 
         Parameters
-        ----------
+        ==========
         :alpha2_code: str (default="")
             2 letter ISO 3166-1 alpha-2 code for country. The 3 letter alpha-3 country
             code can also be accepted.
         
         Returns
-        -------
+        =======
         :list / dict
             list of a country's ISO 3166-2 subdivision codes. Or dict of all country's
             subdivision names if no value passed into parameter.
@@ -160,12 +173,12 @@ class ISO3166_2():
         invalid country code input then raise error.
 
         Parameters
-        ----------
+        ==========
         :alpha2_code: str (default="")
             one or more 2 letter ISO 3166-1 alpha-2 codes for input countries.
         
         Returns
-        -------
+        =======
         :list / dict
             list or dict of input country's subdivision names, if no value passed into 
             parameter then all country subdivision name data is returned.
@@ -225,7 +238,7 @@ class ISO3166_2():
         If no value input then an error is raised.
 
         Parameters
-        ----------
+        ==========
         :alpha2_code : str
             2 letter alpha-2 code for sought country/territory e.g (AD, EG, DE).
             Multiple country codes can be input in a comma seperated list. Can 
@@ -234,12 +247,12 @@ class ISO3166_2():
             error will be raised
 
         Returns
-        -------
+        =======
         :country[alpha2_code]: dict
             dict object of country/subdivision info for inputted alpha2_code.
 
         Usage
-        -----
+        =====
         import iso3166_2 as iso
 
         #get country & subdivision info for Ethiopia
@@ -318,12 +331,12 @@ def convert_to_alpha2(alpha3_code):
     code into its 2 letter alpha-2 counterpart. 
 
     Parameters 
-    ----------
+    ==========
     :alpha3_code: str
         3 letter ISO 3166-1 alpha-3 country code.
     
     Returns
-    -------
+    =======
     :iso3166.countries_by_alpha3[alpha3_code].alpha2: str
         2 letter ISO 3166 alpha-2 country code. 
     """
@@ -340,13 +353,13 @@ class Map(dict):
     members of the dictionary. 
 
     Parameters
-    ----------
+    ==========
     :dict
         input dictionary to convert into instance of map class so the keys/vals
         can be accessed via dot notation.
 
     Usage
-    -----
+    =====
     # create instance of map class
     m = Map({'first_name': 'Eduardo'}, last_name='Pool', age=24, sports=['Soccer'])
     # Add new key
@@ -363,7 +376,7 @@ class Map(dict):
     del m['new_key']
 
     References
-    ----------
+    ==========
     [1]: https://stackoverflow.com/questions/2352181/how-to-use-a-dot-to-access-members-of-dictionary
     """
     def __init__(self, *args, **kwargs):
