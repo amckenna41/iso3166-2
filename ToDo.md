@@ -57,7 +57,6 @@
 - [X] Country names with spaces arent working on API.
 - [X] Run vulture library to search package and remove any unused code/vars.
 - [ ] Pull request for django-countries (https://github.com/SmileyChris/django-countries/tree/main)
-- [ ] Geodjango.
 - [X] Go over check_for_updates function, remove any instances of min object as it derives from main object.
 - [X] In api unit tests, change test_request var to something more intuitive .
 - [X] Reorder subdivision codes such that order doesn't go e.g. PA-1, PA-10, PA-2, PA,3 etc is incorrect.
@@ -108,4 +107,5 @@
 - [X] Add some unit tests in for some country attributes that = NA.
 - [ ] For each country and subdision, add its bounds in latlng?
 - [X] Mention 36 data attributes supported.
+- [X] Add 🧪 to test folders and desc
 <!-- https://github.com/smucode/react-world-flags -->

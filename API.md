@@ -23,8 +23,8 @@ Requirements
 * [google-cloud-storage][google-cloud-storage] >= 2.8.0
 * [google-api-python-client][google-api-python-client] >= 2.86.0
 
-Get All ISO 3166-2 updates for all countries
--------------------------------------------
+Get All ISO 3166 updates for all countries
+------------------------------------------
 ### Request
 `GET /`
 

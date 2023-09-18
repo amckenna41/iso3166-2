@@ -1,4 +1,4 @@
-# iso3166-2 Tests <a name="TOP"></a>
+# iso3166-2 Tests 🧪 <a name="TOP"></a>
 
 All of the modules and functionalities of iso3166-2 are thoroughly tested using the Python [unittest][unittest] framework.
 ## Module tests:

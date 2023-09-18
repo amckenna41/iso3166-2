@@ -4,16 +4,16 @@ import json
 import argparse
 import requests
 import getpass
+from importlib.metadata import metadata
 import pycountry
 import iso3166
-import iso3166_2 as iso
 import googlemaps
 from tqdm import tqdm
 import natsort
 from collections import OrderedDict
 
 #initialise version 
-__version__ = "1.2.2"
+__version__ = metadata('iso3166-2')['version']
 
 #initalise User-agent header for requests library 
 USER_AGENT_HEADER = {'User-Agent': 'iso3166-2/{} ({}; {})'.format(__version__,
@@ -28,7 +28,7 @@ attribute_list = [
     "continents", "currencies", "demonyms", "fifa", "flag", "flags", "gini", "idd", "independent", "landlocked",
     "languages", "latlng", "maps", "name", "population", "postalCode", "region", "startOfWeek", "status", 
     "subdivisions", "subregion", "timezones", "tld", "translations", "unMember"
-]
+    ]
 
 def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", json_filename="test-iso3166-2", verbose=1):
     """
@@ -42,9 +42,9 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
     ==========
     :alpha2_codes: str (default="")
         string of 1 or more 2 letter alpha-2 country codes to pull their latest ISO 3166-2 data.
-    :output_folder : str (default="iso3166-2-output")
+    :output_folder: str (default="iso3166-2-output")
         output folder to store exported iso3166-2 jsons.
-    :json_filename : str (default="iso3166-2")
+    :json_filename: str (default="iso3166-2")
         filename for both country data json exports. 
     :verbose: int (default=1)
         Set to 1 to print out progress of export functionality, 0 will not print progress.
