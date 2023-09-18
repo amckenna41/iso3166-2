@@ -15,7 +15,7 @@
   <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/ISO_Logo_%28Red_square%29.svg" alt="iso" height="300" width="400"/> -->
 </div>
 
-> iso3166-2 is a lightweight custom-built Python wrapper, and accompanying API, for the RestCountries API (https://restcountries.com/) which includes an abundance of information about all ISO 3166 countries/territories 🌎. But this package also includes information about all countrys' ISO 3166-2 subdivision codes & names, which is absent from RestCountries. Currently, the package and API supports data from 250 countries/territories, according to the ISO 3166-1 standard. The full list of attributes that are supported can be seen in the [ATTRIBUTES.md][attributes] file. Available via a Python software package or an API; a demo of both is available [here][demo]. There is also a demo available for the get_iso3166_2.py script that exports all the ISO 3166-2 from the various data sources, available [here][demo_get_iso3166_2].
+> iso3166-2 is a lightweight custom-built Python wrapper, and accompanying API, for the RestCountries API (https://restcountries.com/) which includes an abundance of information about all ISO 3166 countries/territories 🌎. But this package also includes information about all countrys' ISO 3166-2 subdivision codes & names, which is absent from RestCountries. Currently, the package and API supports data from 250 countries/territories, according to the ISO 3166-1 standard. The full list of 36 attributes that are supported by `iso3166-2` can be seen in the [ATTRIBUTES.md][attributes] file. Available via a Python software package or an API; a demo of both is available [here][demo]. There is also a demo available for the get_iso3166_2.py script that exports all the ISO 3166-2 from the various data sources, available [here][demo_get_iso3166_2].
 
 Table of Contents
 -----------------
@@ -117,7 +117,7 @@ Usage (get_iso3166_2.py)
 -----------------------
 The script `get_iso3166_2.py` is used for gathering and exporting all country and subdivision data to the mentioned JSONs. It uses the [restcountries api][rest] as well as the [pycountry][pycountry] and [googlemaps][googlemaps] packages to gather and export all the required info. Calling the script using its default parameters will gather all the data for all countries, but the <i>alpha2_codes</i> parameter can be set to pull the updates for a specific list of one or more countries (the alpha-3 code can also be input, which is then converted into its 2 letter alpha-2 counterpart).
 
-To download all of the latest ISO 3166-2 subdivision data for all countries, run the `get_iso3166_2.py` in a terminal or command line below; (the script takes around <em>2 hours</em> to execute):
+To download all of the latest ISO 3166-2 subdivision data for all countries, run the `get_iso3166_2.py` in a terminal or command line below; (the script takes around <em>1 hour 45</em> to execute):
 
 ```bash
 python3 get_iso3166_2.py --json_filename=iso3166_2.json --output_folder=iso3166_2 --verbose

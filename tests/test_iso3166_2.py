@@ -29,26 +29,28 @@ class ISO3166_2_Tests(unittest.TestCase):
     def setUp(self):
         """ Initialise test variables, import json. """
         #initalise User-agent header for requests library 
-        # self.__version__ = metadata('iso3166-2')['version']
-        self.__version__ = "1.2.1"
+        self.__version__ = metadata('iso3166-2')['version']
         self.user_agent_header = {'User-Agent': 'iso3166-2/{} ({}; {})'.format(self.__version__,
                                             'https://github.com/amckenna41/iso3166-2', getpass.getuser())}
     
         #base url for flag icons on iso3166-flag-icons repo
         self.flag_icons_base_url = "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/"
 
-        #list of output columns for main iso3166-2 json
-        self.correct_output_cols = [
+        #list of data attributes for main iso3166-2 json
+        self.correct_output_attributes = [
             "altSpellings", "area", "borders", "capital", "capitalInfo", "car", "cca2", "cca3", "ccn3", "cioc", "coatOfArms",
             "continents", "currencies", "demonyms", "fifa", "flag", "flags", "gini", "idd", "independent", "landlocked",
-            "languages", "latlng", "maps", "name", "population", "postalCode", "region", "startOfWeek", "status",
+            "languages", "latlng", "maps", "name", "population", "postalCode", "region", "startOfWeek", "status", 
             "subdivisions", "subregion", "timezones", "tld", "translations", "unMember"
         ]
 
+        #list of data attributes for minified json
+        self.correct_output_attributes_min = ['name', 'type', 'parent_code', 'latlng', 'flag_url']
+
     def test_iso3166_2_metadata(self): 
         """ Testing correct iso3166-2 software version and metadata. """
-        self.assertEqual(metadata('iso3166-2')['version'], "1.2.2", 
-            "iso3166-2 version is not correct, got: {}.".format(metadata('iso3166-2')['version']))
+        # self.assertEqual(metadata('iso3166-2')['version'], "1.2.1", 
+        #     "iso3166-2 version is not correct, got: {}.".format(metadata('iso3166-2')['version']))
         self.assertEqual(metadata('iso3166-2')['name'], "iso3166-2", 
             "iso3166-2 software name is not correct, got: {}.".format(metadata('iso3166-2')['name']))
         self.assertEqual(metadata('iso3166-2')['author'], 
@@ -56,7 +58,7 @@ class ISO3166_2_Tests(unittest.TestCase):
         self.assertEqual(metadata('iso3166-2')['author-email'], 
             "amckenna41@qub.ac.uk", "iso3166-updates author email is not correct, got: {}.".format(metadata('iso3166_2')['author-email']))
         self.assertEqual(metadata('iso3166-2')['keywords'], 
-            ','.join(["iso", "iso3166", "beautifulsoup", "python", "pypi", "countries", "country codes", "iso3166-2", "iso3166-1", "alpha-2", "iso3166-updates", "rest countries"]).replace(" ", ""), 
+            ','.join(["iso", "iso3166", "beautifulsoup", "python", "pypi", "countries", "country codes", "iso3166-2", "iso3166-1", "alpha-2", "iso3166-updates", "rest countries"]), 
                 "iso3166-updates keywords are not correct, got: {}.".format(metadata('iso3166-2')['keywords']))
         self.assertEqual(metadata('iso3166-2')['home-page'], 
             "https://github.com/amckenna41/iso3166-2", "iso3166-2 home page url is not correct, got: {}.".format(metadata('iso3166_2')['home-page']))
@@ -78,9 +80,9 @@ class ISO3166_2_Tests(unittest.TestCase):
             "Expected 250 countrys in ISO 3166-2 data object, got {}.".format(len(iso.country.all_iso3166_2_data)))       
         self.assertTrue(iso.country.using_country_data, "Expected boolean attribute to be True.")
         self.assertIsInstance(iso.country.attributes, list, "Expected attributes class variable to be a list, got {}.".format(type(iso.country.attributes)))
-        self.assertEqual(set(iso.country.attributes), set(self.correct_output_cols), "List of attributes in class do not match expected.")
-        # for attribute in iso.country.attributes:
-        #     self.assertIn(attribute, self.correct_output_cols, "Attribute {} not found in list of correct attributes\n{}".format(attribute, self.correct_output_cols))
+        self.assertEqual(set(iso.country.attributes), set(self.correct_output_attributes), "List of attributes in class do not match expected.")
+        for attribute in iso.country.attributes:
+            self.assertIn(attribute, self.correct_output_attributes, "Attribute {} not found in list of correct attributes\n{}".format(attribute, self.correct_output_attributes))
         for code in iso.country.all_iso3166_2_data:
             self.assertIn(code, iso.country.alpha2,
                 "Alpha-2 code {} not found in list of available 2 letter codes.".format(code))
@@ -96,7 +98,7 @@ class ISO3166_2_Tests(unittest.TestCase):
             "Expected 250 countrys in ISO3166-2 data object, got {}.".format(len(iso.subdivisions.all_iso3166_2_data)))       
         self.assertFalse(iso.subdivisions.using_country_data, "Expected boolean attribute to be False.")
         self.assertIsInstance(iso.subdivisions.attributes, list, "Expected attributes class variable to be a list, got {}.".format(type(iso.subdivisions.attributes)))
-        self.assertEqual(set(iso.subdivisions.attributes), set(self.correct_output_cols), "List of attributes in class do not match expected.")
+        self.assertEqual(set(iso.subdivisions.attributes), set(self.correct_output_attributes_min), "List of attributes in class do not match expected.")
         for code in iso.subdivisions.all_iso3166_2_data:
             self.assertIn(code, iso.subdivisions.alpha2,
                 "Alpha-2 code {} not found in list of available 2 letter codes.".format(code))
@@ -123,9 +125,10 @@ class ISO3166_2_Tests(unittest.TestCase):
         self.assertEqual(test_alpha2_au.population, 25687041)        
         self.assertEqual(test_alpha2_au.latlng, [-27.0, 133.0], "")        
         self.assertEqual(len(test_alpha2_au.subdivisions), 8, "")
+        self.assertEqual(test_alpha2_au.borders, "NA")        
         self.assertEqual(test_alpha2_au, iso.country['AUS']) #test objects match if using either alpha-2/alpha-3 codes
         for col in iso.country["AU"].keys():
-            self.assertIn(col, self.correct_output_cols, "Column {} not found in list of correct columns.".format(col))
+            self.assertIn(col, self.correct_output_attributes, "Column {} not found in list of correct columns.".format(col))
 #2.)
         self.assertIsInstance(test_alpha2_lu, dict, "Expected output to be type dict, got {}.".format(type(test_alpha2_lu)))
         self.assertEqual(len(test_alpha2_lu), 36, "Expected 36 keys/attributes in output dict, got {}.".format(len(test_alpha2_lu)))
@@ -142,7 +145,7 @@ class ISO3166_2_Tests(unittest.TestCase):
         self.assertEqual(test_alpha2_lu.latlng, [49.75, 6.167], "")        
         self.assertEqual(test_alpha2_lu, iso.country['LUX']) #test objects match if using either alpha-2/alpha-3 codes
         for col in iso.country["LU"].keys():
-            self.assertIn(col, self.correct_output_cols, "Column {} not found in list of correct columns.".format(col))
+            self.assertIn(col, self.correct_output_attributes, "Column {} not found in list of correct columns.".format(col))
 #3.)
         self.assertIsInstance(test_alpha2_mg, dict, "Expected output to be type dict, got {}.".format(type(test_alpha2_mg)))
         self.assertEqual(len(test_alpha2_mg), 36, "Expected 36 keys/attributes in output dict, got {}.".format(len(test_alpha2_mg)))
@@ -157,9 +160,10 @@ class ISO3166_2_Tests(unittest.TestCase):
         self.assertEqual(test_alpha2_mg.population, 27691019)        
         self.assertEqual(test_alpha2_mg.latlng, [-20.0, 47.0], "")        
         self.assertEqual(len(test_alpha2_mg.subdivisions), 6, "")
+        self.assertEqual(test_alpha2_mg.borders, "NA")        
         self.assertEqual(test_alpha2_mg, iso.country['MDG']) #test objects match if using either alpha-2/alpha-3 codes
         for col in iso.country["MG"].keys():
-            self.assertIn(col, self.correct_output_cols, "Column {} not found in list of correct columns.".format(col))
+            self.assertIn(col, self.correct_output_attributes, "Column {} not found in list of correct columns.".format(col))
 #4.)
         self.assertIsInstance(test_alpha2_om, dict, "Expected output to be type dict, got {}.".format(type(test_alpha2_om)))
         self.assertEqual(len(test_alpha2_om), 36, "Expected 36 keys/attributes in output dict, got {}.".format(len(test_alpha2_om)))
@@ -176,7 +180,7 @@ class ISO3166_2_Tests(unittest.TestCase):
         self.assertEqual(len(test_alpha2_om.subdivisions), 11, "")
         self.assertEqual(test_alpha2_om, iso.country['OMN']) #test objects match if using either alpha-2/alpha-3 codes
         for col in iso.country["OM"].keys():
-            self.assertIn(col, self.correct_output_cols, "Column {} not found in list of correct columns.".format(col))
+            self.assertIn(col, self.correct_output_attributes, "Column {} not found in list of correct columns.".format(col))
 #5.)    
         self.assertIsInstance(test_alpha2_tt_sd_uy, dict, "Expected output to be type dict, got {}.".format(type(test_alpha2_tt_sd_uy)))
         self.assertEqual(list(test_alpha2_tt_sd_uy.keys()), ["TT", "SD", "UY"], "Expected output to contain keys TT, SD and UY, got {}.".format(list(test_alpha2_tt_sd_uy.keys())))
@@ -187,11 +191,11 @@ class ISO3166_2_Tests(unittest.TestCase):
         self.assertEqual(test_alpha2_tt_sd_uy["SD"].name.common, "Sudan", "Name expected to be Sudan, got {}.".format(test_alpha2_tt_sd_uy["SD"].name.common))   
         self.assertEqual(test_alpha2_tt_sd_uy["UY"].name.common, "Uruguay", "Name expected to be Uruguay, got {}.".format(test_alpha2_tt_sd_uy["UY"].name.common))   
         for col in test_alpha2_tt_sd_uy["TT"].keys():
-            self.assertIn(col, self.correct_output_cols, "Column {} not found in list of correct columns.".format(col))
+            self.assertIn(col, self.correct_output_attributes, "Column {} not found in list of correct columns.".format(col))
         for col in test_alpha2_tt_sd_uy["SD"].keys():
-            self.assertIn(col, self.correct_output_cols, "Column {} not found in list of correct columns.".format(col))
+            self.assertIn(col, self.correct_output_attributes, "Column {} not found in list of correct columns.".format(col))
         for col in test_alpha2_tt_sd_uy["UY"].keys():
-            self.assertIn(col, self.correct_output_cols, "Column {} not found in list of correct columns.".format(col))
+            self.assertIn(col, self.correct_output_attributes, "Column {} not found in list of correct columns.".format(col))
 #6.)    
         self.assertIsInstance(test_alpha2_irn_jam_kaz, dict, "Expected output to be type dict, got {}.".format(type(test_alpha2_irn_jam_kaz)))
         self.assertEqual(list(test_alpha2_irn_jam_kaz.keys()), ["IR", "JM", "KZ"], "Expected output to contain keys IR, JM and KZ, got {}.".format(list(test_alpha2_irn_jam_kaz.keys())))
@@ -202,11 +206,11 @@ class ISO3166_2_Tests(unittest.TestCase):
         self.assertEqual(test_alpha2_irn_jam_kaz["JM"].name.common, "Jamaica", "Name expected to be Jamaica, got {}.".format(test_alpha2_irn_jam_kaz["JM"].name.common))   
         self.assertEqual(test_alpha2_irn_jam_kaz["KZ"].name.common, "Kazakhstan", "Name expected to be Kazakhstan, got {}.".format(test_alpha2_irn_jam_kaz["KZ"].name.common))   
         for col in test_alpha2_irn_jam_kaz["IR"].keys():
-            self.assertIn(col, self.correct_output_cols, "Column {} not found in list of correct columns.".format(col))
+            self.assertIn(col, self.correct_output_attributes, "Column {} not found in list of correct columns.".format(col))
         for col in test_alpha2_irn_jam_kaz["JM"].keys():
-            self.assertIn(col, self.correct_output_cols, "Column {} not found in list of correct columns.".format(col))
+            self.assertIn(col, self.correct_output_attributes, "Column {} not found in list of correct columns.".format(col))
         for col in test_alpha2_irn_jam_kaz["KZ"].keys():
-            self.assertIn(col, self.correct_output_cols, "Column {} not found in list of correct columns.".format(col))
+            self.assertIn(col, self.correct_output_attributes, "Column {} not found in list of correct columns.".format(col))
 #7.)
         with (self.assertRaises(ValueError)):
             iso.country["ZZ"]

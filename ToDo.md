@@ -100,8 +100,12 @@
 - [X] Add iso3166-2.json filesize to readme.
 - [X] Create GCP_architecture for check_for_updates readme showing Cloud Function, scheduler and bucket.
 - [X] In check-for-updates, upload archive blob first.
-- [ ] If country doesnt have an attribute, add it to the dict and set to [] or {} - will have to recall script. Also need to update tests that do the len of output keys.
+- [X] If country doesnt have an attribute, add it to the dict and set to [] or {} - will have to recall script. Also need to update tests that do the len of output keys.
 - [ ] Look at latest pycountry dataset was updated, go through iso3166-updates from that time checking if the updates communicatied are implemented in the ISO 3166-2 objects.
 - [X] Change all comment underlining from "------" to "=======".
-- [ ] Add methods comments to iso3166-updates class.
+- [X] Fix self.attributes attribute in class.
+- [X] Rerun script and update Cloud Storage object as well **.
+- [X] Add some unit tests in for some country attributes that = NA.
+- [ ] For each country and subdision, add its bounds in latlng?
+- [X] Mention 36 data attributes supported.
 <!-- https://github.com/smucode/react-world-flags -->

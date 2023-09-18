@@ -22,6 +22,14 @@ USER_AGENT_HEADER = {'User-Agent': 'iso3166-2/{} ({}; {})'.format(__version__,
 #initialise google maps client 
 gmaps = googlemaps.Client(key=os.environ["GOOGLE_MAPS_API_KEY"])
 
+#list of data attributes supported by software
+attribute_list = [
+    "altSpellings", "area", "borders", "capital", "capitalInfo", "car", "cca2", "cca3", "ccn3", "cioc", "coatOfArms",
+    "continents", "currencies", "demonyms", "fifa", "flag", "flags", "gini", "idd", "independent", "landlocked",
+    "languages", "latlng", "maps", "name", "population", "postalCode", "region", "startOfWeek", "status", 
+    "subdivisions", "subregion", "timezones", "tld", "translations", "unMember"
+]
+
 def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", json_filename="test-iso3166-2", verbose=1):
     """
     Export the two ISO 3166-2 jsons with fields including all subdivision related data using the pycountry
@@ -158,7 +166,7 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
         #add all country data from rest countries api response to json object
         all_country_data[alpha2] = rest_countries_response.json()[0]
 
-        #round latitude/longitude coords to 3 d.p
+        #round latitude/longitude coords to 3 decimal places
         all_country_data[alpha2]["latlng"] = [round(all_country_data[alpha2]["latlng"][0], 3), round(all_country_data[alpha2]["latlng"][1], 3)]
 
         #round area (km^2) to nearest whole number
@@ -176,7 +184,7 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
             
             #get subdivision coordinates using googlemaps api python client
             gmaps_latlng = gmaps.geocode(subd.name + ", " + countryName, region=alpha2, language="en")
-
+            
             #set coordinates to None if not found using maps api, round to 3 decimal places
             if (gmaps_latlng != []):
                 subdivision_coords = [round(gmaps_latlng[0]['geometry']['location']['lat'], 3), round(gmaps_latlng[0]['geometry']['location']['lng'], 3)]
@@ -197,20 +205,20 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
 
             #list of flag file extensions in order of preference 
             flag_file_extensions = ['.svg', '.png', '.jpeg', '.jpg', '.gif']
-
+            
             #url to flag in iso3166-flag-icons repo
             alpha2_flag_url = flag_icons_base_url + alpha2 + "/" + subd.code
             
             #verify that path on flag icons repo exists, if not set flag url value to None
-            if (requests.get(alpha2_flag_url, headers=USER_AGENT_HEADER).status_code != 404):
+            if (requests.get(flag_icons_base_url + alpha2, headers=USER_AGENT_HEADER).status_code != 404):
                 
                 #iterate over all image extensions checking existence of flag in repo
                 for extension in range(0, len(flag_file_extensions)):
                     
                         #if subdivision has a valid flag in flag icons repo set to its GitHub url, else set to None
                         if (requests.get(alpha2_flag_url + flag_file_extensions[extension], headers=USER_AGENT_HEADER).status_code != 404):
-                            all_country_data[alpha2]["subdivisions"][subd.code]["flag_url"] = alpha2_flag_url
-                            all_country_data_min[alpha2][subd.code]["flag_url"] = alpha2_flag_url
+                            all_country_data[alpha2]["subdivisions"][subd.code]["flag_url"] = alpha2_flag_url + flag_file_extensions[extension]
+                            all_country_data_min[alpha2][subd.code]["flag_url"] = alpha2_flag_url + flag_file_extensions[extension]
                             break
                         elif (extension == 4):
                             all_country_data[alpha2]["subdivisions"][subd.code]["flag_url"] = None
@@ -219,9 +227,9 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
                     all_country_data[alpha2]["subdivisions"][subd.code]["flag_url"] = None
                     all_country_data_min[alpha2][subd.code]["flag_url"] = None
 
-        #if no data found for attribute, set it's value to NA
-        for attribute in iso.country.attributes:
-            if not (attribute in all_country_data[alpha2]):
+        #if attribute value found for country, set it's value to NA
+        for attribute in attribute_list:
+            if not (attribute in list(all_country_data[alpha2].keys())):
                 all_country_data[alpha2][attribute] = "NA"
 
         #sort subdivision codes in json objects in natural alphabetical/numerical order using natsort library

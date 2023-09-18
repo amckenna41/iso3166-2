@@ -59,6 +59,7 @@
             "svg": "https://flagcdn.com/ad.svg",
             "alt": "The flag of Andorra features three equal vertical bands of blue, yellow and red, with the coat of arms of Andorra centered in the yellow band."
         },
+        "gini": "NA",
         "idd": {
             "root": "+3",
             "suffixes": [
@@ -372,6 +373,7 @@
             }
         },
         "population": 9890400,
+        "postalCode": "NA",
         "region": "Asia",
         "startOfWeek": "sunday",
         "status": "officially-assigned",
@@ -622,6 +624,7 @@
             "svg": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Flag_of_the_Taliban.svg",
             "alt": "The flag of the Islamic Emirate of Afghanistan has a white field with Arabic inscriptions — the Shahada — in black across its center."
         },
+        "gini": "NA",
         "idd": {
             "root": "+9",
             "suffixes": [
@@ -662,6 +665,7 @@
             }
         },
         "population": 40218234,
+        "postalCode": "NA",
         "region": "Asia",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -1123,6 +1127,7 @@
             "AG"
         ],
         "area": 442,
+        "borders": "NA",
         "capital": [
             "Saint John's"
         ],
@@ -1172,6 +1177,7 @@
             "svg": "https://flagcdn.com/ag.svg",
             "alt": "The flag of Antigua and Barbuda has a red field with an inverted isosceles triangle based on the top edge and spanning the height of the field. This triangle has three horizontal bands of black, light blue and white, with the light blue band half the height of the two other bands. The top half of a golden-yellow sun is situated in the lower two-third of the black band to depict a rising sun."
         },
+        "gini": "NA",
         "idd": {
             "root": "+1",
             "suffixes": [
@@ -1202,6 +1208,7 @@
             }
         },
         "population": 97928,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -1403,6 +1410,7 @@
             "AI"
         ],
         "area": 91,
+        "borders": "NA",
         "capital": [
             "The Valley"
         ],
@@ -1421,6 +1429,7 @@
         "cca2": "AI",
         "cca3": "AIA",
         "ccn3": "660",
+        "cioc": "NA",
         "coatOfArms": {
             "png": "https://mainfacts.com/media/images/coats_of_arms/ai.png",
             "svg": "https://mainfacts.com/media/images/coats_of_arms/ai.svg"
@@ -1450,6 +1459,7 @@
             "png": "https://flagcdn.com/w320/ai.png",
             "svg": "https://flagcdn.com/ai.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+1",
             "suffixes": [
@@ -1480,6 +1490,7 @@
             }
         },
         "population": 13452,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -1691,6 +1702,7 @@
             }
         },
         "population": 2837743,
+        "postalCode": "NA",
         "region": "Europe",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -2345,6 +2357,7 @@
             }
         },
         "population": 32866268,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -2646,6 +2659,8 @@
             "AQ"
         ],
         "area": 14000000,
+        "borders": "NA",
+        "capital": "NA",
         "capitalInfo": {},
         "car": {
             "signs": [
@@ -2656,6 +2671,7 @@
         "cca2": "AQ",
         "cca3": "ATA",
         "ccn3": "010",
+        "cioc": "NA",
         "coatOfArms": {
             "png": "https://mainfacts.com/media/images/coats_of_arms/aq.png",
             "svg": "https://mainfacts.com/media/images/coats_of_arms/aq.svg"
@@ -2663,6 +2679,7 @@
         "continents": [
             "Antarctica"
         ],
+        "currencies": "NA",
         "demonyms": {
             "eng": {
                 "f": "Antarctican",
@@ -2673,14 +2690,17 @@
                 "m": "Antarcticain"
             }
         },
+        "fifa": "NA",
         "flag": "🇦🇶",
         "flags": {
             "png": "https://flagcdn.com/w320/aq.png",
             "svg": "https://flagcdn.com/aq.svg"
         },
+        "gini": "NA",
         "idd": {},
         "independent": false,
         "landlocked": false,
+        "languages": "NA",
         "latlng": [
             -90.0,
             0.0
@@ -2694,10 +2714,12 @@
             "official": "Antarctica"
         },
         "population": 1000,
+        "postalCode": "NA",
         "region": "Antarctic",
         "startOfWeek": "monday",
         "status": "officially-assigned",
         "subdivisions": {},
+        "subregion": "NA",
         "timezones": [
             "UTC-03:00",
             "UTC+03:00",
@@ -3079,8 +3101,8 @@
                 "type": "Province",
                 "parent_code": null,
                 "latlng": [
-                    -40.734,
-                    -66.618
+                    -40.01,
+                    -65.393
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/AR/AR-R.svg"
             },
@@ -3284,6 +3306,7 @@
             "Sāmoa Amelika"
         ],
         "area": 199,
+        "borders": "NA",
         "capital": [
             "Pago Pago"
         ],
@@ -3329,6 +3352,7 @@
             "png": "https://flagcdn.com/w320/as.png",
             "svg": "https://flagcdn.com/as.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+1",
             "suffixes": [
@@ -3364,6 +3388,7 @@
             }
         },
         "population": 55197,
+        "postalCode": "NA",
         "region": "Oceania",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -3793,6 +3818,7 @@
             "AU"
         ],
         "area": 7692024,
+        "borders": "NA",
         "capital": [
             "Canberra"
         ],
@@ -4087,6 +4113,7 @@
             "AW"
         ],
         "area": 180,
+        "borders": "NA",
         "capital": [
             "Oranjestad"
         ],
@@ -4132,6 +4159,7 @@
             "png": "https://flagcdn.com/w320/aw.png",
             "svg": "https://flagcdn.com/aw.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+2",
             "suffixes": [
@@ -4167,6 +4195,7 @@
             }
         },
         "population": 106766,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -4290,6 +4319,7 @@
             "Ahvenanmaa"
         ],
         "area": 1580,
+        "borders": "NA",
         "capital": [
             "Mariehamn"
         ],
@@ -4308,6 +4338,7 @@
         "cca2": "AX",
         "cca3": "ALA",
         "ccn3": "248",
+        "cioc": "NA",
         "coatOfArms": {
             "png": "https://mainfacts.com/media/images/coats_of_arms/ax.png",
             "svg": "https://mainfacts.com/media/images/coats_of_arms/ax.svg"
@@ -4331,11 +4362,13 @@
                 "m": "Ålandais"
             }
         },
+        "fifa": "NA",
         "flag": "🇦🇽",
         "flags": {
             "png": "https://flagcdn.com/w320/ax.png",
             "svg": "https://flagcdn.com/ax.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+3",
             "suffixes": [
@@ -4366,6 +4399,7 @@
             }
         },
         "population": 29458,
+        "postalCode": "NA",
         "region": "Europe",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -5281,8 +5315,8 @@
                 "type": "Rayon",
                 "parent_code": null,
                 "latlng": [
-                    39.913,
-                    46.794
+                    39.837,
+                    46.657
                 ],
                 "flag_url": null
             },
@@ -5736,6 +5770,7 @@
             "BB"
         ],
         "area": 430,
+        "borders": "NA",
         "capital": [
             "Bridgetown"
         ],
@@ -5785,6 +5820,7 @@
             "svg": "https://flagcdn.com/bb.svg",
             "alt": "The flag of Barbados is composed of three equal vertical bands of ultramarine, gold and ultramarine. The head of a black trident is centered in the gold band."
         },
+        "gini": "NA",
         "idd": {
             "root": "+1",
             "suffixes": [
@@ -6531,8 +6567,8 @@
                 "type": "District",
                 "parent_code": "BD-D",
                 "latlng": [
-                    23.778,
-                    88.631
+                    23.805,
+                    88.672
                 ],
                 "flag_url": null
             },
@@ -7434,6 +7470,7 @@
             }
         },
         "population": 20903278,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -7443,8 +7480,8 @@
                 "type": "Region",
                 "parent_code": null,
                 "latlng": [
-                    12.417,
-                    -3.42
+                    13.13,
+                    -3.369
                 ],
                 "flag_url": null
             },
@@ -7733,8 +7770,8 @@
                 "type": "Province",
                 "parent_code": "BF-08",
                 "latlng": [
-                    11.524,
-                    0.753
+                    11.082,
+                    0.724
                 ],
                 "flag_url": null
             },
@@ -8633,6 +8670,7 @@
             "Mamlakat al-Baḥrayn"
         ],
         "area": 765,
+        "borders": "NA",
         "capital": [
             "Manama"
         ],
@@ -8682,6 +8720,7 @@
             "svg": "https://flagcdn.com/bh.svg",
             "alt": "The flag of Bahrain has a red field. On the hoist side, it features a white vertical band that spans about one-third the width of the field and is separated from the rest of the field by five adjoining fly-side pointing white isosceles triangles that serve as a serrated line."
         },
+        "gini": "NA",
         "idd": {
             "root": "+9",
             "suffixes": [
@@ -8972,6 +9011,7 @@
             }
         },
         "population": 11890781,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -9363,6 +9403,7 @@
             }
         },
         "population": 12123198,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -9607,6 +9648,7 @@
             "Collectivité de Saint-Barthélemy"
         ],
         "area": 21,
+        "borders": "NA",
         "capital": [
             "Gustavia"
         ],
@@ -9625,6 +9667,7 @@
         "cca2": "BL",
         "cca3": "BLM",
         "ccn3": "652",
+        "cioc": "NA",
         "coatOfArms": {},
         "continents": [
             "North America"
@@ -9645,11 +9688,13 @@
                 "m": "Barthéloméen"
             }
         },
+        "fifa": "NA",
         "flag": "🇧🇱",
         "flags": {
             "png": "https://flagcdn.com/w320/bl.png",
             "svg": "https://flagcdn.com/bl.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+5",
             "suffixes": [
@@ -9806,6 +9851,7 @@
             "Somers Isles"
         ],
         "area": 54,
+        "borders": "NA",
         "capital": [
             "Hamilton"
         ],
@@ -9854,6 +9900,7 @@
             "png": "https://flagcdn.com/w320/bm.png",
             "svg": "https://flagcdn.com/bm.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+1",
             "suffixes": [
@@ -10067,6 +10114,7 @@
             "svg": "https://flagcdn.com/bn.svg",
             "alt": "The flag of Brunei has a yellow field with two adjoining diagonal bands of white and black that extend from the upper hoist side of the field to the lower fly side. The red emblem of Brunei is centered on the field."
         },
+        "gini": "NA",
         "idd": {
             "root": "+6",
             "suffixes": [
@@ -10374,6 +10422,7 @@
             }
         },
         "population": 11673029,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -10585,6 +10634,7 @@
             "BES islands"
         ],
         "area": 328,
+        "borders": "NA",
         "capital": [
             "Kralendijk"
         ],
@@ -10603,6 +10653,7 @@
         "cca2": "BQ",
         "cca3": "BES",
         "ccn3": "535",
+        "cioc": "NA",
         "coatOfArms": {
             "png": "https://mainfacts.com/media/images/coats_of_arms/bq.png",
             "svg": "https://mainfacts.com/media/images/coats_of_arms/bq.svg"
@@ -10626,11 +10677,13 @@
                 "m": "Néerlandais"
             }
         },
+        "fifa": "NA",
         "flag": "🇧🇶",
         "flags": {
             "png": "https://flagcdn.com/w320/bq.png",
             "svg": "https://flagcdn.com/bq.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+5",
             "suffixes": [
@@ -10667,6 +10720,7 @@
             }
         },
         "population": 25987,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -11315,6 +11369,7 @@
             "Commonwealth of the Bahamas"
         ],
         "area": 13943,
+        "borders": "NA",
         "capital": [
             "Nassau"
         ],
@@ -11368,6 +11423,7 @@
             "svg": "https://flagcdn.com/bs.svg",
             "alt": "The flag of the Bahamas is composed of three equal horizontal bands of aquamarine, yellow and aquamarine, with a black equilateral triangle superimposed on the hoist side of the field. This triangle has its base on the hoist end and spans about one-third the width of the field."
         },
+        "gini": "NA",
         "idd": {
             "root": "+1",
             "suffixes": [
@@ -11398,6 +11454,7 @@
             }
         },
         "population": 393248,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -11930,6 +11987,7 @@
             }
         },
         "population": 771612,
+        "postalCode": "NA",
         "region": "Asia",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -12253,6 +12311,8 @@
             "Bouvet-øya"
         ],
         "area": 49,
+        "borders": "NA",
+        "capital": "NA",
         "capitalInfo": {},
         "car": {
             "signs": [
@@ -12263,15 +12323,20 @@
         "cca2": "BV",
         "cca3": "BVT",
         "ccn3": "074",
+        "cioc": "NA",
         "coatOfArms": {},
         "continents": [
             "Antarctica"
         ],
+        "currencies": "NA",
+        "demonyms": "NA",
+        "fifa": "NA",
         "flag": "🇧🇻",
         "flags": {
             "png": "https://flagcdn.com/w320/bv.png",
             "svg": "https://flagcdn.com/bv.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+4",
             "suffixes": [
@@ -12302,10 +12367,12 @@
             }
         },
         "population": 0,
+        "postalCode": "NA",
         "region": "Antarctic",
         "startOfWeek": "monday",
         "status": "officially-assigned",
         "subdivisions": {},
+        "subregion": "NA",
         "timezones": [
             "UTC+01:00"
         ],
@@ -12516,6 +12583,7 @@
             }
         },
         "population": 2351625,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -13186,6 +13254,7 @@
             }
         },
         "population": 397621,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -13470,8 +13539,8 @@
                 "type": "Province",
                 "parent_code": null,
                 "latlng": [
-                    54.498,
-                    -115.001
+                    53.933,
+                    -116.577
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/CA/CA-AB.svg"
             },
@@ -13490,8 +13559,8 @@
                 "type": "Province",
                 "parent_code": null,
                 "latlng": [
-                    54.499,
-                    -95.494
+                    53.761,
+                    -98.814
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/CA/CA-MB.svg"
             },
@@ -13500,8 +13569,8 @@
                 "type": "Province",
                 "parent_code": null,
                 "latlng": [
-                    46.291,
-                    -66.412
+                    46.565,
+                    -66.462
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/CA/CA-NB.svg"
             },
@@ -13520,8 +13589,8 @@
                 "type": "Province",
                 "parent_code": null,
                 "latlng": [
-                    45.308,
-                    -63.028
+                    45.078,
+                    -63.547
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/CA/CA-NS.svg"
             },
@@ -13530,8 +13599,8 @@
                 "type": "Territory",
                 "parent_code": null,
                 "latlng": [
-                    69.402,
-                    -119.234
+                    63.589,
+                    -115.507
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/CA/CA-NT.svg"
             },
@@ -13560,8 +13629,8 @@
                 "type": "Province",
                 "parent_code": null,
                 "latlng": [
-                    46.504,
-                    -63.235
+                    46.319,
+                    -63.146
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/CA/CA-PE.svg"
             },
@@ -13580,8 +13649,8 @@
                 "type": "Province",
                 "parent_code": null,
                 "latlng": [
-                    54.499,
-                    -105.686
+                    52.94,
+                    -106.451
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/CA/CA-SK.svg"
             },
@@ -13590,8 +13659,8 @@
                 "type": "Territory",
                 "parent_code": null,
                 "latlng": [
-                    64.822,
-                    -132.396
+                    64.282,
+                    -135
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/CA/CA-YT.svg"
             }
@@ -13719,6 +13788,7 @@
             "Cocos Islands"
         ],
         "area": 14,
+        "borders": "NA",
         "capital": [
             "West Island"
         ],
@@ -13737,6 +13807,7 @@
         "cca2": "CC",
         "cca3": "CCK",
         "ccn3": "166",
+        "cioc": "NA",
         "coatOfArms": {},
         "continents": [
             "Asia"
@@ -13753,11 +13824,13 @@
                 "m": "Cocos Islander"
             }
         },
+        "fifa": "NA",
         "flag": "🇨🇨",
         "flags": {
             "png": "https://flagcdn.com/w320/cc.png",
             "svg": "https://flagcdn.com/cc.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+6",
             "suffixes": [
@@ -13788,6 +13861,7 @@
             }
         },
         "population": 544,
+        "postalCode": "NA",
         "region": "Oceania",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -14025,6 +14099,7 @@
             }
         },
         "population": 108407721,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -14504,6 +14579,7 @@
             }
         },
         "population": 4829764,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -14893,6 +14969,7 @@
             }
         },
         "population": 5657000,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -15721,6 +15798,7 @@
             }
         },
         "population": 26378275,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -15983,6 +16061,7 @@
             "Kūki 'Āirani"
         ],
         "area": 236,
+        "borders": "NA",
         "capital": [
             "Avarua"
         ],
@@ -16035,6 +16114,7 @@
             "png": "https://flagcdn.com/w320/ck.png",
             "svg": "https://flagcdn.com/ck.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+6",
             "suffixes": [
@@ -16070,6 +16150,7 @@
             }
         },
         "population": 18100,
+        "postalCode": "NA",
         "region": "Oceania",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -16662,6 +16743,7 @@
             }
         },
         "population": 26545864,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -17531,7 +17613,7 @@
             -72.0
         ],
         "maps": {
-            "googleMaps": "https://goo.gl/maps/RdwTG8e7gPwS62oR6",
+            "googleMaps": "https://goo.gl/maps/zix9qNFX69E9yZ2M6",
             "openStreetMaps": "https://www.openstreetmap.org/relation/120027"
         },
         "name": {
@@ -17545,6 +17627,7 @@
             }
         },
         "population": 50882884,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -17694,8 +17777,8 @@
                 "type": "Capital district",
                 "parent_code": null,
                 "latlng": [
-                    4.649,
-                    -74.104
+                    4.711,
+                    -74.072
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/CO/CO-DC.svg"
             },
@@ -18281,6 +18364,7 @@
             "República de Cuba"
         ],
         "area": 109884,
+        "borders": "NA",
         "capital": [
             "Havana"
         ],
@@ -18334,6 +18418,7 @@
             "svg": "https://flagcdn.com/cu.svg",
             "alt": "The flag of Cuba is composed of five equal horizontal bands of blue alternating with white and a red equilateral triangle superimposed on the hoist side of the field. The triangle has its base on the hoist end, spans about two-fifth the width of the field and bears a white five-pointed star at its center."
         },
+        "gini": "NA",
         "idd": {
             "root": "+5",
             "suffixes": [
@@ -18651,6 +18736,7 @@
             "República de Cabo Verde"
         ],
         "area": 4033,
+        "borders": "NA",
         "capital": [
             "Praia"
         ],
@@ -18906,8 +18992,8 @@
                 "type": "Municipality",
                 "parent_code": "CV-S",
                 "latlng": [
-                    14.895,
-                    -24.495
+                    14.932,
+                    -24.405
                 ],
                 "flag_url": null
             },
@@ -19103,6 +19189,7 @@
             "Pais Kòrsou"
         ],
         "area": 444,
+        "borders": "NA",
         "capital": [
             "Willemstad"
         ],
@@ -19121,6 +19208,7 @@
         "cca2": "CW",
         "cca3": "CUW",
         "ccn3": "531",
+        "cioc": "NA",
         "coatOfArms": {
             "png": "https://mainfacts.com/media/images/coats_of_arms/cw.png",
             "svg": "https://mainfacts.com/media/images/coats_of_arms/cw.svg"
@@ -19150,6 +19238,7 @@
             "png": "https://flagcdn.com/w320/cw.png",
             "svg": "https://flagcdn.com/cw.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+5",
             "suffixes": [
@@ -19190,6 +19279,7 @@
             }
         },
         "population": 155014,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -19303,6 +19393,7 @@
             "Territory of Christmas Island"
         ],
         "area": 135,
+        "borders": "NA",
         "capital": [
             "Flying Fish Cove"
         ],
@@ -19321,6 +19412,7 @@
         "cca2": "CX",
         "cca3": "CXR",
         "ccn3": "162",
+        "cioc": "NA",
         "coatOfArms": {
             "png": "https://mainfacts.com/media/images/coats_of_arms/cx.png",
             "svg": "https://mainfacts.com/media/images/coats_of_arms/cx.svg"
@@ -19340,11 +19432,13 @@
                 "m": "Christmas Islander"
             }
         },
+        "fifa": "NA",
         "flag": "🇨🇽",
         "flags": {
             "png": "https://flagcdn.com/w320/cx.png",
             "svg": "https://flagcdn.com/cx.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+6",
             "suffixes": [
@@ -19504,6 +19598,7 @@
             "Kıbrıs Cumhuriyeti"
         ],
         "area": 9251,
+        "borders": "NA",
         "capital": [
             "Nicosia"
         ],
@@ -21374,6 +21469,7 @@
             }
         },
         "population": 988002,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -21413,8 +21509,8 @@
                 "type": "City",
                 "parent_code": null,
                 "latlng": [
-                    11.825,
-                    42.59
+                    11.572,
+                    43.146
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/DJ/DJ-DJ.png"
             },
@@ -21825,6 +21921,7 @@
             "Commonwealth of Dominica"
         ],
         "area": 751,
+        "borders": "NA",
         "capital": [
             "Roseau"
         ],
@@ -21874,6 +21971,7 @@
             "svg": "https://flagcdn.com/dm.svg",
             "alt": "The flag of Dominica has a green field with a large centered tricolor cross. The vertical and horizontal parts of the cross each comprise three bands of yellow, black and white. A red circle, bearing a hoist-side facing purple Sisserou parrot standing on a twig and encircled by ten five-pointed yellow-edged green stars, is superimposed at the center of the cross."
         },
+        "gini": "NA",
         "idd": {
             "root": "+1",
             "suffixes": [
@@ -21904,6 +22002,7 @@
             }
         },
         "population": 71991,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -22435,8 +22534,8 @@
                 "type": "Province",
                 "parent_code": "DO-37",
                 "latlng": [
-                    18.81,
-                    -71.231
+                    18.807,
+                    -71.229
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/DO/DO-22.svg"
             },
@@ -22635,8 +22734,8 @@
                 "type": "Region",
                 "parent_code": null,
                 "latlng": [
-                    18.736,
-                    -70.163
+                    18.47,
+                    -68.685
                 ],
                 "flag_url": null
             }
@@ -25276,8 +25375,8 @@
                 "type": "Governorate",
                 "parent_code": null,
                 "latlng": [
-                    30.013,
-                    31.209
+                    28.767,
+                    29.232
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/EG/EG-GZ.png"
             },
@@ -25356,8 +25455,8 @@
                 "type": "Governorate",
                 "parent_code": null,
                 "latlng": [
-                    30.597,
-                    30.988
+                    28.087,
+                    30.762
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/EG/EG-MNF.png"
             },
@@ -25573,6 +25672,7 @@
         "cca2": "EH",
         "cca3": "ESH",
         "ccn3": "732",
+        "cioc": "NA",
         "coatOfArms": {},
         "continents": [
             "Africa"
@@ -25597,11 +25697,13 @@
                 "m": "Sahrawi"
             }
         },
+        "fifa": "NA",
         "flag": "🇪🇭",
         "flags": {
             "png": "https://flagcdn.com/w320/eh.png",
             "svg": "https://flagcdn.com/eh.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+2",
             "suffixes": [
@@ -25643,6 +25745,7 @@
             }
         },
         "population": 510713,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -25822,6 +25925,7 @@
             "svg": "https://flagcdn.com/er.svg",
             "alt": "The flag of Eritrea comprises three triangles — a large red isosceles triangle with its base spanning the hoist end and its apex at the midpoint on the fly end, and a green and blue right-angled triangle above and beneath the red triangle. On the hoist side of the red triangle is a golden vertical olive branch encircled by a golden olive wreath."
         },
+        "gini": "NA",
         "idd": {
             "root": "+2",
             "suffixes": [
@@ -25862,6 +25966,7 @@
             }
         },
         "population": 5352000,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -27693,6 +27798,7 @@
             "Fijī Gaṇarājya"
         ],
         "area": 18272,
+        "borders": "NA",
         "capital": [
             "Suva"
         ],
@@ -27785,6 +27891,7 @@
             }
         },
         "population": 896444,
+        "postalCode": "NA",
         "region": "Oceania",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -28098,6 +28205,7 @@
             "Falkland Islands (Malvinas)"
         ],
         "area": 12173,
+        "borders": "NA",
         "capital": [
             "Stanley"
         ],
@@ -28116,6 +28224,7 @@
         "cca2": "FK",
         "cca3": "FLK",
         "ccn3": "238",
+        "cioc": "NA",
         "coatOfArms": {
             "png": "https://mainfacts.com/media/images/coats_of_arms/fk.png",
             "svg": "https://mainfacts.com/media/images/coats_of_arms/fk.svg"
@@ -28139,11 +28248,13 @@
                 "m": "Malouin"
             }
         },
+        "fifa": "NA",
         "flag": "🇫🇰",
         "flags": {
             "png": "https://flagcdn.com/w320/fk.png",
             "svg": "https://flagcdn.com/fk.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+5",
             "suffixes": [
@@ -28174,6 +28285,7 @@
             }
         },
         "population": 2563,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -28296,6 +28408,7 @@
             "Micronesia, Federated States of"
         ],
         "area": 702,
+        "borders": "NA",
         "capital": [
             "Palikir"
         ],
@@ -28338,6 +28451,7 @@
                 "m": "Micronésien"
             }
         },
+        "fifa": "NA",
         "flag": "🇫🇲",
         "flags": {
             "png": "https://flagcdn.com/w320/fm.png",
@@ -28545,6 +28659,7 @@
             "Færøerne"
         ],
         "area": 1393,
+        "borders": "NA",
         "capital": [
             "Tórshavn"
         ],
@@ -28563,6 +28678,7 @@
         "cca2": "FO",
         "cca3": "FRO",
         "ccn3": "234",
+        "cioc": "NA",
         "coatOfArms": {
             "png": "https://mainfacts.com/media/images/coats_of_arms/fo.png",
             "svg": "https://mainfacts.com/media/images/coats_of_arms/fo.svg"
@@ -28596,6 +28712,7 @@
             "png": "https://flagcdn.com/w320/fo.png",
             "svg": "https://flagcdn.com/fo.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+2",
             "suffixes": [
@@ -30346,6 +30463,7 @@
             }
         },
         "population": 2225728,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -30604,6 +30722,7 @@
                 "m": "Britannique"
             }
         },
+        "fifa": "NA",
         "flag": "🇬🇧",
         "flags": {
             "png": "https://flagcdn.com/w320/gb.png",
@@ -31376,8 +31495,8 @@
                 "type": "Unitary authority",
                 "parent_code": null,
                 "latlng": [
-                    53.167,
-                    -3.142
+                    53.229,
+                    -3.069
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/GB/GB-FLN.svg"
             },
@@ -32086,8 +32205,8 @@
                 "type": "Two-tier county",
                 "parent_code": null,
                 "latlng": [
-                    51.761,
-                    -1.246
+                    51.752,
+                    -1.258
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/GB/GB-OXF.svg"
             },
@@ -32226,8 +32345,8 @@
                 "type": "Metropolitan district",
                 "parent_code": null,
                 "latlng": [
-                    55.378,
-                    -3.436
+                    53.433,
+                    -1.364
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/GB/GB-ROT.png"
             },
@@ -32936,6 +33055,7 @@
             "GD"
         ],
         "area": 344,
+        "borders": "NA",
         "capital": [
             "St. George's"
         ],
@@ -32985,6 +33105,7 @@
             "svg": "https://flagcdn.com/gd.svg",
             "alt": "The flag of Grenada features a large central rectangular area surrounded by a red border, with three five-pointed yellow stars centered on the top and bottom borders. The central rectangle is divided diagonally into four alternating triangular areas of yellow at the top and bottom and green on the hoist and fly sides, and a five-pointed yellow star on a red circle is superimposed at its center. A symbolic nutmeg pod is situated on the green hoist-side triangle."
         },
+        "gini": "NA",
         "idd": {
             "root": "+1",
             "suffixes": [
@@ -33015,6 +33136,7 @@
             }
         },
         "population": 112519,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -33564,6 +33686,7 @@
         "cca2": "GF",
         "cca3": "GUF",
         "ccn3": "254",
+        "cioc": "NA",
         "coatOfArms": {
             "png": "https://mainfacts.com/media/images/coats_of_arms/gf.png",
             "svg": "https://mainfacts.com/media/images/coats_of_arms/gf.svg"
@@ -33587,11 +33710,13 @@
                 "m": "Guyanais"
             }
         },
+        "fifa": "NA",
         "flag": "🇬🇫",
         "flags": {
             "png": "https://flagcdn.com/w320/gf.png",
             "svg": "https://flagcdn.com/gf.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+5",
             "suffixes": [
@@ -33748,6 +33873,7 @@
             "Bailliage de Guernesey"
         ],
         "area": 78,
+        "borders": "NA",
         "capital": [
             "St. Peter Port"
         ],
@@ -33766,6 +33892,7 @@
         "cca2": "GG",
         "cca3": "GGY",
         "ccn3": "831",
+        "cioc": "NA",
         "coatOfArms": {
             "png": "https://mainfacts.com/media/images/coats_of_arms/gg.png",
             "svg": "https://mainfacts.com/media/images/coats_of_arms/gg.svg"
@@ -33793,11 +33920,13 @@
                 "m": "Guernesiais"
             }
         },
+        "fifa": "NA",
         "flag": "🇬🇬",
         "flags": {
             "png": "https://flagcdn.com/w320/gg.png",
             "svg": "https://flagcdn.com/gg.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+4",
             "suffixes": [
@@ -34049,6 +34178,7 @@
             }
         },
         "population": 31072945,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -34351,6 +34481,7 @@
         "cca2": "GI",
         "cca3": "GIB",
         "ccn3": "292",
+        "cioc": "NA",
         "coatOfArms": {
             "png": "https://mainfacts.com/media/images/coats_of_arms/gi.png",
             "svg": "https://mainfacts.com/media/images/coats_of_arms/gi.svg"
@@ -34380,6 +34511,7 @@
             "png": "https://flagcdn.com/w320/gi.png",
             "svg": "https://flagcdn.com/gi.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+3",
             "suffixes": [
@@ -34410,6 +34542,7 @@
             }
         },
         "population": 33691,
+        "postalCode": "NA",
         "region": "Europe",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -34531,6 +34664,7 @@
             "Grønland"
         ],
         "area": 2166086,
+        "borders": "NA",
         "capital": [
             "Nuuk"
         ],
@@ -34549,6 +34683,7 @@
         "cca2": "GL",
         "cca3": "GRL",
         "ccn3": "304",
+        "cioc": "NA",
         "coatOfArms": {
             "png": "https://mainfacts.com/media/images/coats_of_arms/gl.png",
             "svg": "https://mainfacts.com/media/images/coats_of_arms/gl.svg"
@@ -34572,11 +34707,13 @@
                 "m": "Groenlandais"
             }
         },
+        "fifa": "NA",
         "flag": "🇬🇱",
         "flags": {
             "png": "https://flagcdn.com/w320/gl.png",
             "svg": "https://flagcdn.com/gl.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+2",
             "suffixes": [
@@ -34871,6 +35008,7 @@
             }
         },
         "population": 2416664,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -35144,6 +35282,7 @@
             }
         },
         "population": 13132792,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -35676,6 +35815,7 @@
             "Gwadloup"
         ],
         "area": 1628,
+        "borders": "NA",
         "capital": [
             "Basse-Terre"
         ],
@@ -35694,6 +35834,7 @@
         "cca2": "GP",
         "cca3": "GLP",
         "ccn3": "312",
+        "cioc": "NA",
         "coatOfArms": {
             "png": "https://mainfacts.com/media/images/coats_of_arms/gp.png",
             "svg": "https://mainfacts.com/media/images/coats_of_arms/gp.svg"
@@ -35717,11 +35858,13 @@
                 "m": "Guadeloupéen"
             }
         },
+        "fifa": "NA",
         "flag": "🇬🇵",
         "flags": {
             "png": "https://flagcdn.com/w320/gp.png",
             "svg": "https://flagcdn.com/gp.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+5",
             "suffixes": [
@@ -35933,6 +36076,7 @@
             "svg": "https://flagcdn.com/gq.svg",
             "alt": "The flag of Equatorial Guinea is composed of three equal horizontal bands of green, white and red with the national coat of arms centered in the white band and an isosceles triangle superimposed on the hoist side of the field. The triangle is light blue, has its base on the hoist end and spans about one-fifth the width of the field."
         },
+        "gini": "NA",
         "idd": {
             "root": "+2",
             "suffixes": [
@@ -35973,6 +36117,7 @@
             }
         },
         "population": 1402985,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -36551,6 +36696,7 @@
             "South Georgia and the South Sandwich Islands"
         ],
         "area": 3903,
+        "borders": "NA",
         "capital": [
             "King Edward Point"
         ],
@@ -36569,6 +36715,7 @@
         "cca2": "GS",
         "cca3": "SGS",
         "ccn3": "239",
+        "cioc": "NA",
         "coatOfArms": {},
         "continents": [
             "Antarctica"
@@ -36585,11 +36732,13 @@
                 "m": "South Georgian South Sandwich Islander"
             }
         },
+        "fifa": "NA",
         "flag": "🇬🇸",
         "flags": {
             "png": "https://flagcdn.com/w320/gs.png",
             "svg": "https://flagcdn.com/gs.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+5",
             "suffixes": [
@@ -36620,10 +36769,12 @@
             }
         },
         "population": 30,
+        "postalCode": "NA",
         "region": "Antarctic",
         "startOfWeek": "monday",
         "status": "officially-assigned",
         "subdivisions": {},
+        "subregion": "NA",
         "timezones": [
             "UTC-02:00"
         ],
@@ -37173,6 +37324,7 @@
             "Guåhån"
         ],
         "area": 549,
+        "borders": "NA",
         "capital": [
             "Hagåtña"
         ],
@@ -37217,6 +37369,7 @@
             "png": "https://flagcdn.com/w320/gu.png",
             "svg": "https://flagcdn.com/gu.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+1",
             "suffixes": [
@@ -37807,6 +37960,7 @@
             }
         },
         "population": 786559,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -38079,6 +38233,7 @@
             "png": "https://flagcdn.com/w320/hk.png",
             "svg": "https://flagcdn.com/hk.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+8",
             "suffixes": [
@@ -38114,6 +38269,7 @@
             }
         },
         "population": 7500700,
+        "postalCode": "NA",
         "region": "Asia",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -38232,6 +38388,8 @@
             "Heard Island and McDonald Islands"
         ],
         "area": 412,
+        "borders": "NA",
+        "capital": "NA",
         "capitalInfo": {},
         "car": {
             "signs": [
@@ -38242,21 +38400,25 @@
         "cca2": "HM",
         "cca3": "HMD",
         "ccn3": "334",
+        "cioc": "NA",
         "coatOfArms": {},
         "continents": [
             "Antarctica"
         ],
+        "currencies": "NA",
         "demonyms": {
             "eng": {
                 "f": "Heard and McDonald Islander",
                 "m": "Heard and McDonald Islander"
             }
         },
+        "fifa": "NA",
         "flag": "🇭🇲",
         "flags": {
             "png": "https://flagcdn.com/w320/hm.png",
             "svg": "https://flagcdn.com/hm.svg"
         },
+        "gini": "NA",
         "idd": {},
         "independent": false,
         "landlocked": false,
@@ -38282,10 +38444,12 @@
             }
         },
         "population": 0,
+        "postalCode": "NA",
         "region": "Antarctic",
         "startOfWeek": "monday",
         "status": "officially-assigned",
         "subdivisions": {},
+        "subregion": "NA",
         "timezones": [
             "UTC+05:00"
         ],
@@ -40906,6 +41070,7 @@
             }
         },
         "population": 4994724,
+        "postalCode": "NA",
         "region": "Europe",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -41611,6 +41776,7 @@
             "Mannin"
         ],
         "area": 572,
+        "borders": "NA",
         "capital": [
             "Douglas"
         ],
@@ -41629,6 +41795,7 @@
         "cca2": "IM",
         "cca3": "IMN",
         "ccn3": "833",
+        "cioc": "NA",
         "coatOfArms": {
             "png": "https://mainfacts.com/media/images/coats_of_arms/im.png",
             "svg": "https://mainfacts.com/media/images/coats_of_arms/im.svg"
@@ -41652,11 +41819,13 @@
                 "m": "Manx"
             }
         },
+        "fifa": "NA",
         "flag": "🇮🇲",
         "flags": {
             "png": "https://flagcdn.com/w320/im.png",
             "svg": "https://flagcdn.com/im.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+4",
             "suffixes": [
@@ -42405,6 +42574,7 @@
             "IO"
         ],
         "area": 60,
+        "borders": "NA",
         "capital": [
             "Diego Garcia"
         ],
@@ -42423,6 +42593,7 @@
         "cca2": "IO",
         "cca3": "IOT",
         "ccn3": "086",
+        "cioc": "NA",
         "coatOfArms": {},
         "continents": [
             "Asia"
@@ -42439,11 +42610,13 @@
                 "m": "Indian"
             }
         },
+        "fifa": "NA",
         "flag": "🇮🇴",
         "flags": {
             "png": "https://flagcdn.com/w320/io.png",
             "svg": "https://flagcdn.com/io.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+2",
             "suffixes": [
@@ -42474,6 +42647,7 @@
             }
         },
         "population": 3000,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -42849,8 +43023,8 @@
                 "type": "Governorate",
                 "parent_code": null,
                 "latlng": [
-                    32.044,
-                    45.149
+                    31.583,
+                    44.5
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/IQ/IQ-QA.png"
             },
@@ -43530,6 +43704,7 @@
             "Lýðveldið Ísland"
         ],
         "area": 103000,
+        "borders": "NA",
         "capital": [
             "Reykjavik"
         ],
@@ -43705,8 +43880,8 @@
                 "type": "Municipality",
                 "parent_code": "IS-5",
                 "latlng": [
-                    65.389,
-                    -18.902
+                    64.963,
+                    -19.021
                 ],
                 "flag_url": null
             },
@@ -43955,8 +44130,8 @@
                 "type": "Municipality",
                 "parent_code": "IS-1",
                 "latlng": [
-                    64.029,
-                    -21.968
+                    64.067,
+                    -21.955
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/IS/IS-HAF.png"
             },
@@ -43965,8 +44140,8 @@
                 "type": "Municipality",
                 "parent_code": "IS-3",
                 "latlng": [
-                    64.964,
-                    -22.775
+                    64.963,
+                    -19.021
                 ],
                 "flag_url": null
             },
@@ -46017,6 +46192,7 @@
             "Bailliage dé Jèrri"
         ],
         "area": 116,
+        "borders": "NA",
         "capital": [
             "Saint Helier"
         ],
@@ -46035,6 +46211,7 @@
         "cca2": "JE",
         "cca3": "JEY",
         "ccn3": "832",
+        "cioc": "NA",
         "coatOfArms": {
             "png": "https://mainfacts.com/media/images/coats_of_arms/je.png",
             "svg": "https://mainfacts.com/media/images/coats_of_arms/je.svg"
@@ -46062,11 +46239,13 @@
                 "m": "Jersiais"
             }
         },
+        "fifa": "NA",
         "flag": "🇯🇪",
         "flags": {
             "png": "https://flagcdn.com/w320/je.png",
             "svg": "https://flagcdn.com/je.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+4",
             "suffixes": [
@@ -46231,6 +46410,7 @@
             "JM"
         ],
         "area": 10991,
+        "borders": "NA",
         "capital": [
             "Kingston"
         ],
@@ -46318,6 +46498,7 @@
             }
         },
         "population": 2961161,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -46918,6 +47099,7 @@
             "Nihon"
         ],
         "area": 377930,
+        "borders": "NA",
         "capital": [
             "Tokyo"
         ],
@@ -47715,8 +47897,8 @@
                 "type": "County",
                 "parent_code": null,
                 "latlng": [
-                    -0.802,
-                    35.303
+                    -0.778,
+                    35.336
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/KE/KE-02.png"
             },
@@ -48658,6 +48840,7 @@
             "svg": "https://flagcdn.com/kh.svg",
             "alt": "The flag of Cambodia features three horizontal bands of blue, red and blue, with a white depiction of the temple complex, Angkor Wat centered in the red band."
         },
+        "gini": "NA",
         "idd": {
             "root": "+8",
             "suffixes": [
@@ -48941,8 +49124,8 @@
                 "type": "Province",
                 "parent_code": null,
                 "latlng": [
-                    11.889,
-                    105.876
+                    11.921,
+                    105.6
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/KH/KH-25.png"
             }
@@ -49065,6 +49248,7 @@
             "Ribaberiki Kiribati"
         ],
         "area": 811,
+        "borders": "NA",
         "capital": [
             "South Tarawa"
         ],
@@ -49111,6 +49295,7 @@
                 "m": "Kiribatien"
             }
         },
+        "fifa": "NA",
         "flag": "🇰🇮",
         "flags": {
             "png": "https://flagcdn.com/w320/ki.png",
@@ -49155,6 +49340,7 @@
             }
         },
         "population": 119446,
+        "postalCode": "NA",
         "region": "Oceania",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -49312,6 +49498,7 @@
             "al-Ittiḥād al-Qumurī"
         ],
         "area": 1862,
+        "borders": "NA",
         "capital": [
             "Moroni"
         ],
@@ -49404,6 +49591,7 @@
             }
         },
         "population": 869595,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -49556,6 +49744,7 @@
             "Federation of Saint Christopher and Nevis"
         ],
         "area": 261,
+        "borders": "NA",
         "capital": [
             "Basseterre"
         ],
@@ -49605,6 +49794,7 @@
             "svg": "https://flagcdn.com/kn.svg",
             "alt": "The flag of Saint Kitts and Nevis features two large five-pointed white stars within a yellow-edged black diagonal band that extends from the lower hoist-side corner to the upper fly-side corner of the field. Above and beneath this band are a green and red triangle respectively."
         },
+        "gini": "NA",
         "idd": {
             "root": "+1",
             "suffixes": [
@@ -49635,6 +49825,7 @@
             }
         },
         "population": 53192,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -49977,6 +50168,7 @@
             "svg": "https://flagcdn.com/kp.svg",
             "alt": "The flag of North Korea is composed of three horizontal bands — a large central white-edged red band, and a blue band above and beneath the red band. On the hoist side of the red band is a red five-pointed star within a white circle."
         },
+        "gini": "NA",
         "idd": {
             "root": "+8",
             "suffixes": [
@@ -50030,8 +50222,8 @@
                 "type": "Province",
                 "parent_code": null,
                 "latlng": [
-                    40.34,
-                    127.51
+                    40.373,
+                    128.299
                 ],
                 "flag_url": null
             },
@@ -50090,8 +50282,8 @@
                 "type": "Province",
                 "parent_code": null,
                 "latlng": [
-                    40.34,
-                    127.51
+                    40.373,
+                    128.299
                 ],
                 "flag_url": null
             },
@@ -50692,6 +50884,7 @@
             "svg": "https://flagcdn.com/kw.svg",
             "alt": "The flag of Kuwait is composed of three equal horizontal bands of green, white and red, with a black trapezium superimposed on the hoist side of the field. This trapezium has its base on the hoist end and spans about one-fourth the width of the field."
         },
+        "gini": "NA",
         "idd": {
             "root": "+9",
             "suffixes": [
@@ -50907,6 +51100,7 @@
             "KY"
         ],
         "area": 264,
+        "borders": "NA",
         "capital": [
             "George Town"
         ],
@@ -50955,6 +51149,7 @@
             "png": "https://flagcdn.com/w320/ky.png",
             "svg": "https://flagcdn.com/ky.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+1",
             "suffixes": [
@@ -50985,6 +51180,7 @@
             }
         },
         "population": 65720,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -52199,6 +52395,7 @@
             "LC"
         ],
         "area": 616,
+        "borders": "NA",
         "capital": [
             "Castries"
         ],
@@ -52281,6 +52478,7 @@
             }
         },
         "population": 183629,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -52557,6 +52755,7 @@
             "svg": "https://flagcdn.com/li.svg",
             "alt": "The flag of Liechtenstein is composed of two equal horizontal bands of blue and red, with a golden-yellow crown on the hoist side of the blue band."
         },
+        "gini": "NA",
         "idd": {
             "root": "+4",
             "suffixes": [
@@ -55559,8 +55758,8 @@
                 "type": "Municipality",
                 "parent_code": null,
                 "latlng": [
-                    56.946,
-                    27.644
+                    56.919,
+                    27.601
                 ],
                 "flag_url": null
             },
@@ -56790,6 +56989,7 @@
             "svg": "https://flagcdn.com/ly.svg",
             "alt": "The flag of Libya is composed of three horizontal bands of red, black and green, with the black band twice the height of the other two bands. At the center of the black band is a fly-side facing white crescent and a five-pointed white star placed just outside the crescent opening."
         },
+        "gini": "NA",
         "idd": {
             "root": "+2",
             "suffixes": [
@@ -56820,6 +57020,7 @@
             }
         },
         "population": 6871287,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "sunday",
         "status": "officially-assigned",
@@ -56940,7 +57141,7 @@
                 "parent_code": null,
                 "latlng": [
                     32.498,
-                    20.82
+                    20.837
                 ],
                 "flag_url": null
             },
@@ -57508,8 +57709,8 @@
                 "type": "Province",
                 "parent_code": "MA-07",
                 "latlng": [
-                    31.538,
-                    -8.765
+                    31.548,
+                    -8.758
                 ],
                 "flag_url": null
             },
@@ -57768,8 +57969,8 @@
                 "type": "Prefecture",
                 "parent_code": "MA-07",
                 "latlng": [
-                    31.629,
-                    -7.981
+                    31.623,
+                    -7.99
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/MA/MA-MAR.svg"
             },
@@ -58298,12 +58499,14 @@
                 "m": "Monégasque"
             }
         },
+        "fifa": "NA",
         "flag": "🇲🇨",
         "flags": {
             "png": "https://flagcdn.com/w320/mc.png",
             "svg": "https://flagcdn.com/mc.svg",
             "alt": "The flag of Monaco is composed of two equal horizontal bands of red and white."
         },
+        "gini": "NA",
         "idd": {
             "root": "+3",
             "suffixes": [
@@ -58376,7 +58579,10 @@
                 "name": "La Gare",
                 "type": "Quarter",
                 "parent_code": null,
-                "latlng": null,
+                "latlng": [
+                    43.738,
+                    7.425
+                ],
                 "flag_url": null
             },
             "MC-JE": {
@@ -59689,6 +59895,7 @@
         "cca2": "MF",
         "cca3": "MAF",
         "ccn3": "663",
+        "cioc": "NA",
         "coatOfArms": {},
         "continents": [
             "North America"
@@ -59709,11 +59916,13 @@
                 "m": "Saint-Martinois"
             }
         },
+        "fifa": "NA",
         "flag": "🇲🇫",
         "flags": {
             "png": "https://flagcdn.com/w320/mf.png",
             "svg": "https://flagcdn.com/mf.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+5",
             "suffixes": [
@@ -59871,6 +60080,7 @@
             "République de Madagascar"
         ],
         "area": 587041,
+        "borders": "NA",
         "capital": [
             "Antananarivo"
         ],
@@ -60145,6 +60355,7 @@
             "Aolepān Aorōkin M̧ajeļ"
         ],
         "area": 181,
+        "borders": "NA",
         "capital": [
             "Majuro"
         ],
@@ -60187,12 +60398,14 @@
                 "m": "Marshallais"
             }
         },
+        "fifa": "NA",
         "flag": "🇲🇭",
         "flags": {
             "png": "https://flagcdn.com/w320/mh.png",
             "svg": "https://flagcdn.com/mh.svg",
             "alt": "The flag of Marshall Islands has a blue field with two broadening adjacent diagonal bands of orange and white that extend from the lower hoist-side corner to the upper fly-side corner of the field. A large white star with twenty-four rays — four large rays at the cardinal points and twenty smaller rays — is situated in the upper hoist-side corner above the diagonal bands."
         },
+        "gini": "NA",
         "idd": {
             "root": "+6",
             "suffixes": [
@@ -60228,6 +60441,7 @@
             }
         },
         "population": 59194,
+        "postalCode": "NA",
         "region": "Oceania",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -60237,8 +60451,8 @@
                 "type": "Municipality",
                 "parent_code": "MH-T",
                 "latlng": [
-                    10.342,
-                    169.912
+                    10.349,
+                    169.942
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/MH/MH-ALK.svg"
             },
@@ -60357,8 +60571,8 @@
                 "type": "Municipality",
                 "parent_code": "MH-L",
                 "latlng": [
-                    8.312,
-                    167.381
+                    8.315,
+                    167.39
                 ],
                 "flag_url": null
             },
@@ -60397,8 +60611,8 @@
                 "type": "Municipality",
                 "parent_code": "MH-T",
                 "latlng": [
-                    10.286,
-                    170.871
+                    10.277,
+                    170.865
                 ],
                 "flag_url": null
             },
@@ -60407,8 +60621,8 @@
                 "type": "Municipality",
                 "parent_code": "MH-T",
                 "latlng": [
-                    6.118,
-                    171.736
+                    6.134,
+                    171.91
                 ],
                 "flag_url": null
             },
@@ -60417,8 +60631,8 @@
                 "type": "Municipality",
                 "parent_code": "MH-L",
                 "latlng": [
-                    5.616,
-                    168.127
+                    5.618,
+                    168.122
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/MH/MH-NMK.svg"
             },
@@ -60457,8 +60671,8 @@
                 "type": "Municipality",
                 "parent_code": "MH-L",
                 "latlng": [
-                    9.09,
-                    165.667
+                    9.058,
+                    165.644
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/MH/MH-UJA.svg"
             },
@@ -60467,8 +60681,8 @@
                 "type": "Municipality",
                 "parent_code": "MH-T",
                 "latlng": [
-                    11.225,
-                    169.848
+                    11.28,
+                    169.807
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/MH/MH-UTI.png"
             },
@@ -61720,6 +61934,7 @@
             }
         },
         "population": 20250834,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -62758,6 +62973,7 @@
         "borders": [
             "CHN"
         ],
+        "capital": "NA",
         "capitalInfo": {},
         "car": {
             "signs": [
@@ -62768,6 +62984,7 @@
         "cca2": "MO",
         "cca3": "MAC",
         "ccn3": "446",
+        "cioc": "NA",
         "coatOfArms": {
             "png": "https://mainfacts.com/media/images/coats_of_arms/mo.png",
             "svg": "https://mainfacts.com/media/images/coats_of_arms/mo.svg"
@@ -62797,6 +63014,7 @@
             "png": "https://flagcdn.com/w320/mo.png",
             "svg": "https://flagcdn.com/mo.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+8",
             "suffixes": [
@@ -62832,6 +63050,7 @@
             }
         },
         "population": 649342,
+        "postalCode": "NA",
         "region": "Asia",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -62950,6 +63169,7 @@
             "Sankattan Siha Na Islas Mariånas"
         ],
         "area": 464,
+        "borders": "NA",
         "capital": [
             "Saipan"
         ],
@@ -62968,6 +63188,7 @@
         "cca2": "MP",
         "cca3": "MNP",
         "ccn3": "580",
+        "cioc": "NA",
         "coatOfArms": {},
         "continents": [
             "Oceania"
@@ -62988,11 +63209,13 @@
                 "m": "Américan"
             }
         },
+        "fifa": "NA",
         "flag": "🇲🇵",
         "flags": {
             "png": "https://flagcdn.com/w320/mp.png",
             "svg": "https://flagcdn.com/mp.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+1",
             "suffixes": [
@@ -63033,6 +63256,7 @@
             }
         },
         "population": 57557,
+        "postalCode": "NA",
         "region": "Oceania",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -63153,6 +63377,7 @@
             "MQ"
         ],
         "area": 1128,
+        "borders": "NA",
         "capital": [
             "Fort-de-France"
         ],
@@ -63171,6 +63396,7 @@
         "cca2": "MQ",
         "cca3": "MTQ",
         "ccn3": "474",
+        "cioc": "NA",
         "coatOfArms": {
             "png": "https://mainfacts.com/media/images/coats_of_arms/mq.png",
             "svg": "https://mainfacts.com/media/images/coats_of_arms/mq.svg"
@@ -63194,11 +63420,13 @@
                 "m": "Martiniquais"
             }
         },
+        "fifa": "NA",
         "flag": "🇲🇶",
         "flags": {
             "png": "https://flagcdn.com/w320/mq.png",
             "svg": "https://flagcdn.com/mq.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+5",
             "suffixes": [
@@ -63443,6 +63671,7 @@
             }
         },
         "population": 4649660,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -63714,6 +63943,7 @@
             "MS"
         ],
         "area": 102,
+        "borders": "NA",
         "capital": [
             "Plymouth"
         ],
@@ -63732,6 +63962,7 @@
         "cca2": "MS",
         "cca3": "MSR",
         "ccn3": "500",
+        "cioc": "NA",
         "coatOfArms": {
             "png": "https://mainfacts.com/media/images/coats_of_arms/ms.png",
             "svg": "https://mainfacts.com/media/images/coats_of_arms/ms.svg"
@@ -63761,6 +63992,7 @@
             "png": "https://flagcdn.com/w320/ms.png",
             "svg": "https://flagcdn.com/ms.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+1",
             "suffixes": [
@@ -63791,6 +64023,7 @@
             }
         },
         "population": 4922,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -63913,6 +64146,7 @@
             "Repubblika ta' Malta"
         ],
         "area": 316,
+        "borders": "NA",
         "capital": [
             "Valletta"
         ],
@@ -64492,10 +64726,7 @@
                 "name": "Saint John",
                 "type": "Local council",
                 "parent_code": null,
-                "latlng": [
-                    35.908,
-                    14.478
-                ],
+                "latlng": null,
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/MT/MT-49.svg"
             },
             "MT-50": {
@@ -64807,6 +65038,7 @@
             "République de Maurice"
         ],
         "area": 2040,
+        "borders": "NA",
         "capital": [
             "Port Louis"
         ],
@@ -64899,6 +65131,7 @@
             }
         },
         "population": 1265740,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -65143,6 +65376,7 @@
             "Dhivehi Raajjeyge Jumhooriyya"
         ],
         "area": 300,
+        "borders": "NA",
         "capital": [
             "Malé"
         ],
@@ -65653,6 +65887,7 @@
             }
         },
         "population": 19129955,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -67459,6 +67694,7 @@
             }
         },
         "population": 2540916,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -67720,6 +67956,7 @@
             "NC"
         ],
         "area": 18575,
+        "borders": "NA",
         "capital": [
             "Nouméa"
         ],
@@ -67738,6 +67975,7 @@
         "cca2": "NC",
         "cca3": "NCL",
         "ccn3": "540",
+        "cioc": "NA",
         "coatOfArms": {
             "png": "https://mainfacts.com/media/images/coats_of_arms/nc.png",
             "svg": "https://mainfacts.com/media/images/coats_of_arms/nc.svg"
@@ -67767,6 +68005,7 @@
             "png": "https://flagcdn.com/w320/nc.png",
             "svg": "https://flagcdn.com/nc.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+6",
             "suffixes": [
@@ -68220,6 +68459,7 @@
             "Teratri of Norf'k Ailen"
         ],
         "area": 36,
+        "borders": "NA",
         "capital": [
             "Kingston"
         ],
@@ -68238,6 +68478,7 @@
         "cca2": "NF",
         "cca3": "NFK",
         "ccn3": "574",
+        "cioc": "NA",
         "coatOfArms": {},
         "continents": [
             "Oceania"
@@ -68258,11 +68499,13 @@
                 "m": "Norfolkais"
             }
         },
+        "fifa": "NA",
         "flag": "🇳🇫",
         "flags": {
             "png": "https://flagcdn.com/w320/nf.png",
             "svg": "https://flagcdn.com/nf.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+6",
             "suffixes": [
@@ -68298,6 +68541,7 @@
             }
         },
         "population": 2302,
+        "postalCode": "NA",
         "region": "Oceania",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -69529,8 +69773,8 @@
                 "type": "Country",
                 "parent_code": null,
                 "latlng": [
-                    12.17,
-                    -68.99
+                    52.133,
+                    5.291
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/NL/NL-CW.svg"
             },
@@ -69926,8 +70170,8 @@
                 "type": "County",
                 "parent_code": null,
                 "latlng": [
-                    67.693,
-                    12.707
+                    68.667,
+                    14.947
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/NO/NO-18.svg"
             },
@@ -70016,8 +70260,8 @@
                 "type": "County",
                 "parent_code": null,
                 "latlng": [
-                    60.472,
-                    8.469
+                    69.649,
+                    18.934
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/NO/NO-54.svg"
             }
@@ -70439,8 +70683,8 @@
                 "type": "Province",
                 "parent_code": null,
                 "latlng": [
-                    28.395,
-                    84.124
+                    27.921,
+                    82.735
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/NP/NP-P5.png"
             },
@@ -70615,6 +70859,7 @@
             "Ripublik Naoero"
         ],
         "area": 21,
+        "borders": "NA",
         "capital": [
             "Yaren"
         ],
@@ -70657,6 +70902,7 @@
                 "m": "Nauruan"
             }
         },
+        "fifa": "NA",
         "flag": "🇳🇷",
         "flags": {
             "png": "https://flagcdn.com/w320/nr.png",
@@ -70701,6 +70947,7 @@
             }
         },
         "population": 10834,
+        "postalCode": "NA",
         "region": "Oceania",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -70962,6 +71209,7 @@
             "NU"
         ],
         "area": 260,
+        "borders": "NA",
         "capital": [
             "Alofi"
         ],
@@ -70980,6 +71228,7 @@
         "cca2": "NU",
         "cca3": "NIU",
         "ccn3": "570",
+        "cioc": "NA",
         "coatOfArms": {},
         "continents": [
             "Oceania"
@@ -71000,11 +71249,13 @@
                 "m": "Niuéen"
             }
         },
+        "fifa": "NA",
         "flag": "🇳🇺",
         "flags": {
             "png": "https://flagcdn.com/w320/nu.png",
             "svg": "https://flagcdn.com/nu.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+6",
             "suffixes": [
@@ -71040,6 +71291,7 @@
             }
         },
         "population": 1470,
+        "postalCode": "NA",
         "region": "Oceania",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -71161,6 +71413,7 @@
             "Aotearoa"
         ],
         "area": 270467,
+        "borders": "NA",
         "capital": [
             "Wellington"
         ],
@@ -71210,6 +71463,7 @@
             "svg": "https://flagcdn.com/nz.svg",
             "alt": "The flag of New Zealand has a dark blue field with the flag of the United Kingdom — the Union Jack — in the canton and a representation of the Southern Cross constellation, made up of four five-pointed white-edged red stars, on the fly side of the field."
         },
+        "gini": "NA",
         "idd": {
             "root": "+6",
             "suffixes": [
@@ -71605,6 +71859,7 @@
             "svg": "https://flagcdn.com/om.svg",
             "alt": "The flag of Oman features a red vertical band on the hoist side that takes up about one-fourth the width of the field, and three equal horizontal bands of white, red and green adjoining the vertical band. At the top of the vertical band is the white emblem of Oman."
         },
+        "gini": "NA",
         "idd": {
             "root": "+9",
             "suffixes": [
@@ -71962,6 +72217,7 @@
             }
         },
         "population": 4314768,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -72347,8 +72603,8 @@
                 "type": "Region",
                 "parent_code": null,
                 "latlng": [
-                    -14.05,
-                    -73.088
+                    -14.134,
+                    -73.268
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/PE/PE-APU.svg"
             },
@@ -72457,8 +72713,8 @@
                 "type": "Region",
                 "parent_code": null,
                 "latlng": [
-                    -6.72,
-                    -79.908
+                    -6.704,
+                    -79.904
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/PE/PE-LAM.svg"
             },
@@ -72507,8 +72763,8 @@
                 "type": "Region",
                 "parent_code": null,
                 "latlng": [
-                    -17.193,
-                    -70.933
+                    -17.188,
+                    -70.932
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/PE/PE-MOQ.svg"
             },
@@ -72702,6 +72958,7 @@
             "Pōrīnetia Farāni"
         ],
         "area": 4167,
+        "borders": "NA",
         "capital": [
             "Papeetē"
         ],
@@ -72720,6 +72977,7 @@
         "cca2": "PF",
         "cca3": "PYF",
         "ccn3": "258",
+        "cioc": "NA",
         "coatOfArms": {
             "png": "https://mainfacts.com/media/images/coats_of_arms/pf.png",
             "svg": "https://mainfacts.com/media/images/coats_of_arms/pf.svg"
@@ -72743,11 +73001,13 @@
                 "m": "Polynésien"
             }
         },
+        "fifa": "NA",
         "flag": "🇵🇫",
         "flags": {
             "png": "https://flagcdn.com/w320/pf.png",
             "svg": "https://flagcdn.com/pf.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+6",
             "suffixes": [
@@ -73348,6 +73608,7 @@
             "Repúblika ng Pilipinas"
         ],
         "area": 342353,
+        "borders": "NA",
         "capital": [
             "Manila"
         ],
@@ -73818,8 +74079,8 @@
                 "type": "Province",
                 "parent_code": "PH-06",
                 "latlng": [
-                    11.389,
-                    122.628
+                    11.553,
+                    122.741
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/PH/PH-CAP.png"
             },
@@ -74038,8 +74299,8 @@
                 "type": "Province",
                 "parent_code": "PH-08",
                 "latlng": [
-                    10.862,
-                    124.881
+                    11.35,
+                    124.464
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/PH/PH-LEY.png"
             },
@@ -75210,6 +75471,7 @@
             "Collectivité territoriale de Saint-Pierre-et-Miquelon"
         ],
         "area": 242,
+        "borders": "NA",
         "capital": [
             "Saint-Pierre"
         ],
@@ -75228,6 +75490,7 @@
         "cca2": "PM",
         "cca3": "SPM",
         "ccn3": "666",
+        "cioc": "NA",
         "coatOfArms": {},
         "continents": [
             "North America"
@@ -75248,11 +75511,13 @@
                 "m": "Saint-Pierrais, Miquelonais"
             }
         },
+        "fifa": "NA",
         "flag": "🇵🇲",
         "flags": {
             "png": "https://flagcdn.com/w320/pm.png",
             "svg": "https://flagcdn.com/pm.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+5",
             "suffixes": [
@@ -75409,6 +75674,7 @@
             "Pitcairn Henderson Ducie and Oeno Islands"
         ],
         "area": 47,
+        "borders": "NA",
         "capital": [
             "Adamstown"
         ],
@@ -75427,6 +75693,7 @@
         "cca2": "PN",
         "cca3": "PCN",
         "ccn3": "612",
+        "cioc": "NA",
         "coatOfArms": {},
         "continents": [
             "Oceania"
@@ -75447,11 +75714,13 @@
                 "m": "Pitcairnais"
             }
         },
+        "fifa": "NA",
         "flag": "🇵🇳",
         "flags": {
             "png": "https://flagcdn.com/w320/pn.png",
             "svg": "https://flagcdn.com/pn.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+6",
             "suffixes": [
@@ -75482,6 +75751,7 @@
             }
         },
         "population": 56,
+        "postalCode": "NA",
         "region": "Oceania",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -75604,6 +75874,7 @@
             "Estado Libre Asociado de Puerto Rico"
         ],
         "area": 8870,
+        "borders": "NA",
         "capital": [
             "San Juan"
         ],
@@ -75649,6 +75920,7 @@
             "png": "https://flagcdn.com/w320/pr.png",
             "svg": "https://flagcdn.com/pr.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+1",
             "suffixes": [
@@ -75907,6 +76179,7 @@
             }
         },
         "population": 4803269,
+        "postalCode": "NA",
         "region": "Asia",
         "startOfWeek": "sunday",
         "status": "officially-assigned",
@@ -76605,6 +76878,7 @@
             "Beluu er a Belau"
         ],
         "area": 459,
+        "borders": "NA",
         "capital": [
             "Ngerulmud"
         ],
@@ -76647,12 +76921,14 @@
                 "m": "Paluan"
             }
         },
+        "fifa": "NA",
         "flag": "🇵🇼",
         "flags": {
             "png": "https://flagcdn.com/w320/pw.png",
             "svg": "https://flagcdn.com/pw.svg",
             "alt": "The flag of Palau has a light blue field with a large golden-yellow circle that is offset slightly towards the hoist side of center."
         },
+        "gini": "NA",
         "idd": {
             "root": "+6",
             "suffixes": [
@@ -76761,8 +77037,8 @@
                 "type": "State",
                 "parent_code": null,
                 "latlng": [
-                    7.515,
-                    134.597
+                    7.495,
+                    134.634
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/PW/PW-212.png"
             },
@@ -77427,6 +77703,7 @@
             "svg": "https://flagcdn.com/qa.svg",
             "alt": "The flag of Qatar has a maroon field, on the hoist side of which is a white vertical band that spans about one-third the width of the field and is separated from the rest of the field by nine adjoining fly-side pointing white isosceles triangles that serve as a serrated line."
         },
+        "gini": "NA",
         "idd": {
             "root": "+9",
             "suffixes": [
@@ -77457,6 +77734,7 @@
             }
         },
         "population": 2881060,
+        "postalCode": "NA",
         "region": "Asia",
         "startOfWeek": "sunday",
         "status": "officially-assigned",
@@ -77660,6 +77938,7 @@
             "Reunion"
         ],
         "area": 2511,
+        "borders": "NA",
         "capital": [
             "Saint-Denis"
         ],
@@ -77678,6 +77957,7 @@
         "cca2": "RE",
         "cca3": "REU",
         "ccn3": "638",
+        "cioc": "NA",
         "coatOfArms": {},
         "continents": [
             "Africa"
@@ -77698,11 +77978,13 @@
                 "m": "Réunionnais"
             }
         },
+        "fifa": "NA",
         "flag": "🇷🇪",
         "flags": {
             "png": "https://flagcdn.com/w320/re.png",
             "svg": "https://flagcdn.com/re.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+2",
             "suffixes": [
@@ -79764,8 +80046,8 @@
                 "type": "Republic",
                 "parent_code": null,
                 "latlng": [
-                    79.729,
-                    100.278
+                    43.045,
+                    44.287
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/RU/RU-SE.svg"
             },
@@ -79944,8 +80226,8 @@
                 "type": "Autonomous district",
                 "parent_code": null,
                 "latlng": [
-                    66.065,
-                    76.935
+                    61.524,
+                    105.319
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/RU/RU-YAN.svg"
             },
@@ -80207,6 +80489,7 @@
             }
         },
         "population": 12952209,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -80439,6 +80722,7 @@
             "svg": "https://flagcdn.com/sa.svg",
             "alt": "The flag of Saudi Arabia has a green field, at the center of which is an Arabic inscription — the Shahada — in white above a white horizontal sabre with its tip pointed to the hoist side of the field."
         },
+        "gini": "NA",
         "idd": {
             "root": "+9",
             "suffixes": [
@@ -80725,6 +81009,7 @@
             "SB"
         ],
         "area": 28896,
+        "borders": "NA",
         "capital": [
             "Honiara"
         ],
@@ -80807,6 +81092,7 @@
             }
         },
         "population": 686878,
+        "postalCode": "NA",
         "region": "Oceania",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -81031,6 +81317,7 @@
             "République des Seychelles"
         ],
         "area": 452,
+        "borders": "NA",
         "capital": [
             "Victoria"
         ],
@@ -81123,6 +81410,7 @@
             }
         },
         "population": 98462,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -82342,6 +82630,7 @@
             "新加坡共和国"
         ],
         "area": 710,
+        "borders": "NA",
         "capital": [
             "Singapore"
         ],
@@ -82391,6 +82680,7 @@
             "svg": "https://flagcdn.com/sg.svg",
             "alt": "The flag of Singapore is composed of two equal horizontal bands of red and white. On the hoist side of the red band is a fly-side facing white crescent which partially encloses five small five-pointed white stars arranged in the shape of a pentagon."
         },
+        "gini": "NA",
         "idd": {
             "root": "+6",
             "suffixes": [
@@ -82610,6 +82900,7 @@
             "St. Helena, Ascension and Tristan da Cunha"
         ],
         "area": 394,
+        "borders": "NA",
         "capital": [
             "Jamestown"
         ],
@@ -82628,6 +82919,7 @@
         "cca2": "SH",
         "cca3": "SHN",
         "ccn3": "654",
+        "cioc": "NA",
         "coatOfArms": {},
         "continents": [
             "Africa"
@@ -82652,11 +82944,13 @@
                 "m": "Sainte-Hélènois"
             }
         },
+        "fifa": "NA",
         "flag": "🇸🇭",
         "flags": {
             "png": "https://flagcdn.com/w320/sh.png",
             "svg": "https://flagcdn.com/sh.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+2",
             "suffixes": [
@@ -83607,8 +83901,8 @@
                 "type": "Municipality",
                 "parent_code": null,
                 "latlng": [
-                    46.355,
-                    14.746
+                    46.354,
+                    14.747
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/SI/SI-067.png"
             },
@@ -83767,8 +84061,8 @@
                 "type": "Municipality",
                 "parent_code": null,
                 "latlng": [
-                    46.282,
-                    14.923
+                    46.318,
+                    14.947
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/SI/SI-083.png"
             },
@@ -84157,8 +84451,8 @@
                 "type": "Municipality",
                 "parent_code": null,
                 "latlng": [
-                    46.167,
-                    14.306
+                    46.138,
+                    14.149
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/SI/SI-122.png"
             },
@@ -84957,8 +85251,8 @@
                 "type": "Municipality",
                 "parent_code": null,
                 "latlng": [
-                    45.783,
-                    15.074
+                    45.777,
+                    15.095
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/SI/SI-203.png"
             },
@@ -85180,6 +85474,7 @@
             "Svalbard and Jan Mayen Islands"
         ],
         "area": -1,
+        "borders": "NA",
         "capital": [
             "Longyearbyen"
         ],
@@ -85198,6 +85493,7 @@
         "cca2": "SJ",
         "cca3": "SJM",
         "ccn3": "744",
+        "cioc": "NA",
         "coatOfArms": {},
         "continents": [
             "Europe"
@@ -85214,11 +85510,13 @@
                 "m": "Norwegian"
             }
         },
+        "fifa": "NA",
         "flag": "🇸🇯",
         "flags": {
             "png": "https://flagcdn.com/w320/sj.png",
             "svg": "https://flagcdn.com/sj.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+4",
             "suffixes": [
@@ -85249,6 +85547,7 @@
             }
         },
         "population": 2562,
+        "postalCode": "NA",
         "region": "Europe",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -85533,8 +85832,8 @@
                 "type": "Region",
                 "parent_code": null,
                 "latlng": [
-                    48.885,
-                    18.034
+                    48.809,
+                    18.232
                 ],
                 "flag_url": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/SK/SK-TC.svg"
             },
@@ -85752,6 +86051,7 @@
             }
         },
         "population": 7976985,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -85977,6 +86277,7 @@
             "svg": "https://flagcdn.com/sm.svg",
             "alt": "The flag of San Marino is composed of two equal horizontal bands of white and light blue, with the national coat of arms superimposed in the center."
         },
+        "gini": "NA",
         "idd": {
             "root": "+3",
             "suffixes": [
@@ -87070,6 +87371,7 @@
             }
         },
         "population": 586634,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -87079,8 +87381,8 @@
                 "type": "District",
                 "parent_code": null,
                 "latlng": [
-                    4.752,
-                    -55.027
+                    5.025,
+                    -54.993
                 ],
                 "flag_url": null
             },
@@ -87381,6 +87683,7 @@
             }
         },
         "population": 11193729,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "sunday",
         "status": "officially-assigned",
@@ -87605,6 +87908,7 @@
             "República Democrática de São Tomé e Príncipe"
         ],
         "area": 964,
+        "borders": "NA",
         "capital": [
             "São Tomé"
         ],
@@ -87687,6 +87991,7 @@
             }
         },
         "population": 219161,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -88253,6 +88558,7 @@
         "cca2": "SX",
         "cca3": "SXM",
         "ccn3": "534",
+        "cioc": "NA",
         "coatOfArms": {},
         "continents": [
             "North America"
@@ -88273,11 +88579,13 @@
                 "m": "Saint-Martinois"
             }
         },
+        "fifa": "NA",
         "flag": "🇸🇽",
         "flags": {
             "png": "https://flagcdn.com/w320/sx.png",
             "svg": "https://flagcdn.com/sx.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+1",
             "suffixes": [
@@ -88318,6 +88626,7 @@
             }
         },
         "population": 40812,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -88529,6 +88838,7 @@
             }
         },
         "population": 17500657,
+        "postalCode": "NA",
         "region": "Asia",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -89054,6 +89364,7 @@
             "TC"
         ],
         "area": 948,
+        "borders": "NA",
         "capital": [
             "Cockburn Town"
         ],
@@ -89072,6 +89383,7 @@
         "cca2": "TC",
         "cca3": "TCA",
         "ccn3": "796",
+        "cioc": "NA",
         "coatOfArms": {},
         "continents": [
             "North America"
@@ -89094,6 +89406,7 @@
             "png": "https://flagcdn.com/w320/tc.png",
             "svg": "https://flagcdn.com/tc.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+1",
             "suffixes": [
@@ -89347,6 +89660,7 @@
             }
         },
         "population": 16425859,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -89696,6 +90010,7 @@
             "French Southern Territories"
         ],
         "area": 7747,
+        "borders": "NA",
         "capital": [
             "Port-aux-Français"
         ],
@@ -89714,6 +90029,7 @@
         "cca2": "TF",
         "cca3": "ATF",
         "ccn3": "260",
+        "cioc": "NA",
         "coatOfArms": {
             "png": "https://mainfacts.com/media/images/coats_of_arms/tf.png",
             "svg": "https://mainfacts.com/media/images/coats_of_arms/tf.svg"
@@ -89737,11 +90053,13 @@
                 "m": "Français"
             }
         },
+        "fifa": "NA",
         "flag": "🇹🇫",
         "flags": {
             "png": "https://flagcdn.com/w320/tf.png",
             "svg": "https://flagcdn.com/tf.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+2",
             "suffixes": [
@@ -89772,10 +90090,12 @@
             }
         },
         "population": 400,
+        "postalCode": "NA",
         "region": "Antarctic",
         "startOfWeek": "monday",
         "status": "officially-assigned",
         "subdivisions": {},
+        "subregion": "NA",
         "timezones": [
             "UTC+05:00"
         ],
@@ -89981,6 +90301,7 @@
             }
         },
         "population": 8278737,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -91423,6 +91744,7 @@
             "TK"
         ],
         "area": 12,
+        "borders": "NA",
         "capital": [
             "Fakaofo"
         ],
@@ -91441,6 +91763,7 @@
         "cca2": "TK",
         "cca3": "TKL",
         "ccn3": "772",
+        "cioc": "NA",
         "coatOfArms": {},
         "continents": [
             "Oceania"
@@ -91457,11 +91780,13 @@
                 "m": "Tokelauan"
             }
         },
+        "fifa": "NA",
         "flag": "🇹🇰",
         "flags": {
             "png": "https://flagcdn.com/w320/tk.png",
             "svg": "https://flagcdn.com/tk.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+6",
             "suffixes": [
@@ -91502,6 +91827,7 @@
             }
         },
         "population": 1411,
+        "postalCode": "NA",
         "region": "Oceania",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -91715,6 +92041,7 @@
             }
         },
         "population": 1318442,
+        "postalCode": "NA",
         "region": "Asia",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -92697,6 +93024,7 @@
             "TO"
         ],
         "area": 747,
+        "borders": "NA",
         "capital": [
             "Nuku'alofa"
         ],
@@ -92784,6 +93112,7 @@
             }
         },
         "population": 105697,
+        "postalCode": "NA",
         "region": "Oceania",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -93987,6 +94316,7 @@
             "Republic of Trinidad and Tobago"
         ],
         "area": 5130,
+        "borders": "NA",
         "capital": [
             "Port of Spain"
         ],
@@ -94069,6 +94399,7 @@
             }
         },
         "population": 1399491,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -94340,6 +94671,7 @@
             "TV"
         ],
         "area": 26,
+        "borders": "NA",
         "capital": [
             "Funafuti"
         ],
@@ -94386,6 +94718,7 @@
                 "m": "Tuvaluan"
             }
         },
+        "fifa": "NA",
         "flag": "🇹🇻",
         "flags": {
             "png": "https://flagcdn.com/w320/tv.png",
@@ -94430,6 +94763,7 @@
             }
         },
         "population": 11792,
+        "postalCode": "NA",
         "region": "Oceania",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -94636,6 +94970,7 @@
             "Chinese Taipei"
         ],
         "area": 36193,
+        "borders": "NA",
         "capital": [
             "Taipei"
         ],
@@ -94684,6 +95019,7 @@
             "png": "https://flagcdn.com/w320/tw.png",
             "svg": "https://flagcdn.com/tw.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+8",
             "suffixes": [
@@ -95157,6 +95493,7 @@
             }
         },
         "population": 59734213,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -96172,6 +96509,7 @@
             }
         },
         "population": 45741000,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -97221,8 +97559,8 @@
                 "type": "District",
                 "parent_code": "UG-W",
                 "latlng": [
-                    0.683,
-                    30.297
+                    0.65,
+                    30.267
                 ],
                 "flag_url": null
             },
@@ -97683,6 +98021,7 @@
             "UM"
         ],
         "area": 34,
+        "borders": "NA",
         "capital": [
             "Washington DC"
         ],
@@ -97696,6 +98035,7 @@
         "cca2": "UM",
         "cca3": "UMI",
         "ccn3": "581",
+        "cioc": "NA",
         "coatOfArms": {},
         "continents": [
             "Oceania"
@@ -97712,11 +98052,13 @@
                 "m": "American Islander"
             }
         },
+        "fifa": "NA",
         "flag": "🇺🇲",
         "flags": {
             "png": "https://flagcdn.com/w320/um.png",
             "svg": "https://flagcdn.com/um.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+2",
             "suffixes": [
@@ -97747,6 +98089,7 @@
             }
         },
         "population": 300,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -99858,6 +100201,7 @@
         "cca2": "VA",
         "cca3": "VAT",
         "ccn3": "336",
+        "cioc": "NA",
         "coatOfArms": {
             "png": "https://mainfacts.com/media/images/coats_of_arms/va.png",
             "svg": "https://mainfacts.com/media/images/coats_of_arms/va.svg"
@@ -99881,12 +100225,14 @@
                 "m": "Vatican"
             }
         },
+        "fifa": "NA",
         "flag": "🇻🇦",
         "flags": {
             "png": "https://flagcdn.com/w320/va.png",
             "svg": "https://flagcdn.com/va.svg",
             "alt": "The flag of Vatican City is square shaped. It is composed of two equal vertical bands of yellow and white, with national coat of arms centered in the white band. The national coat of arms comprises the Papal Tiara superimposed on two crossed keys."
         },
+        "gini": "NA",
         "idd": {
             "root": "+3",
             "suffixes": [
@@ -99923,6 +100269,7 @@
             }
         },
         "population": 451,
+        "postalCode": "NA",
         "region": "Europe",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -100043,6 +100390,7 @@
             "VC"
         ],
         "area": 389,
+        "borders": "NA",
         "capital": [
             "Kingstown"
         ],
@@ -100092,6 +100440,7 @@
             "svg": "https://flagcdn.com/vc.svg",
             "alt": "The flag of Saint Vincent and the Grenadines is composed of three vertical bands of blue, gold and green. The gold band is twice as wide as the other two bands and bears three green diamonds arranged to form the letter V at its center."
         },
+        "gini": "NA",
         "idd": {
             "root": "+1",
             "suffixes": [
@@ -100122,6 +100471,7 @@
             }
         },
         "population": 110947,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -100181,8 +100531,8 @@
                 "type": "Parish",
                 "parent_code": null,
                 "latlng": [
-                    12.667,
-                    -61.25
+                    13.012,
+                    -61.228
                 ],
                 "flag_url": null
             }
@@ -100769,6 +101119,7 @@
             "Virgin Islands, British"
         ],
         "area": 151,
+        "borders": "NA",
         "capital": [
             "Road Town"
         ],
@@ -100813,6 +101164,7 @@
             "png": "https://flagcdn.com/w320/vg.png",
             "svg": "https://flagcdn.com/vg.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+1",
             "suffixes": [
@@ -100843,6 +101195,7 @@
             }
         },
         "population": 30237,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -100964,6 +101317,7 @@
             "Virgin Islands, U.S."
         ],
         "area": 347,
+        "borders": "NA",
         "capital": [
             "Charlotte Amalie"
         ],
@@ -101005,6 +101359,7 @@
             "png": "https://flagcdn.com/w320/vi.png",
             "svg": "https://flagcdn.com/vi.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+1",
             "suffixes": [
@@ -101035,6 +101390,7 @@
             }
         },
         "population": 106290,
+        "postalCode": "NA",
         "region": "Americas",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -101258,8 +101614,8 @@
                 "type": "Province",
                 "parent_code": null,
                 "latlng": [
-                    22.386,
-                    103.47
+                    22.369,
+                    103.312
                 ],
                 "flag_url": null
             },
@@ -102003,6 +102359,7 @@
             "République de Vanuatu"
         ],
         "area": 12189,
+        "borders": "NA",
         "capital": [
             "Port Vila"
         ],
@@ -102095,6 +102452,7 @@
             }
         },
         "population": 307150,
+        "postalCode": "NA",
         "region": "Oceania",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -102278,6 +102636,7 @@
             "Territoire des îles Wallis et Futuna"
         ],
         "area": 142,
+        "borders": "NA",
         "capital": [
             "Mata-Utu"
         ],
@@ -102296,6 +102655,7 @@
         "cca2": "WF",
         "cca3": "WLF",
         "ccn3": "876",
+        "cioc": "NA",
         "coatOfArms": {},
         "continents": [
             "Oceania"
@@ -102312,11 +102672,13 @@
                 "m": "Wallis and Futuna Islander"
             }
         },
+        "fifa": "NA",
         "flag": "🇼🇫",
         "flags": {
             "png": "https://flagcdn.com/w320/wf.png",
             "svg": "https://flagcdn.com/wf.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+6",
             "suffixes": [
@@ -102504,6 +102866,7 @@
             "Malo Saʻoloto Tutoʻatasi o Sāmoa"
         ],
         "area": 2842,
+        "borders": "NA",
         "capital": [
             "Apia"
         ],
@@ -102591,6 +102954,7 @@
             }
         },
         "population": 198410,
+        "postalCode": "NA",
         "region": "Oceania",
         "startOfWeek": "monday",
         "status": "officially-assigned",
@@ -102846,6 +103210,7 @@
         },
         "cca2": "XK",
         "cca3": "UNK",
+        "ccn3": "NA",
         "cioc": "KOS",
         "coatOfArms": {
             "png": "https://mainfacts.com/media/images/coats_of_arms/xk.png",
@@ -102885,6 +103250,7 @@
                 "83"
             ]
         },
+        "independent": "NA",
         "landlocked": true,
         "languages": {
             "sqi": "Albanian",
@@ -102913,6 +103279,7 @@
             }
         },
         "population": 1775378,
+        "postalCode": "NA",
         "region": "Europe",
         "startOfWeek": "monday",
         "status": "user-assigned",
@@ -102921,6 +103288,7 @@
         "timezones": [
             "UTC+01:00"
         ],
+        "tld": "NA",
         "translations": {
             "ara": {
                 "official": "جمهورية كوسوفو",
@@ -103114,6 +103482,7 @@
             }
         },
         "population": 29825968,
+        "postalCode": "NA",
         "region": "Asia",
         "startOfWeek": "sunday",
         "status": "officially-assigned",
@@ -103457,6 +103826,7 @@
             "Département de Mayotte"
         ],
         "area": 374,
+        "borders": "NA",
         "capital": [
             "Mamoudzou"
         ],
@@ -103475,6 +103845,7 @@
         "cca2": "YT",
         "cca3": "MYT",
         "ccn3": "175",
+        "cioc": "NA",
         "coatOfArms": {},
         "continents": [
             "Africa"
@@ -103495,11 +103866,13 @@
                 "m": "Mahorais"
             }
         },
+        "fifa": "NA",
         "flag": "🇾🇹",
         "flags": {
             "png": "https://flagcdn.com/w320/yt.png",
             "svg": "https://flagcdn.com/yt.svg"
         },
+        "gini": "NA",
         "idd": {
             "root": "+2",
             "suffixes": [
@@ -104491,6 +104864,7 @@
             }
         },
         "population": 14862927,
+        "postalCode": "NA",
         "region": "Africa",
         "startOfWeek": "monday",
         "status": "officially-assigned",

@@ -90,9 +90,12 @@ class ISO3166_2():
 
         #get list of all countries by 2 letter alpha-2 code
         self.alpha2 = sorted(list(iso3166.countries_by_alpha2.keys()))
-        
-        #list of data attributes available for each country
-        self.attributes = list(self.all_iso3166_2_data[next(self.all_iso3166_2_data)])
+
+        #list of data attributes available for each country 
+        if (self.using_country_data):
+            self.attributes = list(self.all_iso3166_2_data["AD"])
+        else:
+            self.attributes = list(self.all_iso3166_2_data["AD"][next(iter(self.all_iso3166_2_data["AD"]))].keys())
 
     def subdivision_codes(self, alpha2_code=""):
         """
