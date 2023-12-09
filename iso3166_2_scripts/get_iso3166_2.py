@@ -11,6 +11,9 @@ import googlemaps
 from tqdm import tqdm
 import natsort
 from collections import OrderedDict
+import pandas as pd
+import numpy as np
+from .update_subdivisions import *
 
 #initialise version 
 __version__ = metadata('iso3166-2')['version']
@@ -19,33 +22,27 @@ __version__ = metadata('iso3166-2')['version']
 USER_AGENT_HEADER = {'User-Agent': 'iso3166-2/{} ({}; {})'.format(__version__,
                                        'https://github.com/amckenna41/iso3166-2', getpass.getuser())}
 
-#initialise google maps client 
+#initialise google maps client with API key
 gmaps = googlemaps.Client(key=os.environ["GOOGLE_MAPS_API_KEY"])
-
-#list of data attributes supported by software
-attribute_list = [
-    "altSpellings", "area", "borders", "capital", "capitalInfo", "car", "cca2", "cca3", "ccn3", "cioc", "coatOfArms",
-    "continents", "currencies", "demonyms", "fifa", "flag", "flags", "gini", "idd", "independent", "landlocked",
-    "languages", "latlng", "maps", "name", "population", "postalCode", "region", "startOfWeek", "status", 
-    "subdivisions", "subregion", "timezones", "tld", "translations", "unMember"
-    ]
 
 def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", json_filename="test-iso3166-2", verbose=1):
     """
-    Export the two ISO 3166-2 jsons with fields including all subdivision related data using the pycountry
-    library and all country data using the restcountries api (https://restcountries.com/). Also get the
-    lat/longitude info for each country and subdivision using the Google Maps API. The iso3166-2.json stores 
-    all country data + subdivisions data, the iso3166-2-min.json contains just country name, 2 letter alpha-2 
-    code and subdivisions info. The full list of attributes exported can be viewed in the ATTRIBUTES.md file.
+    Export all ISO 3166-2 subdivision related data using the ISO 3166-2 library to a JSON. Also get the
+    lat/longitude info for each subdivision using the Google Maps API. The iso3166-2.json stores all
+    the subdivision data including: subdivison code, name, type, parent code, flag and latitude/longitude.
+
+    The generated JSON is used as a baseline for the ISO 3166-2 data object, but additional and more 
+    up-to-date and accurate data is added with the help of the iso3166-updates software/API 
+    (https://github.com/amckenna41/iso3166-updates).
 
     Parameters
     ==========
     :alpha2_codes: str (default="")
-        string of 1 or more 2 letter alpha-2 country codes to pull their latest ISO 3166-2 data.
+        string of 1 or more 2 letter alpha-2 country codes to extract their latest ISO 3166-2 data.
     :output_folder: str (default="iso3166-2-output")
-        output folder to store exported iso3166-2 jsons.
+        output folder to store exported iso3166-2 data.
     :json_filename: str (default="iso3166-2")
-        filename for both country data json exports. 
+        output filename for JSON object with all ISO 3166-2 data.
     :verbose: int (default=1)
         Set to 1 to print out progress of export functionality, 0 will not print progress.
 
@@ -83,7 +80,7 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
         #use list of all 2 letter alpha-2 codes, according to ISO 3166-1 
         all_alpha2 = sorted(list(iso3166.countries_by_alpha2.keys()))
     else:
-        #iterate over all codes, validating they're valid, convert alpha-3 to alpha-2 if applicable
+        #iterate over all codes, checking they're valid, convert alpha-3 to alpha-2 if applicable
         for code in range(0, len(alpha2_codes)):
 
             #convert 3 letter alpha-3 code into its 2 letter alpha-2 counterpart
@@ -99,55 +96,49 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
     #if 10 or less alpha-2 codes input then append to filename
     if (len(all_alpha2) <= 10):
         json_filename = os.path.splitext(json_filename)[0] + "-" + ",".join(all_alpha2)
-
-    #append .json to filename if just filename input
-    if (os.path.splitext(json_filename)[1] == ''):
-        json_filename = json_filename + ".json"
     
     #path to json file will be in the main repo dir by default
     json_filepath = os.path.join(output_folder, json_filename)
-    json_min_filepath = os.path.join(output_folder, os.path.splitext(json_filename)[0] + '-min.json')
     
+    #append json extension to output filename
+    if (os.path.splitext(json_filepath) != ".json"):
+        json_filepath = json_filepath + ".json"
+        
     if (verbose):
-        print("Exporting {} ISO 3166-2 country's data to folder {}.".format(len(all_alpha2), output_folder))
-        print('#################################################################\n')
-
-    #base url for rest countries api
-    base_restcountries_url = "https://restcountries.com/v3.1/alpha/"
-
-    #base url for flag icons repo
-    flag_icons_base_url = "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/"
+        print("Exporting {} ISO 3166-2 country's data to folder {}".format(len(all_alpha2), output_folder))
+        print('################################################################\n')
 
     #objects to store all country output data
     all_country_data = {}
-    all_country_data_min = {}
 
-    #create output dir if doesnt exist
+    #create output dir if doesn't exist
     if not (os.path.isdir(output_folder)):
         os.mkdir(output_folder)
 
     #start counter
     start = time.time() 
-
-    #if less than 5 input alpha-2 codes then don't display progress bar, or print elapsed time
+    
+    #if less than 5 alpha-2 codes input then don't display progress bar, or print elapsed time
     tqdm_disable = False
     if (len(all_alpha2) < 5):
         tqdm_disable = True
 
+    #base url for flag icons repo
+    flag_icons_base_url = "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/"
+
+    #reading in, as dataframe, the csv that stores the local names for each subdivision
+    local_name_df = pd.read_csv(os.path.join("iso3166-2-updates", "local_names.csv"))
+    
+    #replace any Nan values with None
+    local_name_df = local_name_df.replace(np.nan, None)
+
+    #sort dataframe rows by their country code and reindex rows 
+    local_name_df = local_name_df.sort_values('country_code').reset_index(drop=True)
+    
     #iterate over all country codes, getting country and subdivision info, append to json objects
     for alpha2 in tqdm(all_alpha2, ncols=50, disable=tqdm_disable):
         
-        #get rest countries api url 
-        country_url = base_restcountries_url + alpha2.upper()
-
-        #get country info from restcountries api
-        rest_countries_response = requests.get(country_url, stream=True, headers=USER_AGENT_HEADER)
-        
-        #if endpoint returns a non 200 status code skip to next iteration
-        if (rest_countries_response.status_code != 200):
-            continue
-
-        #kosovo not in pycountry package as it has no associated subdivisions, manually set params
+        #kosovo has no associated subdivisions, manually set params
         if (alpha2 == "XK"):
             countryName = "Kosovo"
             allSubdivisions = []
@@ -163,46 +154,29 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
             else:
                 print(" - {} ({})".format(countryName, alpha2))
 
-        #add all country data from rest countries api response to json object
-        all_country_data[alpha2] = rest_countries_response.json()[0]
-
-        #round latitude/longitude coords to 3 decimal places
-        all_country_data[alpha2]["latlng"] = [round(all_country_data[alpha2]["latlng"][0], 3), round(all_country_data[alpha2]["latlng"][1], 3)]
-
-        #round area (km^2) to nearest whole number
-        all_country_data[alpha2]["area"] = int(all_country_data[alpha2]["area"])
-
-        #for min json object, create empty object with alpha-2 as key
-        all_country_data_min[alpha2] = {}
-
-        #create subdivisions and country name keys in json objects
-        all_country_data[alpha2]["subdivisions"] = {}
+        #create country key in json object
+        all_country_data[alpha2] = {}
         
-        #iterate over all countrys' subdivisions, assigning subdiv code, name, type and parent code and flag URL, 
-        # where applicable for both json objects
+        #iterate over all countrys' subdivisions, assigning subdiv code, name, type and parent code and flag URL, where applicable for the json object
         for subd in allSubdivisions:
             
             #get subdivision coordinates using googlemaps api python client
-            gmaps_latlng = gmaps.geocode(subd.name + ", " + countryName, region=alpha2, language="en")
-            
+            # gmaps_latlng = gmaps.geocode(subd.name + ", " + countryName, region=alpha2, language="en")
+            gmaps_latlng = []
             #set coordinates to None if not found using maps api, round to 3 decimal places
             if (gmaps_latlng != []):
                 subdivision_coords = [round(gmaps_latlng[0]['geometry']['location']['lat'], 3), round(gmaps_latlng[0]['geometry']['location']['lng'], 3)]
             else:
                 subdivision_coords = None
 
-            all_country_data[alpha2]["subdivisions"][subd.code] = {}
-            all_country_data[alpha2]["subdivisions"][subd.code]["name"] = subd.name
-            all_country_data[alpha2]["subdivisions"][subd.code]["type"] = subd.type
-            all_country_data[alpha2]["subdivisions"][subd.code]["parent_code"] = subd.parent_code
-            all_country_data[alpha2]["subdivisions"][subd.code]["latlng"] = subdivision_coords
-
-            all_country_data_min[alpha2][subd.code] = {}
-            all_country_data_min[alpha2][subd.code]["name"] = subd.name
-            all_country_data_min[alpha2][subd.code]["type"] = subd.type
-            all_country_data_min[alpha2][subd.code]["parent_code"] = subd.parent_code
-            all_country_data_min[alpha2][subd.code]["latlng"] = subdivision_coords
-
+            #initialise subdivision code object
+            all_country_data[alpha2][subd.code] = {}
+            all_country_data[alpha2][subd.code]["name"] = subd.name
+            all_country_data[alpha2][subd.code]["localName"] = None
+            all_country_data[alpha2][subd.code]["type"] = subd.type
+            all_country_data[alpha2][subd.code]["parentCode"] = subd.parent_code
+            all_country_data[alpha2][subd.code]["latLng"] = subdivision_coords
+            
             #list of flag file extensions in order of preference 
             flag_file_extensions = ['.svg', '.png', '.jpeg', '.jpg', '.gif']
             
@@ -217,27 +191,21 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
                     
                         #if subdivision has a valid flag in flag icons repo set to its GitHub url, else set to None
                         if (requests.get(alpha2_flag_url + flag_file_extensions[extension], headers=USER_AGENT_HEADER).status_code != 404):
-                            all_country_data[alpha2]["subdivisions"][subd.code]["flag_url"] = alpha2_flag_url + flag_file_extensions[extension]
-                            all_country_data_min[alpha2][subd.code]["flag_url"] = alpha2_flag_url + flag_file_extensions[extension]
+                            all_country_data[alpha2][subd.code]["flagUrl"] = alpha2_flag_url + flag_file_extensions[extension]
                             break
                         elif (extension == 4):
-                            all_country_data[alpha2]["subdivisions"][subd.code]["flag_url"] = None
-                            all_country_data_min[alpha2][subd.code]["flag_url"] = None
+                            all_country_data[alpha2][subd.code]["flagUrl"] = None
             else:
-                    all_country_data[alpha2]["subdivisions"][subd.code]["flag_url"] = None
-                    all_country_data_min[alpha2][subd.code]["flag_url"] = None
+                all_country_data[alpha2][subd.code]["flagUrl"] = None
 
-        #if attribute value found for country, set it's value to NA
-        for attribute in attribute_list:
-            if not (attribute in list(all_country_data[alpha2].keys())):
-                all_country_data[alpha2][attribute] = "NA"
+            #reorder keys of each subdivision object
+            all_country_data[alpha2][subd.code] = {k: all_country_data[alpha2][subd.code][k] for k in ["name", "localName", "type", "parentCode", "flagUrl", "latLng"]}
 
         #sort subdivision codes in json objects in natural alphabetical/numerical order using natsort library
-        all_country_data[alpha2]["subdivisions"] = dict(OrderedDict(natsort.natsorted(all_country_data[alpha2]["subdivisions"].items())))
-        all_country_data_min[alpha2] = dict(OrderedDict(natsort.natsorted(all_country_data_min[alpha2].items())))
+        all_country_data[alpha2] = dict(OrderedDict(natsort.natsorted(all_country_data[alpha2].items())))
 
         #sort keys in main output dict into alphabetical order
-        all_country_data[alpha2] = {key: value for key, value in sorted(all_country_data[alpha2].items())}
+        # all_country_data[alpha2] = {key: value for key, value in sorted(all_country_data[alpha2].items())}
 
     #write json data with all country info to json output file
     with open(json_filepath, 'w', encoding='utf-8') as f:
@@ -246,22 +214,27 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
         else:
             json.dump(all_country_data, f, ensure_ascii=False, indent=4)
 
-    #dont export min json if no subdivisions listed
-    if (any(all_country_data_min.values())):
-        #write min json data with subdivision info to output file
-        with open(json_min_filepath, 'w', encoding='utf-8') as f:
-            if (len(all_alpha2) == 1):
-                json.dump(all_country_data_min[all_alpha2[0]], f, ensure_ascii=False, indent=4)
-            else:
-                json.dump(all_country_data_min, f, ensure_ascii=False, indent=4)
+    #read json data with all current subdivision data
+    with open(json_filepath, 'r', encoding='utf-8') as input_json:
+        all_country_data = json.load(input_json)
+
+    #append latest subdivision updates/changes from /iso3166-2-updates folder to the iso3166-2 object
+    all_country_data = update_subdivision(iso3166_2_filename=json_filepath, subdivision_csv=os.path.join("iso3166-2-updates", "subdivision_updates.csv"), export=0)
+
+    #add local names for each subdivision from local_names.csv file    
+    all_country_data = add_local_names(all_country_data)
+
+    #write json data with all updated country info, including local name, to json output file
+    with open(json_filepath, 'w', encoding='utf-8') as f:
+        json.dump(all_country_data, f, ensure_ascii=False, indent=4)
 
     #stop counter and calculate elapsed time
     end = time.time()           
     elapsed = end - start
     
-    if (verbose and not tqdm_disable):
+    if (verbose):
         print('\n##########################################################\n')
-        print("ISO 3166 data successfully exported the following files to the {} folder:\n{} and {}.".format(output_folder, json_filepath, json_min_filepath))
+        print("ISO 3166 data successfully exported to {}.".format(json_filepath))
         print('\nElapsed Time for exporting all ISO 3166-2 data: {0:.2f} minutes.'.format(elapsed / 60))
 
 if __name__ == '__main__':
@@ -270,11 +243,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Script for exporting iso3166-2 country data using pycountry package and restcountries api.')
 
     parser.add_argument('-alpha2_codes', '--alpha2_codes', type=str, required=False, default="", 
-        help='One or more 2 letter alpha-2 country codes, by default all ISO 3166-2 data for all countries will be exported.')
-    parser.add_argument('-json_filename', '--json_filename', type=str, required=False, default="test_iso3166-2.json", 
-        help='Output filename for both iso3166-2 jsons.')
+        help='One or more 2 letter alpha-2 country codes, by default all ISO 3166-2 subdivision data for all countries will be exported.')
+    parser.add_argument('-json_filename', '--json_filename', type=str, required=False, default="test_iso3166-2", 
+        help='Output filename for both iso3166-2 JSON.')
     parser.add_argument('-output_folder', '--output_folder', type=str, required=False, default="test_iso3166-2", 
-        help='Output folder to store output jsons.')
+        help='Output folder to store output JSON.')
     parser.add_argument('-verbose', '--verbose', required=False, action=argparse.BooleanOptionalAction, default=1, 
         help='Set to 1 to print out progress of export json function, 0 will not print progress.')
 

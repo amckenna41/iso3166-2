@@ -1,32 +1,32 @@
-# ISO 3166-2 API
+# ISO 3166-2 API 🌎
 
-![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=iso3166-2-api)
-
-As well as the Python software package, an API is also available to access all of the data available for all countries in the ISO 3166 via a URL endpoint. You can search for a particular country using its 2 letter alpha-2 code or 3 letter alpha-3 code (e.g EG, FR, DE or EGY, FRA, DEU) via the 'alpha2' query parameter appended to the API URL. Additionally, multiple countries can be input in a comma seperated list. Countries can also be searched for using the 'name' input parameter which is the name of the country as it is commonly known in english, according to the ISO 3166-1. The 'all' (https://iso3166-2-api.vercel.app/api/all) endpoint will return all data and fields for all countries in the ISO 3166. 
+![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=iso3166-2)
 
 The main API endpoint is:
 
-> https://iso3166-2-api.vercel.app/api/
+> [https://iso3166-2-api.vercel.app/api](https://iso3166-2-api.vercel.app/api)
 
 The other endpoints available in the API are:
 * https://iso3166-2-api.vercel.app/api/all
 * https://iso3166-2-api.vercel.app/api/alpha2/<input_alpha2>
 * https://iso3166-2-api.vercel.app/api/name/<input_name>
 
-Requirements
-------------
-* [python][python] >= 3.8
-* [flask][flask] >= 2.3.2
-* [requests][requests] >= 2.28.1
-* [iso3166][iso3166] >= 2.1.1
-* [google-auth][google-auth] >= 2.17.3
-* [google-cloud-storage][google-cloud-storage] >= 2.8.0
-* [google-api-python-client][google-api-python-client] >= 2.86.0
+Three paths/endpoints are available in the API - `/api/all`, `/api/alpha2` and `/api/name`.
 
-Get All ISO 3166 updates for all countries
-------------------------------------------
+* The `/api/all` path/endpoint returns all of the ISO 3166 subdivision data for all countries.
+
+* The `/api/alpha2` endpoint accepts the 2 letter alpha-2 country code appended to the path/endpoint e.g. <i>/api/alpha2/JP</i>. A single alpha-2 code or list of them can be passed to the API e.g. <i>/api/alpha2/FR,DE,HU,ID,MA</i>. For redundancy, the 3 letter alpha-3 counterpart for each country's alpha-2 code can also be appended to the path e.g. <i>/api/alpha2/FRA,DEU,HUN,IDN,MAR</i>. If an invalid alpha-2 code is input then an error will be returned.
+
+* The `/api/name` endpoint accepts the country/territory name as it is most commonly known in english, according to the ISO 3166-1. The name can similarly be appended to the **name** path/endpoint e.g. <i>/api/name/Denmark</i>. A single country name or list of them can be passed into the API e.g. <i>/name/France,Moldova,Benin</i>. A closeness function is utilised so the most approximate name from the input will be used e.g. Sweden will be used if input is <i>/api/name/Swede</i>. If no country is found from the closeness function or an invalid name is input then an error will be returned.
+
+* The main API endpoint (`/` or `/api`) will return the homepage and API documentation.
+
+A demo of the software and API is available [here][demo].
+
+Get All ISO 3166-2 subdivision data for all countries
+-----------------------------------------------------
 ### Request
-`GET /`
+`GET /api/all`
 
     curl -i https://iso3166-2-api.vercel.app/api/all
 
@@ -34,8 +34,8 @@ Get All ISO 3166 updates for all countries
     HTTP/2 200 
     content-type: application/json
     date: Tue, 20 Dec 2022 17:29:39 GMT
-    server: Google Frontend
-    content-length: 202273
+    server: Vercel
+    content-length: 837958
 
     {"AD":..., "AE":...}
 
@@ -43,9 +43,11 @@ Get All ISO 3166 updates for all countries
 ```python
 import requests
 
-base_url = "https://iso3166-2-api.vercel.app/api/all"
+base_url = "https://iso3166-2-api.vercel.app/api/"
 
-all_request = requests.get(base_url)
+request_url = base_url + "all"
+
+all_request = requests.get(request_url)
 all_request.json() 
 ```
 
@@ -60,148 +62,143 @@ function getData() {
 var data = JSON.parse(this.response)
 ```
 
-Get all country and ISO 3166-2 data for a specific country, using its 2 letter alpha-2 code e.g FR, DE, HN
+Get all ISO 3166-2 subdivision data for a specific country, using its 2 letter alpha-2 code e.g FR, DE, HN
 ----------------------------------------------------------------------------------------------------------
 
 ### Request
-`GET /alpha2/FR`
+`GET /api/alpha2/FR`
 
-    curl -i https://iso3166-2-api.vercel.app/api?alpha2=FR
     curl -i https://iso3166-2-api.vercel.app/api/alpha2/FR
 
 ### Response
     HTTP/2 200 
     content-type: application/json
     date: Tue, 20 Dec 2022 17:30:27 GMT
-    server: Google Frontend
-    content-length: 4513
+    server: Vercel
+    content-length: 26298
 
-    {"FR":[{"altSpellings":"", "area": "", "borders": ""...}
+    {"FR":{"FR-01":{...}}}
 
 ### Request
-`GET /alpha2/DE`
+`GET /api/alpha2/DE`
 
-    curl -i https://iso3166-2-api.vercel.app/api?alpha2=DE
     curl -i https://iso3166-2-api.vercel.app/api/alpha2/DE
 
 ### Response
     HTTP/2 200 
     content-type: application/json
     date: Tue, 20 Dec 2022 17:31:19 GMT
-    server: Google Frontend
-    content-length: 10
+    server: Vercel
+    content-length: 3053
 
-    {"DE":[{"altSpellings":"", "area": "", "borders": ""...}
+    {"DE":{"DE-BB":{...}}}
 
 ### Request
-`GET /alpha2/HN`
+`GET /api/alpha2/HN`
 
-    curl -i https://iso3166-2-api.vercel.app/api?alpha2=HN
     curl -i https://iso3166-2-api.vercel.app/api/alpha2/HN
 
 ### Response
     HTTP/2 200 
     content-type: application/json
     date: Tue, 20 Dec 2022 17:31:53 GMT
-    server: Google Frontend
-    content-length: 479
+    server: Vercel
+    content-length: 2708
 
-    {"HN":[{"altSpellings":"", "area": "", "borders": ""...}
+    {"HN":{"HN-AT":{...}}}
 
 ### Python
 ```python
 import requests
 
-base_url = "https://iso3166-2-api.vercel.app/api"
+base_url = "https://iso3166-2-api.vercel.app/api/"
+input_alpha2 = "FR" #DE, HN
 
-all_request = requests.get(base_url, params={"alpha2": "FR"})
-# all_request = requests.get(base_url, params={"alpha2": "DE"})
-# all_request = requests.get(base_url, params={"alpha2": "HN"})
+request_url = base_url + f"alpha2/{input_alpha2}"
+
+all_request = requests.get(request_url)
 all_request.json() 
 ```
 
 ### Javascript
 ```javascript
+let input_alpha2 = "FR"; //DE, HN
+
 function getData() {
   const response = 
-    await fetch('https://iso3166-2-api.vercel.app/api?' + 
-        new URLSearchParams({
-            alpha2: 'FR'
-  }));
+    await fetch(`https://iso3166-2-api.vercel.app/api/alpha2/${input_alpha2}`); 
   const data = await response.json()
 }
 
 // Begin accessing JSON data here
 var data = JSON.parse(this.response)
 ```
-Get all country and ISO 3166-2 data for a specific country, using country name, e.g. Tajikistan, Seychelles, Uganda
+
+Get all ISO 3166-2 subdivision data for a specific country, using country name, e.g. Tajikistan, Seychelles, Uganda 
 -------------------------------------------------------------------------------------------------------------------
 
 ### Request
-`GET /name/Tajikistan`
+`GET /api/name/Tajikistan`
 
-    curl -i https://iso3166-2-api.vercel.app/api?name=Tajikistan
     curl -i https://iso3166-2-api.vercel.app/api/name/Tajikistan
 
 ### Response
     HTTP/2 200 
     content-type: application/json
     date: Tue, 20 Dec 2022 17:40:19 GMT
-    server: Google Frontend
-    content-length: 10
+    server: Vercel
+    content-length: 701
 
-    {"TJ":[{"altSpellings":"", "area": "", "borders": ""...}
+    {"TJ":{"TJ-DU":{...}}}
 
 ### Request
-`GET /name/Seychelles`
+`GET /api/name/Seychelles`
 
-    curl -i https://iso3166-2-api.vercel.app/api?name=Seychelles
     curl -i https://iso3166-2-api.vercel.app/api/name/Seychelles
 
 ### Response
     HTTP/2 200 
     content-type: application/json
     date: Tue, 20 Dec 2022 17:41:53 GMT
-    server: Google Frontend
-    content-length: 479
+    server: Vercel
+    content-length: 5085
 
-    {"SC":[{"altSpellings":"", "area": "", "borders": ""...}
+    {"SC":{"SC-01":{...}}}
 
 ### Request
-`GET /name/Uganda`
+`GET /api/name/Uganda`
 
-    curl -i https://iso3166-2-api.vercel.app/api?name=Ugandda
     curl -i https://iso3166-2-api.vercel.app/api/name/Uganda
 
 ### Response
     HTTP/2 200 
     content-type: application/json
     date: Tue, 21 Dec 2022 19:43:19 GMT
-    server: Google Frontend
-    content-length: 10
+    server: Vercel
+    content-length: 14965
 
-    {"UG":[{"altSpellings":"", "area": "", "borders": ""...}
+    {"UG":{"UG-101":{...}}}
 
 ### Python
 ```python
 import requests
 
-base_url = "https://iso3166-2-api.vercel.app/api"
+base_url = "https://iso3166-2-api.vercel.app/api/"
+input_name = "Tajikistan" #Seychelles, Uganda
 
-all_request = requests.get(base_url, params={"name": "Tajikistan"})
-# all_request = requests.get(base_url, params={"name": "Seychelles"})
-# all_request = requests.get(base_url, params={"name": "Uganda"})
+request_url = base_url + f"name/{input_name}"
+
+all_request = requests.get(request_url)
 all_request.json() 
 ```
 
 ### Javascript
 ```javascript
+let input_name = "Tajikistan"; //Seychelles, Uganda
+
 function getData() {
   const response = 
-    await fetch('https://iso3166-2-api.vercel.app/api?' + 
-        new URLSearchParams({
-            name: 'Tajikistan'
-  }));
+    await fetch(`https://iso3166-updates.com/api/name/${input_name}`); 
   const data = await response.json()
 }
 
@@ -209,11 +206,6 @@ function getData() {
 var data = JSON.parse(this.response)
 ```
 
-[flask]: https://flask.palletsprojects.com/en/2.3.x/
-[python]: https://www.python.org/downloads/release/python-360/
-[requests]: https://requests.readthedocs.io/
-[iso3166]: https://github.com/deactivated/python-iso3166
-[python-dateutil]: https://pypi.org/project/python-dateutil/
-[google-auth]: https://cloud.google.com/python/docs/reference
-[google-cloud-storage]: https://cloud.google.com/python/docs/reference
-[google-api-python-client]: https://cloud.google.com/python/docs/reference
+[Back to top](#TOP)
+
+[demo]: https://colab.research.google.com/drive/1btfEx23bgWdkUPiwdwlDqKkmUp1S-_7U?usp=sharing
