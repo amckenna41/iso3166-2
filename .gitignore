@@ -10,6 +10,9 @@ iso3166-2-data-archive/
 # C extensions
 *.so
 
+#python virtual env
+iso3166_2_venv/
+
 # Distribution / packaging
 .Python
 build/

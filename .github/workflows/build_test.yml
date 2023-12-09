@@ -48,10 +48,6 @@ jobs:
         pip install safety
         pip install importlib-metadata
         pip install iso3166-2
-        pip install pycountry
-        pip install googlemaps
-        pip install natsort
-        pip install tqdm
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         python3 setup.py install
     

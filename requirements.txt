@@ -6,3 +6,5 @@ tqdm
 natsort
 pandas
 numpy
+BeautifulSoup4
+pycountry

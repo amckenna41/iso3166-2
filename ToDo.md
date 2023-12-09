@@ -154,7 +154,7 @@ https://iso3166-updates.com/api/year/2020 : up-to-date.
 - [X] Execution of get_all script takes about 30 mins.
 - [X] In update_subdivision func, keys aren't in same order, e.g KZ-31 vs KZ-33.
 - [X] Some countries have localName = null, e.g kz-11, kz-15, kz-19 -  when changing subd code.
-- [ ] Rejig get_all script once using iso3166-2 software.
+- [ ] Rejig get_all script once using iso3166-2 software - remove from requirements.txt.
 - [X] Raise error if country code from subdivisions.csv not found in data object.
 - [X] Rerun script after uploading to iso3166-flag-icons.
 - [X] When reading in country and subd code in update_subdivision.csv - uppercase.
