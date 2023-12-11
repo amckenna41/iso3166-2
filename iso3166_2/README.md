@@ -9,35 +9,38 @@
 
 Usage
 -----
-The main JSON <i>iso3166-2.json</i> contains each country's ISO 3166-2 subdivision data and attributes, this file is <b>1.5 MB</b>. In the main module <i>iso3166_2.py</i>, all data from the <i>iso3166-2.json</i> is accessible via the `iso.country` object.
+The main JSON <i>iso3166-2.json</i> contains each country's ISO 3166-2 subdivision data and attributes. In the main module, <i>iso3166_2.py</i>, all data from the <i>iso3166-2.json</i> is accessible via the `iso.country` object.
 
 Import ISO3166_2 class and access the subdivision data:
 ```python
 import iso3166_2 as iso
 
-#access all subdivision data
+#access all country's subdivision data
 canada_iso3166_2 = iso.country["CA"]
 denmark_iso3166_2 = iso.country["DK"]
 estonia_iso3166_2 = iso.country["EE"]
 fiji_haiti_guyana_iso3166_2 = iso.country["FJ, HT, GY"]
+peru_iso3166_2 = iso.country["PE"]
 ```
 
 Get a specific subdivision's info:
 ```python
 import iso3166_2 as iso
 
-canada_iso3166_2.subdivisions['CA-AB'] #Alberta subdivision
-denmark_iso3166_2.subdivisions['DK-81'] #Nordjylland subdivision
-estonia_iso3166_2.subdivisions['EE-899'] #Viljandi subdivision
-fiji_iso3166_2.subdivisions['FJ-03'] #Cakaudrove subdivision 
+canada_iso3166_2['CA-AB'] #Alberta subdivision
+denmark_iso3166_2['DK-81'] #Nordjylland subdivision
+estonia_iso3166_2['EE-899'] #Viljandi subdivision
+fiji_haiti_guyana_iso3166_2['FJ-03'] #Cakaudrove subdivision 
+peru_iso3166_2['PE-AMA'] #Amarumayu subdivision
 ```
 
 Get individual attribute values per subdivision:
 ```python
 import iso3166_2 as iso
 
-canada_iso3166_2.subdivisions['CA-AB'].latlng #Alberta subdivision latitude/longitude
-denmark_iso3166_2.subdivisions['DK-81'].flag_url #Nordjylland subdivision flag URL
-estonia_iso3166_2.subdivisions['EE-899'].name #Viljandi subdivision name
-fiji_iso3166_2.subdivisions['FJ-03'].type #Cakaudrove subdivision type
+canada_iso3166_2['CA-AB'].latLng #Alberta subdivision latitude/longitude
+denmark_iso3166_2['DK-81'].flagUrl #Nordjylland subdivision flag URL
+estonia_iso3166_2['EE-899'].name #Viljandi subdivision name
+fiji_haiti_guyana_iso3166_2['FJ-03'].type #Cakaudrove subdivision type
+peru_iso3166_2['PE-AMA'].parentCode #Amarumayu subdivision
 ```

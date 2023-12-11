@@ -16,7 +16,7 @@
   <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/ISO_Logo_%28Red_square%29.svg" alt="iso" height="300" width="400"/> -->
 </div>
 
-> `iso3166-2` is a lightweight custom-built Python package, and accompanying API, that can be used to access all of the world's ISO 3166-2 subdivision data. A plethora of data attributes are available per country and subdivision including: name, local name, code, parent code, type, lat/longitude and flag. Currently, the package and API supports data from 250 countries/territories, according to the ISO 3166-1 standard. The software uses another custom-built Python package called [`iso3166-updates`](https://github.com/amckenna41/iso3166-2/tree/main) to ensure all the subdivision data is accurate and up-to-date.
+> `iso3166-2` is a lightweight custom-built Python package, and accompanying API, that can be used to access all of the world's ISO 3166-2 subdivision data. A plethora of data attributes are available per country and subdivision including: name, local name, code, parent code, type, lat/longitude and flag. Currently, the package and API supports data from 250 countries/territories, according to the ISO 3166-1 standard. The software uses another custom-built Python package called [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates/tree/main) to ensure all the subdivision data is accurate, reliable and up-to-date.
 
 * The front-end <b>API</b> is available [here][api].
 * A <b>demo</b> of the software and API is available [here][demo].
@@ -26,7 +26,7 @@
 Table of Contents
 -----------------
   * [Introduction](#introduction)
-  * [Latest Updates](#latest_updates)
+  * [Latest Updates](#latestupdates)
   * [API](#api)
   * [Requirements](#requirements)
   * [Installation](#installation)
@@ -37,7 +37,7 @@ Table of Contents
 
 Introduction
 ------------
-`iso3166-2` is a lightweight custom-built Python package, and accompanying API, that can be used to access all of the world's ISO 3166-2 subdivision data. Here, subdivision can be used interchangably with regions/states/provinces etc. Currently, the package and API supports data from 250 countries/territories, according to the ISO 3166-1 standard. The software uses another custom-built Python package called [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates/tree/main) to ensure all the subdivision data is accurate and up-to-date. The full list of subdivision data attributes supported are:
+`iso3166-2` is a lightweight custom-built Python package, and accompanying API, that can be used to access all of the world's ISO 3166-2 subdivision data. Here, subdivision can be used interchangably with regions/states/provinces etc. Currently, the package and API supports data from 250 countries/territories, according to the ISO 3166-1 standard. The software uses another custom-built Python package called [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates/tree/main) to ensure all the subdivision data is accurate, reliable and up-to-date. The full list of subdivision data attributes supported are:
 
 * Name (subdivsion name)
 * Local name (subdivision name in local language)
@@ -53,11 +53,11 @@ The ISO 3166-2 was first published in 1998 and as of November 2023 there are 5,0
 
 Latest Updates
 --------------
-An important thing to note about the ISO 3166-2 and its subdivision codes/names is that changes are made consistently to it, from a small subdivision name change to an addition/deletion of a whole subdivision. These changes can happen due to a variety of geopolitical and administrative reasons. Therefore, it's important that this library and its JSON have the most up-to-date, accurate and reliable data. To achieve this, the custom-built [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates) repo was created.
+An important thing to note about the ISO 3166-2 and its subdivision codes/names is that changes are made consistently to it, from a small subdivision name change to an addition/deletion of a whole subdivision. These changes can happen due for a variety of geopolitical and administrative reasons. Therefore, it's important that this library and its JSON have the most up-to-date, accurate and reliable data. To achieve this, the custom-built [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates) repo was created.
 
-The [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates) repo is another open-source software package and accompanying API that pulls the latest updates and changes for any and all countries in the ISO 3166 from a variety of data sources including the ISO website itself. A script is called every few months to check for any updates/changes to the subdivisions, which are communicated via the ISO's Online Browsing Platform [[4]](#references), and will then be manually incorporated into this repo. Please visit the repository home page for more info about the purpose and process of the software and API - [`iso3166-updates`][https://github.com/amckenna41/iso3166-updates].
+The [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates) repo is another open-source software package and accompanying API that pulls the latest updates and changes for any and all countries in the ISO 3166 from a variety of data sources including the ISO website itself. A script is called every few months to check for any updates/changes to the subdivisions, which are communicated via the ISO's Online Browsing Platform [[4]](#references), and will then be manually incorporated into this repo. Please visit the repository home page for more info about the purpose and process of the software and API - [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates).
 
-The list of ISO 3166 updates was last updated on <strong>Nov 2023</strong>. A log of the latest ISO 3166 updates can be seen in the [UPDATES.md][updates_md].
+The list of ISO 3166 updates was last updated on <strong>Nov 2023</strong>. A log of the latest ISO 3166 updates can be seen in the [UPDATES.md][updates_md] file.
 
 API
 ---
@@ -87,8 +87,8 @@ Requirements
 * [python][python] >= 3.8
 * [iso3166][iso3166] >= 2.1.1
 
-Requirements (get_iso3166_2.py)
--------------------------------
+Requirements (iso3166_2_scripts/get_iso3166_2.py)
+-------------------------------------------------
 * [python][python] >= 3.8
 * [iso3166-2][iso3166_2] >= 1.5.0
 * [requests][requests] >= 2.28.1
@@ -117,7 +117,7 @@ python3 setup.py install
 
 Usage
 -----
-The main JSON <i>iso3166-2.json</i> contains each country's ISO 3166-2 subdivision data and attributes, this file is <b>1.7 MB</b>. In the main module <i>iso3166_2.py</i>, all data from the <i>iso3166-2.json</i> is accessible via the `iso.country` object.
+The main JSON <i>iso3166-2.json</i> contains each country's ISO 3166-2 subdivision data and attributes. In the main module, <i>iso3166_2.py</i>, all data from the <i>iso3166-2.json</i> is accessible via the `iso.country` object.
 
 Import ISO3166_2 class and access the subdivision data:
 ```python
@@ -155,9 +155,9 @@ peru_iso3166_2['PE-AMA'].parentCode #Amarumayu subdivision
 
 Usage (iso3166_2_scripts/get_iso3166_2.py)
 ------------------------------------------
-The script `iso3166_2_scripts/get_iso3166_2.py` is used for gathering and exporting subdivision data for ALL countries to the JSON object. It uses the [pycountry][pycountry] and [googlemaps][googlemaps] packages to gather and export all the required subdivision info. Calling the script using its default parameters will gather all the data for ALL countries, but the <i>alpha2_codes</i> parameter can be set to pull the latest data for a specific list of one or more countries (the alpha-3 code can also be input, which is then converted into its 2 letter alpha-2 counterpart).
+The script [`iso3166_2_scripts/get_iso3166_2.py`](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_scripts/get_iso3166_2.py) is used for gathering and exporting subdivision data for ALL countries to the JSON object. It uses the [pycountry][pycountry] and [googlemaps][googlemaps] packages to gather and export all the required subdivision info. Calling the script using its default parameters will gather all the data for ALL countries, but the <i>alpha2_codes</i> parameter can be set to pull the latest data for a specific list of one or more countries (the alpha-3 code can also be input, which is then converted into its 2 letter alpha-2 counterpart).
 
-To download all of the latest ISO 3166-2 subdivision data for all countries, from the main repo dir, run the `get_iso3166_2.py` in a terminal or command line below; (the script takes around <em>1 hour and 40 mins</em> to execute):
+To download all of the latest ISO 3166-2 subdivision data for ALL countries, from the main repo dir, run the `get_iso3166_2.py` in a terminal or command line below; (the script takes around <em>1 hour and 40 mins</em> to execute):
 
 ```bash
 python3 iso3166_2_scripts/get_iso3166_2.py --json_filename=iso3166_2.json --output_folder=iso3166_2 --verbose
@@ -175,11 +175,11 @@ python3 iso3166_2_scripts/get_iso3166_2.py --alpha2_codes=DE,PT,ES --json_filena
 
 Usage (iso3166_2_scripts/update_subdivisions.py)
 ------------------------------------------------
-The script `iso3166_2_scripts/update_subdivisions.py` has the `update_subdivision()` function that was created to streamline the addition/amendment/deletion to any of the subdivisions in the data object. The function can accept an individual subdivision change by passing in all the required attribute values to the function directly. Alternatively, a CSV file with rows of the individual changes can be passed in, allowing for hundreds of changes to be made in one go. 
+The script [`iso3166_2_scripts/update_subdivisions.py`](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_scripts/update_subdivisions.py) has the `update_subdivision()` function that was created to streamline the addition/amendment/deletion to any of the subdivisions in the data object. The function can accept an individual subdivision change by passing in all the required attribute values to the function directly. Alternatively, a <b>CSV</b> file with rows of the individual changes can be passed in, allowing for hundreds of changes to be made in one go. 
 
 The primary input parameters to the `update_subdivision()` function are: <i>alpha2_code, subdivision_code, name, local_name, type, latLng, parent_code, flag_url</i> and <i>delete</i>. The first eight parameters represent the data to be added/changed to the specified country code and subdivision code (<i>alpha2_code, subdivision_code</i>) and <i>delete</i> is a boolean flag that should be set (0/1) if the input subdivision is to be deleted - by default this will be 0. For any addition, amendment or deletion, the <i>country_code</i> and <i>subdivision_code</i> parameters are required, but the remainder of the parameters are optional. If these optional parameters are not set then they will be set null, in the case of an addition or deletion, or remain as their previous values in the case of an amendment.  
 
-As mentioned, you can also pass in a CSV with rows of all the changes to be made to the subdivision object. The CSV has the same columns as the aforementioned function parameters, but additionally has the <i>localNameSpelling, notes</i> and <i>dateIssued</i> columns. <i>localNameSpelling</i> should be set to 1 if the subdivision local name is the same as its name, if the column is empty or 0 then the subdivision will take the value specified by the <i>localName</i> column. <i>notes</i> just contains a small description about the addition/amendment/deletion being made and <i>dateIssued</i> is the date that the subdivision change was communicated by the ISO. 
+As mentioned, you can also pass in a <b>CSV</b> with rows of all the changes to be made to the subdivision object. The <b>CSV</b> has the same columns as the aforementioned function parameters, but additionally has the <i>localNameSpelling, notes</i> and <i>dateIssued</i> columns. <i>localNameSpelling</i> should be set to 1 if the subdivision local name is the same as its name, if the column is empty or 0 then the subdivision will take the value specified by the <i>localName</i> column. <i>notes</i> just contains a small description about the addition/amendment/deletion being made and <i>dateIssued</i> is the date that the subdivision change was communicated by the ISO. 
 
 ```python
 from iso3166_2_scripts.update_subdivisions import *

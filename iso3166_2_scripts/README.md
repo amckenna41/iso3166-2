@@ -1,6 +1,6 @@
 # Scripts for exporting and updating all ISO 3166-2 data
 
-The `get_iso3166_2.py` script is used for pulling and exporting the latest ISO 3166-2 data from the vairous data sources and the `update_subdivisions.py` script is used for adding/amending/deleting subdivisions to the `iso3166-2` software and object.
+The [`get_iso3166_2.py`](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_scripts/get_iso3166_2.py) script is used for pulling and exporting the latest ISO 3166-2 data from the vairous data sources and the [`update_subdivisions.py`](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_scripts/update_subdivisions.py) script is used for adding/amending/deleting subdivisions to the `iso3166-2` software and object.
 
 Requirements (get_iso3166_2.py)
 ------------------------------
@@ -15,11 +15,11 @@ Requirements (get_iso3166_2.py)
 * [pandas][pandas] >= 1.4.3
 * [numpy][numpy] >= 1.23.2
 
-Usage (iso3166_2_scripts/get_iso3166_2.py)
-------------------------------------------
-The script `iso3166_2_scripts/get_iso3166_2.py` is used for gathering and exporting subdivision data for ALL countries to the JSON object. It uses the [pycountry][pycountry] and [googlemaps][googlemaps] packages to gather and export all the required subdivision info. Calling the script using its default parameters will gather all the data for ALL countries, but the <i>alpha2_codes</i> parameter can be set to pull the latest data for a specific list of one or more countries (the alpha-3 code can also be input, which is then converted into its 2 letter alpha-2 counterpart).
+Usage (get_iso3166_2.py)
+------------------------
+The script `get_iso3166_2.py` is used for gathering and exporting subdivision data for ALL countries to the JSON object. It uses the [pycountry][pycountry] and [googlemaps][googlemaps] packages to gather and export all the required subdivision info. Calling the script using its default parameters will gather all the data for ALL countries, but the <i>alpha2_codes</i> parameter can be set to pull the latest data for a specific list of one or more countries (the alpha-3 code can also be input, which is then converted into its 2 letter alpha-2 counterpart).
 
-To download all of the latest ISO 3166-2 subdivision data for all countries, from the main repo dir, run the `get_iso3166_2.py` in a terminal or command line below; (the script takes around <em>X mins</em> to execute):
+To download all of the latest ISO 3166-2 subdivision data for all countries, from the main repo dir, run the `get_iso3166_2.py` in a terminal or command line below; (the script takes around <em>1 hour and 40 mins</em> to execute):
 
 ```bash
 python3 iso3166_2_scripts/get_iso3166_2.py --json_filename=iso3166_2.json --output_folder=iso3166_2 --verbose
@@ -43,13 +43,13 @@ Requirements (update_subdivisions.py)
 * [pandas][pandas] >= 1.4.3
 * [numpy][numpy] >= 1.23.2
 
-Usage (iso3166_2_scripts/update_subdivisions.py)
-------------------------------------------------
-The script `iso3166_2_scripts/update_subdivisions.py` has the `update_subdivision()` function that was created to streamline the addition/amendment/deletion to any of the subdivisions in the data object. The function can accept an individual subdivision change by passing in all the required attribute values to the function directly. Alternatively, a CSV file with rows of the individual changes can be passed in, allowing for hundreds of changes to be made in one go. 
+Usage (update_subdivisions.py)
+------------------------------
+The script [`update_subdivisions.py`](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_scripts/update_subdivisions.py) has the `update_subdivision()` function that was created to streamline the addition/amendment/deletion to any of the subdivisions in the data object. The function can accept an individual subdivision change by passing in all the required attribute values to the function directly. Alternatively, a <b>CSV</b> file with rows of the individual changes can be passed in, allowing for hundreds of changes to be made in one go. 
 
 The primary input parameters to the `update_subdivision()` function are: <i>alpha2_code, subdivision_code, name, local_name, type, latLng, parent_code, flag_url</i> and <i>delete</i>. The first eight parameters represent the data to be added/changed to the specified country code and subdivision code (<i>alpha2_code, subdivision_code</i>) and <i>delete</i> is a boolean flag that should be set (0/1) if the input subdivision is to be deleted - by default this will be 0. For any addition, amendment or deletion, the <i>country_code</i> and <i>subdivision_code</i> parameters are required, but the remainder of the parameters are optional. If these optional parameters are not set then they will be set null, in the case of an addition or deletion, or remain as their previous values in the case of an amendment.  
 
-As mentioned, you can also pass in a CSV with rows of all the changes to be made to the subdivision object. The CSV has the same columns as the aforementioned function parameters, but additionally has the <i>localNameSpelling, notes</i> and <i>dateIssued</i> columns. <i>localNameSpelling</i> should be set to 1 if the subdivision local name is the same as its name, if the column is empty or 0 then the subdivision will take the value specified by the <i>localName</i> column. <i>notes</i> just contains a small description about the addition/amendment/deletion being made and <i>dateIssued</i> is the date that the subdivision change was communicated by the ISO. 
+As mentioned, you can also pass in a <b>CSV</b> with rows of all the changes to be made to the subdivision object. The <b>CSV</b> has the same columns as the aforementioned function parameters, but additionally has the <i>localNameSpelling, notes</i> and <i>dateIssued</i> columns. <i>localNameSpelling</i> should be set to 1 if the subdivision local name is the same as its name, if the column is empty or 0 then the subdivision will take the value specified by the <i>localName</i> column. <i>notes</i> just contains a small description about the addition/amendment/deletion being made and <i>dateIssued</i> is the date that the subdivision change was communicated by the ISO. 
 
 ```python
 from iso3166_2_scripts.update_subdivisions import *
@@ -74,3 +74,17 @@ update_subdivision(type="region", latLng=[], parent_code=None)
 #passing in a csv with rows of subdivision additions/updates/deletions
 update_subdivision(subdivision_csv="new_subdivisions.csv")
 ```
+
+[python]: https://www.python.org/downloads/release/python-360/
+[requests]: https://requests.readthedocs.io/
+[iso3166]: https://github.com/deactivated/python-iso3166
+[iso3166_2]: https://github.com/amckenna41/iso3166-2
+[pycountry]: https://github.com/flyingcircusio/pycountry
+[rest]: https://restcountries.com/
+[googlemaps]: https://github.com/googlemaps/google-maps-services-python
+[tqdm]: https://github.com/tqdm/tqdm
+[natsort]: https://pypi.org/project/natsort/
+[pandas]: https://pandas.pydata.org/
+[numpy]: https://numpy.org/
+[iso3166-updates]: https://github.com/amckenna41/iso3166-updates
+[flag_icons_repo]: https://github.com/amckenna41/iso3166-flag-icons
