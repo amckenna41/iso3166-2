@@ -2,7 +2,7 @@
 
 [![iso3166_2](https://img.shields.io/pypi/v/iso3166-2)](https://pypi.org/project/iso3166-2/)
 [![pytest](https://github.com/amckenna41/iso3166-2/workflows/Building%20and%20Testing/badge.svg)](https://github.com/amckenna41/iso3166-2/actions?query=workflowBuilding%20and%20Testing)
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/amckenna41/iso3166-2/tree/main.svg?style=svg&circle-token=f399bc09886e183a1866efe27808ebecb21a5ea9)](https://dl.circleci.com/status-badge/redirect/gh/amckenna41/iso3166-2/tree/main)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/amckenna41/iso3166-2/tree/main.svg?style=svg&circle-token=b9d41c530558587fb44ade899c532158d885b193)](https://dl.circleci.com/status-badge/redirect/gh/amckenna41/iso3166-2/tree/main)
 [![PythonV](https://img.shields.io/pypi/pyversions/iso3166-2?logo=2)](https://pypi.org/project/iso3166-2/)
 [![Platforms](https://img.shields.io/badge/platforms-linux%2C%20macOS%2C%20Windows-green)](https://pypi.org/project/iso3166-2/)
 [![License: MIT](https://img.shields.io/github/license/amckenna41/iso3166-2)](https://opensource.org/licenses/MIT)
@@ -153,6 +153,40 @@ fiji_haiti_guyana_iso3166_2['FJ-03'].type #Cakaudrove subdivision type
 peru_iso3166_2['PE-AMA'].parentCode #Amarumayu subdivision
 ```
 
+Get all ISO 3166-2 data for all countries:
+```python
+import iso3166_2 as iso
+
+#get all subdivision data using all attribute
+iso.country.all
+```
+
+Adding a custom subdivision to the iso3166-2 object. The context for this
+functionality is similar to that of the user-assigned code elements of the 
+ISO 3166-1 standard. Custom subdivisions and subdivision codes can be used 
+for in-house/bespoke applications that are using the iso3166-2 software but 
+require additional custom subdivisions to be represented:
+```python
+import iso3166_2 as iso
+
+#adding custom Belfast province to Ireland
+iso.country.custom_subdivision("IE", "IE-BF", name="Belfast", local_name="Béal Feirste", type="province", lat_lng=[54.596, -5.931], parent_code=None, flag_url=None)
+```
+
+Searching for a specific subdivision via its subdivision name attribute. The 
+search functionality will search over all subdivisions in the object, 
+returning either a subdivision with the exact match or subdivisions whose 
+names approximately match the sought input name:
+```python
+import iso3166_2 as iso
+
+#searching for the Monaghan county in Ireland (IE-MN) - returning exact matching subdivision
+iso.country.search("Monaghan", any=False)
+
+#searching for any subdivisions that have "Southern" in their name
+iso.country.search("Southern", any=True)
+```
+
 Usage (iso3166_2_scripts/get_iso3166_2.py)
 ------------------------------------------
 The script [`iso3166_2_scripts/get_iso3166_2.py`](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_scripts/get_iso3166_2.py) is used for gathering and exporting subdivision data for ALL countries to the JSON object. It uses the [pycountry][pycountry] and [googlemaps][googlemaps] packages to gather and export all the required subdivision info. Calling the script using its default parameters will gather all the data for ALL countries, but the <i>alpha2_codes</i> parameter can be set to pull the latest data for a specific list of one or more countries (the alpha-3 code can also be input, which is then converted into its 2 letter alpha-2 counterpart).
@@ -207,7 +241,7 @@ update_subdivision(subdivision_csv="new_subdivisions.csv")
 
 Issues or Contributing
 ----------------------
-Any issues, errors, bugs or enhancements can be raised via the [Issues][issues] tab in the repository.
+Any issues, bugs or enhancements can be raised via the [Issues][issues] tab in the repository. If you would like to contribute to this project, please make a PR.
 
 Contact
 -------
@@ -218,7 +252,7 @@ References
 ----------
 \[1\]: https://en.wikipedia.org/wiki/ISO_3166 <br>
 \[2\]: https://en.wikipedia.org/wiki/ISO_3166-2 <br>
-\[3\]: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+\[3\]: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2 <br>
 \[4\]: https://www.iso.org/obp/ui/#
 
 Support

@@ -7,7 +7,7 @@ The [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates) custom-bu
 The `subdivision_updates.csv` file has the below columns:
 * country_code (ISO 3166-1 alpha-2 country code).
 * code (subdivision code).
-* name (Subdivision name).
+* name (subdivision name).
 * localName (subdivision local name).
 * type (subdivision type).
 * parentCode (subdivision parent code).
@@ -29,6 +29,17 @@ All changes made are also logged and appended to the [UPDATES.md][updates_md] fi
 
 ## Local Names
 
-Additionally, the [`localNames.csv`](https://github.com/amckenna41/iso3166-2/blob/main/iso3166-2-updates/local_names.csv) file stores the local name for each subdivision. Many of the subdivisions have the same local name as subdivision name that's listed in the ISO 3166-2, but many also have a differing local name, especially for parts of the world which do not use the Latin script. 
+> Local names functionality in development
+
+Additionally, the [`localNames.csv`](https://github.com/amckenna41/iso3166-2/blob/main/iso3166-2-updates/local_names.csv) file stores the local name for each subdivision. Many of the subdivisions have the same local name as subdivision name that's listed in the ISO 3166-2, but many also have a differing local name, especially for parts of the world which do not use the Latin script. The file is sorted by alpha-2 country code.
+
+The `local_names.csv` file has the below columns:
+
+* country_code (ISO 3166-1 alpha-2 country code).
+* subdivision_code (subdivision code).
+* name (Subdivision name).
+* localName (subdivision local name).
+* sameName (set this to 1 if a subdivision's name and local name are the same e.g for English speaking countries).
+<!-- * localNameOther (a dict of subdivision names and other local translations e.g Finland has local translations in Finish and Swedish, South Africa has local translations in Afrikaans, Sotho, Swahili and Ndebele etc). -->
 
 [updates_md]: https://github.com/amckenna41/iso3166-2/blob/main/UPDATES.md

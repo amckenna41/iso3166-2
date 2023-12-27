@@ -206,7 +206,8 @@ def update_subdivision(alpha2_code="", subdivision_code="", name="", local_name=
                         all_subdivision_data[alpha2_code][subdivision_code]["flagUrl"] = flag_url
                 else:
                     #adding new subdivision data to object from input parameters
-                    new_subdivision_data = {"name": name, "local_name": local_name, "type": type, "parentCode": parent_code, "latLng": latLng, "flagUrl": flag_url}        
+                    new_subdivision_data = {"name": name, "localName": local_name, "type": type, "parentCode": parent_code, "latLng": latLng, "flagUrl": flag_url}        
+                    
                     #reorder subdivision attributes
                     all_subdivision_data[alpha2_code][subdivision_code] = {k: new_subdivision_data[k] for k in ["name", "localName", "type", "parentCode", "flagUrl", "latLng"]}
                     

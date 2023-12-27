@@ -1,6 +1,6 @@
 # iso3166-2 Tests 🧪 <a name="TOP"></a>
 
-All of the modules and functionalities of `iso3166-2` are thoroughly tested using the Python [unittest][unittest] framework.
+All of the modules and functionalities of `iso3166-2` are thoroughly tested using the Python [unittest][unittest] framework. There are 3 test cases with 17 test functions made up of several unit tests.
 ## Module tests:
 
 * `test_iso3166_2` - unit tests for `iso3166-2` package.

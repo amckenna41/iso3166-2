@@ -160,12 +160,12 @@ https://iso3166-updates.com/api/year/2020 : up-to-date.
 - [X] When reading in country and subd code in update_subdivision.csv - uppercase.
 - [X] Add changes in subdivisions.csv to flag-icons repo.
 - [X] Stop running geocoding api.
-- [ ] Skip get_all script until new one is implemented.
+- [X] Skip get_all script until new one is implemented.
 - [X] Reorder subdivisions.csv according to date, earliest first. Mention on readme that it's sorted by date.
 - [X] Some countries not in correct order e.g PA-1, PA-10, PA-2
 - [X] Need to manually remove code from Sweden's and PH country names/local names.
 - [X] Update elapsed time - after iso3166-flag-icons repo.
-- [ ] Add tqdm to get_ script
+- [X] Add tqdm to get_ script
 - [X] Update filesize in readme.
 - [ ] Update readme, swap pycountry for iso3166-2.
 - [X] When calling update_subdivisions() function, check order of attributes remains the same.
@@ -173,6 +173,16 @@ https://iso3166-updates.com/api/year/2020 : up-to-date.
 - [X] For update_subdivisions(), check correct JSON is being used as input for the get_all script.
 - [X] Run get script again but without gmaps.
 - [X] Rerun script and run tests.
+- [X] Mention # of tests and test cases (including skipped ones.)
+- [X] Update metadata tests - similar to iso3166-updates.
+- [X] Functionaltiy to add country/subdivision data in iso3166_2.py.
+- [ ] Update license.
+- [ ] Change functions to parameter typed (https://docs.python.org/3/library/typing.html).
+- [X] Add search functionality that allows you to search by name.
+- [X] In search functionality, add alpha_2 code to it.
+- [ ] For localName, add different translations for subdivision names, use language code as key. If local name same as name then don't add language code keys.
+- [ ] Convert localNames.csv into a json?
+- [ ] Double check # of test functions/cases after running them.
 
 Future Additions
 ----------------
@@ -182,7 +192,7 @@ Future Additions
 - [ ] Implement more info about each subdivision if possible - area, pop, capital, subdivision borders, subdivision bounds from maps api, subdivison names in their native language.
 - [ ] Pull request for django-countries (https://github.com/SmileyChris/django-countries/tree/main)
 - [ ] Add geonames (geonames.org), openstreetmap relation ID, openstreetmap administrarive division level (https://wiki.openstreetmap.org/wiki/Key:admin%20level?uselang=en-GB), boundary (https://wiki.openstreetmap.org/wiki/Key:boundary?uselang=en-GB), FIPS code, to subdivisions.
-- [ ] Documentation on readthedocs.
-- [ ] Add readthedocs badge - [![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](http://ansicolortags.readthedocs.io/?badge=latest)
+- [X] Documentation on readthedocs: https://www.youtube.com/watch?v=3NUmOGVdjqk&list=PLPDCBPbzk1AYghqYazE7Cxt3p7edml8I7&index=6
+- [ ] Add readthedocs badge - [![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](http://ansicolortags.readthedocs.io/?badge=latest). https://github.com/readthedocs-examples/awesome-read-the-docs#sphinx-projects
 - [X] For new subdivision additions in Changes.md, add flags in iso3166-flag-icons repo.
 <!-- https://github.com/smucode/react-world-flags -->

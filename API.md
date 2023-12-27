@@ -1,6 +1,7 @@
 # ISO 3166-2 API 🌎
 
-![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=iso3166-2)
+<!-- ![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=iso3166-2) -->
+![Vercel](https://vercelbadge.vercel.app/api/amckenna41/iso3166-2-api)
 
 The main API endpoint is:
 
@@ -23,7 +24,7 @@ Three paths/endpoints are available in the API - `/api/all`, `/api/alpha2` and `
 
 A demo of the software and API is available [here][demo].
 
-Get All ISO 3166-2 subdivision data for all countries
+Get ALL ISO 3166-2 subdivision data for ALL countries
 -----------------------------------------------------
 ### Request
 `GET /api/all`

@@ -75,10 +75,14 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
     #split multiple alpha-2 codes into list, remove any whitespace
     alpha2_codes = alpha2_codes.replace(' ', '').split(',')
 
+    #bool to keep track if getting data for all countries
+    using_all_data = False
+
     #parse input alpha2_codes parameter, use all alpha-2 codes if parameter not set
     if (alpha2_codes == ['']):
         #use list of all 2 letter alpha-2 codes, according to ISO 3166-1 
         all_alpha2 = sorted(list(iso3166.countries_by_alpha2.keys()))
+        using_all_data = True
     else:
         #iterate over all codes, checking they're valid, convert alpha-3 to alpha-2 if applicable
         for code in range(0, len(alpha2_codes)):
@@ -140,29 +144,29 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
         
         #kosovo has no associated subdivisions, manually set params
         if (alpha2 == "XK"):
-            countryName = "Kosovo"
-            allSubdivisions = []
+            country_name = "Kosovo"
+            all_subdivisions = []
         else:
             #get country name and list of its subdivisions using pycountry library 
-            countryName = pycountry.countries.get(alpha_2=alpha2).name
-            allSubdivisions = list(pycountry.subdivisions.get(country_code=alpha2))
+            country_name = pycountry.countries.get(alpha_2=alpha2).name
+            all_subdivisions = list(pycountry.subdivisions.get(country_code=alpha2))
         
         #print out progress if verbose set to true
         if (verbose):
             if (tqdm_disable):
-                print("{} ({})".format(countryName, alpha2))
+                print("{} ({})".format(country_name, alpha2))
             else:
-                print(" - {} ({})".format(countryName, alpha2))
+                print(" - {} ({})".format(country_name, alpha2))
 
         #create country key in json object
         all_country_data[alpha2] = {}
         
         #iterate over all countrys' subdivisions, assigning subdiv code, name, type and parent code and flag URL, where applicable for the json object
-        for subd in allSubdivisions:
+        for subd in all_subdivisions:
             
             #get subdivision coordinates using googlemaps api python client
-            # gmaps_latlng = gmaps.geocode(subd.name + ", " + countryName, region=alpha2, language="en")
-            gmaps_latlng = []
+            gmaps_latlng = gmaps.geocode(subd.name + ", " + country_name, region=alpha2, language="en")
+            # gmaps_latlng = []
             #set coordinates to None if not found using maps api, round to 3 decimal places
             if (gmaps_latlng != []):
                 subdivision_coords = [round(gmaps_latlng[0]['geometry']['location']['lat'], 3), round(gmaps_latlng[0]['geometry']['location']['lng'], 3)]
@@ -209,17 +213,17 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
 
     #write json data with all country info to json output file
     with open(json_filepath, 'w', encoding='utf-8') as f:
-        if (len(all_alpha2) == 1):
-            json.dump(all_country_data[all_alpha2[0]], f, ensure_ascii=False, indent=4)
-        else:
-            json.dump(all_country_data, f, ensure_ascii=False, indent=4)
+        # if (len(all_alpha2) == 1): json.dump(all_country_data[all_alpha2[0]], f, ensure_ascii=False, indent=4) else: #all outputs will have country code as key
+        json.dump(all_country_data, f, ensure_ascii=False, indent=4)
 
     #read json data with all current subdivision data
     with open(json_filepath, 'r', encoding='utf-8') as input_json:
         all_country_data = json.load(input_json)
 
-    #append latest subdivision updates/changes from /iso3166-2-updates folder to the iso3166-2 object
-    all_country_data = update_subdivision(iso3166_2_filename=json_filepath, subdivision_csv=os.path.join("iso3166-2-updates", "subdivision_updates.csv"), export=0)
+    #call update_subdivision() function if using all alpha-2 codes
+    if (using_all_data):
+        #append latest subdivision updates/changes from /iso3166-2-updates folder to the iso3166-2 object
+        all_country_data = update_subdivision(iso3166_2_filename=json_filepath, subdivision_csv=os.path.join("iso3166-2-updates", "subdivision_updates.csv"), export=0)
 
     #add local names for each subdivision from local_names.csv file    
     all_country_data = add_local_names(all_country_data)
@@ -240,7 +244,7 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
 if __name__ == '__main__':
 
     #parse input arguments using ArgParse 
-    parser = argparse.ArgumentParser(description='Script for exporting iso3166-2 country data using pycountry package and restcountries api.')
+    parser = argparse.ArgumentParser(description='Script for exporting iso3166-2 country data using pycountry package.')
 
     parser.add_argument('-alpha2_codes', '--alpha2_codes', type=str, required=False, default="", 
         help='One or more 2 letter alpha-2 country codes, by default all ISO 3166-2 subdivision data for all countries will be exported.')

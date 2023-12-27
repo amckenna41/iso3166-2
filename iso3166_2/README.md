@@ -44,3 +44,40 @@ estonia_iso3166_2['EE-899'].name #Viljandi subdivision name
 fiji_haiti_guyana_iso3166_2['FJ-03'].type #Cakaudrove subdivision type
 peru_iso3166_2['PE-AMA'].parentCode #Amarumayu subdivision
 ```
+
+Get all ISO 3166-2 data for all countries:
+```python
+import iso3166_2 as iso
+
+#get all subdivision data using all attribute
+iso.country.all
+```
+
+Adding a custom subdivision to the iso3166-2 object. The context for this
+functionality is similar to that of the user-assigned code elements of the 
+ISO 3166-1 standard. Custom subdivisions and subdivision codes can be used 
+for in-house/bespoke applications that are using the iso3166-2 software but 
+require additional custom subdivisions to be represented:
+```python
+import iso3166_2 as iso
+
+#adding custom Belfast province to Ireland
+iso.country.custom_subdivision("IE", "IE-BF", name="Belfast", local_name="Béal Feirste", type="province", lat_lng=[54.596, -5.931], parent_code=None, flag_url=None)
+
+#adding custom Mariehamn province to Aland Islands (AX)
+iso.country.custom_subdivision("AX", "AX-M", name="Mariehamn", local_name="Maarianhamina", type="province", lat_lng=[60.0969, 19.934], parent_code=None, flag_url=None)
+```
+
+Searching for a specific subdivision via its subdivision name attribute. The 
+search functionality will search over all subdivisions in the object, 
+returning either a subdivision with the exact match or subdivisions whose 
+names approximately match the sought input name:
+```python
+import iso3166_2 as iso
+
+#searching for the Monaghan county in Ireland (IE-MN) - returning exact matching subdivision
+iso.country.search("Monaghan", any=False)
+
+#searching for any subdivisions that have "Southern" in their name
+iso.country.search("Southern", any=True)
+```

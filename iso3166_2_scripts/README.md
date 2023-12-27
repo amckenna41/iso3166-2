@@ -5,7 +5,7 @@ The [`get_iso3166_2.py`](https://github.com/amckenna41/iso3166-2/blob/main/iso31
 Requirements (get_iso3166_2.py)
 ------------------------------
 * [python][python] >= 3.8
-* [iso3166-2][iso3166-2] >= 1.5.0
+* [iso3166-2][iso3166_2] >= 1.5.0
 * [requests][requests] >= 2.28.1
 * [iso3166][iso3166] >= 2.1.1
 * [pycountry][pycountry] >= 22.3.5
