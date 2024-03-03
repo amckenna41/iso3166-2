@@ -66,7 +66,7 @@ class ISO3166_2_Tests(unittest.TestCase):
             "iso3166-2 author email is not correct, expected amckenna41@qub.ac.uk, got {}.".format(metadata('iso3166-2')['author-email']))
         self.assertEqual(metadata('iso3166-2')['summary'], "A lightweight Python package, and accompanying API, that can be used to access all of the world's most up-to-date and accurate ISO 3166-2 subdivision data, including: name, local name, code, parent code, type, latitude/longitude and flag.", 
             "iso3166-2 package summary is not correct, got: {}.".format(metadata('iso3166-2')['summary']))
-        self.assertEqual(metadata('iso3166-2')['keywords'], "iso,iso3166,beautifulsoup,python,pypi,countries,country codes,iso3166-2,iso3166-1,alpha-2,iso3166-updates,subdivisions",
+        self.assertEqual(metadata('iso3166-2')['keywords'], "iso,iso3166,beautifulsoup,python,pypi,countries,country codes,iso3166-2,iso3166-1,alpha-2,iso3166-updates,subdivisions,regions",
             "iso3166-2 keywords are not correct, got:\n{}.".format(metadata('iso3166-2')['keywords']))
         self.assertEqual(metadata('iso3166-2')['home-page'], "https://github.com/amckenna41/iso3166-2", 
             "iso3166-2 home page url is not correct, expected https://github.com/amckenna41/iso3166-2, got {}.".format(metadata('iso3166-2')['home-page']))

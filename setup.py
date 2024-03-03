@@ -58,6 +58,7 @@ setup(name=__name__,
       install_requires=[
           'iso3166',
           'natsort',
+          'thefuzz',
           'unidecode'
       ],
      test_suite=__test_suite__,
