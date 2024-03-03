@@ -92,6 +92,7 @@ jobs:
       uses: codecov/codecov-action@v3
       env: 
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
       with:
         flags: iso3166_2_workflow  
    
