@@ -43,6 +43,7 @@ jobs:
         python3 -m pip install setuptools wheel twine
         pip install flake8 pytest
         pip install pytest
+        pip install codecov
         pip install pytest-cov
         pip install bandit
         pip install safety
@@ -78,7 +79,13 @@ jobs:
       run: |
         echo "Testing using unittest..."
         python3 -m unittest discover tests -b
-        
+    
+    #create coverage report using pytest package
+    - name: Generate Coverage Report 
+      run: |
+        pytest --cov=./ --cov-report=xml
+        codecov
+
     #upload to Code Coverage, only if matrix python version is 3.9
     - name: Upload Coverage Report to Codecov
       if: ${{ matrix.python-version == '3.9' }}
@@ -86,7 +93,7 @@ jobs:
       env: 
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       with:
-        flags: iso3166_2_workflow
+        flags: iso3166_2_workflow  
    
     #upload test artifacts to workflow
     - name: Upload Test Artifacts

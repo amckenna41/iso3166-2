@@ -13223,8 +13223,8 @@
     },
     "ES": {
         "ES-A": {
-            "name": "Alacant*",
-            "localName": "Alacant*",
+            "name": "Alicante",
+            "localName": "Alacant",
             "type": "Province",
             "parentCode": "ES-VC",
             "flagUrl": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ES/ES-A.svg",
@@ -13454,8 +13454,8 @@
             ]
         },
         "ES-CS": {
-            "name": "Castelló*",
-            "localName": "Castelló*",
+            "name": "Castellón",
+            "localName": "Castellón",
             "type": "Province",
             "parentCode": "ES-VC",
             "flagUrl": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ES/ES-CS.svg",
@@ -13707,8 +13707,8 @@
             ]
         },
         "ES-NA": {
-            "name": "Nafarroa*",
-            "localName": "Nafarroa*",
+            "name": "Navarra",
+            "localName": "Navarra",
             "type": "Province",
             "parentCode": "ES-NC",
             "flagUrl": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ES/ES-NA.svg",
@@ -13718,8 +13718,8 @@
             ]
         },
         "ES-NC": {
-            "name": "Nafarroako Foru Komunitatea*",
-            "localName": "Nafarroako Foru Komunitatea*",
+            "name": "Nafarroako Foru Komunitatea",
+            "localName": "Navarra, Comunidad Foral de",
             "type": "Autonomous community",
             "parentCode": null,
             "flagUrl": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ES/ES-NC.svg",
@@ -13785,7 +13785,7 @@
         },
         "ES-PV": {
             "name": "Euskal Herria",
-            "localName": "Euskal Herria",
+            "localName": "País Vasco",
             "type": "Autonomous community",
             "parentCode": null,
             "flagUrl": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ES/ES-PV.svg",
@@ -13939,7 +13939,7 @@
         },
         "ES-VC": {
             "name": "Valenciana, Comunidad",
-            "localName": "Valenciana, Comunidad",
+            "localName": "Valenciana, Comunitat",
             "type": "Autonomous community",
             "parentCode": null,
             "flagUrl": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ES/ES-VC.svg",
@@ -13949,8 +13949,8 @@
             ]
         },
         "ES-VI": {
-            "name": "Araba*",
-            "localName": "Araba*",
+            "name": "Araba",
+            "localName": "Álava",
             "type": "Province",
             "parentCode": "ES-PV",
             "flagUrl": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ES/ES-VI.svg",

@@ -5,6 +5,7 @@ __pycache__/
 old/
 test-iso3166_2/
 iso3166-2-data-archive/
+get_iso3166_2.py
 .DS_Store
 
 .vscode

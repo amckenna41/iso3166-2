@@ -1,5 +1,15 @@
 # ISO 3166 latest changes (2022-)
 
+## 2024-02-29 
+| Country Code | Edition/Newsletter | Date Issued | Code/Subdivision Change | Description of Change in Newsletter |   
+|:-------------------|:------------|-----------------------------------:|------------------------:|-------------:|
+| Bolivia (BO)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:BO).    | 2024-02-29  |   | Change of short name upper case: replace the parentheses with a coma. | 
+| Micronesia (FM)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:FM).    | 2024-02-29  |   | Change of short name upper case: replace the parentheses with a coma and correct the remark in English of the entry of Micronesia Federate states (removing duplicated text). | 
+| Iran (IR)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:IR).    | 2024-02-29  |   | Change of short name upper case: replace the parentheses with a coma. | 
+| Korea (KP)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:KP).    | 2024-02-29  |   | Change of short name upper case in eng: replace the parentheses with a coma. | 
+| Venezuela (VE)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:VE).    | 2024-02-29  |   | Change of short name upper case: replace the parentheses with a coma. | 
+
+
 ## 2023-11-23
 | Country Code | Edition/Newsletter | Date Issued | Code/Subdivision Change | Description of Change in Newsletter |   
 |:-------------------|:------------|-----------------------------------:|------------------------:|-------------:|

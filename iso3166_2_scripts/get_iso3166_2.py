@@ -13,7 +13,7 @@ import natsort
 from collections import OrderedDict
 import pandas as pd
 import numpy as np
-from .update_subdivisions import *
+from iso3166_2_scripts.update_subdivisions import *
 
 #initialise version 
 __version__ = metadata('iso3166-2')['version']
@@ -25,11 +25,12 @@ USER_AGENT_HEADER = {'User-Agent': 'iso3166-2/{} ({}; {})'.format(__version__,
 #initialise google maps client with API key
 gmaps = googlemaps.Client(key=os.environ["GOOGLE_MAPS_API_KEY"])
 
-def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", json_filename="test-iso3166-2", verbose=1):
+def export_iso3166_2(alpha_codes="", output_folder="test-iso3166-2-output", json_filename="test-iso3166-2", verbose=1):
     """
-    Export all ISO 3166-2 subdivision related data using the ISO 3166-2 library to a JSON. Also get the
-    lat/longitude info for each subdivision using the Google Maps API. The iso3166-2.json stores all
-    the subdivision data including: subdivison code, name, type, parent code, flag and latitude/longitude.
+    Export all ISO 3166-2 subdivision related data using the ISO 3166-2 library to a JSON and CSV. Also 
+    get the lat/longitude info for each subdivision using the Google Maps API. The iso3166-2.json stores 
+    all the subdivision data including: subdivison code, name, local name, type, parent code, flag and 
+    latitude/longitude.
 
     The generated JSON is used as a baseline for the ISO 3166-2 data object, but additional and more 
     up-to-date and accurate data is added with the help of the iso3166-updates software/API 
@@ -37,8 +38,9 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
 
     Parameters
     ==========
-    :alpha2_codes: str (default="")
-        string of 1 or more 2 letter alpha-2 country codes to extract their latest ISO 3166-2 data.
+    :alpha_codes: str (default="")
+        string of 1 or more 2 letter alpha-2, 3 letter alpha-3 or numeric country codes to extract their 
+        latest ISO 3166-2 data.
     :output_folder: str (default="iso3166-2-output")
         output folder to store exported iso3166-2 data.
     :json_filename: str (default="iso3166-2")
@@ -50,52 +52,56 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
     =======
     None
     """
-    def convert_to_alpha2(alpha3_code):
+    def convert_to_alpha2(alpha_code):
         """ 
-        Convert an ISO 3166 country's 3 letter alpha-3 code into its 2 letter
-        alpha-2 counterpart. 
+        Auxillary function that converts an ISO 3166 country's 3 letter alpha-3 
+        or numeric code into its 2 letter alpha-2 counterpart. 
 
         Parameters 
         ==========
         :alpha3_code: str
-            3 letter ISO 3166-1 alpha-3 country code.
+            3 letter ISO 3166-1 alpha-3 or numeric country code.
         
         Returns
         =======
         :iso3166.countries_by_alpha3[alpha3_code].alpha2: str
             2 letter ISO 3166 alpha-2 country code. 
         """
-        #return None if 3 letter alpha-3 code not found
-        if not (alpha3_code in list(iso3166.countries_by_alpha3.keys())):
+        if (alpha_code.isdigit()):
+            #return error if numeric code not found
+            if not (alpha_code in list(iso3166.countries_by_numeric.keys())):
+                return None
+            else:
+                #use iso3166 package to find corresponding alpha-2 code from its numeric code
+                return iso3166.countries_by_numeric[alpha_code].alpha2
+    
+        #return error if 3 letter alpha-3 code not found
+        if not (alpha_code in list(iso3166.countries_by_alpha3.keys())):
             return None
         else:
             #use iso3166 package to find corresponding alpha-2 code from its alpha-3 code
-            return iso3166.countries_by_alpha3[alpha3_code].alpha2
+            return iso3166.countries_by_alpha3[alpha_code].alpha2
     
-    #split multiple alpha-2 codes into list, remove any whitespace
-    alpha2_codes = alpha2_codes.replace(' ', '').split(',')
+    #split multiple alpha codes into list, remove any whitespace
+    alpha_codes = alpha_codes.replace(' ', '').split(',')
 
-    #bool to keep track if getting data for all countries
-    using_all_data = False
-
-    #parse input alpha2_codes parameter, use all alpha-2 codes if parameter not set
-    if (alpha2_codes == ['']):
+    #parse input alpha_codes parameter, use all alpha-2 codes if parameter not set
+    if (alpha_codes == ['']):
         #use list of all 2 letter alpha-2 codes, according to ISO 3166-1 
         all_alpha2 = sorted(list(iso3166.countries_by_alpha2.keys()))
-        using_all_data = True
     else:
         #iterate over all codes, checking they're valid, convert alpha-3 to alpha-2 if applicable
-        for code in range(0, len(alpha2_codes)):
+        for code in range(0, len(alpha_codes)):
 
-            #convert 3 letter alpha-3 code into its 2 letter alpha-2 counterpart
-            if len(alpha2_codes[code]) == 3:
-                alpha2_codes[code] = convert_to_alpha2(alpha2_codes[code])
+            #convert 3 letter alpha-3 or numeric code into its 2 letter alpha-2 counterpart
+            if len(alpha_codes[code]) == 3:
+                alpha_codes[code] = convert_to_alpha2(alpha_codes[code])
             
             #raise error if invalid alpha-2 code found
-            if (alpha2_codes[code] not in list(iso3166.countries_by_alpha2.keys())):
-                raise ValueError("Input alpha-2 country code {} not found.".format(alpha2_codes[code]))
+            if (alpha_codes[code] not in list(iso3166.countries_by_alpha2.keys())):
+                raise ValueError("Input alpha-2 country code {} not found.".format(alpha_codes[code]))
         
-        all_alpha2 = alpha2_codes
+        all_alpha2 = alpha_codes
 
     #if 10 or less alpha-2 codes input then append to filename
     if (len(all_alpha2) <= 10):
@@ -107,12 +113,15 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
     #append json extension to output filename
     if (os.path.splitext(json_filepath) != ".json"):
         json_filepath = json_filepath + ".json"
+    
+    #get path to CSV of output data
+    csv_filepath = os.path.splitext(json_filepath)[0] + ".csv"
         
     if (verbose):
         print("Exporting {} ISO 3166-2 country's data to folder {}".format(len(all_alpha2), output_folder))
         print('################################################################\n')
 
-    #objects to store all country output data
+    #objects to store all country output data in json and csv format
     all_country_data = {}
 
     #create output dir if doesn't exist
@@ -131,7 +140,7 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
     flag_icons_base_url = "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/"
 
     #reading in, as dataframe, the csv that stores the local names for each subdivision
-    local_name_df = pd.read_csv(os.path.join("iso3166-2-updates", "local_names.csv"))
+    local_name_df = pd.read_csv(os.path.join("iso3166_2_updates", "local_names.csv"))
     
     #replace any Nan values with None
     local_name_df = local_name_df.replace(np.nan, None)
@@ -161,7 +170,7 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
         #create country key in json object
         all_country_data[alpha2] = {}
         
-        #iterate over all countrys' subdivisions, assigning subdiv code, name, type and parent code and flag URL, where applicable for the json object
+        #iterate over all countrys' subdivisions, assigning subdivision code, name, type, parent code and flag URL, where applicable for the json object
         for subd in all_subdivisions:
             
             #get subdivision coordinates using googlemaps api python client
@@ -172,6 +181,10 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
                 subdivision_coords = [round(gmaps_latlng[0]['geometry']['location']['lat'], 3), round(gmaps_latlng[0]['geometry']['location']['lng'], 3)]
             else:
                 subdivision_coords = None
+
+            #raise error if subdivision code already in output object
+            if (subd.code in list(all_country_data[alpha2].keys())):
+                raise ValueError("Subdivision code already present in output object: {}.".format(subd.code))
 
             #initialise subdivision code object
             all_country_data[alpha2][subd.code] = {}
@@ -220,13 +233,31 @@ def export_iso3166_2(alpha2_codes="", output_folder="test-iso3166-2-output", jso
     with open(json_filepath, 'r', encoding='utf-8') as input_json:
         all_country_data = json.load(input_json)
 
-    #call update_subdivision() function if using all alpha-2 codes
-    if (using_all_data):
-        #append latest subdivision updates/changes from /iso3166-2-updates folder to the iso3166-2 object
-        all_country_data = update_subdivision(iso3166_2_filename=json_filepath, subdivision_csv=os.path.join("iso3166-2-updates", "subdivision_updates.csv"), export=0)
+    #append latest subdivision updates/changes from /iso3166_2_updates folder to the iso3166-2 object
+    all_country_data = update_subdivision(iso3166_2_filename=json_filepath, subdivision_csv=os.path.join("iso3166_2_updates", "subdivision_updates.csv"), export=0)
 
     #add local names for each subdivision from local_names.csv file    
     all_country_data = add_local_names(all_country_data)
+
+    #initialise array to store each individual subdivision object
+    all_country_csv = []
+
+    #iterate over country data object, for each subdivision object append its subdivision and country code, append subdivision object to array 
+    for country in all_country_data:
+        for subd in all_country_data[country]:
+            temp_all_country_data = all_country_data[country][subd].copy()
+            temp_all_country_data["subdivision_code"] = subd
+            temp_all_country_data["country_code"] = country
+            all_country_csv.append(temp_all_country_data)
+
+    #convert array of objects into a dataframe with each subdivision being a row, reorder columns and sort by subdivision then country code
+    all_country_csv_df = pd.DataFrame(all_country_csv)
+    all_country_csv_df = all_country_csv_df.reindex(columns=['country_code', 'subdivision_code', 'name', 'localName', 'type', 'parentCode', 'flagUrl', 'latLng'])
+    all_country_csv_df = all_country_csv_df.sort_values('subdivision_code').reset_index(drop=True)
+    all_country_csv_df = all_country_csv_df.sort_values('country_code').reset_index(drop=True)
+
+    #export dataframe of subdivision objects to CSV
+    all_country_csv_df.to_csv(csv_filepath, index=False)
 
     #write json data with all updated country info, including local name, to json output file
     with open(json_filepath, 'w', encoding='utf-8') as f:
@@ -246,7 +277,7 @@ if __name__ == '__main__':
     #parse input arguments using ArgParse 
     parser = argparse.ArgumentParser(description='Script for exporting iso3166-2 country data using pycountry package.')
 
-    parser.add_argument('-alpha2_codes', '--alpha2_codes', type=str, required=False, default="", 
+    parser.add_argument('-alpha_codes', '--alpha_codes', type=str, required=False, default="", 
         help='One or more 2 letter alpha-2 country codes, by default all ISO 3166-2 subdivision data for all countries will be exported.')
     parser.add_argument('-json_filename', '--json_filename', type=str, required=False, default="test_iso3166-2", 
         help='Output filename for both iso3166-2 JSON.')
@@ -257,9 +288,9 @@ if __name__ == '__main__':
 
     #parse input args
     args = parser.parse_args()
-    alpha2_codes = args.alpha2_codes
+    alpha_codes = args.alpha_codes
     output_folder = args.output_folder
     json_filename = args.json_filename
     verbose = args.verbose
 
-    export_iso3166_2(alpha2_codes=alpha2_codes, output_folder=output_folder, json_filename=json_filename, verbose=verbose)
+    export_iso3166_2(alpha_codes=alpha_codes, output_folder=output_folder, json_filename=json_filename, verbose=verbose)

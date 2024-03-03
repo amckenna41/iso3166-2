@@ -108,16 +108,14 @@ https://iso3166-updates.com/api/year/2022 - DZ (subdivisions added), ET (subdivi
 https://iso3166-updates.com/api/year/2021 - 
 https://iso3166-updates.com/api/year/2020 : up-to-date.
 - [X] Add link to medium article on readme.
-- [ ] Add github release (need to make repo public first).
-- [ ] Codecov.
-- [ ] Check variable naming conventions.
+- [X] Add github release (need to make repo public first).
+- [X] Check variable naming conventions.
 - [X] Any references of other softwares, put in `` and add link to it.
 - [X] GB-NIR, GB-ENG, GB-SCT and GB-WLS absent from GB subdivision entry.
 - [X] Mention that repo only contains officially assigned code elements and XK. Doesn't contain exceptional and transitional reservetations. Doesn't contain exceptional reservations but some have been reassinged (AZ, GG, IM, JE).
 - [X] Add wiki link to each country: https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes.
 - [X] Update number of attributes - 36 -> 37.
 - [X] Add more filter attribute unit tests for when dict of keys/vals passed in.
-- [ ] In get script, need to phase out pycountry.
 - [X] Make individual attributes per subdivision accessible via dot notation.
 - [X] Update check-for-updates func.
 - [X] Double check elapsed time for get_ function is correct.
@@ -130,10 +128,10 @@ https://iso3166-updates.com/api/year/2020 : up-to-date.
 - [X] Add subdivisions CSV, add delete column that flags if a subdivision is to be deleted.
 - [X] Add functionality such that you can change an existing subdivision code - add new code in brackets? - issue since countries are indexed by their subdivision codes.
 - [X] Double check when adding "IQ,IQ-KR,Iqlīm Kūrdistān,Region,"IQ-AR, IQ-DA, IQ-SU"" via csv that the "" aren't added to the parent code section.
-- [ ] Am i testing all flag URLs are valid rather than just subsection?
+- [X] Am i testing all flag URLs are valid rather than just subsection?
 - [X] Unit test for testing a country's parent code is in the list of subdivison codes.
 - [X] Add local name key to object.
-- [ ] Update camel caseing on attributes.
+- [X] Update camel caseing on attributes.
 - [X] Go through each subdivision name and double check its localName isnt name.
 - [X] When running get_all script, create some functionality that automatically runs the csv files in order, making any additions/deletions/amendments to the object.
 - [X] Unit test to check that no subdivision latLng's are None.
@@ -167,7 +165,7 @@ https://iso3166-updates.com/api/year/2020 : up-to-date.
 - [X] Update elapsed time - after iso3166-flag-icons repo.
 - [X] Add tqdm to get_ script
 - [X] Update filesize in readme.
-- [ ] Update readme, swap pycountry for iso3166-2.
+- [X] Update readme, swap pycountry for iso3166-2.
 - [X] When calling update_subdivisions() function, check order of attributes remains the same.
 - [X] When calling local_names() function, check order of attributes remains the same.
 - [X] For update_subdivisions(), check correct JSON is being used as input for the get_all script.
@@ -176,23 +174,79 @@ https://iso3166-updates.com/api/year/2020 : up-to-date.
 - [X] Mention # of tests and test cases (including skipped ones.)
 - [X] Update metadata tests - similar to iso3166-updates.
 - [X] Functionaltiy to add country/subdivision data in iso3166_2.py.
-- [ ] Update license.
 - [ ] Change functions to parameter typed (https://docs.python.org/3/library/typing.html).
 - [X] Add search functionality that allows you to search by name.
 - [X] In search functionality, add alpha_2 code to it.
 - [ ] For localName, add different translations for subdivision names, use language code as key. If local name same as name then don't add language code keys.
 - [ ] Convert localNames.csv into a json?
-- [ ] Double check # of test functions/cases after running them.
+- [X] Double check # of test functions/cases after running them.
+- [ ] Upload to conda: https://anaconda.org/conda-forge/pgeocode
+- [X] iso3166-2.json in csv form.
+- [X] Update table of contents.
+- [X] Add tests for iso3166-2 CSV export.
+- [X] Add to readme that some existing projects are inaccurate, outdated and or not maintained.
+- [X] Update license.
+- [X] Mention on readme that additional attributes for each subdivision will be available on the country-db repo including geonames ID, fips, area, population, regional translations etc. These are not included to try and reduce the size of the software and API, only including most useful info. Remove all the bloat that other repos have. Add a "What's in and what's out" section to readme, give examples e.g translations.
+- [X] Add directories subsection to main readme and Table of contents.
+- [X] If 1 subdivision code returned from class, return list not dict.
+- [X] Remove subdivision_parent_codes() from iso3166_2.py
+- [X] Mention for functions in iso3166_2 can return multiple data types depending if 1 or more country data is returned.
+- [ ] Codecov.
+- [X] Subdivision names not exporting in alphabetical order.
+- [X] /subd examples on api.md.
+- [X] Double check links on readme work.
+- [X] In update_subdivisions() function, if not getting all data, skip over rows that aren't equal to input country codes.
+- [X] Add /subd example to docs.
+- [X] Multiple subdivisions not returning in API.
+- [X] Add additional API tests for /subd, passing in multiple list of subdivisions.
+- [X] Search via subdivision name - might need to update /name endpoint.
+- [X] Update API.md for /subd endpoint.
+- [X] Update API.md and unit tests.
+- [X] Update comments of api test case.
+- [ ] Add note mentioning interchangability of use of 'countries.'
+- [X] In sofrware, search via numeric code as well - update unit tests.
+- [X] Mention that searching via alpha-3 or numeric will return alpha-2.
+- [X] In .subdivision_codes(), uppercase alpha input parameter.
+- [X] In iso3166_2.py, change input param name from alpha2_code to alpha_code.
+- [X] ES - for some subdivisions, spelling mistake in name (catalan names added but not english).
+- [X] Update get_script, such that if a subdivision with a code that is already in the dataset is pulled, an error is raised with the existing and new subdivision details.
+- [X] Update medium article.
+- [X] Read over iso3166_2.py.
+- [X] Read over non-api unit tests.
+- [X] In sw, try searching for subdivision with comma in it.
+- [X] In sw, in search function, add subdivision code as key when multiple subdivisions returned.
+- [X] Query string parameter where you can set the likeness cutoff point, lowering the likeness threshold when searching for a name that might be in multiple subdivision names. Add api unit tests.
+- [X] Change difflib to fuzzysearch for API and software. 
+- [X] In iso3166_2.py, change "any" param to "likeness".
+- [X] Play about with scorer ratio in thefuzz - mention in comments which scorer is being used.
+- [X] Search funtionality should return dict objecr rather than list of dicts.
+- [X] Rearrange Usage and API contents in readme?
+- [X] Update /docs
+- [X] In api docs, put API funcs all into one section.
+- [X] Check order of sections in readme.
 
 Future Additions
 ----------------
 - [ ] Build same iso3166-2 package for JS/TS - https://github.com/annexare/Countries, https://www.npmjs.com/package/iso-3166.
-- [ ] Build frontend using jsVectorMap and dropdown etc.
-- [ ] include boundary lat/lng for subdivisions.
-- [ ] Implement more info about each subdivision if possible - area, pop, capital, subdivision borders, subdivision bounds from maps api, subdivison names in their native language.
+- [ ] Build frontend using jsVectorMap, dropdown and React etc.
+- [ ] include boundary lat/lng for subdivisions - counttrydb
+- [ ] Implement more info about each subdivision if possible - area, pop, capital, subdivision borders, subdivision bounds from maps api, subdivison names in their native language - country db.
 - [ ] Pull request for django-countries (https://github.com/SmileyChris/django-countries/tree/main)
 - [ ] Add geonames (geonames.org), openstreetmap relation ID, openstreetmap administrarive division level (https://wiki.openstreetmap.org/wiki/Key:admin%20level?uselang=en-GB), boundary (https://wiki.openstreetmap.org/wiki/Key:boundary?uselang=en-GB), FIPS code, to subdivisions.
 - [X] Documentation on readthedocs: https://www.youtube.com/watch?v=3NUmOGVdjqk&list=PLPDCBPbzk1AYghqYazE7Cxt3p7edml8I7&index=6
-- [ ] Add readthedocs badge - [![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](http://ansicolortags.readthedocs.io/?badge=latest). https://github.com/readthedocs-examples/awesome-read-the-docs#sphinx-projects
+- [X] Add readthedocs badge - [![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](http://ansicolortags.readthedocs.io/?badge=latest). https://github.com/readthedocs-examples/awesome-read-the-docs#sphinx-projects
 - [X] For new subdivision additions in Changes.md, add flags in iso3166-flag-icons repo.
+- [ ] Search via lat and long and return subdivision data - find a tool that maps lat/lang to code (gmaps.reverse_geocode("56.503, 23.693")).
+- [ ] Other useful geonames stuff (https://download.geonames.org/export/dump/allCountries.zip, https://download.geonames.org/export/dump/, https://download.geonames.org/export/dump/alternateNamesV2.zip )
+- [ ] Add geoname IDs - countrydb.
+- [X] Keep population of subdivisions seperate from main iso3166-2.
+- [ ] Add localName from alternativeNames in https://download.geonames.org/export/dump/.
+- [ ] For usage for API on docs, add examples for other languages - similar to https://countrystatecity.in/docs/api/states-by-country/.
+- [ ] Add example Error and Not Found response - https://countrystatecity.in/docs/api/states-by-country/
+- [ ] Add demo similar to https://dr5hn.github.io/countries-states-cities-database/. 
+- [ ] Create PR for https://github.com/dr5hn/countries-states-cities-database - add up-to-date ISO 3166-2 data and flag icons from iso3166-flag-icons (https://github.com/dr5hn/countries-states-cities-database/blob/master/states.json).
+- [ ] Add subregion for each subdivision.
+- [X] Go over https://github.com/dr5hn/countries-states-cities-database.
+- [X] Go over https://github.com/esosedi/3166.
+- [X] Add readme for /docs, add process for building and uploading the docs.
 <!-- https://github.com/smucode/react-world-flags -->

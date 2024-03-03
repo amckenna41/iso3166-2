@@ -237,16 +237,20 @@ def update_subdivision(alpha2_code="", subdivision_code="", name="", local_name=
 
         #sort dataframe rows by their country code and reindex rows 
         # subdivision_df = subdivision_df.sort_values('country_code').reset_index(drop=True)
-        
+
         #iterate through all dataframe rows, adding the subdivision attributes to respective subdivisions in object
         for index, row in subdivision_df.iterrows():
             
             #uppercase and remove whitespace for country code
             country_code = row['country_code'].replace(' ', '').upper()
 
+            #skip to next row in subdivisions csv if country code not in data object
+            if not (country_code in list(all_subdivision_data.keys())):
+                continue
+            
             #if brackets are in subdivision_code parameter than the subdivision code is to be updated itself, keeping its existing data
             if ('(' and ')' in row['code']):
-
+                
                 #parse current and new subdivision code which should be put in brackets in the subdivision code parameter
                 current_subdivision_code = row['code'].split('(', 1)[0].replace(' ', '').upper()
                 new_subdivision_code = row['code'][row['code'].find("(")+1:row['code'].find(")")].replace(' ', '').upper()
@@ -274,10 +278,6 @@ def update_subdivision(alpha2_code="", subdivision_code="", name="", local_name=
                 else:
                     continue
             else:   
-                #raise error if alpha-2 country code not found in object
-                if not (country_code in list(all_subdivision_data.keys())):
-                    raise ValueError("Country code {} in row not found in list of object country codes:\n{}.".format(country_code, list(all_subdivision_data.keys())))
-
                 #if delete column is set then delete respective subdivision from object according to its subdivision code, skip to next iteration
                 if (row['delete']): 
                     if (row['code'] in list(all_subdivision_data[country_code].keys())):
@@ -348,7 +348,7 @@ def update_subdivision(alpha2_code="", subdivision_code="", name="", local_name=
 
 def add_local_names(all_subdivision_data):
     """
-    Adding subdivision's local name taken from iso3166-2-updates/local_names.csv. Most
+    Adding subdivision's local name taken from iso3166_2_updates/local_names.csv. Most
     subdivision's local name is the same as it's current sudivision name attribute, but 
     many country's also have their own non-english local variation. 
 
@@ -363,7 +363,7 @@ def add_local_names(all_subdivision_data):
         input subdivision data object with local names for the subdivisions added.
     """
     #reading in, as dataframe, the csv that stores the local names for each subdivision
-    local_name_df = pd.read_csv(os.path.join("iso3166-2-updates", "local_names.csv"))
+    local_name_df = pd.read_csv(os.path.join("iso3166_2_updates", "local_names.csv"))
     
     #replace any Nan values with None
     local_name_df = local_name_df.replace(np.nan, None)

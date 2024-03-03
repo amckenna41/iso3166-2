@@ -28,18 +28,20 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        python3 -m pip install setuptools wheel twine
         python3 setup.py install
+        pip install build
 
-    # Build package and upload to PyPI
-    - name: Build and upload to PyPI
+    # Build package 
+    - name: Build package
       run: |
-        python3 setup.py sdist bdist_wheel
-        twine check dist/*
-        twine upload dist/* --verbose
-      env:
-        TWINE_USERNAME: __token__
-        TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+        python -m build
+
+    # publish to pypi
+    - name: Publish package
+      uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_TOKEN }}
 
     #sleep for 30 seconds to ensure that distribution package has finised uploading to Test PyPI
     - name: Wait / Sleep
@@ -50,6 +52,6 @@ jobs:
     # download package of iso3166_2 from PYPI server to ensure it uploaded correctly
     - name: Install iso3166_2 from PyPI
       run: |
-        pip install iso3166_updates --upgrade
-        echo -e "import iso3166_updates as iso3166_2" | python3
+        pip install iso3166_2 --upgrade
+        echo -e "import iso3166_2 as iso3166_2" | python3
         echo "iso3166_2 successfully installed"
