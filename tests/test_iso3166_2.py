@@ -144,7 +144,7 @@ class ISO3166_2_Tests(unittest.TestCase):
         ga_subdivision_codes = ['GA-1', 'GA-2', 'GA-3', 'GA-4', 'GA-5', 'GA-6', 'GA-7', 'GA-8', 'GA-9'] 
         ga_subdivision_names = ['Estuaire', 'Haut-Ogooué', 'Moyen-Ogooué', 'Ngounié', 'Nyanga', 'Ogooué-Ivindo', 
             'Ogooué-Lolo', 'Ogooué-Maritime', 'Woleu-Ntem']
-        
+
         self.assertIsInstance(test_alpha_gab, dict,  "Expected output object to be of type dict, got {}.".format(type(test_alpha_gab)))
         self.assertEqual(len(test_alpha_gab), 9, "Expected 9 total subdivision outputs, got {}.".format(len(test_alpha_gab)))
         self.assertEqual(list(test_alpha_gab.keys()), ga_subdivision_codes, "Subdivison codes do not equal expected codes:\n{}.".format(list(test_alpha_gab.keys())))
