@@ -224,6 +224,7 @@ https://iso3166-updates.com/api/year/2020 : up-to-date.
 - [X] Update /docs
 - [X] In api docs, put API funcs all into one section.
 - [X] Check order of sections in readme.
+- [ ] In workflows, change "Testing with unittest" to "Running unit tests"
 
 Future Additions
 ----------------

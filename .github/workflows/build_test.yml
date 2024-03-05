@@ -82,6 +82,8 @@ jobs:
     
     #create coverage report using pytest package
     - name: Generate Coverage Report 
+      env: 
+        GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
       run: |
         pytest --cov=./ --cov-report=xml
         codecov
