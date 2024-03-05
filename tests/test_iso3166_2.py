@@ -56,8 +56,8 @@ class ISO3166_2_Tests(unittest.TestCase):
 
     def test_iso3166_2_metadata(self): 
         """ Testing correct iso3166-2 software version and metadata. """
-        # self.assertEqual(metadata('iso3166-2')['version'], "1.5.0", 
-        #     "iso3166-2 version is not correct, expected 1.5.0, got {}.".format(metadata('iso3166-2')['version']))
+        # self.assertEqual(metadata('iso3166-2')['version'], "1.5.1", 
+        #     "iso3166-2 version is not correct, expected 1.5.1, got {}.".format(metadata('iso3166-2')['version']))
         self.assertEqual(metadata('iso3166-2')['name'], "iso3166-2", 
             "iso3166-2 software name is not correct, expected iso3166-2, got {}.".format(metadata('iso3166-2')['name']))
         self.assertEqual(metadata('iso3166-2')['author'], "AJ McKenna, https://github.com/amckenna41", 
