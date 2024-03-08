@@ -26,19 +26,19 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    # install all required modules and dependancies using pip and setup.py installation
+    # install all required modules and dependancies using pip and pyproject.toml installation
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        python3 -m pip install setuptools wheel twine
+        python3 -m pip install setuptools wheel twine build
         python3 setup.py install
 
     # build distribution package of software and upload to the test PYPi server
     - name: Build and Upload to TestPyPI
       run: |
-        python3 setup.py sdist bdist_wheel
+        python3 -m build
         twine check dist/*
-        twine upload --repository testpypi dist/* --verbose
+        python3 -m twine upload --repository testpypi dist/* --verbose
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.PYPI_TEST }}

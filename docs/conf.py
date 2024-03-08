@@ -9,7 +9,7 @@
 project = 'iso3166-2'
 copyright = '2024, AJ McKenna'
 author = 'AJ McKenna'
-release = '1.5.0'
+release = '1.5.2'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

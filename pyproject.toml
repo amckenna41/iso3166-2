@@ -1,0 +1,38 @@
+
+[project]
+name = "iso3166-2"
+version = "1.5.2"
+description = "A lightweight Python package, and accompanying API, that can be used to access all of the world's most up-to-date and accurate ISO 3166-2 subdivision data, including: name, local name, code, parent code, type, latitude/longitude and flag."
+authors = [
+  { name="AJ McKenna", email="amckenna41@qub.ac.uk" },
+]
+maintainers = "AJ McKenna <amckenna41@qub.ac.uk>" 
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+        "Development Status :: 5 - Production/Stable",
+        "Environment :: Console",
+        "Intended Audience :: Developers",
+        "Intended Audience :: Science/Research",
+        "Intended Audience :: Information Technology",
+        "License :: OSI Approved :: MIT License",
+        "License :: Free For Educational Use",
+        "Natural Language :: English",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10"',
+        "Programming Language :: Python :: 3.11",	
+        "Programming Language :: Python :: Implementation :: PyPy",
+        "Programming Language :: Python :: 3 :: Only",
+        "Topic :: Scientific/Engineering",
+        "Topic :: Scientific/Engineering :: Information Analysis",
+        "Topic :: Software Development :: Libraries :: Python Modules"
+]
+keywords = ["iso", "iso3166", "beautifulsoup", "python", "pypi", "countries", "country codes", "iso3166-2", "iso3166-1", "alpha-2", "iso3166-updates", "subdivisions", "regions"]
+dependancies = ["iso3166", "natsort", "thefuzz", "unidecode"]
+
+[project.urls]
+homepage = "https://iso3166-2-api.vercel.app/api"
+repository = "https://github.com/amckenna41/iso3166-2"
+documentation = "https://iso3166-2.readthedocs.io/en/latest/"

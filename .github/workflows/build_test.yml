@@ -73,7 +73,7 @@ jobs:
       continue-on-error: true
 
     #unit tests using pytest, unittest, flake8 and bandit frameworks
-    - name: Testing with unittest
+    - name: Running unit tests
       env:
         GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
       run: |
@@ -82,6 +82,7 @@ jobs:
     
     #create coverage report using pytest package
     - name: Generate Coverage Report 
+      if: ${{ matrix.python-version == '3.9' }}
       env: 
         GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
       run: |

@@ -224,7 +224,9 @@ https://iso3166-updates.com/api/year/2020 : up-to-date.
 - [X] Update /docs
 - [X] In api docs, put API funcs all into one section.
 - [X] Check order of sections in readme.
-- [ ] In workflows, change "Testing with unittest" to "Running unit tests"
+- [X] In workflows, change "Testing with unittest" to "Running unit tests"
+- [X] Change setup.py to pyprojet.tml - https://packaging.python.org/en/latest/tutorials/packaging-projects/ - swap for setup.cfg
+- [X] /iso3166_2_data not being included in package - incorrect filename in MANIFEST file.
 
 Future Additions
 ----------------

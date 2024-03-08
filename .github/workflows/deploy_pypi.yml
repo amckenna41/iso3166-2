@@ -24,24 +24,21 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    # install all required modules and dependancies using pip and setup.py installation
+    # install all required modules and dependancies using pip and pyproject.toml installation
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        python3 setup.py install
-        pip install build
+        python -m pip install --upgrade pip twine build
 
-    # Build package 
-    - name: Build package
+    # build distribution package of software and upload to the PYPi server
+    - name: Build and Upload to PyPI
       run: |
-        python -m build
-
-    # publish to pypi
-    - name: Publish package
-      uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
-      with:
-        user: __token__
-        password: ${{ secrets.PYPI_TOKEN }}
+        python3 -m build
+        twine check dist/*
+        python3 -m twine upload dist/* --verbose
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+        TWINE_REPOSITORY: pypi
 
     #sleep for 30 seconds to ensure that distribution package has finised uploading to Test PyPI
     - name: Wait / Sleep
