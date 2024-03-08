@@ -1,15 +1,11 @@
-
-[project]
+[tool.poetry]
 name = "iso3166-2"
 version = "1.5.2"
 description = "A lightweight Python package, and accompanying API, that can be used to access all of the world's most up-to-date and accurate ISO 3166-2 subdivision data, including: name, local name, code, parent code, type, latitude/longitude and flag."
-authors = [
-  { name="AJ McKenna", email="amckenna41@qub.ac.uk" },
-]
-maintainers = "AJ McKenna <amckenna41@qub.ac.uk>" 
+authors = ["AJ Mckenna <amckenna41@qub.ac.uk>"]
+maintainers = ["AJ McKenna <amckenna41@qub.ac.uk>"]
 license = "MIT"
 readme = "README.md"
-requires-python = ">=3.8"
 classifiers = [
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
@@ -21,7 +17,7 @@ classifiers = [
         "Natural Language :: English",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10"',
+        "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",	
         "Programming Language :: Python :: Implementation :: PyPy",
         "Programming Language :: Python :: 3 :: Only",
@@ -30,9 +26,23 @@ classifiers = [
         "Topic :: Software Development :: Libraries :: Python Modules"
 ]
 keywords = ["iso", "iso3166", "beautifulsoup", "python", "pypi", "countries", "country codes", "iso3166-2", "iso3166-1", "alpha-2", "iso3166-updates", "subdivisions", "regions"]
-dependancies = ["iso3166", "natsort", "thefuzz", "unidecode"]
+packages = [{include = "iso3166_2"}]
 
-[project.urls]
+[tool.poetry.dependencies]
+python = "^3.8"
+iso3166 = "^2.1.1"
+natsort = "^8.4.0"
+thefuzz = "^0.22.1"
+Unidecode = "^1.3.8"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.2"
+
+[tool.poetry.urls]
 homepage = "https://iso3166-2-api.vercel.app/api"
 repository = "https://github.com/amckenna41/iso3166-2"
 documentation = "https://iso3166-2.readthedocs.io/en/latest/"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
