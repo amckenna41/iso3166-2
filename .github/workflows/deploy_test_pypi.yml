@@ -4,17 +4,17 @@ name: Deploy to TestPyPI 📦
 on:
   workflow_run:
     workflows: ["Building and Testing"]
-    types:
-      - completed
+    types: [completed]
 
   # allow for workflow to be manually initiated from the Actions tab
   workflow_dispatch:
 
-#build and deploy to Test PyPI server
+# build and deploy to Test PyPI server if test workflow was successful or manual trigger was selected
 jobs:
-  build:
+  test_success:
     name: Deploy to TestPyPI 📦
     runs-on: ubuntu-latest         # platform: [ubuntu-latest, macos-latest, windows-latest]
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     strategy:
       matrix:
         python-version: [3.9]  #deploying using one Python version on 1 runner
@@ -40,3 +40,11 @@ jobs:
       run: |
         pip install -i https://test.pypi.org/simple/ iso3166_2 --upgrade
         echo "iso3166_2 successfully installed"
+
+  # test workflow was not successful so package not deployed to Test PyPI or PyPI
+  test_failure:
+    name: Test workflow failure
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - run: echo "Test workflow failure, package not deployed to Test PyPI server"

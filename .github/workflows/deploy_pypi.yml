@@ -4,22 +4,22 @@ name: Deploy to PyPI 📦
 on:
   workflow_run:
     workflows: [Deploy to TestPyPI 📦]
-    types:
-      - completed
+    types: [completed]
 
   # allow for workflow to be manually initiated from the Actions tab
   workflow_dispatch:
 
+# build and deploy to PyPI server if test workflow was successful or manual trigger was selected
 jobs:
-  build:
+  test_success:
     name: Deploy to PyPI 📦
     runs-on: ubuntu-latest         # platform: [ubuntu-latest, macos-latest, windows-latest]
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     strategy:
       matrix:
         python-version: [3.9]  #deploying using one Python version on 1 runner
     steps:
     - uses: actions/checkout@v3
-
     # build distribution package using poetry tool and upload to the PYPi server via custom github action
     - name: Build and publish to PyPI
       uses: JRubics/poetry-publish@v2.0
@@ -38,3 +38,11 @@ jobs:
         pip install iso3166_2 --upgrade
         echo -e "import iso3166_2 as iso3166_2" | python3
         echo "iso3166_2 successfully installed"
+
+  # test workflow was not successful so package not deployed to PyPI server
+  test_failure:
+    name: Test workflow failure
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - run: echo "Test workflow failure, package not deployed to PyPI server"
