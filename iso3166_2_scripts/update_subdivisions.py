@@ -298,7 +298,7 @@ def update_subdivision(alpha2_code="", subdivision_code="", name="", local_name=
                             all_subdivision_data[country_code][row['code']]['latLng'] = json.loads(row["latLng"]) #convert string of array into array                
                         #if subdivision english name and common local name are the same - set to local name to name
                         if (row['localName'] == None or row['localName'] == ""):
-                            if (row['localNameSpelling']):
+                            if (row['localNameSame']):
                                 all_subdivision_data[country_code][row['code']]['localName'] = row['name']
                         else:
                             all_subdivision_data[country_code][row['code']]['localName'] = row['localName']
@@ -324,7 +324,7 @@ def update_subdivision(alpha2_code="", subdivision_code="", name="", local_name=
                         all_subdivision_data[row["country_code"]][row["code"]]["latLng"] = json.loads(row["latLng"]) #convert string of array into array
 
                         #determine if subdivision local name is the same as subdivision name
-                        if (row["localNameSpelling"]): 
+                        if (row["localNameSame"]): 
                             all_subdivision_data[row["country_code"]][row["code"]]["localName"] = row["name"]
                         else:
                             all_subdivision_data[row["country_code"]][row["code"]]["localName"] = row["localName"]

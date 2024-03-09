@@ -1,4 +1,4 @@
-country_code,code,name,localName,type,parentCode,flagUrl,latLng,localNameSpelling,delete,notes,dateIssued
+country_code,code,name,localName,type,parentCode,flagUrl,latLng,localNameSame,delete,notes,dateIssued
 FR,FR-75,,,Metropolitan collectivity with special status,,,,1,,Changing FR-75 subdivision type from metropolitan department to metropolitan collectivity with special status,2021-11-25
 FR,FR-GF,,,,,,,,1,Deleting FR-GF department,2021-11-25
 FR,FR-GP,,,,,,,,1,Deleting FR-GP department,2021-11-25
