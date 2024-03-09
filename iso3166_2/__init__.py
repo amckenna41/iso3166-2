@@ -2,7 +2,7 @@ from .iso3166_2 import *
 
 #software metadata
 __name__ = 'iso3166-2'
-__version__ = "1.5.1"
+__version__ = "1.5.3"
 __description__ = "A lightweight Python package, and accompanying API, that can be used to access all of the world's most up-to-date and accurate ISO 3166-2 subdivision data, including: name, local name, code, parent code, type, latitude/longitude and flag."
 __author__ = 'AJ McKenna, https://github.com/amckenna41'
 __authorEmail__ = 'amckenna41@qub.ac.uk'

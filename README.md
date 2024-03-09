@@ -114,14 +114,7 @@ Installation
 Install the latest version of `iso3166-2` via [PyPi][PyPi] using pip:
 
 ```bash
-pip3 install iso3166-2 --upgrade
-```
-
-Installation from source:
-```bash
-git clone -b master https://github.com/amckenna41/iso3166-2.git
-cd iso3166_2
-python3 setup.py install
+pip install iso3166-2 --upgrade
 ```
 
 Usage

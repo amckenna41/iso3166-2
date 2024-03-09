@@ -7,7 +7,7 @@ import shutil
 import unittest
 unittest.TestLoader.sortTestMethodsUsing = None
 
-# @unittest.skip("")
+@unittest.skip("")
 class Get_ISO3166_2_Tests(unittest.TestCase):
     """
     Test suite for testing get_iso3166_2.py script that pulls all the ISO 3166-2

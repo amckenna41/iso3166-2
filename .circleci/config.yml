@@ -19,11 +19,6 @@ jobs:
           command: |
             if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
             pip3 install importlib-metadata
-            pip3 install pycountry
-            pip3 install googlemaps
-            pip3 install natsort
-            pip3 install tqdm
-            python3 setup.py install
             python -m unittest discover tests/
       - persist_to_workspace:
           root: ~/project

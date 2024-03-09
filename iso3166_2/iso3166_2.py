@@ -14,8 +14,7 @@ class ISO3166_2():
     This class is used to access all the ISO 3166-2 country subdivision data and attributes.
     All of the country data is stored in the iso3166-2.json, including the country's subdivision
     name, local name, type, code, parent code, latitude/longitude and URL to its flag (if applicable). 
-    All of the keys and objects in the JSON are accessible via dot notation via the Map class. The 
-    desired subdivision data can be retrieved using its ISO 3166-1 alpha-2, alpha-3 or numeric 
+    The desired subdivision data can be retrieved using its ISO 3166-1 alpha-2, alpha-3 or numeric 
     country codes; a comma seperate list of subdivision codes can also be input. Also you can 
     retrieve subdivisions via a built-in search functionality via its subdivision name, searching 
     for exact matches or matches based on a 'likeness' score. 
@@ -719,16 +718,13 @@ class ISO3166_2():
             if not (alpha_code[code] in sorted(list(iso3166.countries_by_alpha2.keys()))) or not (alpha_code[code] in list(self.all.keys())):
                 raise ValueError("Invalid alpha-2 code input: {}.".format(alpha_code[code]))
                 
-            #create instance of Map class so dict can be accessed via dot notation 
-            country[alpha_code[code]] = Map(self.all[alpha_code[code]]) 
+            #add subdivision specific data to output object 
+            country[alpha_code[code]] = self.all[alpha_code[code]]
 
             #iterate over nested dicts, convert into instances of Map class so they can be accessed via dot notation
             for key in country[alpha_code[code]].keys():
                 if (isinstance(country[alpha_code[code]][key], dict)):
                     country[alpha_code[code]][key] = Map(country[alpha_code[code]][key])
-
-        #convert country data object into Map class so it can be accessed via dot notation
-        country = Map(country)
 
         #if only one alpha-2 code input then return list of its country data and attributes else return dict object for all inputs
         if len(alpha_code) == 1:

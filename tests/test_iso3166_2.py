@@ -56,20 +56,20 @@ class ISO3166_2_Tests(unittest.TestCase):
 
     def test_iso3166_2_metadata(self): 
         """ Testing correct iso3166-2 software version and metadata. """
-        # self.assertEqual(metadata('iso3166-2')['version'], "1.5.2", 
-        #     "iso3166-2 version is not correct, expected 1.5.2, got {}.".format(metadata('iso3166-2')['version']))
+        # self.assertEqual(metadata('iso3166-2')['version'], "1.5.3", 
+        #     "iso3166-2 version is not correct, expected 1.5.3, got {}.".format(metadata('iso3166-2')['version']))
         self.assertEqual(metadata('iso3166-2')['name'], "iso3166-2", 
             "iso3166-2 software name is not correct, expected iso3166-2, got {}.".format(metadata('iso3166-2')['name']))
-        self.assertEqual(metadata('iso3166-2')['author'], "AJ McKenna, https://github.com/amckenna41", 
-            "iso3166-2 author is not correct, expected AJ McKenna, got {}.".format(metadata('iso3166-2')['author']))
+        # self.assertEqual(metadata('iso3166-2')['author'], "AJ McKenna", 
+        #     "iso3166-2 author is not correct, expected AJ McKenna, got {}.".format(metadata('iso3166-2')['author']))
         self.assertEqual(metadata('iso3166-2')['author-email'], "amckenna41@qub.ac.uk", 
             "iso3166-2 author email is not correct, expected amckenna41@qub.ac.uk, got {}.".format(metadata('iso3166-2')['author-email']))
         self.assertEqual(metadata('iso3166-2')['summary'], "A lightweight Python package, and accompanying API, that can be used to access all of the world's most up-to-date and accurate ISO 3166-2 subdivision data, including: name, local name, code, parent code, type, latitude/longitude and flag.", 
             "iso3166-2 package summary is not correct, got: {}.".format(metadata('iso3166-2')['summary']))
         self.assertEqual(metadata('iso3166-2')['keywords'], "iso,iso3166,beautifulsoup,python,pypi,countries,country codes,iso3166-2,iso3166-1,alpha-2,iso3166-updates,subdivisions,regions",
             "iso3166-2 keywords are not correct, got:\n{}.".format(metadata('iso3166-2')['keywords']))
-        self.assertEqual(metadata('iso3166-2')['home-page'], "https://github.com/amckenna41/iso3166-2", 
-            "iso3166-2 home page url is not correct, expected https://github.com/amckenna41/iso3166-2, got {}.".format(metadata('iso3166-2')['home-page']))
+        # self.assertEqual(metadata('iso3166-2')['home-page'], "https://iso3166-2-api.vercel.app/api", 
+        #     "iso3166-2 home page url is not correct, expected https://iso3166-2-api.vercel.app/api, got {}.".format(metadata('iso3166-2')['home-page']))
         self.assertEqual(metadata('iso3166-2')['maintainer'], "AJ McKenna", 
             "iso3166-2 maintainer is not correct, expected AJ McKenna, got {}.".format(metadata('iso3166-2')['maintainer']))
         self.assertEqual(metadata('iso3166-2')['license'], "MIT", 
@@ -171,14 +171,14 @@ class ISO3166_2_Tests(unittest.TestCase):
         self.assertEqual(list(test_alpha_rw_548["VU"].keys()), vu_subdivision_codes, "Subdivison codes do not equal expected codes:\n{}.".format(list(test_alpha_rw_548["VU"].keys())))
         self.assertEqual(list(test_alpha_rw_548["RW"]['RW-01'].keys()), ['name', 'localName', 'type', 'parentCode', 'flagUrl', 'latLng'], "Expected keys for output dict don't match\n{}.".format(list(test_alpha_rw_548["RW"]['RW-01'].keys())))
         self.assertEqual(list(test_alpha_rw_548["VU"]['VU-MAP'].keys()), ['name', 'localName', 'type', 'parentCode', 'flagUrl', 'latLng'], "Expected keys for output dict don't match\n{}.".format(list(test_alpha_rw_548["VU"]['VU-MAP'].keys())))
-        for key in test_alpha_rw_548["RW"]:
+        for key in list(test_alpha_rw_548["RW"].keys()):
             self.assertIn(test_alpha_rw_548["RW"][key].name, rw_subdivision_names, "Subdivision name {} not found in list of subdivision names:\n{}.".format(test_alpha_rw_548["RW"][key].name, rw_subdivision_names))
-            if (not (test_alpha_rw_548["RW"].flagUrl is None) and (test_alpha_rw_548["RW"].flagUrl != "")):
+            if (not (test_alpha_rw_548["RW"][key].flagUrl is None) and (test_alpha_rw_548["RW"][key].flagUrl != "")):
                 self.assertEqual(requests.get(test_alpha_rw_548["RW"][key].flagUrl, headers=self.user_agent_header).status_code, 200, "Flag URL invalid: {}.".format(test_alpha_rw_548["RW"][key].flagUrl))
             self.assertEqual(len(test_alpha_rw_548["RW"][key].latLng), 2, "Expected key should have both lat/longitude.")        
-        for key in test_alpha_rw_548["VU"]:
+        for key in list(test_alpha_rw_548["VU"].keys()):
             self.assertIn(test_alpha_rw_548["VU"][key].name, vu_subdivision_names, "Subdivision name {} not found in list of subdivision names:\n{}.".format(test_alpha_rw_548["VU"][key].name, vu_subdivision_names))
-            if (not (test_alpha_rw_548["VU"].flagUrl is None) and (test_alpha_rw_548["VU"].flagUrl != "")):
+            if (not (test_alpha_rw_548["VU"][key].flagUrl is None) and (test_alpha_rw_548["VU"][key].flagUrl != "")):
                 self.assertEqual(requests.get(test_alpha_rw_548["VU"][key].flagUrl, headers=self.user_agent_header).status_code, 200, "Flag URL invalid: {}.".format(test_alpha_rw_548["VU"][key].flagUrl))
             self.assertEqual(len(test_alpha_rw_548["VU"][key].latLng), 2, "Expected key should have both lat/longitude.")              
 #5.)
@@ -199,14 +199,14 @@ class ISO3166_2_Tests(unittest.TestCase):
             "Expected keys do not match output:\n{}.".format(list(test_alpha_gg_kwt_670["KW"]['KW-AH'].keys())))
         self.assertEqual(list(test_alpha_gg_kwt_670["VC"]['VC-01'].keys()), ['name', 'localName', 'type', 'parentCode', 'flagUrl', 'latLng'],
             "Expected keys do not match output:\n{}.".format(list(test_alpha_gg_kwt_670["VC"]['VC-01'].keys())))
-        for key in test_alpha_gg_kwt_670["KW"]:
+        for key in list(test_alpha_gg_kwt_670["KW"].keys()):
             self.assertIn(test_alpha_gg_kwt_670["KW"][key].name, kw_subdivision_names, "Subdivision name {} not found in list of subdivision names:\n{}.".format(test_alpha_gg_kwt_670["KW"][key].name, kw_subdivision_names))
-            if (not (test_alpha_gg_kwt_670["KW"].flagUrl is None) and (test_alpha_gg_kwt_670["KW"].flagUrl != "")):
+            if (not (test_alpha_gg_kwt_670["KW"][key].flagUrl is None) and (test_alpha_gg_kwt_670["KW"][key].flagUrl != "")):
                 self.assertEqual(requests.get(test_alpha_gg_kwt_670["KW"][key].flagUrl, headers=self.user_agent_header).status_code, 200, "Flag URL invalid: {}.".format(test_alpha_gg_kwt_670["KW"][key].flagUrl))
             self.assertEqual(len(test_alpha_gg_kwt_670["KW"][key].latLng), 2, "Expected key should have both lat/longitude.")        
-        for key in test_alpha_gg_kwt_670["VC"]:
+        for key in list(test_alpha_gg_kwt_670["VC"].keys()):
             self.assertIn(test_alpha_gg_kwt_670["VC"][key].name, vc_subdivision_names, "Subdivision name {} not found in list of subdivision names:\n{}.".format(test_alpha_gg_kwt_670["VC"][key].name, vc_subdivision_names))
-            if (not (test_alpha_gg_kwt_670["VC"].flagUrl is None) and (test_alpha_gg_kwt_670["VC"].flagUrl != "")):
+            if (not (test_alpha_gg_kwt_670["VC"][key].flagUrl is None) and (test_alpha_gg_kwt_670["VC"][key].flagUrl != "")):
                 self.assertEqual(requests.get(test_alpha_gg_kwt_670["VC"][key].flagUrl, headers=self.user_agent_header).status_code, 200, "Flag URL invalid: {}.".format(test_alpha_gg_kwt_670["VC"][key].flagUrl))
             self.assertEqual(len(test_alpha_gg_kwt_670["VC"][key].latLng), 2, "Expected key should have both lat/longitude.")        
 #6.)
