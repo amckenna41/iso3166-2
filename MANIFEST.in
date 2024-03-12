@@ -1,4 +1,4 @@
-graft iso3166_2/iso3166_2_data*
+graft iso3166_2/*
 include README.md
 recursive-exclude __pycache__ *
 exclude API.md

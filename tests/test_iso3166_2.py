@@ -23,8 +23,6 @@ class ISO3166_2_Tests(unittest.TestCase):
         testing correct objects are returned from the ISO 3166-2 JSON, using a variety of inputs.
     test_subdivision_names:
         testing correct ISO 3166-2 subdivision names are returned from the subdivision_names() class function.
-    test_subdivision_local_names:
-        testing correct ISO 3166-2 subdivision local names are returned from the subdivision_local_names() class function.
     test_subdivision_codes:
         testing correct ISO 3166-2 subdivision codes are returned from the subdivision_codes() class function.  
     test_custom_subdivision:
@@ -56,8 +54,8 @@ class ISO3166_2_Tests(unittest.TestCase):
 
     def test_iso3166_2_metadata(self): 
         """ Testing correct iso3166-2 software version and metadata. """
-        self.assertEqual(metadata('iso3166-2')['version'], "1.5.3", 
-            "iso3166-2 version is not correct, expected 1.5.3, got {}.".format(metadata('iso3166-2')['version']))
+        self.assertEqual(metadata('iso3166-2')['version'], "1.5.4", 
+            "iso3166-2 version is not correct, expected 1.5.4, got {}.".format(metadata('iso3166-2')['version']))
         self.assertEqual(metadata('iso3166-2')['name'], "iso3166-2", 
             "iso3166-2 software name is not correct, expected iso3166-2, got {}.".format(metadata('iso3166-2')['name']))
         self.assertEqual(metadata('iso3166-2')['author'], "AJ McKenna", 
@@ -344,65 +342,6 @@ class ISO3166_2_Tests(unittest.TestCase):
             er_instance.subdivision_names("DO")
             zm_instance.subdivision_names("CPV")
             dj_va_instance.subdivision_names("218")
-
-    def test_subdivision_local_names(self):
-        """ Testing functionality for getting list of all ISO 3166-2 subdivision local names. """
-        expected_bb_local_names = ['Christ Church', 'Saint Andrew', 'Saint George', 'Saint James', 'Saint John', 'Saint Joseph', 'Saint Lucy', \
-                                   'Saint Michael', 'Saint Peter', 'Saint Philip', 'Saint Thomas']
-        expected_lr_local_names = ['Bomi', 'Bong', 'Gbarpolu', 'Grand Bassa', 'Grand Cape Mount', 'Grand Gedeh', 'Grand Kru', 'Lofa', 'Margibi', \
-                                   'Maryland', 'Montserrado', 'Nimba', 'River Cess', 'River Gee', 'Sinoe']
-        expected_na_local_names = ['//Karas', 'Erongo', 'Hardap', 'Kavango East', 'Kavango West', 'Khomas', 'Kunene', 'Ohangwena', 'Omaheke', 'Omusati', 'Oshana', 'Oshikoto', 'Otjozondjupa', 'Zambezi']
-        expected_nr_local_names = ['Aiwo', 'Anabar', 'Anetan', 'Anibare', 'Baitsi', 'Boe', 'Buada', 'Denigomodu', 'Ewa', 'Ijuw', 'Meneng', 'Nibok', 'Uaboe', 'Yaren']
-        expected_pr_sc_local_names = {'PR': [], 'SC': ['Anse Boileau', 'Anse Etoile', 'Anse Royale', 'Anse aux Pins', 'Au Cap', 'Baie Lazare', 'Baie Sainte Anne', 'Beau Vallon', 'Bel Air', 'Bel Ombre',\
-                                                       'Cascade', 'English River', 'Glacis', 'Grand Anse Mahe', 'Grand Anse Praslin', 'Ile Perseverance I', 'Ile Perseverance II', 'La Digue', 'Les Mamelles',\
-                                                        'Mont Buxton', 'Mont Fleuri', 'Plaisance', 'Pointe Larue', 'Port Glaud', 'Roche Caiman', 'Saint Louis', 'Takamaka']}
-        expected_ws_local_names = ["A'ana", "Aiga-i-le-Tai", "Atua", "Fa'asaleleaga", "Gaga'emauga", "Gagaifomauga", "Palauli", "Satupa'itea", "Tuamasaga", "Va'a-o-Fonoti", "Vaisigano"]
-        expected_sg_sj_local_names = {"SG": ["Central Singapore", "North East", "North West", "South East", "South West"], "SJ": []}
-#1.)
-        bb_instance = ISO3166_2("BB") #Barbados
-        bb_subdivision_local_names = bb_instance.subdivision_local_names() 
-        self.assertEqual(bb_subdivision_local_names, expected_bb_local_names, "Expected subdivison local names don't match output:\n{}.".format(expected_bb_local_names))
-#2.)
-        lr_instance = ISO3166_2("LR") #Liberia
-        lr_subdivision_local_names = lr_instance.subdivision_local_names() 
-        self.assertEqual(lr_subdivision_local_names, expected_lr_local_names, "Expected subdivison local names don't match output:\n{}.".format(expected_lr_local_names))
-#3.)
-        na_instance = ISO3166_2("NAM") #Namibia
-        na_subdivision_local_names = na_instance.subdivision_local_names() 
-        self.assertEqual(na_subdivision_local_names, expected_na_local_names, "Expected subdivison local names don't match output:\n{}.".format(expected_na_local_names))
-#4.)
-        nr_instance = ISO3166_2("NRU") #Nauru
-        nr_subdivision_local_names = nr_instance.subdivision_local_names() 
-        self.assertEqual(nr_subdivision_local_names, expected_nr_local_names, "Expected subdivison local names don't match output:\n{}.".format(expected_nr_local_names))
-#5.)
-        ws_instance = ISO3166_2("882") #Western Samoa
-        ws_subdivision_local_names = ws_instance.subdivision_local_names() 
-        self.assertEqual(ws_subdivision_local_names, expected_ws_local_names, "Expected subdivison local names don't match output:\n{}.".format(expected_na_local_names))
-#6.)
-        sg_sj_instance = ISO3166_2("702,SJ") #Singapore, Svalbard
-        sg_sj_subdivision_local_names = sg_sj_instance.subdivision_local_names() 
-        self.assertEqual(sg_sj_subdivision_local_names, expected_sg_sj_local_names, "Expected subdivison local names don't match output:\n{}.".format(expected_na_local_names))
-#7.)
-        pr_sc_instance = ISO3166_2("PRI,690")
-        pr_sc_subdivision_local_names = pr_sc_instance.subdivision_local_names() #Puerto Rico, Seychelles
-        self.assertEqual(pr_sc_subdivision_local_names, expected_pr_sc_local_names, "Expected subdivison local names don't match output:\n{}.".format(expected_pr_sc_local_names))
-#8.)
-        all_subdivision_local_names = self.all_iso3166_2.subdivision_names() 
-        self.assertEqual(len(all_subdivision_local_names), 250, "Expected 250 total country output objects, got {}.".format(len(all_subdivision_local_names)))
-        for key, val in all_subdivision_local_names.items():
-            self.assertIn(key, list(iso3166.countries_by_alpha2.keys()), "Country code {} not found in list of ISO 3166 alpha-2 codes.".format(key))
-            self.assertIsInstance(val, list, "Expected output of subdivision local names to be of type list, got {}.".format(type(val)))
-#9.)
-        with (self.assertRaises(ValueError)):
-            self.all_iso3166_2.subdivision_local_names("ABCD")
-            self.all_iso3166_2.subdivision_local_names("Z")
-            self.all_iso3166_2.subdivision_local_names("1234")
-            self.all_iso3166_2.subdivision_local_names("blah, blah, blah")
-            self.all_iso3166_2.subdivision_local_names(False)
-            bb_instance.subdivision_local_names("GY")
-            na_instance.subdivision_local_names("DE")
-            sg_sj_instance.subdivision_local_names("RO")
-            pr_sc_instance.subdivision_local_names("TR")
     
     @unittest.skip("Skipping to not change the main iso3166-2 object during other unit tests running.")
     def test_custom_subdivision(self):

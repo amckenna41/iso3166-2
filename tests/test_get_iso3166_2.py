@@ -280,7 +280,7 @@ class Get_ISO3166_2_Tests(unittest.TestCase):
             "Expected subdivision parent code to be None, got {}.".format(test_iso3166_2_kg_mg_nr["NR"]["NR-02"]["parentCode"]))
         self.assertEqual(test_iso3166_2_kg_mg_nr["NR"]["NR-02"]["type"], "District", 
             "Expected subdivision type to be District, got {}.".format(test_iso3166_2_kg_mg_nr["NR"]["NR-02"]["type"]))
-        self.assertEqual(test_iso3166_2_kg_mg_nr["NR"]["NR-02"]["latLng"], [-0.511, 166.954],
+        self.assertEqual(test_iso3166_2_kg_mg_nr["NR"]["NR-02"]["latLng"], [-0.513, 166.948],
             "Expected subdivision latLng to be [-0.513, 166.948], got {}.".format(test_iso3166_2_kg_mg_nr["NR"]["NR-02"]["latLng"]))
         self.assertEqual(test_iso3166_2_kg_mg_nr["NR"]["NR-02"]["flagUrl"], None,
             "Expected subdivision flag URL to be None, got {}.".format(test_iso3166_2_kg_mg_nr["NR"]["NR-02"]["flagUrl"]))

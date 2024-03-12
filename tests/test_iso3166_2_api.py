@@ -7,7 +7,7 @@ from importlib.metadata import metadata
 from bs4 import BeautifulSoup
 import unittest
 unittest.TestLoader.sortTestMethodsUsing = None
-# @unittest.skip("")
+
 class ISO3166_2_API_Tests(unittest.TestCase):
     """
     Test suite for testing ISO 3166-2 api created to accompany the iso3166-2 Python software package. 
@@ -59,14 +59,14 @@ class ISO3166_2_API_Tests(unittest.TestCase):
         
     def test_homepage_endpoint(self):
         """ Testing contents of main /api endpoint that returns the homepage and API documentation. """
-        test_request_main = requests.get(self.api_base_url, headers=self.user_agent_header)
+        test_request_main = requests.get(self.api_base_url, headers=self.user_agent_header, timeout=(3.05, 27))
         soup = BeautifulSoup(test_request_main.content, 'html.parser')
-#1.)
-        version = soup.find(id='version').text.split(': ')[1]
+#1.)    
+        # version = soup.find(id='version').text.split(': ')[1] #need to get this using selenium as version is dynamically retrieved in frontend
         last_updated = soup.find(id='last-updated').text.split(': ')[1]
         author = soup.find(id='author').text.split(': ')[1]
 
-        self.assertEqual(version, "1.5.0", "Expected API version to be 1.5.0, got {}.".format(version))
+        # self.assertEqual(version, "1.5.3", "Expected API version to be 1.5.3, got {}.".format(version)) 
         self.assertEqual(last_updated, "March 2024", "Expected last updated data to be March 2024, got {}.".format(last_updated))
         self.assertEqual(author, "AJ", "Expected author to be AJ, got {}.".format(author))
 #2.)
@@ -373,7 +373,7 @@ class ISO3166_2_API_Tests(unittest.TestCase):
 
         self.assertIsInstance(test_request_error2, dict, "Expected output object of API to be type dict, got {}.".format(type(test_request_error2)))
         self.assertEqual(len(test_request_error2), 3, "Expected output object of API to be of length 3, got {}.".format(len(test_request_error2)))
-        self.assertEqual(test_request_error2["message"], "Invalid ISO 3166-1 numeric country code input, cannot convert into corresponding alpha-2 code: {}.".format(test_alpha_error_2), 
+        self.assertEqual(test_request_error2["message"], "Invalid ISO 3166-1 alpha country code input, cannot convert into corresponding alpha-2 code: {}.".format(test_alpha_error_2), 
                 "Error message does not match expected:\n{}".format(test_request_error2["message"]))
         self.assertEqual(test_request_error2["path"], self.alpha_base_url + test_alpha_error_2, 
                 "Error path does not match expected:\n{}.".format(test_request_error2["path"]))

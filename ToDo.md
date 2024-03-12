@@ -228,6 +228,7 @@ https://iso3166-updates.com/api/year/2020 : up-to-date.
 - [X] Change setup.py to pyprojet.tml - https://packaging.python.org/en/latest/tutorials/packaging-projects/ - swap for setup.cfg
 - [X] /iso3166_2_data not being included in package - incorrect filename in MANIFEST file.
 - [X] Remove reference to dot notation, no longer used.
+- [X] Remove iso3166-2.json from iso3166_2_data folder.
 
 Future Additions
 ----------------

@@ -105,21 +105,20 @@ class ISO3166_2():
 
         self.country_code = country_code
         self.iso3166_json_filename= "iso3166-2.json"
-        self.data_folder = "iso3166_2_data"
 
         #get module path
         self.iso3166_2_module_path = os.path.dirname(os.path.abspath(sys.modules[self.__module__].__file__))
         
         #raise error if iso3166-2 json doesn't exist in the data folder
-        if not (os.path.isfile(os.path.join(self.iso3166_2_module_path, self.data_folder, self.iso3166_json_filename))):
-            raise OSError("Issue finding {} in data dir {}.".format(self.iso3166_json_filename, self.data_folder))
+        if not (os.path.isfile(os.path.join(self.iso3166_2_module_path, self.iso3166_json_filename))):
+            raise OSError("Issue finding data file {} in module directory: {}.".format(self.iso3166_json_filename, self.iso3166_2_module_path))
 
         #importing all subdivision data from JSON, open iso3166-2 json file and load it into class variable, loading in a JSON is different in Windows & Unix/Linux systems
         if (platform.system() != "Windows"):
-            with open(os.path.join(self.iso3166_2_module_path, self.data_folder, self.iso3166_json_filename)) as iso3166_2_json:
+            with open(os.path.join(self.iso3166_2_module_path, self.iso3166_json_filename)) as iso3166_2_json:
                 self.all = json.load(iso3166_2_json)
         else:
-            with open(os.path.join(self.iso3166_2_module_path, self.data_folder, self.iso3166_json_filename), encoding="utf-8") as fp:
+            with open(os.path.join(self.iso3166_2_module_path, self.iso3166_json_filename), encoding="utf-8") as fp:
                 self.all = json.loads(fp.read())
 
         #if input country code param set, iterate over data object and get subdivision data for specified input/inputs
@@ -295,72 +294,6 @@ class ISO3166_2():
             else:
                 return subdivision_names_
 
-    def subdivision_local_names(self, alpha_code=""):
-        """
-        Return a list or dict of all ISO 3166-2 subdivision local names for one or more countries 
-        specified by their 2 letter alpha-2, 3 letter alpha-3 or numeric codes. If the alpha-3 
-        or numeric codes are input, these are converted into their corresponding alpha-2 country 
-        codes. If a single country input then return list of input country's subdivision local 
-        names, if multiple passed in return a dict of all input countries subdivision local names. 
-        If no value passed into parameter then return dict of all subdivision local names for all 
-        countries. If invalid country code input then raise error.
-
-        Parameters
-        ==========
-        :alpha_code: str (default="")
-            one or more 2 letter ISO 3166-1 alpha-2 codes; the 3 letter alpha-3 country code can also 
-            be accepted. If no value input then all alpha-2 country codes will be used.
-
-        Returns
-        =======
-        :subdivision_local_names_: list/dict
-            list or dict of input country's subdivision local names, if no value passed into parameter 
-            then all country subdivision local name data is returned.
-        """
-        subdivision_local_names_ = {}
-
-        #if no value passed into parameter, return all subdivision local names for all countries
-        if (alpha_code == ""):
-            #iterate over all subdivision ISO 3166-2 data, append to subdivision local names dict
-            for key, _ in self.all.items():
-                subdivision_local_names_[key] = [self.all[key][country]["localName"] for country in self.all[key]]
-                subdivision_local_names_[key] = sorted(subdivision_local_names_[key])
-            #return list of subdivision local names for country if one country in 'self.all' attribute, else return dict
-            if (len(list(self.all.keys())) == 1):
-                return subdivision_local_names_[list(self.all.keys())[0]]
-            else:
-                return subdivision_local_names_
-        else:
-            #seperate list of alpha codes into iterable comma seperated list
-            alpha_code = alpha_code.upper().replace(' ', '').split(',')
-
-            #iterate over all input alpha codes, append their subdivision local names to dict 
-            for code in range(0, len(alpha_code)):
-                #if 3 letter alpha-3 or numeric codes input then convert to corresponding alpha-2, else raise error
-                if (len(alpha_code[code]) == 3):
-                    temp_alpha_code = self.convert_to_alpha2(alpha_code[code])
-                    if (temp_alpha_code is None and alpha_code[code].isdigit()):
-                        raise ValueError("Invalid ISO 3166-1 numeric country code input, cannot convert into corresponding alpha-2 code: {}.".format(alpha_code[code]))
-                    if (temp_alpha_code is None):
-                        raise ValueError("Invalid ISO 3166-1 alpha-3 country code input, cannot convert into corresponding alpha-2 code: {}.".format(alpha_code[code]))
-                    alpha_code[code] = temp_alpha_code
-
-                #raise error if invalid alpha-2 code input
-                if not (alpha_code[code] in sorted(list(iso3166.countries_by_alpha2.keys()))) or not (alpha_code[code] in list(self.all.keys())):
-                    raise ValueError("Invalid ISO 3166-1 alpha-2 country code input: {}.".format(alpha_code[code]))
-                
-                #append list of subdivision local names to dict
-                subdivision_local_names_[alpha_code[code]] = [self.all[alpha_code[code]][x]["localName"] for x in self.all[alpha_code[code]]]
-            
-                #sort subdivision local names in json objects in alphabetical order
-                subdivision_local_names_[alpha_code[code]] = sorted(subdivision_local_names_[alpha_code[code]])
-
-            #if only one alpha-2 code input then return list of its subdivison local names else return dict object for all inputs
-            if len(alpha_code) == 1:
-                return subdivision_local_names_[alpha_code[0]]
-            else:
-                return subdivision_local_names_
-
     def custom_subdivision(self, alpha_code="", subdivision_code="", name="", local_name="", type="", 
             lat_lng=[], parent_code=None, flag_url=None, delete=0):
         """ 
@@ -426,10 +359,10 @@ class ISO3166_2():
         """
         #open iso3166-2 json file and load it into class variable, loading in a JSON is different in Windows & Unix/Linux systems
         if (platform.system() != "Windows"):
-            with open(os.path.join(self.iso3166_2_module_path, self.data_folder, self.iso3166_json_filename)) as iso3166_2_json:
+            with open(os.path.join(self.iso3166_2_module_path, self.iso3166_json_filename)) as iso3166_2_json:
                 all_subdivision_data = json.load(iso3166_2_json)
         else:
-            with open(os.path.join(self.iso3166_2_module_path, self.data_folder, self.iso3166_json_filename), encoding="utf-8") as fp:
+            with open(os.path.join(self.iso3166_2_module_path, self.iso3166_json_filename), encoding="utf-8") as fp:
                 all_subdivision_data = json.loads(fp.read())
 
         #raise type error if input isn't a string
@@ -478,7 +411,7 @@ class ISO3166_2():
         all_subdivision_data[alpha_code] = dict(OrderedDict(natsort.natsorted(all_subdivision_data[alpha_code].items())))
 
         #export the updated custom subdivision object
-        with open(os.path.join(self.iso3166_2_module_path, self.data_folder, self.iso3166_json_filename), 'w', encoding='utf-8') as output_json:
+        with open(os.path.join(self.iso3166_2_module_path, self.iso3166_json_filename), 'w', encoding='utf-8') as output_json:
             json.dump(all_subdivision_data, output_json, ensure_ascii=False, indent=4)  
 
     def search(self, name="", likeness=1.0):
