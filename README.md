@@ -231,7 +231,7 @@ ISO 3166-2 Scripts
 * The [`iso3166_2_scripts/get_iso3166_2.py`](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_scripts) script is used for pulling and exporting the latest ISO 3166-2 data from the various data sources
 * The [`iso3166_2_scripts/update_subdivisions.py`](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_scripts) script is used for adding, amending and or deleting subdivisions to the `iso3166-2` software and object.
 
-Please visit the [README](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_scripts) of the `iso3166_2_scripts` folder for more in depth info about the usage and requirements of the above two scripts <b>vital<b> to the `iso3166-2` software.
+Please visit the [README](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_scripts) of the `iso3166_2_scripts` folder for more in depth info about the usage and requirements of the above two scripts <b>vital</b> to the `iso3166-2` software.
 
 Directories
 -----------

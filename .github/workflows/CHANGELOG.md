@@ -46,6 +46,7 @@
 - Fixed syntax of some function parameters that can take multiple data types
 - Fixed parameter typing syntax for some function parameters that can be multiple data types
 
+
 ## v1.5.4 - March 2024
 
 
@@ -54,12 +55,14 @@
 - Added custom_subdivision function where user can add a custom subdivision to the iso3166-2 object
 - Add UPDATES.md file that outlines all recent subdivision changes to the ISO 3166-2 data
 
+
 ### Changed
 - Changed data encapsulation for object, with the dataset now accessible after creating an instance of the ISO3166_2 class
 - Change search functionality algorithm from difflib to thefuzz libary
 - Change setup.py to pyproject.toml
 - Update unit tests to reflect changes made to the software such as likeness score and searching method etc
 - Change iso3166_2_updates directory to iso316_2_updates
+
 
 ### Fixed
 - Incorrect subdivision data returning when searching for a subdivision using its name when its name had a comma in it
@@ -68,6 +71,7 @@
 
 
 ## v1.4.0 - December 2023
+
 
 ### Added
 - readthedocs documentation added
@@ -97,11 +101,12 @@
 ### Changed
 - When running unit tests on iso3166-2.json object, create a backup/archive of object before running tests
 
+
 ### Fixed
 - Subdivision codes not sorting alphabetically in output
 
 
-## <=v1.2.0 - < September 2023
+## <=v1.2.0 - <September 2023
 
 ### Added
 - Initial software release
