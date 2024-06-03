@@ -18,7 +18,7 @@
 | Montenegro (ME)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:ME).    | 2023-11-23  |   | Addition of municipality ME-25; Update List Source. | 
 | Nepal (NP)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:NP).    | 2023-11-23  |   | Change of subdivision name of NP-P1; Update List Source. | 
 | New Zealand (NZ)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:NZ).    | 2023-11-23  |   | Deletion of the space before the dash of NZ-AUK in mri. | 
-| Philipines (PH)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:PH).    | 2023-11-23  |   | Deletion of province PH-MAG; Addition of province PH-MGN, PH-MGS. | 
+| Philippines (PH)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:PH).    | 2023-11-23  |   | Deletion of province PH-MAG; Addition of province PH-MGN, PH-MGS. | 
 | Poland (PL)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:PL).    | 2023-11-23  |   | Change of spelling of PL-04, PL-28; Update Code Source and List Source. | 
 | South Korea (KR)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:KR).    | 2023-11-23  |   | Change of category name from province to special self-governing province for KR-42; Update List Source. | 
 

@@ -4,7 +4,12 @@ recursive-exclude __pycache__ *
 exclude API.md
 exclude ATTRIBUTES.md
 exclude get_iso3166_2.py
-recursive-exclude iso3166-2-check-for-updates
+recursive-exclude iso3166_2_scripts
+recursive-exclude iso3166_2_updates
+recursive-exclude .github
 exclude ToDo.md
 exclude setup.cfg
+exclude poetry.lock
+exclude .readthedocs.yml
+exclude requirements.txt
 prune __pycache__ tests

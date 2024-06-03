@@ -1,7 +1,7 @@
 # ISO 3166 latest changes (2022-)
 
 ## 2024-02-29 
-| Country Code | Edition/Newsletter | Date Issued | Code/Subdivision Change | Description of Change in Newsletter |   
+| Country Code | Edition/Newsletter | Date Issued | Code/Subdivision Change | Description of Change |   
 |:-------------------|:------------|-----------------------------------:|------------------------:|-------------:|
 | Bolivia (BO)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:BO).    | 2024-02-29  |   | Change of short name upper case: replace the parentheses with a coma. | 
 | Micronesia (FM)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:FM).    | 2024-02-29  |   | Change of short name upper case: replace the parentheses with a coma and correct the remark in English of the entry of Micronesia Federate states (removing duplicated text). | 
@@ -11,28 +11,28 @@
 
 
 ## 2023-11-23
-| Country Code | Edition/Newsletter | Date Issued | Code/Subdivision Change | Description of Change in Newsletter |   
+| Country Code | Edition/Newsletter | Date Issued | Code/Subdivision Change | Description of Change |   
 |:-------------------|:------------|-----------------------------------:|------------------------:|-------------:|
 | India (IN)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:IN).    | 2023-11-23  |   | Change of subdivision code from IN-OR to IN-OD, from IN-CT to IN-CG, from IN-TG to IN-TS, from IN-UT to IN-UK; Deletion of the asterisk from IN-JH; Update Code Source. | 
 | Indonesia (ID)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:ID).    | 2023-11-23  |   | Addition of province ID-PD; Update List Source. | 
 | Montenegro (ME)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:ME).    | 2023-11-23  |   | Addition of municipality ME-25; Update List Source. | 
 | Nepal (NP)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:NP).    | 2023-11-23  |   | Change of subdivision name of NP-P1; Update List Source. | 
 | New Zealand (NZ)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:NZ).    | 2023-11-23  |   | Deletion of the space before the dash of NZ-AUK in mri. | 
-| Philipines (PH)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:PH).    | 2023-11-23  |   | Deletion of province PH-MAG; Addition of province PH-MGN, PH-MGS. | 
+| Philippines (PH)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:PH).    | 2023-11-23  |   | Deletion of province PH-MAG; Addition of province PH-MGN, PH-MGS. | 
 | Poland (PL)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:PL).    | 2023-11-23  |   | Change of spelling of PL-04, PL-28; Update Code Source and List Source. | 
 | South Korea (KR)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:KR).    | 2023-11-23  |   | Change of category name from province to special self-governing province for KR-42; Update List Source. | 
 
 
 ## 2023-04-04
 
-| Country Code | Edition/Newsletter | Date Issued | Code/Subdivision Change | Description of Change in Newsletter |   
+| Country Code | Edition/Newsletter | Date Issued | Code/Subdivision Change | Description of Change |   
 |:-------------------|:------------|------------------------------------:|------------------------:|-------------:|
 | Netherlands (NL)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:NL).   | 2023-04-04  |    | Change of the short name. | 
 
 
 ## 2022-11-29
 
-| Country Code | Edition/Newsletter | Date Issued | Code/Subdivision Change | Description of Change in Newsletter |   
+| Country Code | Edition/Newsletter | Date Issued | Code/Subdivision Change | Description of Change |   
 |:-------------------|:------------|-----------------------------------:|------------------------:|-------------:|
 | Algeria (DZ)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:DZ).    | 2022-11-29  |   | Addition of province DZ-49, DZ-50, DZ-51, DZ-52, DZ-53, DZ-54, DZ-55, DZ-56, DZ-57, DZ-58; Update list source. | 
 | Ethiopia (eT)   | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:ET).    | 2022-11-29  | Subdivisions added: ET-SW Southwest Ethiopia Peoples.  | Addition of regional state ET-SW; Update List Source. | 
@@ -54,24 +54,24 @@
 | Mayotte (YT)  | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:YT).    | 2022-11-29  |  | Modification of remark part 2 (no subdivisions relevant for this standard. Included also as subdivision of France (FR-976)). | 
 
 ## 2022-11-21
-| Country Code | Edition/Newsletter | Date Issued | Code/Subdivision Change | Description of Change in Newsletter |   
+| Country Code | Edition/Newsletter | Date Issued | Code/Subdivision Change | Description of Change |   
 |:-------------------|:------------|-----------------------------------:|------------------------:|-------------:|
 | Iceland (IS)  | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:IS).    | 2022-11-21  |  | Change of the full name. | 
 
 ## 2022-09-02
 
-| Country Code | Edition/Newsletter | Date Issued | Code/Subdivision Change | Description of Change in Newsletter |   
+| Country Code | Edition/Newsletter | Date Issued | Code/Subdivision Change | Description of Change |   
 |:-------------------|:------------|-----------------------------------:|------------------------:|-------------:|
 | Côte d'Ivoire (CI)  | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:CI).    | 2022-09-02  |  | Correction of the French full name. | 
 
 ## 2022-07-11
-| Country Code | Edition/Newsletter | Date Issued | Code/Subdivision Change | Description of Change in Newsletter |   
+| Country Code | Edition/Newsletter | Date Issued | Code/Subdivision Change | Description of Change |   
 |:-------------------|:------------|-----------------------------------:|------------------------:|-------------:|
 | Turkey (TR) | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:TR).    | 2022-07-11  |  | Change of the short and full name. | 
 
 ## 2022-03-03
 
-| Country Code | Edition/Newsletter | Date Issued | Code/Subdivision Change | Description of Change in Newsletter |   
+| Country Code | Edition/Newsletter | Date Issued | Code/Subdivision Change | Description of Change |   
 |:-------------------|:------------|-----------------------------------:|------------------------:|-------------:|
 | Iraq (IQ)  | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:IQ).    | 2022-03-03  |  | Correction of parent subdivision of GB-PEM. | 
 | United Kingdom (GB)  | Online Browsing Platform (OBP) - (https://www.iso.org/obp/ui/#iso:code:3166:GB).    | 2022-03-03  |  | Addition of category region in eng, fra, ara, kur; Addition of region IQ-KR; Assign parent subdivision to IQ-AR, IQ-DA, IQ-SU; Update List and Code Source. | 

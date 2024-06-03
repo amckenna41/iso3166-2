@@ -21,6 +21,7 @@
 - [X] Reorder software metadata in setup.py to be in order of main func, create __description__ var.
 - [X] Add spcae in between ISO3166
 - [X] Reorder subdivision codes in json output - alphabetically and or numerically.
+- [ ] 
 - [X] In unit tests, reorder subdivision names/codes arrays into alphabetcal/numerical order.
 - [X] In subdivisions in json, add link to flag in iso3166-flag-icons, if no flag then null, skip if status code != 200.
 - [X] Check for updates by calling export function and comparing new and old jsons.
@@ -88,7 +89,7 @@
 - [X] If country doesnt have an attribute, add it to the dict and set to [] or {} - will have to recall script. Also need to update tests that do the len of output keys.
 - [X] Change all comment underlining from "------" to "=======".
 - [X] Fix self.attributes attribute in class.
-- [X] Rerun script and update Cloud Storage object as well **.
+- [X] Rerun script and update Cloud Storage object as well
 - [X] Add some unit tests in for some country attributes that = NA.
 - [X] Mention 36 data attributes supported.
 - [X] Add 🧪 to test folders and desc
@@ -126,7 +127,7 @@ https://iso3166-updates.com/api/year/2020 : up-to-date.
 - [X] When adding object to main iso3166-2.json, should keep a copy of the object just in case, add to an archive folder. When running unit tests, if they all pass then we can delete the archive folder and iobjects. 
 - [X] iso3166-2/iso3166-2-data/iso3166-2-copy.json <- file being edited with additional iso3166-2 data.
 - [X] Add subdivisions CSV, add delete column that flags if a subdivision is to be deleted.
-- [X] Add functionality such that you can change an existing subdivision code - add new code in brackets? - issue since countries are indexed by their subdivision codes.
+- [X] Add functionality such that you can change an existing subdivision code - add new code in brackets? - issue since countries are indexed by their subdivision codes. 
 - [X] Double check when adding "IQ,IQ-KR,Iqlīm Kūrdistān,Region,"IQ-AR, IQ-DA, IQ-SU"" via csv that the "" aren't added to the parent code section.
 - [X] Am i testing all flag URLs are valid rather than just subsection?
 - [X] Unit test for testing a country's parent code is in the list of subdivison codes.
@@ -152,7 +153,7 @@ https://iso3166-updates.com/api/year/2020 : up-to-date.
 - [X] Execution of get_all script takes about 30 mins.
 - [X] In update_subdivision func, keys aren't in same order, e.g KZ-31 vs KZ-33.
 - [X] Some countries have localName = null, e.g kz-11, kz-15, kz-19 -  when changing subd code.
-- [ ] Rejig get_all script once using iso3166-2 software - remove from requirements.txt.
+- [X] Rejig get_all script once using iso3166-2 software - remove from requirements.txt.
 - [X] Raise error if country code from subdivisions.csv not found in data object.
 - [X] Rerun script after uploading to iso3166-flag-icons.
 - [X] When reading in country and subd code in update_subdivision.csv - uppercase.
@@ -163,8 +164,7 @@ https://iso3166-updates.com/api/year/2020 : up-to-date.
 - [X] Some countries not in correct order e.g PA-1, PA-10, PA-2
 - [X] Need to manually remove code from Sweden's and PH country names/local names.
 - [X] Update elapsed time - after iso3166-flag-icons repo.
-- [X] Add tqdm to get_ script
-- [X] Update filesize in readme.
+- [X] Add tqdm to get_ script 
 - [X] Update readme, swap pycountry for iso3166-2.
 - [X] When calling update_subdivisions() function, check order of attributes remains the same.
 - [X] When calling local_names() function, check order of attributes remains the same.
@@ -174,11 +174,11 @@ https://iso3166-updates.com/api/year/2020 : up-to-date.
 - [X] Mention # of tests and test cases (including skipped ones.)
 - [X] Update metadata tests - similar to iso3166-updates.
 - [X] Functionaltiy to add country/subdivision data in iso3166_2.py.
-- [ ] Change functions to parameter typed (https://docs.python.org/3/library/typing.html).
+- [X] Change functions to parameter typed (https://docs.python.org/3/library/typing.html).
 - [X] Add search functionality that allows you to search by name.
 - [X] In search functionality, add alpha_2 code to it.
 - [ ] For localName, add different translations for subdivision names, use language code as key. If local name same as name then don't add language code keys.
-- [ ] Convert localNames.csv into a json?
+- [X] Convert localNames.csv into a json?
 - [X] Double check # of test functions/cases after running them.
 - [ ] Upload to conda: https://anaconda.org/conda-forge/pgeocode
 - [X] iso3166-2.json in csv form.
@@ -229,6 +229,114 @@ https://iso3166-updates.com/api/year/2020 : up-to-date.
 - [X] /iso3166_2_data not being included in package - incorrect filename in MANIFEST file.
 - [X] Remove reference to dot notation, no longer used.
 - [X] Remove iso3166-2.json from iso3166_2_data folder.
+- [X] Add more detail to examples in api.rst
+- [X] Parameter typing https://docs.python.org/3/library/typing.html
+- [X] Implement alpha-3 and numeric alpha codes in get_iso3166_2 and update_subdivision scripts.
+- [X] Make custom subdivision section on readme.
+- [X] Double check spelling using code-spell-checker extension
+- [X] Remove '2 letter' and '3 letter' when referencing alpha-2 or alpha-3
+- [X] Update medium article with new endpoint updates etc.
+- [X] In get_.. script, add parameter that automatically exports data to CSV.
+- [X] In get.. script, add flags of whether to include continent, region or subregion etc data - from restcountries. Update unit tests.
+- [X] Allow all extra keys from restcountries to be added to each subdivision in get script.
+- [X] If allowing for multiple keys from restcountries to be added, when sorting the final object, have a list of all available keys and sort using this list but autoamtically remove keys that arent in the object from the list. 
+- [X] Include return type for parameter typed functions.
+- [X] In docs, ensure links are opening in another tab.
+- [X] Switch string formatting to f string.
+- [X] Mention in readme and usage exaples that you can select different keys from restcountries and append to each subdivision. Mention only using a subset of keys that are applicable.
+- [X] Read over Medum article
+- [X] Read over iso3166-2 sw
+- [X] Read over scripts
+- [X] Read over sw tests
+- [X] Read over api tests
+- [X] Read over get script tests
+- [X] Read over iso3166_2_updates.
+- [X] Split up workflow, similar to iso3166-updates.
+- [X] Unit tests for search functionality using different likeness scores.
+- [X] Add section on readme with links to other related repos.
+- [X] If adding custom keys via restcountries, ensure they are also being exported to CSV.
+- [X] If rest countries API attributes included and are a dict or an array, convert to string.
+- [X] When adding custom subdivision, raise error if subdivision already there.
+- [X] Searching for comma seperated list of places?
+- [X] Read over docs
+- [X] Double check when adding restcountries API keys that it can be exported to CSV.
+- [X] Optionally remove other columns from get_all script e.g latLng, flag, parent_code etc. Keep country_code and subdivision_code cols. Add unit tests. Add to readme
+- [X] Don't request flag URL if excluded in exclusion argument parameter.
+- [X] In get_script, have a "start_from" parameter which dictates what alpha code to start from, it'll start from that code inclusive and get the remaining ISO codes.
+- [X] Double check custom alpha codes put into get_all script are put in alphabetical order first.
+- [X] Error when setting custom alpha start from, seems to be sorting wrong.
+- [X] Double check why it's so slow. 
+- [X] For get_ script tests add output to f strings: "Expected list of subdivision codes doesn't match output..."
+- [X] For update_subdivisons, need to pass in default args to be excluded.
+- [X] If subdivision is updated in subdivision_updates.csv, new object may not include rest country keys. Need to pill them in as parameter. 
+- [X] Double check export has subdivision updates correct, e.g for GT.
+- [X] Update add_local_names function if "name" or "localName" is excluded from attributes list.
+- [ ] Change localName to local/other name
+- [X] Rerun get_all script.
+- [X] In get_script, have 2 ways of importing update_subdivisions module if one fails, used when running script or running tests. if statement that imports one way if __main__ == get script, else test script
+- [X] When adding new subdivision from update_subdivision() function and restcountrykeys are applied, set their key values to Null or "". e,g fr-6ae, fr-69m - using next or previous generators. Resort alphabetically.
+- [X] Double check not doing restcall for each subdivision and just once per country.
+- [X] In update_subdivisions, swap out row['country-code] for country_code var.
+- [X] In get_script, add more tests for subdivisions that are added/amended/deleted 
+- [ ] Read over update_subdiv script.
+- [X] For subdivisions whose subdivision codes have been updated in the update_subdivisions script, need to redo the script to get the flag URL e.g. GT-01, GT-02 ... KZ-11. Will need to rerun script to incorporate changes.
+- [X] Put flag icons get request code into its own function, used 3 times in get scripts.
+- [X] Add if __name__ == "main" for update_subdivisions, so it can be directly called from cmd.
+- [X] Run vulture library to get rid of unused code/functions/modules etc.
+- [X] Update changelog.
+- [X] Change json_filename and json_filepath to iso3166_2_filename
+- [X] Change latLng to lat_lng in modules.
+- [X] Rerun script to get update_subdivision fixes + correct attribute order in each object.
+- [X] Update filesize in readme.
+- [X] If a https:connection or requests.get error occurs when exporting all day, save the existing exported data up to that point instead of loosing export progress.
+- [X] Add more try/except clauses to catch errors.
+- [X] Move info about iso3166_2_scripts from main readme.
+- [X] For scripts dir, add usage examples including terminal and importing via module import.
+- [X] In update_subdivisions, raise error if no subdivision code input.
+- [ ] Error when adding new subdivision data via cmd line/terminal - some attributes not being added to output object, error when importing parent_code parameter as None.
+- [X] When adding new subdivision data via cmd line/terminal, latLng attribute may be a string of a list, change to array (copy jsom is original)
+- [ ] When adding new subdivision data via cmd line/terminal, need to reorder attributes to normal order.
+- [X] Add separate unit test instance for update_subdivisions script.
+- [X] Run bandit and package security check
+- [X] Raise error in update_subdivisons function when comma separated list of alpha codes input, only one should be input? Add unit tests
+- [X] In update_subdivisions, when making custom change to object, double check that custom latLng values are set to 3.dp.
+- [X] In cusom_subdivisions, when making custom change to object, double check that custom latLng values are set to 3.dp.
+- [ ] In update_subdivisons, when adding new subdivison, validate parentCode, if it doesnt exist raise error, unless current code being added is same as parent code input. 
+- [X] Add CHANGELOG.md - https://keepachangelog.com/en/1.0.0/
+- [ ] In test_iso3166_2 when testing custom_subdivision function, don't directly edit existing iso3166-2.json, create a hard copy and pass in the duplicate file name to function.
+- [X] In test_iso3166_2 test format of each subdivision code XX-Y, XX-YY, XX-YYY etc.
+- [X] Change flagUrl attribute to just flag?
+- [ ] In custom_subdivisons function, add a flag/parameter whereby if set it creates a hard copy of the existing iso3166-2.json object so it is not directly overwritten. Issue when using the software and iso3166-2.json will not contain added custom subdivision.
+- [ ] In test_get script, create a request session in setup and close session in tearDown to stop resource warning SSL socket no closed - https://stackoverflow.com/questions/48160728/resourcewarning-unclosed-socket-in-python-3-unit-test
+- [X] In iso3166_2.py add repr class function, add more info to __str__. Add unit tests
+- [X] In custom_subdivisions function, allow for the amendment of an exsting subdivision code, e.g changing its local name, flagUrl, latLng etc. Mention on readme that if erroneous data is found for an attribute/subdivision, you can raise an Issue but you could also implement it immediately into the object via the custom_subdivisions function.
+- [X] Reorder subdivsion_updates.csv by date, most recent first.
+- [X] Upgrade @checkout in workflow to checkout@v4.
+- [ ] In tests, exclude latLng attribute so gmaps API not used every time.
+- [X] When amending an existing subdivison's code, add validation if the new subdivison's country code isn't the same as the original e.g JO-KA (SS-AG).  For input param and subdivisoncs CSV input.
+- [X] When amending an existing subdivision's code, check if a flag with the new subdivison code exists on the flag-icons repo, if not then keep flag url to the previous subd code. Do this for flagUrl input param as well as subdivisons CSV input.
+- [X] Add export_csv parameter to get_iso3166_2 script to allow for optional export to CSV, JSON exported by default
+- [X] When amending an existing subdivison's attribute, the latLng erroneously being set to None
+- [X] Error with amending a subdivison with a new code.
+- [X] In updates_subdivisions.py, if RHS of subdivision code input to subdivision_code parameter, try joining it up with alpha_code to make it valid. subdivision_code param can take RHS of subdivision code or full code. For input param and subdivisoncs CSV input.
+- [X] Change current_subdivision_code to subdivison_code and replace row['code'] with subdivison_code, in update_subdivisions.py script. Error when amending subdivisons potentially
+- [X] In subdivision_updates.csv, change country_code col to alpha_code.
+- [X] Unit tests for validating the columns of CSV export.
+- [X] In custom_subdivisions function, name and type_ parameter shouldn't be explicitly required. Set to None if not input. Add unit tests for just adding without these.
+- [X] In custom_subdivisions function, subdivision code can accept with or without the '-', add the country code prefix to the LHS of it.
+- [X] In get script unit tests, rename test_iso3166_2 vars.
+- [X] Read over all test scripts, renaming vars.
+- [X] Update docs with new custom_sudbvision functionality
+- [X] On docs, add bullet pointed list of parameters for some functionalities.
+- [X] latLng attribute can be input as a list of 2 str or a comma seperated str. If a comma seperated str then convert into list.
+- [X] For functions that can take multiple data types, add Union keyword to function - https://plainenglish.io/blog/specifying-data-types-in-python-c182fda3bf43. Newer versions just use |
+- [X] In custom_subdivision function, alpha_code and subdivision_code requried
+- [X] In update_subdivisons, alpha_code and subdivison not required because of subdivisons_csv param
+- [X] If custom path input to ISO3166_2(), add validation to see if path already has the full path to object in it, else append filepath to it.
+- [ ] when packaging, download from testpypi, checking correct files/dirs are downloaded, before publishing to pypi.
+- [ ] When adding restCountries keys to output, ensure they are in alphabetical order and appended to the end of the columns.
+- [X] Rerun script with new flag atttribute, update filesize and execution time on readme.
+- [X] Read over docs
 
 Future Additions
 ----------------
@@ -250,8 +358,14 @@ Future Additions
 - [ ] Add example Error and Not Found response - https://countrystatecity.in/docs/api/states-by-country/
 - [ ] Add demo similar to https://dr5hn.github.io/countries-states-cities-database/. 
 - [ ] Create PR for https://github.com/dr5hn/countries-states-cities-database - add up-to-date ISO 3166-2 data and flag icons from iso3166-flag-icons (https://github.com/dr5hn/countries-states-cities-database/blob/master/states.json).
-- [ ] Add subregion for each subdivision.
+- [X] Add subregion for each subdivision.
 - [X] Go over https://github.com/dr5hn/countries-states-cities-database.
 - [X] Go over https://github.com/esosedi/3166.
 - [X] Add readme for /docs, add process for building and uploading the docs.
+- [ ] Add backtotop button for docs.
+- [ ] Mock testing to stop sending API requests etc. @patch('requests.get')
+- [ ] Add cities for each subdivison via countries-states-cities-database, add lat/long - request API key (https://api.countrystatecity.in/v1/countries/AD/cities)
+- [ ] Some sort of flag when creating a new class of the sw indicating that custom data is present in the object.
+- [ ] state_city_data parameter in get_all script that gets all the city data per subdivision from Country State City API using get request.
+- [X] Remove type Errors and just force data attribute types.
 <!-- https://github.com/smucode/react-world-flags -->

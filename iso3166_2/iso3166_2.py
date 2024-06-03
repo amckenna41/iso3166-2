@@ -11,20 +11,22 @@ from collections import OrderedDict
 
 class ISO3166_2():
     """
-    This class is used to access all the ISO 3166-2 country subdivision data and attributes.
-    All of the country data is stored in the iso3166-2.json, including the country's subdivision
-    name, local name, type, code, parent code, latitude/longitude and URL to its flag (if applicable). 
-    The desired subdivision data can be retrieved using its ISO 3166-1 alpha-2, alpha-3 or numeric 
-    country codes; a comma seperate list of subdivision codes can also be input. Also you can 
-    retrieve subdivisions via a built-in search functionality via its subdivision name, searching 
-    for exact matches or matches based on a 'likeness' score. 
+    This class is used to access all the ISO 3166-2 country subdivision data and attributes, with
+    all of the country data is stored in the iso3166-2.json. The desired subdivision data can be 
+    retrieved using its ISO 3166-1 alpha-2, alpha-3 or numeric country codes; a comma separated 
+    list of subdivision codes can also be input. Also you can retrieve subdivisions via a built-in 
+    search functionality via its subdivision name, searching for exact matches or matches based on 
+    a 'likeness' score. 
+
+    For each country's subdivision the software supports the following attributes: name, local name, 
+    type, code, parent code, latitude/longitude and URL to its flag (if applicable). 
 
     There is also functionality to add custom subdivisions to the data object, allowing for the
-    utilisation of the iso3166-2 software with custom subdivisions required for in-house/bespoke 
+    utilization of the iso3166-2 software with custom subdivisions required for in-house/bespoke 
     applications.
 
     Currently, this package supports 5,039 individual subdivisions from 250 countries/territories, 
-    according to the ISO 3166-1 standard, as of November 2023.
+    according to the ISO 3166-1 standard, as of March 2024.
     
     Parameters
     ==========
@@ -32,17 +34,20 @@ class ISO3166_2():
         ISO 3166-1 alpha-2, alpha-3 or numeric country code to get subdivision data for. A list
         of country codes can also be input. If the alpha-3 or numeric codes are input, they are
         converted into their alpha-2 counterparts.
+    :iso3166_2_filepath: str (default="")
+        custom filepath to different iso3166-2 object to import that the class will use instead
+        of the default iso3166-2.json object.
     
     Methods
     =======
     subdivision_codes(alpha_code=""):
         return a list or dict of all ISO 3166-2 subdivision codes for one or more countries 
-        specified by their 2 letter alpha-2 code, 3 letter alpha-3 or numeric code.
+        specified by their ISO 3166-1 alpha-2, alpha-3 or numeric country codes.
     subdivision_names(alpha_code=""):
         return a list or dict of all ISO 3166-2 subdivision names for one or more
-        countries specified by their 2 letter alpha-2 code, 3 letter alpha-3 or numeric code.
-    custom_subdivision(alpha_code="", subdivision_code="", name="", local_name="", type="", 
-            lat_lng=[], parent_code=None, flag_url=None, delete=0):
+        countries specified by their ISO 3166-1 alpha-2, alpha-3 or numeric country codes.
+    custom_subdivision(alpha_code="", subdivision_code="", name="", local_name="", type_="", 
+            lat_lng=[], parent_code=None, flag=None, delete=0):
         add or delete a custom subdivision to an existing country on the main iso3166-2.json 
         object. Custom subdivisions and subdivision codes can be used for in-house/bespoke 
         applications that are using the iso3166-2 software but require additional custom 
@@ -54,8 +59,7 @@ class ISO3166_2():
         letter alpha-2 counterpart. 
     __getitem__(alpha_code):
         return all of a ISO 3166 country's subdivision data by making the class 
-        subscriptable, according to its 2 letter alpha-2 code, 3 letter alpha-3 or 
-        numeric code.
+        subscriptable, according to its ISO 3166-1 alpha-2, alpha-3 or numeric code.
 
     Usage
     =====
@@ -65,10 +69,10 @@ class ISO3166_2():
     all_subdivisions = ISO3166_2()
 
     #get ALL subdivision data for Lithuania, Namibia, Paraguay and Turkmenistan
-    lt_subdivisions = ISO3166_2("LT")
-    na_subdivisions = ISO3166_2("NA")
-    pry_subdivisions = ISO3166_2("PRY")
-    tm_subdivisions = ISO3166_2("795")
+    all_subdivisions["LT"]
+    all_subdivisions["NA"]
+    all_subdivisions["PRY"]
+    all_subdivisions["795"]
 
     #get subdivision names, local names, types, parent codes, flag urls and lat/longitudes 
     #   for GB-ANS, GB-BPL, GB-NTH, GB-WGN and GB-ZET subdivision codes for the UK
@@ -78,7 +82,7 @@ class ISO3166_2():
     gb_subdivisions['GB-BAS'].localName
     gb_subdivisions['GB-BPL'].type
     gb_subdivisions['GB-NTH'].parentCode
-    gb_subdivisions['GB-WGN'].flagUrl
+    gb_subdivisions['GB-WGN'].flag
     gb_subdivisions['GB-ZET'].latLng
 
     #get list of all subdivision codes for Botswana
@@ -91,7 +95,7 @@ class ISO3166_2():
 
     #adding custom Belfast province to Ireland
     all_subdivisions = ISO3166_2()
-    all_subdivisions.custom_subdivision("IE", "IE-BF", name="Belfast", local_name="Béal Feirste", type="province", lat_lng=[54.596, -5.931], parent_code=None, flag_url=None)
+    all_subdivisions.custom_subdivision("IE", "IE-BF", name="Belfast", local_name="Béal Feirste", type_="province", lat_lng=[54.596, -5.931], parent_code=None, flag=None)
     
     #searching for the Monaghan county in Ireland (IE-MN) - returning exact matching subdivision
     all_subdivisions = ISO3166_2()
@@ -99,26 +103,37 @@ class ISO3166_2():
 
     #searching for any subdivisions that have "Southern" in their name, with a likeness score of 0.8
     all_subdivisions = ISO3166_2()
-    all_subdivisions.search("Southern", any=True, likeness=0.8)
+    all_subdivisions.search("Southern", likeness=0.8)
+
+    #searching for state of Texas and French Department Meuse - both subdivision objects will be returned
+    all_subdivisions = ISO3166_2()
+    all_subdivisions.search("Texas, Meuse") 
     """
-    def __init__(self, country_code=""):
+    def __init__(self, country_code: str="", iso3166_2_filepath: str=""):
 
         self.country_code = country_code
+        self.iso3166_2_filepath = iso3166_2_filepath
         self.iso3166_json_filename= "iso3166-2.json"
 
-        #get module path
-        self.iso3166_2_module_path = os.path.dirname(os.path.abspath(sys.modules[self.__module__].__file__))
-        
+        #get full path to default object
+        self.iso3166_2_module_path = os.path.join(os.path.dirname(os.path.abspath(sys.modules[self.__module__].__file__)), self.iso3166_json_filename)
+
         #raise error if iso3166-2 json doesn't exist in the data folder
-        if not (os.path.isfile(os.path.join(self.iso3166_2_module_path, self.iso3166_json_filename))):
-            raise OSError("Issue finding data file {} in module directory: {}.".format(self.iso3166_json_filename, self.iso3166_2_module_path))
+        if not (os.path.isfile(self.iso3166_2_module_path)):
+            raise OSError(f"Issue finding data file {self.iso3166_json_filename} in module directory: {self.iso3166_2_module_path}.")
+
+        #using custom object at filepath
+        if (self.iso3166_2_filepath != ""):
+            self.iso3166_2_module_path = self.iso3166_2_filepath
+            if not (os.path.isfile(self.iso3166_2_module_path)):
+                raise OSError(f"Issue finding custom data file directory: {self.iso3166_2_module_path}.")
 
         #importing all subdivision data from JSON, open iso3166-2 json file and load it into class variable, loading in a JSON is different in Windows & Unix/Linux systems
         if (platform.system() != "Windows"):
-            with open(os.path.join(self.iso3166_2_module_path, self.iso3166_json_filename)) as iso3166_2_json:
+            with open(self.iso3166_2_module_path) as iso3166_2_json:
                 self.all = json.load(iso3166_2_json)
         else:
-            with open(os.path.join(self.iso3166_2_module_path, self.iso3166_json_filename), encoding="utf-8") as fp:
+            with open(self.iso3166_2_module_path, encoding="utf-8") as fp:
                 self.all = json.loads(fp.read())
 
         #if input country code param set, iterate over data object and get subdivision data for specified input/inputs
@@ -130,14 +145,14 @@ class ISO3166_2():
                 if (len(self.country_code[code]) == 3):
                     temp_alpha2_code = self.convert_to_alpha2(self.country_code[code])
                     if (temp_alpha2_code is None and self.country_code[code].isdigit()):
-                        raise ValueError("Invalid ISO 3166-1 numeric country code input, cannot convert into corresponding alpha-2 code: {}.".format(self.country_code[code]))
+                        raise ValueError(f"Invalid ISO 3166-1 numeric country code input, cannot convert into corresponding alpha-2 code: {country_code[code]}.")
                     if (temp_alpha2_code is None):
-                        raise ValueError("Invalid ISO 3166-1 alpha-3 country code input, cannot convert into corresponding alpha-2 code: {}.".format(self.country_code[code]))
+                        raise ValueError(f"Invalid ISO 3166-1 alpha-3 country code input, cannot convert into corresponding alpha-2 code: {self.country_code[code]}.")
                     self.country_code[code] = temp_alpha2_code
 
                 #raise error if invalid alpha-2 code input
                 if not (self.country_code[code] in sorted(list(iso3166.countries_by_alpha2.keys()))) or not (self.country_code[code] in list(self.all.keys())):
-                    raise ValueError("Invalid alpha-2 country code input: {}.".format(self.country_code[code]))
+                    raise ValueError(f"Invalid alpha-2 country code input: {self.country_code[code]}.")
                 
                 #create temporary subdivision data object
                 temp_subdivision_data[self.country_code[code]] = {}
@@ -159,15 +174,15 @@ class ISO3166_2():
         #self.numeric = sorted(list(iso3166.countries_by_numeric.keys()))
 
         #list of data attributes available per subdivision
-        self.attributes = ["name", "localName", "type", "parentCode", "latLng", "flagUrl"]
+        self.attributes = ["name", "localName", "type", "parentCode", "latLng", "flag"]
 
-    def subdivision_codes(self, alpha_code=""):
+    def subdivision_codes(self, alpha_code: str="") -> dict|list:
         """
         Return a list or dict of all ISO 3166-2 subdivision codes for one or more
-        countries specified by their 2 letter alpha-2, 3 letter alpha-3 or numeric 
-        code. If the alpha-3 or numeric codes are input, these are converted into 
+        countries specified by their ISO 3166-1 alpha-2, alpha-3 or numeric country
+        codes. If the alpha-3 or numeric codes are input, these are converted into 
         their corresponding alpha-2 country codes. If a single country input then 
-        return list of subdivison codes, if multiple passed in then return a dict 
+        return list of subdivision codes, if multiple passed in then return a dict 
         of all countries subdivision codes. If no value passed into parameter then 
         return dict of all subdivision codes for all countries. If invalid country 
         code input then raise error.
@@ -175,9 +190,8 @@ class ISO3166_2():
         Parameters
         ==========
         :alpha_code: str (default="")
-            one or more 2 letter ISO 3166-1 alpha-2, 3 letter alpha-3 or numeric
-            country codes. If no value input then all alpha-2 country codes will 
-            be used.
+            one or more 2 ISO 3166-1 alpha-2, alpha-3 or numeric country codes. If 
+            no value input then all alpha-2 country codes will be used.
         
         Returns
         =======
@@ -198,7 +212,7 @@ class ISO3166_2():
             else:
                 return subdivision_codes_
         else:
-            #seperate list of alpha codes into iterable comma seperated list
+            #separate list of alpha codes into iterable comma separated list
             alpha_code = alpha_code.upper().replace(' ', '').split(',')
 
             #iterate over all input alpha codes, append their subdivision codes to dict 
@@ -207,13 +221,16 @@ class ISO3166_2():
                 if (len(alpha_code[code]) == 3):
                     temp_alpha_code = self.convert_to_alpha2(alpha_code[code])
                     if (temp_alpha_code is None and alpha_code[code].isdigit()):
-                        raise ValueError("Invalid ISO 3166-1 numeric country code input, cannot convert into corresponding alpha-2 code: {}.".format(alpha_code[code]))
+                        raise ValueError(f"Invalid ISO 3166-1 numeric country code input, cannot convert into corresponding alpha-2 code: {alpha_code[code]}.")
                     if (temp_alpha_code is None):
-                        raise ValueError("Invalid ISO 3166-1 alpha-3 country code input, cannot convert into corresponding alpha-2 code: {}.".format(alpha_code[code]))
+                        raise ValueError(f"Invalid ISO 3166-1 alpha-3 country code input, cannot convert into corresponding alpha-2 code: {alpha_code[code]}.")
                     alpha_code[code] = temp_alpha_code
-                #raise error if invalid alpha-2 code input
-                if not (alpha_code[code] in sorted(list(iso3166.countries_by_alpha2.keys()))) or not (alpha_code[code] in list(self.all.keys())):
-                    raise ValueError("Invalid alpha-2 country code input: {}.".format(alpha_code[code]))
+                #raise error if invalid alpha-2 code input or country data not imported on object instantiation 
+                if not (alpha_code[code] in sorted(list(iso3166.countries_by_alpha2.keys()))):
+                    raise ValueError(f"Invalid alpha-2 code input: {alpha_code[code]}.")
+                if not (alpha_code[code] in list(self.all.keys())):
+                    raise ValueError(f"Valid alpha-2 code input {alpha_code[code]}, but country data not available as country code parameter was input on class instantiation,"
+                                    " try creating another instance of the class with no initial input parameter value, e.g iso = ISO3166_2().")
                 
                 #append list of subdivision codes to dict
                 subdivision_codes_[alpha_code[code]] = list(self.all[alpha_code[code]])
@@ -221,16 +238,16 @@ class ISO3166_2():
                 #sort subdivision codes in json objects in alphabetical order
                 subdivision_codes_[alpha_code[code]] = sorted(subdivision_codes_[alpha_code[code]])
 
-            #if only one alpha-2 code input then return list of its subdivison codes else return dict object for all inputs
+            #if only one alpha-2 code input then return list of its subdivision codes else return dict object for all inputs
             if len(alpha_code) == 1:
                 return subdivision_codes_[alpha_code[0]]
             else:
                 return subdivision_codes_
 
-    def subdivision_names(self, alpha_code=""):
+    def subdivision_names(self, alpha_code: str="") -> dict|list:
         """
         Return a list or dict of all ISO 3166-2 subdivision names for one or more countries 
-        specified by their 2 letter alpha-2, 3 letter alpha-3 or numeric country code. If the 
+        specified by their ISO 3166-1 alpha-2, alpha-3 or numeric country codes. If the 
         alpha-3 or numeric codes are input, these are converted into their corresponding 
         alpha-2 country codes. If a single country input then return list of input country's 
         subdivision names, if multiple passed in return a dict of all input countries 
@@ -240,9 +257,8 @@ class ISO3166_2():
         Parameters
         ==========
         :alpha_code: str (default="")
-            one or more 2 letter ISO 3166-1 alpha-2, 3 letter alpha-3 or numeric
-            country codes. If no value input then all alpha-2 country codes will 
-            be used.
+            one or more ISO 3166-1 alpha-2, alpha-3 or numeric country codes. If no value input 
+            then all alpha-2 country codes will be used.
 
         Returns
         =======
@@ -264,7 +280,7 @@ class ISO3166_2():
             else:
                 return subdivision_names_
         else:
-            #seperate list of alpha codes into iterable comma seperated list
+            #separate list of alpha codes into iterable comma separated list
             alpha_code = alpha_code.upper().replace(' ', '').split(',')
 
             #iterate over all input alpha codes, append their subdivision names to dict 
@@ -273,14 +289,17 @@ class ISO3166_2():
                 if (len(alpha_code[code]) == 3):
                     temp_alpha_code = self.convert_to_alpha2(alpha_code[code])
                     if (temp_alpha_code is None and alpha_code[code].isdigit()):
-                        raise ValueError("Invalid ISO 3166-1 numeric country code input, cannot convert into corresponding alpha-2 code: {}.".format(alpha_code[code]))
+                        raise ValueError(f"Invalid ISO 3166-1 numeric country code input, cannot convert into corresponding alpha-2 code: {alpha_code[code]}.")
                     if (temp_alpha_code is None):
-                        raise ValueError("Invalid ISO 3166-1 alpha-3 country code input, cannot convert into corresponding alpha-2 code: {}.".format(alpha_code[code]))
+                        raise ValueError(f"Invalid ISO 3166-1 alpha-3 country code input, cannot convert into corresponding alpha-2 code: {alpha_code[code]}.")
                     alpha_code[code] = temp_alpha_code
 
-                #raise error if invalid alpha-2 code input
-                if not (alpha_code[code] in sorted(list(iso3166.countries_by_alpha2.keys()))) or not (alpha_code[code] in list(self.all.keys())):
-                    raise ValueError("Invalid alpha-2 country code input: {}.".format(alpha_code[code]))
+                #raise error if invalid alpha-2 code input or country data not imported on object instantiation 
+                if not (alpha_code[code] in sorted(list(iso3166.countries_by_alpha2.keys()))):
+                    raise ValueError(f"Invalid alpha-2 code input: {alpha_code[code]}.")
+                if not (alpha_code[code] in list(self.all.keys())):
+                    raise ValueError(f"Valid alpha-2 code input {alpha_code[code]}, but country data not available as country code parameter was input on class instantiation,"
+                                    " try creating another instance of the class with no initial input parameter value, e.g iso = ISO3166_2().")
                 
                 #append list of subdivision names to dict
                 subdivision_names_[alpha_code[code]] = [self.all[alpha_code[code]][x]["name"] for x in self.all[alpha_code[code]]]
@@ -288,16 +307,16 @@ class ISO3166_2():
                 #sort subdivision names in json objects in alphabetical order
                 subdivision_names_[alpha_code[code]] = sorted(subdivision_names_[alpha_code[code]])
 
-            #if only one alpha-2 code input then return list of its subdivison names else return dict object for all inputs
+            #if only one alpha-2 code input then return list of its subdivision names else return dict object for all inputs
             if len(alpha_code) == 1:
                 return subdivision_names_[alpha_code[0]]
             else:
                 return subdivision_names_
 
-    def custom_subdivision(self, alpha_code="", subdivision_code="", name="", local_name="", type="", 
-            lat_lng=[], parent_code=None, flag_url=None, delete=0):
+    def custom_subdivision(self, alpha_code: str, subdivision_code: str, name: str=None, local_name: str=None, 
+                           type_: str=None, lat_lng: list|str=None, parent_code: str=None, flag: str=None, delete: bool=0, copy: bool=0) -> None:
         """ 
-        Add or delete a custom subdivision to an existing country on the main iso3166-2.json 
+        Add or delete a custom subdivision to an existing country in the main iso3166-2.json 
         object. The purpose of this functionality is similar to that of the user-assigned 
         code elements of the ISO 3166-1 standard. Custom subdivisions and subdivision codes 
         can be used for in-house/bespoke applications that are using the iso3166-2 software 
@@ -308,33 +327,36 @@ class ISO3166_2():
         Note that this is a destructive yet temporary functionality. Adding a new custom 
         subdivision will make the dataset out of sync with the official ISO 3166-2 data, 
         therefore it is the user's responsibility to keep track of any custom subdivisions
-        and delete them when neccessary.
+        and delete them when necessary.
 
         If the added subdivision is required to be deleted from the object, then you can 
         call the same function with the alpha-2 and subdivision codes' parameters but also
-        setting the 'delete' parameter to 1/True. 
+        setting the 'delete' parameter to 1/True. You can also uninstall and reinstall. 
 
         Parameters
         ==========
-        :alpha_code: str (default="")
-            ISO 3166-1 2 letter alpha-2, 3 letter alpha-3 or numeric country code.
-        :subdivision_code: str (default="")
+        :alpha_code: str 
+            ISO 3166-1 alpha-2, alpha-3 or numeric country code.
+        :subdivision_code: str 
             custom subdivision code.
-        :name: str (default="")
+        :name: str (default=None)
             subdivision name.
-        :local_name: str (default="")
+        :local_name: str (default=None)
             subdivision name in local language.
-        :type: str (default="")
+        :type_: str (default=None)
             subdivision type e.g district, state, canton, parish etc (default="").
-        :lat_lng: array (default=[])
+        :lat_lng: list|str (default=None)
             array of subdivision's latitude/longitude.
         :parent_code: str (default=None)
             parent subdivision code for subdivision.
-        :flag_url: str (default=None)
+        :flag: str (default=None)
             URL for subdivision flag, if applicable.
         :delete: bool (default=0)
             the delete flag is set to 1 if the inputted subdivision is to be deleted
-            from json object.        
+            from json object.      
+        :copy: bool (default=0)
+            create a duplicate copy of the iso3166-2.json object such that there remains
+            a copy of the original json prior to custom subdivision change.  
 
         Returns
         =======
@@ -348,10 +370,10 @@ class ISO3166_2():
         iso = ISO3166_2()
 
         #adding custom Republic of Molossia state to United States 
-        iso.custom_subdivision("US", "US-ML", name="Republic of Molossia", local_name="", type="State", lat_lng=[39.236, -119.588], parent_code=None, flag_url="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_the_Republic_of_Molossia.svg")
+        iso.custom_subdivision("US", "US-ML", name="Republic of Molossia", local_name="", type_="State", lat_lng=[39.236, -119.588], parent_code=None, flag="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_the_Republic_of_Molossia.svg")
         
         #adding custom Belfast province to Ireland
-        iso.custom_subdivision("IE", "IE-BF", name="Belfast", local_name="Béal Feirste", type="province", lat_lng=[54.596, -5.931], parent_code=None, flag_url=None)
+        iso.custom_subdivision("IE", "IE-BF", name="Belfast", local_name="Béal Feirste", type_="province", lat_lng=[54.596, -5.931], parent_code=None, flag=None)
 
         #deleting above custom subdivisions
         iso.custom_subdivision("US", "US-ML", delete=1)
@@ -359,62 +381,91 @@ class ISO3166_2():
         """
         #open iso3166-2 json file and load it into class variable, loading in a JSON is different in Windows & Unix/Linux systems
         if (platform.system() != "Windows"):
-            with open(os.path.join(self.iso3166_2_module_path, self.iso3166_json_filename)) as iso3166_2_json:
+            with open(os.path.join(self.iso3166_2_module_path)) as iso3166_2_json:
                 all_subdivision_data = json.load(iso3166_2_json)
         else:
-            with open(os.path.join(self.iso3166_2_module_path, self.iso3166_json_filename), encoding="utf-8") as fp:
+            with open(os.path.join(self.iso3166_2_module_path), encoding="utf-8") as fp:
                 all_subdivision_data = json.loads(fp.read())
 
         #raise type error if input isn't a string
         if not (isinstance(alpha_code, str)):
-            raise TypeError('Input alpha_code parameter {} is not of correct datatype string, got {}.'.format(alpha_code, type(alpha_code)))       
+            raise TypeError(f"Input alpha_code parameter {alpha_code} is not of correct datatype string, got {type(alpha_code)}")       
+
+        #raise type error if input isn't a string
+        if not (isinstance(subdivision_code, str)):
+            raise TypeError(f"Input subdivision code parameter {subdivision_code} is not of correct datatype string, got {type(subdivision_code)}.")   
+ 
+        #raise type error if type isn't a string or None
+        if not (isinstance(type_, str)) and not type_ is None:
+            raise TypeError(f"Input subdivision name parameter {type_} is not of correct datatype string, got {type(type_)}.")  
+
+        #parse lat_lng attribute, should be array of 2 str, can accept just a comma separated str, raise error if invalid input
+        if (lat_lng != None and lat_lng != []):
+            if (isinstance(lat_lng, str)):
+                try:
+                    temp_lat_lng = []
+                    temp_lat_lng = [lat_lng.split(',')[0], lat_lng.split(',')[1]]
+                    lat_lng = temp_lat_lng  
+                except:
+                    raise TypeError(f"Error parsing lat_lng attribute, expected a comma separated string of 2 inputs, got {lat_lng}.")
+            elif not (isinstance(lat_lng, list)):
+                raise TypeError(f"lat_lng attribute expected to be a list of floats or strings or a comma separated list of 2 elements, got {lat_lng}.")
+        
+            #round coordinates to 3d.p if applicable 
+            lat_lng[0], lat_lng[1] = round(float(lat_lng[0]), 3), round(float(lat_lng[1]), 3)
 
         #uppercase and remove whitespace
         alpha_code = alpha_code.upper().replace(' ', '')
 
-        #raise type error if input isn't a string
-        if not (isinstance(subdivision_code, str)):
-            raise TypeError('Input subdivision code parameter {} is not of correct datatype string, got {}.'.format(subdivision_code, type(subdivision_code)))      
-
         #uppercase and remove whitespace
         subdivision_code = subdivision_code.upper().replace(' ', '')
-
-        #raise type error if input isn't a string
-        if not (isinstance(type, str)):
-            raise TypeError('Input subdivision name parameter {} is not of correct datatype string, got {}.'.format(type, type(type)))      
+    
+        #if only half of subdivision code input to its parameter, prepend the alpha code to it to make it valid
+        if ('-' not in subdivision_code):
+            subdivision_code = alpha_code + '-' + subdivision_code
 
         #if 3 letter alpha-3 or numeric codes input then convert to corresponding alpha-2, else raise error
         if (len(alpha_code) == 3):
             temp_alpha_code = self.convert_to_alpha2(alpha_code)
             if (temp_alpha_code is None and alpha_code.isdigit()):
-                raise ValueError("Invalid ISO 3166-1 numeric country code input, cannot convert into corresponding alpha-2 code: {}.".format(alpha_code))
+                raise ValueError(f"Invalid ISO 3166-1 numeric country code input, cannot convert into corresponding alpha-2 code: {alpha_code}.")
             if (temp_alpha_code is None):
-                raise ValueError("Invalid ISO 3166-1 alpha-3 country code input, cannot convert into corresponding alpha-2 code: {}.".format(alpha_code))
+                raise ValueError(f"Invalid ISO 3166-1 alpha-3 country code input, cannot convert into corresponding alpha-2 code: {alpha_code}.")
             alpha_code = temp_alpha_code
 
         #raise error if invalid alpha-2 code input
         if not (alpha_code in sorted(list(iso3166.countries_by_alpha2.keys()))) or not (alpha_code in list(self.all.keys())):
-            raise ValueError("Invalid ISO 3166-1 alpha-2 country code input: {}.".format(alpha_code))
-    
+            raise ValueError(f"Invalid ISO 3166-1 alpha-2 country code input: {alpha_code}.")
+
+        #create a copy of the original iso3166-2.json object prior to making any changes to it **
+        if (copy):
+            test_iso3166_2_copy = os.path.join(os.path.dirname(os.path.abspath(sys.modules[self.__module__])), "iso3166_2_copy.json")
+            with open(test_iso3166_2_copy, "w") as output_json:
+                json.dump(self.all, output_json)
+
         #delete subdivision if delete parameter set
         if (delete):
             if (subdivision_code in list(all_subdivision_data[alpha_code].keys())):
                 del all_subdivision_data[alpha_code][subdivision_code] 
         else:
+            #raise error if subdivision already present in object, cannot add custom subdivision that overwrites existing subdivision
+            if (subdivision_code in list(all_subdivision_data[alpha_code].keys())):
+                raise ValueError(f"Custom subdivision codes should be unique and not already present an existing code: {subdivision_code}.")
+            
             #adding new subdivision data to object from input parameters
-            custom_subdivision_data = {"name": name, "localName": local_name, "type": type, "parentCode": parent_code, "latLng": lat_lng, "flagUrl": flag_url}       
+            custom_subdivision_data = {"name": name, "localName": local_name, "type": type_, "parentCode": parent_code, "latLng": lat_lng, "flag": flag}    
 
             #reorder subdivision attributes
-            all_subdivision_data[alpha_code][subdivision_code] = {k: custom_subdivision_data[k] for k in ["name", "localName", "type", "parentCode", "flagUrl", "latLng"]}
+            all_subdivision_data[alpha_code][subdivision_code] = {k: custom_subdivision_data[k] for k in ["name", "localName", "type", "parentCode", "flag", "latLng"]}
                     
         #sort subdivision codes in json objects in natural alphabetical/numerical order using natsort library
         all_subdivision_data[alpha_code] = dict(OrderedDict(natsort.natsorted(all_subdivision_data[alpha_code].items())))
 
         #export the updated custom subdivision object
-        with open(os.path.join(self.iso3166_2_module_path, self.iso3166_json_filename), 'w', encoding='utf-8') as output_json:
+        with open(os.path.join(self.iso3166_2_module_path), 'w', encoding='utf-8') as output_json:
             json.dump(all_subdivision_data, output_json, ensure_ascii=False, indent=4)  
 
-    def search(self, name="", likeness=1.0):
+    def search(self, name: str="", likeness: float=1.0) -> list|dict:
         """ 
         Search for a subdivision and its corresponding data using it's subdivision name. 
         The 'likeness' input parameter determines if the function searches for an exact 
@@ -446,7 +497,7 @@ class ISO3166_2():
         """
         #raise error if name parameter isn't a string
         if not (isinstance(name, str)):
-            raise TypeError("Input subdivision name should be of type str, got {}.".format(type(name)))
+            raise TypeError(f"Input subdivision name should be of type str, got {type(name)}.")
 
         #function can also accept likeness value between 1 and 100, this will be divided to get it between 0 and 1
         if (1 < likeness < 100):
@@ -462,11 +513,11 @@ class ISO3166_2():
         #list to store all subdivision names for all countries
         all_subdivision_names_list = []
 
-        #list of subdivision names with comma in their official name from dataset, required if multiple subdivison names are input e.g - Murcia, Regiónde, Newry, Mourne and Down
-        subdivision_name_expections = []
+        #list of subdivision names with comma in their official name from dataset, required if multiple subdivision names are input e.g - "Murcia, Regiónde", "Newry, Mourne and Down"
+        subdivision_name_exceptions = []
 
-        #seperate list to keep track if any of input subdivsion names are exceptions (have comma in their official them)
-        subdivision_name_expections_input = []
+        #separate list to keep track if any of input subdivision names are exceptions (have comma in their official them)
+        subdivision_name_exceptions_input = []
         
         #iterate over all ISO 3166-2 subdivision data, appending each subdivision's name, country code and 
         #subdivision code to object that will be used to search through, lowercase, remove whitespace and any accents,
@@ -474,7 +525,7 @@ class ISO3166_2():
         for alpha_2 in self.all:
             for subd in self.all[alpha_2]:
 
-                #append object of the subdivison's alpha-2 code and subdivision code with its name as the key
+                #append object of the subdivision's alpha-2 code and subdivision code with its name as the key
                 if not (unidecode(self.all[alpha_2][subd]["name"].lower().replace(' ', '')) in list(all_subdivision_names.keys())):
                     all_subdivision_names[unidecode(unquote_plus(self.all[alpha_2][subd]["name"]).lower().replace(' ', ''))]  = []
                     all_subdivision_names[unidecode(unquote_plus(self.all[alpha_2][subd]["name"]).lower().replace(' ', ''))].append({"alpha2": alpha_2, "code": subd})
@@ -484,13 +535,13 @@ class ISO3166_2():
                 #append subdivision name to list of subdivision names for searching
                 all_subdivision_names_list.append(unidecode(unquote_plus(self.all[alpha_2][subd]["name"]).lower().replace(' ', '')))
 
-                #if comma in official subdivision name, append to the exception list, which is needed if a comma seperated list of names are input
+                #if comma in official subdivision name, append to the exception list, which is needed if a comma separated list of names are input
                 if (',' in name):
                     if (',' in unidecode(unquote_plus(self.all[alpha_2][subd]["name"]).lower().replace(' ', ''))):
-                        subdivision_name_expections.append(unidecode(unquote_plus(self.all[alpha_2][subd]["name"]).lower().replace(' ', '')))
+                        subdivision_name_exceptions.append(unidecode(unquote_plus(self.all[alpha_2][subd]["name"]).lower().replace(' ', '')))
 
         #sort exceptions list alphabetically 
-        subdivision_name_expections.sort()
+        subdivision_name_exceptions.sort()
 
         #decode any unicode or accent characters using utf-8 encoding, lowercase and remove additional whitespace
         name = unidecode(unquote_plus(name)).replace(' ', '').lower()
@@ -500,22 +551,22 @@ class ISO3166_2():
             #temp var to track input subdivision name 
             temp_subdivision_name = name
 
-            #iterate over all subdivision names exceptions (those with a comma in their official name), append to seperate list if input param is one
-            for sub_name in subdivision_name_expections:
+            #iterate over all subdivision names exceptions (those with a comma in their official name), append to separate list if input param is one
+            for sub_name in subdivision_name_exceptions:
                 if (sub_name in temp_subdivision_name):
-                    subdivision_name_expections_input.append(sub_name)
+                    subdivision_name_exceptions_input.append(sub_name)
                     #remove current subdivision name from temp var, strip of commas
                     name = temp_subdivision_name.replace(sub_name, '').strip(',')
 
-        #sort all subdivision names codes
+        #sort all subdivision names' codes
         subdivision_names = sorted([name])
         
         #split multiple subdivision names into list
         subdivision_names = subdivision_names[0].split(',')
 
-        #extend subdivsion names list if any subdivision name exceptions are present in input param
-        if (subdivision_name_expections_input != []):
-            subdivision_names.extend(subdivision_name_expections_input)
+        #extend subdivision names list if any subdivision name exceptions are present in input param
+        if (subdivision_name_exceptions_input != []):
+            subdivision_names.extend(subdivision_name_exceptions_input)
 
         #object to keep track of matching subdivisions and their data
         output_subdivisions =  {}
@@ -539,7 +590,7 @@ class ISO3166_2():
                     if (match[1] >= likeness * 100):
                         name_matches.append(match[0])
                         
-            #iterate over all subdivision name mathces and get corresponding subdivision object from dataset
+            #iterate over all subdivision name matches and get corresponding subdivision object from dataset
             for subd in range(0, len(name_matches)): 
                 for obj in range(0, len(all_subdivision_names[name_matches[subd]])):
                     #create temp object for subdivision and its data attributes, with its subdivision code as key
@@ -550,14 +601,14 @@ class ISO3166_2():
         #return object of matching subdivisions and their data
         return output_subdivisions
 
-    def convert_to_alpha2(self, alpha_code):
+    def convert_to_alpha2(self, alpha_code: str) -> str:
         """ 
         Auxillary function that converts an ISO 3166 country's 3 letter alpha-3 
         or numeric code into its 2 letter alpha-2 counterpart. 
 
         Parameters 
         ==========
-        :alpha3_code: str
+        :alpha_code: str
             3 letter ISO 3166-1 alpha-3 or numeric country code.
         
         Returns
@@ -580,21 +631,22 @@ class ISO3166_2():
             #use iso3166 package to find corresponding alpha-2 code from its alpha-3 code
             return iso3166.countries_by_alpha3[alpha_code].alpha2
 
-    def __getitem__(self, alpha_code):
+    def __getitem__(self, alpha_code: str) -> dict:
         """
         Return all of a country's subdivision data by making the class subscriptable via
-        its alpha-2, alpha-3 or numeric country codes. A list of country data can be returned 
-        if a comma seperated list of alpha codes are input. If the alpha-3 or numeric codes
-        are input these will be converted into their alpha-2 counterpart. If no value input 
-        then an error is raised.
+        its ISO 3166-1 alpha-2, alpha-3 or numeric country codes. A list of country data 
+        can be returned if a comma separated list of alpha codes are input. If the alpha-3 
+        or numeric codes are input these will be converted into their alpha-2 counterpart. 
+        If no value input then an error is raised.
 
         Parameters
         ==========
         :alpha_code: str
-            2 letter alpha-2, alpha-3 or numeric country codes for sought country/territory 
-            e.g (AD, EGY, 276). Multiple country codes of different types can be input via 
-            a comma seperated list. The alpha-3 or numeric codes will be converted into their 
-            alpha-2 counterpart. If no value input then an error will be raised
+            ISO 3166-1 2 letter alpha-2, alpha-3 or numeric country codes for sought
+            country/territory e.g (AD, EGY, 276). Multiple country codes of different types 
+            can be input via a comma separated list. The alpha-3 or numeric codes will be 
+            converted into their alpha-2 counterpart. If no value input then an error will 
+            be raised.
 
         Returns
         =======
@@ -624,13 +676,13 @@ class ISO3166_2():
         #get subdivision info for Haiti, Monaco and Namibia
         iso["HT, MC, NA"] 
         iso["HTI, MCO, NAM"] 
-        iso["ht, mc, 516"] 
+        iso["332, 492, 516"] 
         """
         #raise type error if input isn't a string
         if not (isinstance(alpha_code, str)):
-            raise TypeError('Input parameter {} is not of correct datatype string, got {}.'.format(alpha_code, type(alpha_code)))       
+            raise TypeError(f"Input parameter {alpha_code} is not of correct datatype string, got {type(alpha_code)}.")       
 
-        #stripping input of whitespace, uppercasing and seperating into comma seperated list
+        #stripping input of whitespace, uppercasing and separating into comma separated list
         alpha_code = alpha_code.replace(' ', '').upper().split(',')
 
         #object to store country data
@@ -645,11 +697,14 @@ class ISO3166_2():
                 if not (temp_alpha_code is None):
                     alpha_code[code] = temp_alpha_code
                 else:
-                    raise ValueError("Invalid alpha-3 code input, cannot convert into corresponding alpha-2 code: {}.".format(alpha_code[code]))
+                    raise ValueError(f"Invalid alpha-3 code input, cannot convert into corresponding alpha-2 code: {alpha_code[code]}.")
 
-            #raise error if invalid alpha-2 code input
-            if not (alpha_code[code] in sorted(list(iso3166.countries_by_alpha2.keys()))) or not (alpha_code[code] in list(self.all.keys())):
-                raise ValueError("Invalid alpha-2 code input: {}.".format(alpha_code[code]))
+            #raise error if invalid alpha-2 code input or country data not imported on object instantiation 
+            if not (alpha_code[code] in sorted(list(iso3166.countries_by_alpha2.keys()))):
+                raise ValueError(f"Invalid alpha-2 code input: {alpha_code[code]}.")
+            if not (alpha_code[code] in list(self.all.keys())):
+                raise ValueError(f"Valid alpha-2 code input {alpha_code[code]}, but country data not available as country code parameter was input on class instantiation,"
+                                 " try creating another instance of the class with no initial input parameter value, e.g iso = ISO3166_2().")
                 
             #add subdivision specific data to output object 
             country[alpha_code[code]] = self.all[alpha_code[code]]
@@ -665,9 +720,9 @@ class ISO3166_2():
         else:
             return country
            
-    def __str__(self):
-        return "Instance of ISO3166_2 class."
-
+    def __str__(self) -> str:
+        return f"Instance of ISO3166_2 class: {self.iso3166_2_module_path}"
+    
     def __sizeof__(self):
         """ Return size of instance of ISO3166_2 class. """
         return self.__sizeof__()

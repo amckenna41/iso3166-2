@@ -10,49 +10,100 @@ import iso3166
 import googlemaps
 from tqdm import tqdm
 import natsort
+import warnings
 from collections import OrderedDict
 import pandas as pd
 import numpy as np
-from iso3166_2_scripts.update_subdivisions import *
+#multiple import options for update_subdivisions depending on if script is called directly or via test script
+try:
+    from update_subdivisions import *
+except:
+    from iso3166_2_scripts.update_subdivisions import *
 
 #initialise version 
 __version__ = metadata('iso3166-2')['version']
 
 #initalise User-agent header for requests library 
-USER_AGENT_HEADER = {'User-Agent': 'iso3166-2/{} ({}; {})'.format(__version__,
-                                       'https://github.com/amckenna41/iso3166-2', getpass.getuser())}
+USER_AGENT_HEADER = {'User-Agent': f"iso3166-2/{__version__} (https://github.com/amckenna41/iso3166-2; {getpass.getuser()})"}
 
-#initialise google maps client with API key
-gmaps = googlemaps.Client(key=os.environ["GOOGLE_MAPS_API_KEY"])
+#base URL for RestCountries API
+rest_countries_base_url = "https://restcountries.com/v3.1/"
 
-def export_iso3166_2(alpha_codes="", output_folder="test-iso3166-2-output", json_filename="test-iso3166-2", verbose=1):
+#base URL for Country State City API
+country_state_city_base_url = "https://api.countrystatecity.in/v1/countries/"
+
+#ignore resource warnings
+warnings.filterwarnings(action="ignore", message="unclosed", category=ResourceWarning)
+
+def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-output", export_filename: str="test-iso3166-2", verbose: bool=1, 
+                     export_csv=0, alpha_codes_start_from: str="", rest_countries_keys: str="", exclude_default_keys: str="", state_city_data: bool=False) -> None:
     """
-    Export all ISO 3166-2 subdivision related data using the ISO 3166-2 library to a JSON and CSV. Also 
-    get the lat/longitude info for each subdivision using the Google Maps API. The iso3166-2.json stores 
-    all the subdivision data including: subdivison code, name, local name, type, parent code, flag and 
-    latitude/longitude.
+    Export all ISO 3166-2 subdivision related data to JSON and CSV files. The default attributes
+    exported for each subdivision include: subdivison code, name, local name, type, parent code, 
+    flag URL and latitude/longitude. The flag URL attribute is taken from the custom-built 
+    iso3166-flag-icons (https://github.com/amckenna41/iso3166-flag-icons) repo and the 
+    latitude/longitude is retrived via the GoogleMaps API. By default all of the subdivision data
+    for each ISO 3166 country will be exported but a string of 1 or more country alpha codes can
+    be input. 
 
     The generated JSON is used as a baseline for the ISO 3166-2 data object, but additional and more 
     up-to-date and accurate data is added with the help of the iso3166-updates software/API 
-    (https://github.com/amckenna41/iso3166-updates).
+    (https://github.com/amckenna41/iso3166-updates). The update_subdivisions module is imported that
+    adds, amends and or deletes any subdivisions from this baseline object to make it up-to-date,
+    reliable and accurate to any recent updates to the ISO 3166-2 database, according to the ISO.
+
+    When exporting this JSON you can also add additional fields/attributes to each country's subdivision
+    object via the RestCountries API. The subset of supported fields include: idd, carSigns, carSide, 
+    continents, currencies, languages, postalCode, region, startOfWeek, subregion, timezones, tld. Note 
+    that these attribute values are at the country level and not the subdivision level. A description 
+    for each of these fields can be seen on the RestCountries repo:
+    https://gitlab.com/restcountries/restcountries/-/blob/master/FIELDS.md?plain=1.
+
+    Finally, there are 7 default attributes exported per each subdivision as mentioned above. 1 or more 
+    of these can be excluded for each subdivision if only a subset is required. Simply pass in a string
+    of one or more of the attribute as they are exported in the output object: "name", "localName", 
+    "type", "parentCode", "flag" and "latLng". Note the country and subdivision code cannot be 
+    excluded. 
 
     Parameters
     ==========
     :alpha_codes: str (default="")
         string of 1 or more 2 letter alpha-2, 3 letter alpha-3 or numeric country codes to extract their 
         latest ISO 3166-2 data.
-    :output_folder: str (default="iso3166-2-output")
+    :export_folder: str (default="iso3166-2-output")
         output folder to store exported iso3166-2 data.
-    :json_filename: str (default="iso3166-2")
+    :export_filename: str (default="iso3166-2")
         output filename for JSON object with all ISO 3166-2 data.
-    :verbose: int (default=1)
+    :verbose: bool (default=1)
         Set to 1 to print out progress of export functionality, 0 will not print progress.
-
+    :export_csv: bool (default=0)
+        Set to 1 to export the ISO 3166-2 dataset to CSV, JSON exported by default.
+    :alpha_codes_start_from: str (default="")
+        a single ISO 3166-1 alpha-2, alpha-3 or numeric country code to start the export process from.
+        The input alpha code will be the first subdivision data to be exported and the remaining codes
+        alphabetically following will be exported, those alphabetically before will not be. Any alpha-3
+        or numeric codes will be converted into their alpha-2 counterparts.
+    :rest_countries_keys: str (default="")
+        str of one or more comma separated additional attributes from the RestCountries API that can be 
+        appended to each of the subdivisions in the output object. Here is the full list of accepted 
+        fields/attributes: "idd", "carSigns", "carSide", "continents", "currencies", "languages", 
+                    "postalCode", "region", "startOfWeek", "subregion", "timezones", "tld".
+    :exclude_default_keys: str (default="")
+        str of one or more of the default keys that are exported for each country's subdivision by default,
+        to be excluded from each country's subdivision object. These include: name, localName, type, parentCode, 
+        latLng and flag. Note the country and subdivision code keys are required for each subdivision
+        and can't be excluded. By default, all of the aforementioned keys will be exported for each subdivision.
+                    
     Returns
     =======
     None
+
+    Usage 
+    =====
+    Please refer to the directory's README.md for usage examples:
+    https://github.com/amckenna41/iso3166-2/tree/main/iso3166_2_scripts
     """
-    def convert_to_alpha2(alpha_code):
+    def convert_to_alpha2(alpha_code: str) -> str:
         """ 
         Auxillary function that converts an ISO 3166 country's 3 letter alpha-3 
         or numeric code into its 2 letter alpha-2 counterpart. 
@@ -82,8 +133,12 @@ def export_iso3166_2(alpha_codes="", output_folder="test-iso3166-2-output", json
             #use iso3166 package to find corresponding alpha-2 code from its alpha-3 code
             return iso3166.countries_by_alpha3[alpha_code].alpha2
     
-    #split multiple alpha codes into list, remove any whitespace
-    alpha_codes = alpha_codes.replace(' ', '').split(',')
+    #raise error if input alpha code prameter is not of correct type
+    if not (TypeError(alpha_codes, str)):
+        raise ValueError(f"Alpha code input parameter not of correct type, got {type(alpha_codes)}.")
+
+    #split multiple alpha codes into list, remove any whitespace, uppercase
+    alpha_codes = alpha_codes.upper().replace(' ', '').split(',')
 
     #parse input alpha_codes parameter, use all alpha-2 codes if parameter not set
     if (alpha_codes == ['']):
@@ -99,34 +154,34 @@ def export_iso3166_2(alpha_codes="", output_folder="test-iso3166-2-output", json
             
             #raise error if invalid alpha-2 code found
             if (alpha_codes[code] not in list(iso3166.countries_by_alpha2.keys())):
-                raise ValueError("Input alpha-2 country code {} not found.".format(alpha_codes[code]))
+                raise ValueError(f"Invalid alpha country code input: {alpha_codes[code]}.")
         
-        all_alpha2 = alpha_codes
+        all_alpha2 = sorted(alpha_codes)
 
     #if 10 or less alpha-2 codes input then append to filename
     if (len(all_alpha2) <= 10):
-        json_filename = os.path.splitext(json_filename)[0] + "-" + ",".join(all_alpha2)
+        export_filename = os.path.splitext(export_filename)[0] + "-" + ",".join(all_alpha2)
     
     #path to json file will be in the main repo dir by default
-    json_filepath = os.path.join(output_folder, json_filename)
+    export_filepath = os.path.join(export_folder, export_filename)
     
     #append json extension to output filename
-    if (os.path.splitext(json_filepath) != ".json"):
-        json_filepath = json_filepath + ".json"
+    if (os.path.splitext(export_filepath) != ".json"):
+        export_filepath = export_filepath + ".json"
     
     #get path to CSV of output data
-    csv_filepath = os.path.splitext(json_filepath)[0] + ".csv"
+    csv_filepath = os.path.splitext(export_filepath)[0] + ".csv"
         
     if (verbose):
-        print("Exporting {} ISO 3166-2 country's data to folder {}".format(len(all_alpha2), output_folder))
+        print(f"Exporting {len(all_alpha2)} ISO 3166-2 country's data to folder {export_folder}")
         print('################################################################\n')
 
     #objects to store all country output data in json and csv format
     all_country_data = {}
 
     #create output dir if doesn't exist
-    if not (os.path.isdir(output_folder)):
-        os.mkdir(output_folder)
+    if not (os.path.isdir(export_folder)):
+        os.mkdir(export_folder)
 
     #start counter
     start = time.time() 
@@ -136,9 +191,6 @@ def export_iso3166_2(alpha_codes="", output_folder="test-iso3166-2-output", json
     if (len(all_alpha2) < 5):
         tqdm_disable = True
 
-    #base url for flag icons repo
-    flag_icons_base_url = "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/"
-
     #reading in, as dataframe, the csv that stores the local names for each subdivision
     local_name_df = pd.read_csv(os.path.join("iso3166_2_updates", "local_names.csv"))
     
@@ -146,11 +198,63 @@ def export_iso3166_2(alpha_codes="", output_folder="test-iso3166-2-output", json
     local_name_df = local_name_df.replace(np.nan, None)
 
     #sort dataframe rows by their country code and reindex rows 
-    local_name_df = local_name_df.sort_values('country_code').reset_index(drop=True)
+    local_name_df = local_name_df.sort_values('alpha_code').reset_index(drop=True)
+
+    #parse input RestCountries attributes/fields, if applicable
+    if (rest_countries_keys != ""):
+        #list of rest country attributes that can be appended to output object
+        rest_countries_keys_expected = ["idd", "carSigns", "carSide", "continents", "currencies", "languages", 
+                                    "postalCode", "region", "startOfWeek", "subregion", "timezones", "tld"]
+
+        #parse input attribute string into list, remove whitespace
+        rest_countries_keys_converted_list = rest_countries_keys.replace(' ', '').split(',')
+
+        #iterate over all input RestCountries keys, raise error if invalid key input
+        for key in rest_countries_keys_converted_list:
+            if not (key in rest_countries_keys_expected):
+                raise ValueError(f"Attribute/field ({key}) not available in RestCountries API, please refer to list of acceptable attributes below:\n{rest_countries_keys_expected}.")
+
+        rest_countries_keys = rest_countries_keys_converted_list
+
+    #parse input default attributes to exclude from export
+    if (exclude_default_keys != ""):
+        #list of default output keys/attributes per subdivision 
+        exclude_default_keys_expected = ["name", "localName", "type", "parentCode", "latLng", "flag"]
+
+        #parse input attribute string into list, remove whitespace
+        exclude_default_keys_converted_list = exclude_default_keys.replace(' ', '').split(',')
+
+        #iterate over all input keys, raise error if invalid key input
+        for key in exclude_default_keys_converted_list:
+            if not (key in exclude_default_keys_expected):
+                raise ValueError(f"Attribute/field ({key}) invalid, please refer to list of the acceptable default attributes below:\n{exclude_default_keys_expected}.")
+
+        exclude_default_keys = exclude_default_keys_converted_list
     
-    #iterate over all country codes, getting country and subdivision info, append to json objects
+    #get new list of alpha-2 codes that starts alphabetically from inputted starting alpha code, validate and convert to alpha-2 code, if applicable 
+    if (alpha_codes_start_from != ""):
+        #split multiple alpha codes into list, remove any whitespace, uppercase 
+        start_from_alpha_code = alpha_codes_start_from.upper().replace(' ', '').split(',')
+        if (len(start_from_alpha_code) != 1):
+            pass
+        else:
+            #convert 3 letter alpha-3 or numeric code into its 2 letter alpha-2 counterpart
+            if len(start_from_alpha_code[0]) == 3:
+                start_from_alpha_code[0] = convert_to_alpha2(start_from_alpha_code[0])
+            
+            #raise error if invalid alpha-2 code found
+            if (start_from_alpha_code[0] not in list(iso3166.countries_by_alpha2.keys())):
+                raise ValueError(f"Invalid alpha country code input: {start_from_alpha_code[0]}.")
+
+            #sort list of alpha-2 codes alphabetically
+            sorted_alpha2_list = sorted(list(iso3166.countries_by_alpha2.keys()))
+
+            #get list of alpha codes beginning from input alpha code
+            all_alpha2 = sorted(sorted_alpha2_list[sorted_alpha2_list.index(start_from_alpha_code[0]):])
+
+    #iterate over all country codes, getting country and subdivision info, append to json object
     for alpha2 in tqdm(all_alpha2, ncols=50, disable=tqdm_disable):
-        
+
         #kosovo has no associated subdivisions, manually set params
         if (alpha2 == "XK"):
             country_name = "Kosovo"
@@ -163,19 +267,38 @@ def export_iso3166_2(alpha_codes="", output_folder="test-iso3166-2-output", json
         #print out progress if verbose set to true
         if (verbose):
             if (tqdm_disable):
-                print("{} ({})".format(country_name, alpha2))
+                print(f"{country_name} ({alpha2})")
             else:
-                print(" - {} ({})".format(country_name, alpha2))
+                print(f" - {country_name} ({alpha2})")
 
         #create country key in json object
         all_country_data[alpha2] = {}
         
+        #make call to RestCountries api if additional rest countries attributes input
+        if (rest_countries_keys != ""):
+            try:
+                country_restcountries_data = requests.get(rest_countries_base_url + "alpha/" + alpha2, headers=USER_AGENT_HEADER, timeout=7).json()
+            except:
+                raise requests.exceptions.RequestException(f"Error thrown when trying to get the country-level data for {alpha2} using the RestCountries API at URL {rest_countries_base_url + 'alpha/' + alpha2}.")
+
         #iterate over all countrys' subdivisions, assigning subdivision code, name, type, parent code and flag URL, where applicable for the json object
         for subd in all_subdivisions:
             
-            #get subdivision coordinates using googlemaps api python client
-            gmaps_latlng = gmaps.geocode(subd.name + ", " + country_name, region=alpha2, language="en")
-            # gmaps_latlng = []
+            if (verbose):
+                print(f"Subdivision: {subd.name} ({subd.code})")        
+
+            #get subdivision coordinates using googlemaps api python client, don't make API call if latLng attribute to be excluded from output
+            if ("latLng" in exclude_default_keys):
+                gmaps_latlng = []
+            else:
+                #initialise google maps client with API key, close session
+                gmaps = googlemaps.Client(key=os.environ["GOOGLE_MAPS_API_KEY"])
+                gmaps.session.close()
+                try:
+                    gmaps_latlng = gmaps.geocode(subd.name + ", " + country_name, region=alpha2, language="en")
+                except Exception as e:
+                    print(f"Error thrown when searching for lat/lang of {subd.code} ({subd.name}) for {alpha2} using the GoogleMaps API:\n{e.args[0]}.")
+
             #set coordinates to None if not found using maps api, round to 3 decimal places
             if (gmaps_latlng != []):
                 subdivision_coords = [round(gmaps_latlng[0]['geometry']['location']['lat'], 3), round(gmaps_latlng[0]['geometry']['location']['lng'], 3)]
@@ -184,84 +307,108 @@ def export_iso3166_2(alpha_codes="", output_folder="test-iso3166-2-output", json
 
             #raise error if subdivision code already in output object
             if (subd.code in list(all_country_data[alpha2].keys())):
-                raise ValueError("Subdivision code already present in output object: {}.".format(subd.code))
+                raise ValueError(f"Subdivision code already present in output object: {subd.code}.")
 
-            #initialise subdivision code object
+            #initialise subdivision code object and its attributes
             all_country_data[alpha2][subd.code] = {}
             all_country_data[alpha2][subd.code]["name"] = subd.name
             all_country_data[alpha2][subd.code]["localName"] = None
             all_country_data[alpha2][subd.code]["type"] = subd.type
             all_country_data[alpha2][subd.code]["parentCode"] = subd.parent_code
             all_country_data[alpha2][subd.code]["latLng"] = subdivision_coords
-            
-            #list of flag file extensions in order of preference 
-            flag_file_extensions = ['.svg', '.png', '.jpeg', '.jpg', '.gif']
-            
-            #url to flag in iso3166-flag-icons repo
-            alpha2_flag_url = flag_icons_base_url + alpha2 + "/" + subd.code
-            
-            #verify that path on flag icons repo exists, if not set flag url value to None
-            if (requests.get(flag_icons_base_url + alpha2, headers=USER_AGENT_HEADER).status_code != 404):
-                
-                #iterate over all image extensions checking existence of flag in repo
-                for extension in range(0, len(flag_file_extensions)):
-                    
-                        #if subdivision has a valid flag in flag icons repo set to its GitHub url, else set to None
-                        if (requests.get(alpha2_flag_url + flag_file_extensions[extension], headers=USER_AGENT_HEADER).status_code != 404):
-                            all_country_data[alpha2][subd.code]["flagUrl"] = alpha2_flag_url + flag_file_extensions[extension]
-                            break
-                        elif (extension == 4):
-                            all_country_data[alpha2][subd.code]["flagUrl"] = None
+                        
+            #don't request.get flag URL if attribute excluded in exclude_default_keys parameter
+            if not ("flag" in exclude_default_keys):
+                all_country_data[alpha2][subd.code]["flag"] = get_flag_icons_url(alpha2, subd.code)
             else:
-                all_country_data[alpha2][subd.code]["flagUrl"] = None
+                all_country_data[alpha2][subd.code]["flag"] = None #temporary key for flag URL attribute 
 
-            #reorder keys of each subdivision object
-            all_country_data[alpha2][subd.code] = {k: all_country_data[alpha2][subd.code][k] for k in ["name", "localName", "type", "parentCode", "flagUrl", "latLng"]}
+            #append rest country key data to country output object if inputted
+            if (rest_countries_keys != ""):
+                for key in rest_countries_keys:
+                    #some rest country object data is in nested dict
+                    if (key == "carSigns"):
+                        all_country_data[alpha2][subd.code][key] = country_restcountries_data[0]["car"]["signs"]
+                    elif (key == "carSides"):
+                        all_country_data[alpha2][subd.code][key] = country_restcountries_data[0]["car"]["side"]
+                    elif (key == "postalCode"):
+                        all_country_data[alpha2][subd.code][key] = "Format: " + country_restcountries_data[0]["postalCode"]["format"] + ", Regex: "  + country_restcountries_data[0]["postalCode"]["regex"]
+                    else:
+                        all_country_data[alpha2][subd.code][key] = country_restcountries_data[0][key]
+                                            
+                    #if attribute is list convert into str
+                    if (isinstance(all_country_data[alpha2][subd.code][key], list)):
+                        all_country_data[alpha2][subd.code][key] = ','.join(all_country_data[alpha2][subd.code][key])
+
+            #reorder keys of subdivision object into alphabetical order
+            all_country_data[alpha2][subd.code] = dict(OrderedDict(natsort.natsorted(all_country_data[alpha2][subd.code].items())))
+
+            #iterate over each default attribute to be excluded from subdivision object, delete key, if applicabale 
+            if (exclude_default_keys != ""):
+                for key in exclude_default_keys:
+                    del all_country_data[alpha2][subd.code][key]
 
         #sort subdivision codes in json objects in natural alphabetical/numerical order using natsort library
         all_country_data[alpha2] = dict(OrderedDict(natsort.natsorted(all_country_data[alpha2].items())))
-
-        #sort keys in main output dict into alphabetical order
-        # all_country_data[alpha2] = {key: value for key, value in sorted(all_country_data[alpha2].items())}
-
+        
     #write json data with all country info to json output file
-    with open(json_filepath, 'w', encoding='utf-8') as f:
-        # if (len(all_alpha2) == 1): json.dump(all_country_data[all_alpha2[0]], f, ensure_ascii=False, indent=4) else: #all outputs will have country code as key
+    with open(export_filepath, 'w', encoding='utf-8') as f:
         json.dump(all_country_data, f, ensure_ascii=False, indent=4)
 
     #read json data with all current subdivision data
-    with open(json_filepath, 'r', encoding='utf-8') as input_json:
+    with open(export_filepath, 'r', encoding='utf-8') as input_json:
         all_country_data = json.load(input_json)
 
     #append latest subdivision updates/changes from /iso3166_2_updates folder to the iso3166-2 object
-    all_country_data = update_subdivision(iso3166_2_filename=json_filepath, subdivision_csv=os.path.join("iso3166_2_updates", "subdivision_updates.csv"), export=0)
+    all_country_data = update_subdivision(iso3166_2_filename=export_filepath, subdivision_csv=os.path.join("iso3166_2_updates", "subdivision_updates.csv"), export=0, 
+                                          exclude_default_keys=exclude_default_keys, rest_countries_keys=rest_countries_keys)
 
-    #add local names for each subdivision from local_names.csv file    
-    all_country_data = add_local_names(all_country_data)
-
-    #initialise array to store each individual subdivision object
-    all_country_csv = []
-
-    #iterate over country data object, for each subdivision object append its subdivision and country code, append subdivision object to array 
-    for country in all_country_data:
-        for subd in all_country_data[country]:
-            temp_all_country_data = all_country_data[country][subd].copy()
-            temp_all_country_data["subdivision_code"] = subd
-            temp_all_country_data["country_code"] = country
-            all_country_csv.append(temp_all_country_data)
-
-    #convert array of objects into a dataframe with each subdivision being a row, reorder columns and sort by subdivision then country code
-    all_country_csv_df = pd.DataFrame(all_country_csv)
-    all_country_csv_df = all_country_csv_df.reindex(columns=['country_code', 'subdivision_code', 'name', 'localName', 'type', 'parentCode', 'flagUrl', 'latLng'])
-    all_country_csv_df = all_country_csv_df.sort_values('subdivision_code').reset_index(drop=True)
-    all_country_csv_df = all_country_csv_df.sort_values('country_code').reset_index(drop=True)
-
-    #export dataframe of subdivision objects to CSV
-    all_country_csv_df.to_csv(csv_filepath, index=False)
+    #get local Name data for each subdivision, unless localName or name attributes to be excluded from export
+    if (exclude_default_keys == "" or not ("localName" in exclude_default_keys or "name" in exclude_default_keys)):
+        all_country_data = add_local_names(all_country_data)
 
     #write json data with all updated country info, including local name, to json output file
-    with open(json_filepath, 'w', encoding='utf-8') as f:
+    with open(export_filepath, 'w', encoding='utf-8') as f:
         json.dump(all_country_data, f, ensure_ascii=False, indent=4)
+
+    #export dataset to CSV if bool set to True
+    if (export_csv):
+        #initialise array to store each individual subdivision object
+        all_country_csv = []
+
+        #iterate over country data object, for each subdivision object append its subdivision and country code, append subdivision object to array 
+        for country in all_country_data:
+            for subd in all_country_data[country]:
+                temp_all_country_data = all_country_data[country][subd].copy()
+                temp_all_country_data["subdivision_code"] = subd
+                temp_all_country_data["alpha_code"] = country
+                all_country_csv.append(temp_all_country_data)
+        
+        #convert array of objects into a dataframe with each subdivision being a row, reorder columns and sort by subdivision then country code
+        all_country_csv_df = pd.DataFrame(all_country_csv)
+        
+        #standard default column list without RestCountries attributes
+        all_country_csv_df_standard_cols = ['alpha_code', 'subdivision_code', 'name', 'localName', 'type', 'parentCode', 'flag', 'latLng']
+        
+        #set standard column list without RestCountries attributes, remove any default attributes if applicable
+        if (exclude_default_keys != ""):
+            for key in exclude_default_keys:
+                all_country_csv_df_standard_cols.remove(key)
+
+        #sort/reindex columns with or without the addtional RestCountries attributes
+        if (rest_countries_keys == ""):
+            all_country_csv_df = all_country_csv_df.reindex(columns=all_country_csv_df_standard_cols)
+            # all_country_csv_df = all_country_csv_df.reindex(columns=['alpha_code', 'subdivision_code', 'name', 'localName', 'type', 'parentCode', 'flag', 'latLng'])
+        else:
+            rest_country_cols = sorted(rest_countries_keys) #sort RestCountries attributes alphabetically
+            all_country_csv_df = all_country_csv_df.reindex(columns=all_country_csv_df_standard_cols+rest_country_cols)
+        
+        #reindex columns based on subdivision and country code columns, drop index col
+        all_country_csv_df = all_country_csv_df.sort_values('subdivision_code').reset_index(drop=True)
+        all_country_csv_df = all_country_csv_df.sort_values('alpha_code').reset_index(drop=True)
+
+        #export dataframe of subdivision objects to CSV
+        all_country_csv_df.to_csv(csv_filepath, index=False)
 
     #stop counter and calculate elapsed time
     end = time.time()           
@@ -269,28 +416,41 @@ def export_iso3166_2(alpha_codes="", output_folder="test-iso3166-2-output", json
     
     if (verbose):
         print('\n##########################################################\n')
-        print("ISO 3166 data successfully exported to {}.".format(json_filepath))
-        print('\nElapsed Time for exporting all ISO 3166-2 data: {0:.2f} minutes.'.format(elapsed / 60))
+        print(f"ISO 3166 data successfully exported to {export_filepath}.")
+        print("\nElapsed Time for exporting all ISO 3166-2 data: {0:.2f} minutes.".format(elapsed / 60))
 
 if __name__ == '__main__':
 
     #parse input arguments using ArgParse 
-    parser = argparse.ArgumentParser(description='Script for exporting iso3166-2 country data using pycountry package.')
+    parser = argparse.ArgumentParser(description='Script for exporting ISO 3166-1 country and subdivision data.')
 
     parser.add_argument('-alpha_codes', '--alpha_codes', type=str, required=False, default="", 
-        help='One or more 2 letter alpha-2 country codes, by default all ISO 3166-2 subdivision data for all countries will be exported.')
-    parser.add_argument('-json_filename', '--json_filename', type=str, required=False, default="test_iso3166-2", 
-        help='Output filename for both iso3166-2 JSON.')
-    parser.add_argument('-output_folder', '--output_folder', type=str, required=False, default="test_iso3166-2", 
-        help='Output folder to store output JSON.')
+        help='One or more ISO 3166-1 alpha-2, alpha-3 or numeric country codes, by default all ISO 3166-2 subdivision data for all countries will be exported.')
+    parser.add_argument('-export_filename', '--export_filename', type=str, required=False, default="test_iso3166-2", 
+        help='Output filename for iso3166-2 object.')
+    parser.add_argument('-export_folder', '--export_folder', type=str, required=False, default="test_iso3166-2", 
+        help='Output folder to store output objects.')
+    parser.add_argument('-export_csv', '--export_csv', required=False, action=argparse.BooleanOptionalAction, default=1, 
+        help='Set to 1 to export ISO 3166-2 dataset to CSV, JSON is only exported by default.')
     parser.add_argument('-verbose', '--verbose', required=False, action=argparse.BooleanOptionalAction, default=1, 
-        help='Set to 1 to print out progress of export json function, 0 will not print progress.')
-
+        help='Set to 1 to print out progress of export function, 0 will not print progress.')
+    parser.add_argument('-alpha_codes_start_from', '--alpha_codes_start_from', type=str, required=False, default="", 
+        help='Beginning alpha code to start the export functionality from, alphabetically.')
+    parser.add_argument('-rest_countries_keys', '--rest_countries_keys', type=str, required=False, default="", 
+        help='List of additional fields/attributes from RestCountries API to be added to each subdivision object.')
+    parser.add_argument('-exclude_default_keys', '--exclude_default_keys', type=str, required=False, default="", 
+        help="List of default fields/attributes to be excluded from each country's subdivision object.")
+    
     #parse input args
     args = parser.parse_args()
     alpha_codes = args.alpha_codes
-    output_folder = args.output_folder
-    json_filename = args.json_filename
+    export_folder = args.export_folder
+    export_filename = args.export_filename
+    export_csv = args.export_csv
     verbose = args.verbose
+    rest_countries_keys = args.rest_countries_keys
+    exclude_default_keys = args.exclude_default_keys
+    alpha_codes_start_from = args.alpha_codes_start_from
 
-    export_iso3166_2(alpha_codes=alpha_codes, output_folder=output_folder, json_filename=json_filename, verbose=verbose)
+    export_iso3166_2(alpha_codes=alpha_codes, export_folder=export_folder, export_filename=export_filename, verbose=verbose, export_csv=export_csv,
+                     alpha_codes_start_from=alpha_codes_start_from, rest_countries_keys=rest_countries_keys, exclude_default_keys=exclude_default_keys)

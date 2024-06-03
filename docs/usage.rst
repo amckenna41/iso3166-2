@@ -14,18 +14,10 @@ To use **iso3166-2**, firstly install via ``pip``:
 
    pip install iso3166-2
 
-Alternatively, you can clone the repo and run ``setup.py``:
-
-.. code-block:: console
-
-   git clone -b master https://github.com/amckenna41/iso3166-2.git
-   cd iso3166_2
-   python3 setup.py install
-
-Accessing subdivision data per country using its ISO 3166-1 alpha codes
------------------------------------------------------------------------
-To access all subdivision data for a given country you should create an instance of the ``ISO3166_2`` class. This instance is subscriptable such that you can get 
-the sought country subdivision data via its ISO 3166-1 **2 letter alpha-2, 3 letter alpha-3 or numeric country codes**. You can also search for a specific subdivision
+Get all subdivision data per country using its ISO 3166-1 alpha codes
+---------------------------------------------------------------------
+To access all subdivision data for a given country you need to create an instance of the ``ISO3166_2`` class. This instance is subscriptable such that you can get 
+the sought country subdivision data via its **ISO 3166-1 2 letter alpha-2, 3 letter alpha-3 or numeric country codes**. You can also search for a specific subdivision
 via its subdivision name.
 
 For example, accessing all Canadian (CA, CAN, 124) subdivision data:
@@ -44,7 +36,7 @@ For example, accessing all Canadian (CA, CAN, 124) subdivision data:
    ca_alberta = iso["CA"]["CA-AB"]
    ca_alberta.name #Alberta
    ca_alberta.type #Province
-   ca_alberta.flag_url #https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/CA/CA-AB.svg
+   ca_alberta.flag #https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/CA/CA-AB.svg
 
    #CA-MB Manitoba
    ca_manitoba = iso["CA"]["CA-MB"]
@@ -56,7 +48,7 @@ For example, accessing all Canadian (CA, CAN, 124) subdivision data:
    ca_nova_scotia = iso["CA"]["CA-NS"]
    ca_nova_scotia.name #Nova Scotia
    ca_nova_scotia.type #Province
-   ca_nova_scotia.flagUrl #https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/CA/CA-NS.svg
+   ca_nova_scotia.flag #https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/CA/CA-NS.svg
 
 Accessing all Danish (DK, DNK, 208) subdivision data:
 
@@ -79,14 +71,14 @@ Accessing all Danish (DK, DNK, 208) subdivision data:
    #DK-84 Hovedstaden
    dk_hovedstaden = iso["DNK"]["DK-84"]
    dk_hovedstaden.name #Hovedstaden
-   dk_hovedstaden.flagUrl #https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/DK/DK-84.svg
+   dk_hovedstaden.flag #https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/DK/DK-84.svg
    dk_hovedstaden.parentCode #null
 
    #DK-85 Sjælland
    dk_sjalland = iso["DK"]["DNK-85"]
    dk_sjalland.name #Sjælland
    dk_sjalland.type #Region
-   dk_sjalland.flagUrl #https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/DK/DK-85.svg
+   dk_sjalland.flag #https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/DK/DK-85.svg
 
 Accessing all Estonian (EE, EST, 233) subdivision data:
 
@@ -110,7 +102,7 @@ Accessing all Estonian (EE, EST, 233) subdivision data:
    ee_alutaguse = iso["233"]["EE-130"]
    ee_alutaguse.name #Alutaguse
    ee_alutaguse.parentCode #EE-45
-   ee_alutaguse.flagUrl #https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/EE/EE-130.svg
+   ee_alutaguse.flag #https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/EE/EE-130.svg
 
    #EE-338 Kose
    ee_kose = iso["233"]["EE-338"]
@@ -118,17 +110,20 @@ Accessing all Estonian (EE, EST, 233) subdivision data:
    ee_kose.type #Rural municipality
    ee_kose.parentCode #EE-37
 
-Accessing subdivision data for all countries
---------------------------------------------
+Get all subdivision data for all countries
+------------------------------------------
 
-To access ALL subdivision data for ALL available countries, you need to access the ``all`` attribute within the object instance of the ``ISO3166_2`` class. 
-You can then access an individual country's subdivision data by passing in the sought ISO 3166-1 **2 letter alpha-2, 3 letter alpha-3 or numeric country code**.
+To access ALL subdivision data for all available countries, you need to access the ``all`` attribute within the object instance of the ``ISO3166_2`` class. 
+You can then access an individual country's subdivision data by passing in the sought **ISO 3166-1 2 letter alpha-2, 3 letter alpha-3 or numeric country code**.
 
 .. code-block:: python
 
-   import iso3166_2 as iso
+   from iso3166_2 import *
 
-   all_data = iso.country.all
+   #crete instance of ISO3166_2 class
+   iso = ISO3166_2()
+
+   all_data = iso.all
 
    all_data["LU"] #all subdivision data for Luxembourg
    all_data["PW"] #all subdivision data for Palau
@@ -146,17 +141,18 @@ applications that are using the **iso3166-2** software but require additional cu
 code already exists then an error will be raised, otherwise it will be appended to the object.
 
 If the added subdivision is required to be deleted from the object, then you can call the same function with the alpha-2 and subdivision codes' 
-parameters but also setting the ``delete`` parameter to 1/True. 
+parameters but also setting the ``delete`` parameter to 1/True. This functionality works on the object that the software uses but you can create a copy 
+of the object prior to adding/deleting a subdivision via the ``copy`` parameter, setting it to 1/True.
 
 .. code-block:: python
 
    from iso3166_2 import *
 
    #adding custom Belfast province to Ireland (IE)
-   iso.custom_subdivision("IE", "IE-BF", name="Belfast", local_name="Béal Feirste", type="province", lat_lng=[54.596, -5.931], parent_code=None, flag_url=None)
+   iso.custom_subdivision("IE", "IE-BF", name="Belfast", local_name="Béal Feirste", type_="province", lat_lng=[54.596, -5.931], parent_code=None, flag=None, copy=1)
 
    #adding custom Mariehamn province to Aland Islands (AX)
-   iso.custom_subdivision("AX", "AX-M", name="Mariehamn", local_name="Maarianhamina", type="province", lat_lng=[60.0969, 19.934], parent_code=None, flag_url=None)
+   iso.custom_subdivision("AX", "AX-M", name="Mariehamn", local_name="Maarianhamina", type_="province", lat_lng=[60.0969, 19.934], parent_code=None, flag=None, copy=1)
 
    #deleting above custom subdivisions from object
    iso.custom_subdivision("IE", "IE-BF", delete=1)
@@ -171,8 +167,8 @@ parameters but also setting the ``delete`` parameter to 1/True.
 Searching for a subdivision
 ---------------------------
 The ``search()`` function allows you to search for a specific subdivision via its subdivision name. The
-search functionality uses a fuzzy search algorithm via "thefuzz" package, searching for subdivisions with
-an exact name match or those with an approximate name match, according to a score via the "likeness" input
+search functionality uses a fuzzy search algorithm via *thefuzz* package, searching for subdivisions with
+an exact name match or those with an approximate name match, according to a score via the *likeness* input
 parameter. 
 
 .. code-block:: python
@@ -185,5 +181,15 @@ parameter.
    #searching for any subdivisions that have "Southern" in their name, using a likeness score of 0.7
    iso.search("Southern", likeness=0.7)
 
+   #searching for any subdivisions that have "City" in their name, using a likeness score of 0.4
+   iso.search("City", likeness=0.4)
+
+   #searching for state of Texas and French Department Meuse - both subdivision objects will be returned
+   iso.search("Texas, Meuse") 
+
 .. note::
-    A demo of the software and API is available `here <https://colab.research.google.com/drive/1btfEx23bgWdkUPiwdwlDqKkmUp1S-_7U?usp=sharing/>`_.
+    A demo of the software and API is available |demo_link|.
+
+.. |demo_link| raw:: html
+
+   <a href="https://colab.research.google.com/drive/1btfEx23bgWdkUPiwdwlDqKkmUp1S-_7U?usp=sharing" target="_blank">here</a>

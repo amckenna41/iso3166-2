@@ -1,4 +1,4 @@
-country_code,code,name,localName,type,parentCode,flagUrl,latLng,localNameSame,delete,notes,dateIssued
+alpha_code,code,name,localName,type,parentCode,flag,latLng,localNameSame,delete,notes,dateIssued
 FR,FR-75,,,Metropolitan collectivity with special status,,,,1,,Changing FR-75 subdivision type from metropolitan department to metropolitan collectivity with special status,2021-11-25
 FR,FR-GF,,,,,,,,1,Deleting FR-GF department,2021-11-25
 FR,FR-GP,,,,,,,,1,Deleting FR-GP department,2021-11-25
@@ -409,6 +409,13 @@ NP,NP-P5,Lumbini,Lumbinī,,,,,,,Updating spelling of NP-P5 subdivision name and 
 SS,SS-BW,Western Bahr el Ghazal,,,,,,,,Updating SS-BW subdivision name spelling,2021-11-25
 GB,GB-PEM,,,,GB-WLS,,,,,Updating GB-PEM parent subdivision code,2022-03-03
 IQ,IQ-KR,Kurdistan,Iqlīm Kūrdistān,Region,"IQ-AR, IQ-DA, IQ-SU",https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/IQ/IQ-KR.svg,"[36.263, 43.959]",,,Adding IQ-KR province,2022-03-03
+ET,ET-SI,Sidama,Sīdama,Regional state,,https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ET/ET-SI.svg,"[6.704, 38.445]",,,Adding ET-SI regional state,2022-11-25
+GB,GB-NSM,,,,GB-ENG,,,,,Updating subdivision parent code,2022-11-25
+IS,IS-BFJ,,,,,,,,1,Deleting IS-BFJ municipality,2022-11-25
+IS,IS-DJU,,,,,,,,1,Deleting IS-DJU municipality,2022-11-25
+IS,IS-FLD,,,,,,,,1,Deleting IS-FLD municipality,2022-11-25
+IS,IS-SEY,,,,,,,,1,Deleting IS-SEY municipality,2022-11-25
+IS,IS-MUL,Múlaþing,,Municipality,IS-7,https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/IS/IS-MUL.jpeg,"[65.268, -14.859]",,1,Adding IS-MUL municipality,2022-11-25
 DZ,DZ-49,Timimoun,ولاية تيميمون,Province,,,"[29.262, 0.241]",,,Adding DZ-49 province,2022-11-29
 DZ,DZ-50,Bordj Badji Mokhtar,ولاية برج باجي مختار,Province,,,"[21.680, 0.944]",,,Adding DZ-50 province,2022-11-29
 DZ,DZ-51,Ouled Djellal,ولاية أولاد جلال,Province,,,"[34.438, 5.062]",,,Adding DZ-51 province,2022-11-29
@@ -420,29 +427,22 @@ DZ,DZ-56,Djanet,ولاية جانت,Province,,,"[24.687, 9.444]",,,Adding DZ-56 
 DZ,DZ-57,El Meghaier,ولاية المغير,Province,,,"[33.957, 5.924]",,,Adding DZ-57 province,2022-11-29
 DZ,DZ-58,El Meniaa,ولاية المنيعة,Province,,,"[30.588, 2.902]",,,Adding DZ-58 province,2022-11-29
 ET,ET-SW,Southwest Ethiopia Peoples,YeDebub M‘irab Ītyop’iya Hizboch,Regional state,,https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ET/ET-SW.svg,"[5.843, 36.313]",,,Adding ET-SW regional state,2022-11-29
-ET,ET-SI,Sidama,Sīdama,Regional state,,https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ET/ET-SI.svg,"[6.704, 38.445]",,,Adding ET-SI regional state,2022-11-25
 FI,FI-17,Satakunta,,,,,,1,,Change of spelling for FI-17 region,2022-11-29
 GB,GB-BKM,,,Unitary authority,GB-ENG,,,1,,Updating GB-BKM subdivision type,2022-11-29
 GB,GB-NNH,North Northamptonshire,,Unitary authority,GB-ENG,https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/GB/GB-NNH.svg,"[52.310, -0.875]",1,,Adding GB-NNH subdivision,2022-11-29
-GB,GB-NSM,,,,GB-ENG,,,,,Updating subdivision parent code,2022-11-25
 GB,GB-NTH,,,,,,,,1,Deleting GB-NTH subdivision,2022-11-29
 GB,GB-WNH,West Northamptonshire,,Unitary authority,GB-ENG,https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/GB/GB-WNH.svg,"[52.259, -1.161]",1,,Adding GB-WNH subdivision,2022-11-29
 ID,ID-PE,Highland Papua,Papua Pengunungan,Province,ID-PP,https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ID/ID-PE.svg,"[-4.091, 138.951]",,,Adding ID-PE province,2022-11-29
 ID,ID-PS,South Papua,Papua Selatan,Province,ID-PP,https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ID/ID-PS.svg,"[-7.365, 139.715]",,,Adding ID-PS province,2022-11-29
 ID,ID-PT,Central Papua,Papua Tengah,Province,ID-PP,https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ID/ID-PT.svg,"[-3.359, 135.502]",,,Adding ID-PT province,2022-11-29
 IS,IS-AKH,,,,,,,,1,Deleting IS-AKH municipality,2022-11-29
-IS,IS-BFJ,,,,,,,,1,Deleting IS-BFJ municipality,2022-11-25
 IS,IS-BLO,,,,,,,,1,Deleting IS-BLO municipality,2022-11-29
-IS,IS-DJU,,,,,,,,1,Deleting IS-DJU municipality,2022-11-25
-IS,IS-FLD,,,,,,,,1,Deleting IS-FLD municipality,2022-11-25
 IS,IS-HEL,,,,,,,,1,Deleting IS-HEL municipality,2022-11-29
 IS,IS-HUT,,,,,,,,1,Deleting IS-HUT municipality,2022-11-29
 IS,IS-SBH,,,,,,,,1,Deleting IS-SBH municipality,2022-11-29
-IS,IS-SEY,,,,,,,,1,Deleting IS-SEY municipality,2022-11-25
 IS,IS-SKU,,,,,,,,1,Deleting IS-SKU municipality,2022-11-29
 IS,IS-SSF,,,,,,,,1,Deleting IS-SSF municipality,2022-11-29
 IS,IS-HUG,Húnabyggð,,Municipality,IS-5,https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/IS/IS-HUG.png,"[65.228, -19.854]",,1,Adding IS-HUG municipality,2022-11-29
-IS,IS-MUL,Múlaþing,,Municipality,IS-7,https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/IS/IS-MUL.jpeg,"[65.268, -14.859]",,1,Adding IS-MUL municipality,2022-11-25
 IS,IS-SKR,Skagafjörður,,Municipality,IS-5,https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/IS/IS-SKR.gif,"[65.403, -19.101]",,1,Adding IS-SKR municipality,2022-11-29
 KP,KP-15,Kaesong,Kaesŏng,Metropolitan city,,,"[37.938, 126.582]",,,Adding KP-15 metropolitan city,2022-11-29
 KZ,KZ-10,Abai,Abayskaya oblast',region,,https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/KZ/KZ-10.png,"[48.166, 78.666]",,,Adding KZ-10 region,2022-11-29
@@ -497,7 +497,7 @@ NZ,NZ-STL,,Te Taiao Tonga,,,,,,,Updating NZ-STL subdivision local name,2022-11-2
 NZ,NZ-GIS,,Te Tairāwhiti,,,,,,,Updating NZ-GIS subdivision local name,2022-11-29
 NZ,NZ-HKB,,Te Matau-a-Māui,,,,,,,Updating NZ-HKB subdivision local name,2022-11-29
 NZ,NZ-NTL,,Te Tai tokerau,,,,,,,Updating NZ-NTL subdivision local name,2022-11-29
-NZ,NZ-WTC,,	Te Tai o Poutini,,,,,,,Updating NZ-WTC subdivision name,2022-11-29
+NZ,NZ-WTC,,Te Tai o Poutini,,,,,,,Updating NZ-WTC subdivision name,2022-11-29
 NZ,NZ-WGN,Greater Wellington,Te Pane Matua Taiao,,,,,,,Updating NZ-WGN subdivision name and local name,2022-11-29
 NZ,NZ-MWT,Manawatū-Whanganui,Manawatū Whanganui,,,,,,,Updating NZ-WGN subdivision name and local name,2022-11-29
 NZ,NZ-WKO,Waikato,,,,,,1,,Updating NZ-WKO subdivision name and local name,2022-11-29
@@ -523,7 +523,7 @@ IN,IN-OR (IN-OD),,,,,,,,,Changing IN-OR subdivision code to IN-OD,2023-11-23
 IN,IN-CT (IN-CG),,,,,,,,,Changing IN-CT subdivision code to IN-CG,2023-11-23
 IN,IN-TG (IN-TS),,,,,,,,,Changing IN-TG subdivision code to IN-TS,2023-11-23
 IN,IN-UT (IN-UK),,,,,,,,,Changing IN-UT subdivision code to IN-UK,2023-11-23
-KR,KR-42,,,special self-governing province,,,,,,Changing KR-42 subdivision type from province to self governing province
+KR,KR-42,,,special self-governing province,,,,,,Changing KR-42 subdivision type from province to self governing province,2023-11-23
 ME,ME-25,Zeta,,Municipality,,https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/ME/ME-25.svg,"[42.516, 19.171]",,,Adding ME-25 subdivision,2023-11-23
 NP,NP-P1,Koshi,Koshī,,,,,,,Changing NP-P1 subdivision name,2023-11-23
 PH,PH-MAG,,,,,,,,1,Deleting PH-MAG province,2023-11-23

@@ -19,7 +19,7 @@ jobs:
       matrix:
         python-version: [3.9]  #deploying using one Python version on 1 runner
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     # build distribution package using poetry tool and upload to the PYPi server via custom github action
     - name: Build and publish to PyPI
       uses: JRubics/poetry-publish@v2.0

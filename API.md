@@ -16,17 +16,17 @@ The other endpoints available in the API are:
 
 Five paths/endpoints are available in the API - `/api/all`, `/api/alpha`, `/api/country_name`, `/api/subdivision` and `/api/name`.
 
-* The `/api/all` path/endpoint returns all of the ISO 3166 subdivision data for all countries.
+* `/api/all`: get all of the ISO 3166 subdivision data for all countries.
 
-* The `/api/alpha` endpoint accepts the 2 letter alpha-2, 3 letter alpha-3 and or numeric ISO 3166-1 country codes appended to the path/endpoint e.g. `/api/alpha/JP`. A single alpha-2, alpha-3 or numeric code or list of them can be passed to the API e.g. `/api/alpha/FR,DE,HU,ID,MA`, `/api/alpha/FRA,DEU,HUN,IDN,MAR` and `/api/alpha/428,504,638`. If an invalid country code is input then an error will be returned.
+* `/api/alpha`: get all of the ISO 3166 subdivision data for 1 or more inputted ISO 3166-1 alpha-2, alpha-3 or numeric country codes, e.g. `/api/alpha/FR,DE,HU,ID,MA`, `/api/alpha/FRA,DEU,HUN,IDN,MAR` and `/api/alpha/428,504,638`. A comma separated list of multiple alpha codes can also be input. If an invalid country code is input then an error will be returned.
 
-* The `/api/country_name` endpoint accepts the country/territory name as it is most commonly known in english, according to the ISO 3166-1 e.g. `/api/country_name/Denmark`. A single country name or list of them can be passed into the API e.g. `/api/country_name/France,Moldova,Benin`. A closeness function is utilised so the most approximate name from the input will be used e.g. Sweden will be used if input is `/api/country_name/Swede`. If no country is found from the closeness function or an invalid name is input then an error will be returned.
+* `/api/country_name`: get all of the ISO 3166 subdivision data for 1 or more inputted ISO 3166-1 country names, as they are commonly known in English, e.g. `/api/country_name/France,Moldova,Benin`. A comma separated list of country names can also be input. A closeness function is utilised so the most approximate name from the input will be used e.g. Sweden will be used if input is `/api/country_name/Swede`. If no country is found from the closeness function or an invalid name is input then an error will be returned.
 
-* The `/api/subdivision` endpoint accepts the ISO 3166-2 subdivision codes, e.g `/api/subdivision/GB-ABD`. You can also input a list of subdivision codes from the same and or different countries and the data for each will be returned e.g `/api/subdivision/IE-MO,FI-17,RO-AG`. If the input subdivision code is not in the correct format then an error will be raised. Similarly if an invalid subdivision code that doesn't exist is input then an error will be raised.
+* `/api/subdivision`: get all of the ISO 3166 subdivision data for 1 or more ISO 3166-2 subdivision codes, e.g `/api/subdivision/GB-ABD`. You can also input a comma separated list of subdivision codes from the same and or different countries and the data for each will be returned e.g `/api/subdivision/IE-MO,FI-17,RO-AG`. If the input subdivision code is not in the correct format then an error will be raised. Similarly if an invalid subdivision code that doesn't exist is input then an error will be raised.
 
-* The `/api/name/` endpoint accepts the ISO 3166-2 subdivision names, e.g `/api/name/Derry`. You can also input a list of subdivision name from the same or different countries and the data for each will be returned e.g `/api/name/Paris,Frankfurt,Rimini`. A closeness function is utilised to find the matching subdivision name, if no exact name match found then the most approximate subdivisions will be returned. Some subdivisions may have the same name, in this case eahc subdivision and its data will be returned e.g `/api/name/Saint George,Sucre`. This endpoint also has the likeness score (`?likeness=`) query string parameter that can be appended to the URL. This can be set between 1 - 100, representing a % of likeness to the input name the return subdivisions should be, e.g: a likeness score of 90 will return fewer potential matches whose name only match to a high degree compared to a score of 10 which will create a larger search space, thus returning more potential subdivision matches. A default likeness of 100 (exact match) is used, if no match found then this is reduced to 90. If an invalid subdivision name that doesn't match any is input then an error will be raised.
+* `/api/name/`: get all of the ISO 3166 subdivision data for 1 or more ISO 3166-2 subdivision names, e.g `/api/name/Derry`. You can also input a comma separated list of subdivision name from the same or different countries and the data for each will be returned e.g `/api/name/Paris,Frankfurt,Rimini`. A closeness function is utilised to find the matching subdivision name, if no exact name match found then the most approximate subdivisions will be returned. Some subdivisions may have the same name, in this case each subdivision and its data will be returned e.g `/api/name/Saint George` (this example returns 5 subdivisions). This endpoint also has the likeness score (`?likeness=`) query string parameter that can be appended to the URL. This can be set between 1 - 100, representing a % of likeness to the input name the return subdivisions should be, e.g: a likeness score of 90 will return fewer potential matches whose name only match to a high degree compared to a score of 10 which will create a larger search space, thus returning more potential subdivision matches. A default likeness of 100 (exact match) is used, if no matching subdivision is found then this is reduced to 90. If an invalid subdivision name that doesn't match any is input then an error will be raised.
 
-* The main API endpoint (`/` or `/api`) will return the homepage and API documentation.
+* `/api`: main homepage and API documentation.
 
 A demo of the software and API is available [here][demo].
 
@@ -255,7 +255,7 @@ Get all ISO 3166-2 subdivision data for a specific subdivision, using its subdiv
     server: Vercel
     content-length: 244
 
-    {"LV-007":{"flagUrl":"https://github.com/amckenna41/...}}
+    {"LV-007":{"flag":"https://github.com/amckenna41/...}}
 
 ### Request
 `GET /api/subdivision/PA-3`
@@ -269,7 +269,7 @@ Get all ISO 3166-2 subdivision data for a specific subdivision, using its subdiv
     server: Vercel
     content-length: 214
 
-    {"PA-3":{"flagUrl":"https://github.com/amckenna41...}}
+    {"PA-3":{"flag":"https://github.com/amckenna41...}}
 
 ### Request
 `GET /api/subdivision/ZA-NC`
@@ -283,11 +283,11 @@ Get all ISO 3166-2 subdivision data for a specific subdivision, using its subdiv
     server: Vercel
     content-length: 225
 
-    {"ZA-NC":{"flagUrl":"https://github.com/amckenna41...}}
+    {"ZA-NC":{"flag":"https://github.com/amckenna41...}}
 
 
-Get all ISO 3166-2 subdivision data for a specific subdivision, using its subdivision name e.g Treviso, Nordland, Musandam
---------------------------------------------------------------------------------------------------------------------------
+Get all ISO 3166-2 subdivision data for a specific subdivision, using its subdivision name e.g Treviso (IT-TV), Nordland (NO-18), Musandam (OM-MU)
+--------------------------------------------------------------------------------------------------------------------------------------------------
 
 ### Request
 `GET /api/name/Treviso`
@@ -301,7 +301,7 @@ Get all ISO 3166-2 subdivision data for a specific subdivision, using its subdiv
     server: Vercel
     content-length: 215
 
-    {"IT-TV":{"flagUrl":"}}
+    {"IT-TV":{"flag":"}}
 
 ### Request
 `GET /api/name/Nordland`
@@ -315,7 +315,7 @@ Get all ISO 3166-2 subdivision data for a specific subdivision, using its subdiv
     server: Vercel
     content-length: 212
 
-    {"NO-18":{"flagUrl":"}}
+    {"NO-18":{"flag":"}}
 
 ### Request
 `GET /api/name/Musandam`
@@ -329,7 +329,7 @@ Get all ISO 3166-2 subdivision data for a specific subdivision, using its subdiv
     server: Vercel
     content-length: 132
 
-    {"OM-MU":{"flagUrl":}}
+    {"OM-MU":{"flag":}}
 
 ### Python
 ```python
@@ -360,8 +360,8 @@ function getData() {
 var data = JSON.parse(this.response)
 ```
 
-Get all ISO 3166-2 subdivision data for a specific country, using country name, e.g. Tajikistan, Seychelles, Uganda 
--------------------------------------------------------------------------------------------------------------------
+Get all ISO 3166-2 subdivision data for a specific country, using country name, e.g. Tajikistan (TJ), Seychelles (SC), Uganda (UG) 
+----------------------------------------------------------------------------------------------------------------------------------
 
 ### Request
 `GET /api/country_name/Tajikistan`
