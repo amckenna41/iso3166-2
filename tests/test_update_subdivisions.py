@@ -5,7 +5,6 @@ import shutil
 import unittest
 unittest.TestLoader.sortTestMethodsUsing = None
 
-@unittest.skip("")
 class Update_Subdivisions_Tests(unittest.TestCase):
     """
     Test suite for testing update_subdivisions.py script that that is used for the 
@@ -19,6 +18,9 @@ class Update_Subdivisions_Tests(unittest.TestCase):
         testing amending subdivisions to the main subdivisions object via update_subdivisions function.
     test_update_subdivisions_delete:
         testing deleting subdivisions to the main subdivisions object via update_subdivisions function.
+    test_get_flag_icons_url:
+        testing auxillary function used for getting the flag URL of a subdivision from the 
+        iso3166-flag-icons repo.
     """
     def setUp(self):
         """ Initialise test variables. """
@@ -34,7 +36,7 @@ class Update_Subdivisions_Tests(unittest.TestCase):
         with open(os.path.join("iso3166_2", "iso3166-2.json"), "r") as input_json:
             iso3166_2_json = json.load(input_json)
         with open(self.test_iso3166_2_copy, "w") as output_json:
-            json.dump(iso3166_2_json, output_json)
+            json.dump(iso3166_2_json, output_json, ensure_ascii=False, indent=4)
 
     # @unittest.skip("")
     def test_update_subdivisions_add(self):
@@ -66,7 +68,8 @@ class Update_Subdivisions_Tests(unittest.TestCase):
                                                                       flag="https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/LT/LT-100.svg", 
                                                                       iso3166_2_filename=self.test_iso3166_2_copy, rest_countries_keys="currencies,idd,carSigns", export=True)
         expected_test_subdivision_lt_output = {"name": "Vilnius 2.0 municipality", "localName": "Vilnius 2.0 municipality", "type": "City municipality", 
-                                         "latLng": None, "parentCode": "LT-UT", "flag": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/LT/LT-100.svg"}
+                                         "latLng": None, "parentCode": "LT-UT", "flag": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/LT/LT-100.svg",
+                                         "currencies": {"EUR": {"name": "Euro", "symbol": "€"}}, "carSigns": ["LT"], "idd": "Root: +3, Suffixes: ['70']"}
         
         #import json with newly added subdivision
         with open(self.test_iso3166_2_copy, "r") as subdivision_update_json:
@@ -118,10 +121,10 @@ class Update_Subdivisions_Tests(unittest.TestCase):
             update_subdivision(subdivision_csv=123, iso3166_2_filename=self.test_iso3166_2_copy)
 #6.)
         with (self.assertRaises(ValueError)):
-            update_subdivision(alpha_code="XY", subdivision_code="XY-XY", iso3166_2_filename=self.test_iso3166_2_copy)
-            update_subdivision(alpha_code="AD,DE,FR", subdivision_code="AD-ZZ", iso3166_2_filename=self.test_iso3166_2_copy)
-            update_subdivision(alpha_code="PK", subdivision_code="PK-AA", parent_code="PK-ZZ", iso3166_2_filename=self.test_iso3166_2_copy, export=True)
-            update_subdivision(alpha_code="SS", subdivision_code="SS-BW,SS-NU", parent_code="SS-WR", iso3166_2_filename=self.test_iso3166_2_copy, export=True)
+            update_subdivision(alpha_code="XY", subdivision_code="XY-XY", iso3166_2_filename=self.test_iso3166_2_copy)  #invalid alpha code
+            update_subdivision(alpha_code="AD,DE,FR", subdivision_code="AD-ZZ", iso3166_2_filename=self.test_iso3166_2_copy)  #more than 1 alpha code
+            update_subdivision(alpha_code="PK", subdivision_code="PK-AA", parent_code="PK-ZZ", iso3166_2_filename=self.test_iso3166_2_copy, export=True)  #invalid parent code
+            update_subdivision(alpha_code="SS", subdivision_code="SS-BW,SS-NU", parent_code="SS-WR", iso3166_2_filename=self.test_iso3166_2_copy, export=True)  #more than 1 subdivision code
 #7.)
         with (self.assertRaises(TypeError)):
             update_subdivision(alpha_code=123, subdivision_code="XY-XY", iso3166_2_filename=self.test_iso3166_2_copy, export=True)
@@ -134,7 +137,7 @@ class Update_Subdivisions_Tests(unittest.TestCase):
             update_subdivision(alpha_code="ID", subdivision_code="ID-12", rest_countries_keys=9.05, iso3166_2_filename=self.test_iso3166_2_copy)
             update_subdivision(alpha_code="ID", subdivision_code="ID-12", exclude_default_keys=True, iso3166_2_filename=self.test_iso3166_2_copy)
 
-    @unittest.skip("")
+    # @unittest.skip("")
     def test_update_subdivisions_amend(self):
         """ Testing amending subdivisions to the main subdivisions object via update_subdivisions function. """
         test_subdivision_jo_ka = "JO-KA" #Al Karak - changing subdivision name and local name
@@ -198,7 +201,7 @@ class Update_Subdivisions_Tests(unittest.TestCase):
         self.assertEqual(test_subdivision_wf_sg_subdivisions_json['WF']['WF-SW'], expected_test_subdivision_wf_sg_output, 
             f"Expected and observed subdivision output do not match:\n{test_subdivision_wf_sg_subdivisions_json['WF']['WF-SW']}.")  
         
-    @unittest.skip("")
+    # @unittest.skip("")
     def test_update_subdivisions_delete(self):
         """ Testing deleting subdivisions to the main subdivisions object via update_subdivisions function. """
         test_subdivision_kw = "KW" #Kuwait
@@ -255,9 +258,48 @@ class Update_Subdivisions_Tests(unittest.TestCase):
             f"Expected updates subdivision output to be an empty dict, got:\n{test_subdivision_sm_update_subdivisions_output}.") 
 #5.)
         with (self.assertRaises(ValueError)):
-            update_subdivision(alpha_code="AD", subdivision_code="100", iso3166_2_filename=self.test_iso3166_2_copy, delete=1)
-            update_subdivision(alpha_code="DE", subdivision_code="AD", iso3166_2_filename=self.test_iso3166_2_copy, delete=1)
-            update_subdivision(alpha_code="ZA", subdivision_code="ABC", iso3166_2_filename=self.test_iso3166_2_copy, delete=1)
+            update_subdivision(alpha_code="AD", subdivision_code="100", iso3166_2_filename=self.test_iso3166_2_copy, delete=1)  #subdivision doesn't exist
+            update_subdivision(alpha_code="DE", subdivision_code="AD", iso3166_2_filename=self.test_iso3166_2_copy, delete=1)  #subdivision doesn't exist
+            update_subdivision(alpha_code="ZA", subdivision_code="ABC", iso3166_2_filename=self.test_iso3166_2_copy, delete=1)  #subdivision doesn't exist
+
+    # @unittest.skip("")
+    def test_get_flag_icons(self):
+        """ Testing get_flag_icons function used for getting the flag URL of each subdivision. """
+        test_alpha_flag_ad = ("AD", "AD-08")
+        test_alpha_flag_de = ("DE", "DE-BB")
+        test_alpha_flag_mx = ("MX", "MX-MOR")
+        test_alpha_flag_sn = ("SN", "SN-LG")
+        test_alpha_flag_xx = ("XX", "XX-XYZ")
+#1.)
+        test_alpha_flag_ad_url = get_flag_icons_url(test_alpha_flag_ad[0], test_alpha_flag_ad[1])
+        expected_alpha_flag_ad_url = "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/AD/AD-08.svg"
+        
+        self.assertEqual(test_alpha_flag_ad_url, expected_alpha_flag_ad_url, 
+            f"Expected URL for subdivision does not match, got {test_alpha_flag_ad_url}.")
+#2.)
+        test_alpha_flag_de_url = get_flag_icons_url(test_alpha_flag_de[0], test_alpha_flag_de[1])
+        expected_alpha_flag_de_url = "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/DE/DE-BB.svg"
+        
+        self.assertEqual(test_alpha_flag_de_url, expected_alpha_flag_de_url, 
+            f"Expected URL for subdivision does not match, got {test_alpha_flag_de_url}.")
+#3.)
+        test_alpha_flag_mx_url = get_flag_icons_url(test_alpha_flag_mx[0], test_alpha_flag_mx[1])
+        expected_alpha_flag_mx_url = "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/MX/MX-MOR.svg"
+        
+        self.assertEqual(test_alpha_flag_mx_url, expected_alpha_flag_mx_url, 
+            f"Expected URL for subdivision does not match, got {test_alpha_flag_mx_url}.")
+#4.)
+        test_alpha_flag_sn_url = get_flag_icons_url(test_alpha_flag_sn[0], test_alpha_flag_sn[1])
+        expected_alpha_flag_sn_url = None
+        
+        self.assertEqual(test_alpha_flag_sn_url, expected_alpha_flag_sn_url, 
+            f"Expected URL for subdivision does not match, got {test_alpha_flag_sn_url}.")
+#5.)
+        test_alpha_flag_xx_url = get_flag_icons_url(test_alpha_flag_xx[0], test_alpha_flag_xx[1])
+        expected_alpha_flag_xx_url = None
+        
+        self.assertEqual(test_alpha_flag_xx_url, expected_alpha_flag_xx_url, 
+            f"Expected URL for subdivision does not match, got {test_alpha_flag_xx_url}.")
 
     def tearDown(self):
         """ Delete any temp export folder. """

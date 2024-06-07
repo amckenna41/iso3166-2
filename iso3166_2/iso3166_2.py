@@ -114,6 +114,7 @@ class ISO3166_2():
         self.country_code = country_code
         self.iso3166_2_filepath = iso3166_2_filepath
         self.iso3166_json_filename= "iso3166-2.json"
+        self.__version__ = "1.6.1"
 
         #get full path to default object
         self.iso3166_2_module_path = os.path.join(os.path.dirname(os.path.abspath(sys.modules[self.__module__].__file__)), self.iso3166_json_filename)

@@ -14,7 +14,7 @@ The other endpoints available in the API are:
 * https://iso3166-2-api.vercel.app/api/subdivision/<input_subdivision>
 * https://iso3166-2-api.vercel.app/api/name/<input_subdivision_name>
 
-Five paths/endpoints are available in the API - `/api/all`, `/api/alpha`, `/api/country_name`, `/api/subdivision` and `/api/name`.
+Six paths/endpoints are available in the API - `/api/all`, `/api/alpha`, `/api/country_name`, `/api/subdivision`, `/api/name` and `/api/list_subdivisions`.
 
 * `/api/all`: get all of the ISO 3166 subdivision data for all countries.
 
@@ -25,6 +25,8 @@ Five paths/endpoints are available in the API - `/api/all`, `/api/alpha`, `/api/
 * `/api/subdivision`: get all of the ISO 3166 subdivision data for 1 or more ISO 3166-2 subdivision codes, e.g `/api/subdivision/GB-ABD`. You can also input a comma separated list of subdivision codes from the same and or different countries and the data for each will be returned e.g `/api/subdivision/IE-MO,FI-17,RO-AG`. If the input subdivision code is not in the correct format then an error will be raised. Similarly if an invalid subdivision code that doesn't exist is input then an error will be raised.
 
 * `/api/name/`: get all of the ISO 3166 subdivision data for 1 or more ISO 3166-2 subdivision names, e.g `/api/name/Derry`. You can also input a comma separated list of subdivision name from the same or different countries and the data for each will be returned e.g `/api/name/Paris,Frankfurt,Rimini`. A closeness function is utilised to find the matching subdivision name, if no exact name match found then the most approximate subdivisions will be returned. Some subdivisions may have the same name, in this case each subdivision and its data will be returned e.g `/api/name/Saint George` (this example returns 5 subdivisions). This endpoint also has the likeness score (`?likeness=`) query string parameter that can be appended to the URL. This can be set between 1 - 100, representing a % of likeness to the input name the return subdivisions should be, e.g: a likeness score of 90 will return fewer potential matches whose name only match to a high degree compared to a score of 10 which will create a larger search space, thus returning more potential subdivision matches. A default likeness of 100 (exact match) is used, if no matching subdivision is found then this is reduced to 90. If an invalid subdivision name that doesn't match any is input then an error will be raised.
+
+* `/api/list_subdivisions`: get list of all the subdivision codes for all countries. 
 
 * `/api`: main homepage and API documentation.
 
@@ -425,6 +427,45 @@ let input_name = "Tajikistan"; //Seychelles, Uganda
 function getData() {
   const response = 
     await fetch(`https://iso3166-updates.com/api/country_name/${input_name}`); 
+  const data = await response.json()
+}
+
+// Begin accessing JSON data here
+var data = JSON.parse(this.response)
+```
+
+Get all ISO 3166-2 subdivision codes for all countries 
+------------------------------------------------------
+
+### Request
+`GET /api/list_subdivisions/Tikistan`
+
+    curl -i https://iso3166-2-api.vercel.app/api/list_subdivisions
+
+### Response
+    HTTP/2 200 
+    content-type: application/json
+    date: Sat, 03 Feb 2024 15:03:11 GMT
+    server: Vercel
+    content-length: 
+
+    {"AD":{"AD-02","AD-03"...}}
+    
+### Python
+```python
+import requests
+
+request_url = "https://iso3166-2-api.vercel.app/api/list_subdivisions/"
+
+all_request = requests.get(request_url)
+all_request.json() 
+```
+
+### Javascript
+```javascript
+function getData() {
+  const response = 
+    await fetch(`https://iso3166-updates.com/api/list_subdivisions`); 
   const data = await response.json()
 }
 

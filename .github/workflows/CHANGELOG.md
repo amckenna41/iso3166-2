@@ -1,9 +1,25 @@
 # Change Log
 
-### 1.7.0 - TBC
+## 1.7.0 - TBC
 
 ### Added
 - Add list of cities for each subdivision using the country-states-city API
+- Added __version__ attribute to ISO3166_2() class
+
+## v1.6.1 - June 2024
+
+### Added
+- list_subdivisions endpoint added to API that returns list of all subdivision codes per country
+- Unit tests for flag_url function in update_subdivisions script
+- Separate function for extracting and parsing data attributes from RestCountries API
+- Added raise_for_status error catcher for requests library
+
+### Changed
+- Rotate user agent headers for any scripts using requests.get 
+
+### Fixed
+- Error in request URL for RestCountries API in update_subdivisions script
+- Raise TypeError if invalid data type input to export_iso3166_2 function rather than system crashing
 
 
 ## v1.6.0 - June 2024
@@ -45,7 +61,8 @@
 - If a custom subdivision object is input via its respective function, latLng attribute is set to 3d.p 
 - Fixed syntax of some function parameters that can take multiple data types
 - Fixed parameter typing syntax for some function parameters that can be multiple data types
-
+- Error when adding a new subdivision, now will raise an error if the input parent code is invalid/not a country subdivision
+- In get_flag_url function in update_subdivision script, you can pass in the full subdivision code or just the RHS of it
 
 ## v1.5.4 - March 2024
 
@@ -72,7 +89,6 @@
 
 ## v1.4.0 - December 2023
 
-
 ### Added
 - readthedocs documentation added
 - Search for a particular subdivision via its subdivision name, finding the closest match using difflib libary
@@ -81,7 +97,6 @@
 
 
 ### Changed
-- 
 - Software package description updated
 - Changed software license to MIT
 - Remove subdivision_parent_codes function that returned this list of parent codes per subdivision

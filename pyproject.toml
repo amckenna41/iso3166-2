@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iso3166-2"
-version = "1.6.0"
+version = "1.6.1"
 description = "A lightweight Python package, and accompanying API, used to access all of the world's most up-to-date and accurate ISO 3166-2 subdivision data, including: name, local name, code, parent code, type, latitude/longitude and flag."
 authors = ["AJ McKenna <amckenna41@qub.ac.uk>"]
 maintainers = ["AJ McKenna <amckenna41@qub.ac.uk>"]
@@ -15,10 +15,9 @@ classifiers = [
         "License :: OSI Approved :: MIT License",
         "License :: Free For Educational Use",
         "Natural Language :: English",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",	
+        "Programming Language :: Python :: 3.12",	
         "Programming Language :: Python :: Implementation :: PyPy",
         "Programming Language :: Python :: 3 :: Only",
         "Topic :: Scientific/Engineering",
@@ -30,7 +29,7 @@ packages = [{include = "iso3166_2"}]
 homepage = "https://iso3166-2-api.vercel.app/api"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 iso3166 = "^2.1.1"
 natsort = "^8.4.0"
 thefuzz = "^0.22.1"

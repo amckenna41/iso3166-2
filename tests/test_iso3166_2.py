@@ -55,16 +55,16 @@ class ISO3166_2_Tests(unittest.TestCase):
 
     def test_iso3166_2_metadata(self): 
         """ Testing correct iso3166-2 software version and metadata. """
-        # self.assertEqual(metadata('iso3166-2')['version'], "1.6.0", 
-        #     "iso3166-2 version is not correct, expected 1.6.0, got {}.".format(metadata('iso3166-2')['version']))
+        # self.assertEqual(metadata('iso3166-2')['version'], "1.6.1", 
+        #     "iso3166-2 version is not correct, expected 1.6.1, got {}.".format(metadata('iso3166-2')['version']))
         self.assertEqual(metadata('iso3166-2')['name'], "iso3166-2", 
             "iso3166-2 software name is not correct, expected iso3166-2, got {}.".format(metadata('iso3166-2')['name']))
         self.assertEqual(metadata('iso3166-2')['author'], "AJ McKenna", 
             "iso3166-2 author is not correct, expected AJ McKenna, got {}.".format(metadata('iso3166-2')['author']))
         self.assertEqual(metadata('iso3166-2')['author-email'], "amckenna41@qub.ac.uk", 
             "iso3166-2 author email is not correct, expected amckenna41@qub.ac.uk, got {}.".format(metadata('iso3166-2')['author-email']))
-        # self.assertEqual(metadata('iso3166-2')['summary'], "A lightweight Python package, and accompanying API, used to access all of the world's most up-to-date and accurate ISO 3166-2 subdivision data, including: name, local name, code, parent code, type, latitude/longitude and flag.", 
-        #     "iso3166-2 package summary is not correct, got: {}.".format(metadata('iso3166-2')['summary']))
+        self.assertEqual(metadata('iso3166-2')['summary'], "A lightweight Python package, and accompanying API, used to access all of the world's most up-to-date and accurate ISO 3166-2 subdivision data, including: name, local name, code, parent code, type, latitude/longitude and flag.", 
+            "iso3166-2 package summary is not correct, got: {}.".format(metadata('iso3166-2')['summary']))
         self.assertEqual(metadata('iso3166-2')['keywords'], "iso,iso3166,beautifulsoup,python,pypi,countries,country codes,iso3166-2,iso3166-1,alpha-2,iso3166-updates,subdivisions,regions",
             "iso3166-2 keywords are not correct, got:\n{}.".format(metadata('iso3166-2')['keywords']))
         self.assertEqual(metadata('iso3166-2')['home-page'], "https://iso3166-2-api.vercel.app/api", 
@@ -373,7 +373,7 @@ class ISO3166_2_Tests(unittest.TestCase):
         #create hard copy of iso3166-2.json object for testing custom subdivison functionality on
         self.test_iso3166_2_copy = os.path.join(self.test_output_dir, "iso3166_2_copy.json")
         with open(self.test_iso3166_2_copy, "w") as output_json:
-            json.dump(self.all_iso3166_2.all, output_json)
+            json.dump(self.all_iso3166_2.all, output_json, ensure_ascii=False, indent=4)
 
         #class instance using duplicated ISO 3166-2 object
         all_iso3166_2_custom_subdivision = ISO3166_2(iso3166_2_filepath=self.test_iso3166_2_copy)

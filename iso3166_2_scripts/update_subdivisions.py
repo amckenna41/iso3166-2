@@ -3,19 +3,22 @@ import json
 import iso3166
 import natsort
 from collections import OrderedDict
-from importlib.metadata import metadata
 import argparse
-import getpass
+import random
 import pandas as pd
 import requests
 import numpy as np
 from datetime import datetime
 
-#initialise version 
-__version__ = metadata('iso3166-2')['version']
-
-#initalise User-agent header for requests library 
-USER_AGENT_HEADER = {'User-Agent': f"iso3166-2/{__version__} (https://github.com/amckenna41/iso3166-2; {getpass.getuser()})"}
+#at each calling of script and requests.get, select random user agent from below list
+user_agents = [ 
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36", 
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36", 
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Safari/605.1.15",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Safari/605.1.15"
+] 
 
 #base url for RestCountries URL
 rest_countries_base_url = "https://restcountries.com/v3.1/"
@@ -217,7 +220,7 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
         
         #round coordinates to 3d.p if applicable 
         lat_lng[0], lat_lng[1] = round(float(lat_lng[0]), 3), round(float(lat_lng[1]), 3)
-
+    
     #if no subdivision csv passed in and subdivision changes passed in directly to function parameters
     if (subdivision_csv == ""): 
 
@@ -275,7 +278,7 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
         with open(os.path.join("iso3166-2-data-archive", "archive-iso3166-2_" + \
             str(datetime.date(datetime.now())) + ".json"), 'w', encoding='utf-8') as output_json:
             json.dump(all_subdivision_data, output_json, ensure_ascii=False, indent=4)
-
+        
         #delete subdivision if delete parameter set, raise error if code not found
         if (delete):
             if (subdivision_code in list(all_subdivision_data[alpha_code].keys())):
@@ -291,7 +294,7 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
             
                 #raise error if current subdivision not found in list of codes
                 if (current_subdivision_code not in list(all_subdivision_data[alpha_code].keys())):
-                    raise ValueError(f"Subdivision code {subdivision_code} not found in country's list of codes:\n{list(all_subdivision_data[alpha_code].keys())}.")
+                    raise ValueError(f"Subdivision code {current_subdivision_code} not found in country's list of codes:\n{list(all_subdivision_data[alpha_code].keys())}.")
                 
                 #raise error if new amended subdivision code does not have the same subdivision code prefix
                 if (new_subdivision_code.split('-')[0] != current_subdivision_code.split('-')[0]):
@@ -311,8 +314,7 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
             
                 #add rest countries key to object if applicable  
                 if (rest_countries_keys != ""):
-                    for key in rest_countries_keys:
-                        all_subdivision_data[alpha_code][new_subdivision_code][key] = all_subdivision_data[alpha_code][current_subdivision_code][key]
+                    all_subdivision_data[alpha_code][new_subdivision_code] = parse_rest_countries(alpha_code, rest_countries_keys, all_subdivision_data[alpha_code][new_subdivision_code])
 
                 #order attributes of individual subdivision using natsort
                 all_subdivision_data[alpha_code][new_subdivision_code] = dict(OrderedDict(natsort.natsorted(all_subdivision_data[alpha_code][new_subdivision_code].items())))
@@ -336,7 +338,7 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
                     if (lat_lng != None and not 'latLng' in exclude_default_keys):
                         all_subdivision_data[alpha_code][subdivision_code]["latLng"] = lat_lng
                     if (parent_code != "" and not 'parentCode' in exclude_default_keys):
-                        if not ((parent_code != "") and (parent_code in list(all_subdivision_data[alpha_code].keys()) and (parent_code != subdivision_code))):
+                        if not ((parent_code != "") and (parent_code in list(all_subdivision_data[alpha_code].keys())) and (parent_code != subdivision_code)): #***
                             raise ValueError(f"Parent code {parent_code} not found in list of subdivision codes:\n{list(all_subdivision_data[alpha_code].keys())}.")
                         else:
                             all_subdivision_data[alpha_code][subdivision_code]["parentCode"] = parent_code
@@ -352,27 +354,20 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
                     if not ('type' in exclude_default_keys):
                         new_subdivision_data["type"] = type_
                     if not ('parentCode' in exclude_default_keys):
-                        new_subdivision_data["parentCode"] =parent_code
+                        if (parent_code != ""):
+                            #raise error if parent code not an existing subdivision code
+                            if not (parent_code in list(all_subdivision_data[alpha_code].keys())) and (parent_code != subdivision_code):
+                                raise ValueError(f"Parent code {parent_code} not found in list of subdivision codes:\n{list(all_subdivision_data[alpha_code].keys())}.")
+                        new_subdivision_data["parentCode"] = parent_code
                     if not ('latLng' in exclude_default_keys):
                         new_subdivision_data["latLng"] = lat_lng
                     if not ('flag' in exclude_default_keys):
                         new_subdivision_data["flag"] = flag
-
-                    #iterate over each RestCountries key, if applicable, add attribute value to new object
-                    for key in rest_countries_keys:
-                        #using an iterable, check if existing subdivision exists for country code, pull its attribute values for new object
-                        all_subdivision_data_iterable = iter(all_subdivision_data[alpha_code])
-                        if (next(all_subdivision_data_iterable, None) != None):
-                            all_subdivision_data_iterable = iter(all_subdivision_data[alpha_code]) #reset iterable back to start of object
-                            if (key in all_subdivision_data[alpha_code][next(all_subdivision_data_iterable)]):
-                                all_subdivision_data_iterable = iter(all_subdivision_data[alpha_code]) #reset iterable back to start of object
-                                new_subdivision_data[key] = all_subdivision_data[alpha_code][next(all_subdivision_data_iterable)][key]
-                        #if subdivision not available for country code, use the RestCountries API to get the attribute values for new object
-                        else:
-                            #make call to RestCountries api if additional rest countries attributes input
-                            country_restcountries_data = requests.get(rest_countries_base_url + "/alpha/" + all_subdivision_data[alpha_code], headers=USER_AGENT_HEADER).json()
-                            new_subdivision_data[key] = country_restcountries_data[key]
                     
+                    #append restcountries attribute values to new subdivision
+                    if (rest_countries_keys != ""):
+                        new_subdivision_data = parse_rest_countries(alpha_code, rest_countries_keys, new_subdivision_data)
+
                     #add new subdivision object to main subdivision data object
                     all_subdivision_data[alpha_code][subdivision_code] = new_subdivision_data
 
@@ -447,9 +442,8 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
 
                     #add rest countries key to object if applicable  
                     if (rest_countries_keys != ""):
-                        for key in rest_countries_keys:
-                            all_subdivision_data[alpha_code][new_subdivision_code][key] = all_subdivision_data[alpha_code][subdivision_code][key]
-
+                        all_subdivision_data[alpha_code][new_subdivision_code] = parse_rest_countries(alpha_code, rest_countries_keys, all_subdivision_data[alpha_code][new_subdivision_code])
+                        
                     #delete existing subdivision code data in object
                     del all_subdivision_data[alpha_code][subdivision_code]
 
@@ -478,7 +472,10 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
                         if (row['type'] != None and row['type'] != "" and not ('type' in exclude_default_keys)):
                             all_subdivision_data[alpha_code][subdivision_code]['type'] = row['type']
                         if (row['parentCode'] != None and row['parentCode'] != "" and not ('parentCode' in exclude_default_keys)):
-                            all_subdivision_data[alpha_code][subdivision_code]['parentCode'] = row['parentCode']
+                            if not ((row['parent_code'] in list(all_subdivision_data[alpha_code].keys())) and (row['parent_code'] != subdivision_code)): #validate parent code
+                                raise ValueError(f"Parent code {row['parent_code']} not found in list of subdivision codes:\n{list(all_subdivision_data[alpha_code].keys())}.")
+                            else:
+                                all_subdivision_data[alpha_code][subdivision_code]['parentCode'] = row['parentCode']
                         if (row['flag'] != None and row['flag'] != "" and not ('flag' in exclude_default_keys)):
                             all_subdivision_data[alpha_code][subdivision_code]['flag'] = row['flag']
                         if (row['latLng'] != None and row['latLng'] != "" and not ('latLng' in exclude_default_keys)):
@@ -524,18 +521,24 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
                         if not ('flag' in exclude_default_keys):
                             all_subdivision_data[alpha_code][row["code"]]["flag"] = row["flag"]
 
-                        #iterate over each RestCountries key, if applicable, add attribute value to new object
-                        for key in rest_countries_keys:
-                            #using an iterable, check if existing subdivision exists for country code, pull its attribute values for new object
-                            all_subdivision_data_iterable = iter(all_subdivision_data[alpha_code])
-                            if (next(all_subdivision_data_iterable, None) != None):
-                                all_subdivision_data_iterable = iter(all_subdivision_data[alpha_code]) #reset iterable back to start of object
-                                all_subdivision_data[alpha_code][subdivision_code][key] = all_subdivision_data[alpha_code][next(all_subdivision_data_iterable)][key]
-                            #if subdivision not available for country code, use the RestCountries API to get the attribute values for new object
-                            else:
-                                #make call to RestCountries api if additional rest countries attributes input
-                                country_restcountries_data = requests.get(rest_countries_base_url + "/alpha/" + all_subdivision_data[alpha_code], headers=USER_AGENT_HEADER).json()
-                                all_subdivision_data[alpha_code][row["code"]][key] = country_restcountries_data[key]
+                        #append restcountries attribute values to new subdivision
+                        if (rest_countries_keys != ""):
+                            all_subdivision_data[alpha_code][row["code"]] = parse_rest_countries(alpha_code, rest_countries_keys, all_subdivision_data[alpha_code][row["code"]])
+                            
+                        # #iterate over each RestCountries key, if applicable, add attribute value to new object
+                        # for key in rest_countries_keys:
+                        #     #using an iterable, check if existing subdivision exists for country code, pull its attribute values for new object
+                        #     all_subdivision_data_iterable = iter(all_subdivision_data[alpha_code])
+                        #     if (next(all_subdivision_data_iterable, None) != None):
+                        #         all_subdivision_data_iterable = iter(all_subdivision_data[alpha_code]) #reset iterable back to start of object
+                        #         all_subdivision_data[alpha_code][subdivision_code][key] = all_subdivision_data[alpha_code][next(all_subdivision_data_iterable)][key]
+                        #     #if subdivision not available for country code, use the RestCountries API to get the attribute values for new object
+                        #     else:
+                        #         #make call to RestCountries api if additional rest countries attributes input, raise error if invalid request
+                        #         country_restcountries_response = requests.get(rest_countries_base_url + "alpha/" + all_subdivision_data[alpha_code], headers=USER_AGENT_HEADER)
+                        #         country_restcountries_response.raise_for_status()
+                        #         country_restcountries_data = country_restcountries_response.json()
+                        #         all_subdivision_data[alpha_code][row["code"]][key] = country_restcountries_data[key]
 
                 #order attributes of individual subdivision using natsort
                 all_subdivision_data[alpha_code][subdivision_code] = dict(OrderedDict(natsort.natsorted(all_subdivision_data[alpha_code][subdivision_code].items())))
@@ -617,23 +620,76 @@ def get_flag_icons_url(alpha2_code: str, subdivision_code: str) -> str|None:
 
     #list of flag file extensions in order of preference 
     flag_file_extensions = ['.svg', '.png', '.jpeg', '.jpg', '.gif']
-    
+
+    #if only half of subdivision code input to its parameter, prepend the alpha-2 code to it to make it valid
+    if ('-' not in subdivision_code):
+        subdivision_code = alpha2_code + '-' + subdivision_code
+        
     #url to flag in iso3166-flag-icons repo
     alpha2_flag = flag_icons_base_url + alpha2_code + "/" + subdivision_code
 
+    #set user agent to a random agent in the list
+    USER_AGENT_HEADER = {'User-Agent': random.choice(user_agents)}
+
     #verify that path on flag icons repo exists, if not set flag url value to None
-    if (requests.get(flag_icons_base_url + alpha2_code, headers=USER_AGENT_HEADER).status_code != 404):
+    if (requests.get(flag_icons_base_url + alpha2_code, headers=USER_AGENT_HEADER, timeout=15).status_code != 404):
         
         #iterate over all image extensions checking existence of flag in repo, if no flag with extensions found then set to null
         for extension in range(0, len(flag_file_extensions)):
                 
                 #if subdivision has a valid flag in flag icons repo set to its GitHub url, else set to None
-                if (requests.get(alpha2_flag + flag_file_extensions[extension], headers=USER_AGENT_HEADER).status_code != 404):
+                if (requests.get(alpha2_flag + flag_file_extensions[extension], headers=USER_AGENT_HEADER, timeout=15).status_code != 404):
                     return alpha2_flag + flag_file_extensions[extension]
                 elif (extension == 4):
                     return None
     else:
         return None
+
+def parse_rest_countries(alpha_code: str, rest_countries_keys: list, new_subdivision_data: dict) -> dict:
+    """ 
+    Extract and parse required data attributes from RestCountries API. Append each attribute's value to 
+    subdivision object. 
+
+    Parameters
+    ==========
+    :alpha_code: str
+        ISO 3166-1 alpha-2 country code.
+    :rest_countries_keys: list
+        str of one or more comma separated additional attributes from the RestCountries API that can be 
+        appended to each of the subdivisions in the output object. Here is the full list of accepted 
+        fields/attributes: "idd", "carSigns", "carSide", "continents", "currencies", "languages", 
+                    "postalCode", "region", "startOfWeek", "subregion", "timezones", "tld".        
+    :new_subdivision_data: dict
+        individual subdivision data object to be added or amended.
+
+    Returns
+    =======
+    :new_subdivision_data: dict: dict
+        individual subdivision data object with the applicable restcountries attribute values 
+        appended to it.
+    """
+    #set user agent to a random agent in the list
+    USER_AGENT_HEADER = {'User-Agent': random.choice(user_agents)}
+
+    #use the RestCountries API to get the attribute values for country/subdivision
+    country_restcountries_response = requests.get(rest_countries_base_url + "alpha/" + alpha_code, headers=USER_AGENT_HEADER, timeout=15)
+    country_restcountries_response.raise_for_status()
+    country_restcountries_data = country_restcountries_response.json()
+
+    #iterate over each RestCountries key, if applicable, add attribute values to new object
+    for key in rest_countries_keys:
+        if (key == "carSigns"):
+            new_subdivision_data[key] = country_restcountries_data[0]["car"]["signs"]
+        elif (key == "carSide"):
+            new_subdivision_data[key] = country_restcountries_data[0]["car"]["side"]
+        elif (key == "idd"):
+            new_subdivision_data[key] = "Root: " + str(country_restcountries_data[0]["idd"]["root"]) + ", Suffixes: " + str(country_restcountries_data[0]["idd"]["suffixes"])
+        elif (key == "postalCode"):
+            new_subdivision_data[key] = "Format: " + str(country_restcountries_data[0]["postalCode"]["format"]) + ", Regex: " + str(country_restcountries_data[0]["postalCode"]["regex"])
+        else:
+            new_subdivision_data[key] = country_restcountries_data[0][key]
+        
+    return new_subdivision_data
     
 if __name__ == '__main__':
 
@@ -650,7 +706,7 @@ if __name__ == '__main__':
         help='ISO 3166-2 subdivision local name.')
     parser.add_argument('-type', '--type', type=str, required=False, default="", 
         help='ISO 3166-2 subdivision type.')
-    parser.add_argument('-lat_lng', '--lat_lng', type=str, required=False, default="", 
+    parser.add_argument('-lat_lng', '--lat_lng', type=str, required=False, default=None, 
         help='ISO 3166-2 subdivision latitude/longitude.')
     parser.add_argument('-parent_code', '--parent_code', type=str, required=False, default="", 
         help='ISO 3166-2 subdivision parent subdivision code.')

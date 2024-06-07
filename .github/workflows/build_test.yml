@@ -149,6 +149,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip3 install pytest pytest-cov codecov
 
       #generate codecov report using pytest

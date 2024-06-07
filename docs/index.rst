@@ -45,12 +45,12 @@ There are 7 main data attributes available for each subdivision within the **iso
 
 Last Updated
 ============
-The ISO 3166-2 data was last updated on March 2023. A log of the latest ISO 3166-2 updates can be seen in the 
+The ISO 3166-2 data was last updated on **March 2024**. A log of the latest ISO 3166-2 updates can be seen in the 
 |updates_md_link| file in the repository.
 
 .. |updates_md_link| raw:: html
 
-   <a href="https://github.com/amckenna41/iso3166-updates" target="_blank">UPDATES.md</a>
+   <a href="https://github.com/amckenna41/iso3166-updates/blob/main/UPDATES.MD" target="_blank">UPDATES.md</a>
 
 .. |license_repo_link| raw:: html
 

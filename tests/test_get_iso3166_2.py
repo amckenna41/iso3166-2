@@ -3,6 +3,7 @@ import requests
 import json
 import os
 import getpass
+from importlib.metadata import metadata
 import shutil
 import unittest
 import warnings
@@ -11,7 +12,6 @@ unittest.TestLoader.sortTestMethodsUsing = None
 #ignore resource warnings
 warnings.filterwarnings(action="ignore", message="unclosed", category=ResourceWarning)
 
-@unittest.skip("")
 class Get_ISO3166_2_Tests(unittest.TestCase):
     """
     Test suite for testing get_iso3166_2.py script that pulls all the ISO 3166-2
@@ -59,7 +59,7 @@ class Get_ISO3166_2_Tests(unittest.TestCase):
         test_alpha_error2 = "ABCDEF"
         test_alpha_error3 = 1234
 #1.)
-        export_iso3166_2(alpha_codes=test_alpha_dk, export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, export_csv=1) #Denmark
+        export_iso3166_2(alpha_codes=test_alpha_dk, export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, export_csv=1,) #Denmark
 
         #open exported json
         with open(os.path.join(self.test_output_dir, self.test_output_filename + "-" + test_alpha_dk + ".json")) as output_json:
@@ -419,8 +419,8 @@ class Get_ISO3166_2_Tests(unittest.TestCase):
                         f"Expected attribute value to be root: +2, suffixes: 61, got {test_iso3166_2_mg_json[country][subd]['idd']}.")
                 self.assertEqual(test_iso3166_2_mg_json[country][subd]["currencies"], {"MGA": {"name": "Malagasy ariary", "symbol": "Ar"}}, 
                         f"Expected attribute value to be MGA: name:Malagasy ariary, symbol:Ar, got {test_iso3166_2_mg_json[country][subd]['currencies']}.")
-                self.assertEqual(test_iso3166_2_mg_json[country][subd]["postalCode"], "Format: ###, Regex: ^(\d{3})$", 
-                        f"Expected attribute value to be Format: ###, Regex: ^(\d{3})$, got {test_iso3166_2_mg_json[country][subd]['postalCode']}.")
+                self.assertEqual(test_iso3166_2_mg_json[country][subd]["postalCode"], "Format: ###, Regex:" + r'^(\d{3})$', 
+                        f"Expected attribute value to be Format: ###, Regex: r'^(\d{3})$', got {test_iso3166_2_mg_json[country][subd]['postalCode']}.")
 #4.)
         with (self.assertRaises(ValueError)):
             export_iso3166_2(export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, rest_countries_keys=test_rest_countries_keys_error1) #ZZ

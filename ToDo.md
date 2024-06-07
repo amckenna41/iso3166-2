@@ -21,7 +21,6 @@
 - [X] Reorder software metadata in setup.py to be in order of main func, create __description__ var.
 - [X] Add spcae in between ISO3166
 - [X] Reorder subdivision codes in json output - alphabetically and or numerically.
-- [ ] 
 - [X] In unit tests, reorder subdivision names/codes arrays into alphabetcal/numerical order.
 - [X] In subdivisions in json, add link to flag in iso3166-flag-icons, if no flag then null, skip if status code != 200.
 - [X] Check for updates by calling export function and comparing new and old jsons.
@@ -278,7 +277,7 @@ https://iso3166-updates.com/api/year/2020 : up-to-date.
 - [X] Double check not doing restcall for each subdivision and just once per country.
 - [X] In update_subdivisions, swap out row['country-code] for country_code var.
 - [X] In get_script, add more tests for subdivisions that are added/amended/deleted 
-- [ ] Read over update_subdiv script.
+- [X] Read over update_subdiv script.
 - [X] For subdivisions whose subdivision codes have been updated in the update_subdivisions script, need to redo the script to get the flag URL e.g. GT-01, GT-02 ... KZ-11. Will need to rerun script to incorporate changes.
 - [X] Put flag icons get request code into its own function, used 3 times in get scripts.
 - [X] Add if __name__ == "main" for update_subdivisions, so it can be directly called from cmd.
@@ -293,20 +292,19 @@ https://iso3166-updates.com/api/year/2020 : up-to-date.
 - [X] Move info about iso3166_2_scripts from main readme.
 - [X] For scripts dir, add usage examples including terminal and importing via module import.
 - [X] In update_subdivisions, raise error if no subdivision code input.
-- [ ] Error when adding new subdivision data via cmd line/terminal - some attributes not being added to output object, error when importing parent_code parameter as None.
+- [X] Error when adding new subdivision data via cmd line/terminal - some attributes not being added to output object, error when importing parent_code parameter as None:
 - [X] When adding new subdivision data via cmd line/terminal, latLng attribute may be a string of a list, change to array (copy jsom is original)
-- [ ] When adding new subdivision data via cmd line/terminal, need to reorder attributes to normal order.
+- [X] When adding new subdivision data via cmd line/terminal, need to reorder attributes to normal order.
 - [X] Add separate unit test instance for update_subdivisions script.
 - [X] Run bandit and package security check
 - [X] Raise error in update_subdivisons function when comma separated list of alpha codes input, only one should be input? Add unit tests
 - [X] In update_subdivisions, when making custom change to object, double check that custom latLng values are set to 3.dp.
 - [X] In cusom_subdivisions, when making custom change to object, double check that custom latLng values are set to 3.dp.
-- [ ] In update_subdivisons, when adding new subdivison, validate parentCode, if it doesnt exist raise error, unless current code being added is same as parent code input. 
 - [X] Add CHANGELOG.md - https://keepachangelog.com/en/1.0.0/
-- [ ] In test_iso3166_2 when testing custom_subdivision function, don't directly edit existing iso3166-2.json, create a hard copy and pass in the duplicate file name to function.
+- [X] In test_iso3166_2 when testing custom_subdivision function, don't directly edit existing iso3166-2.json, create a hard copy and pass in the duplicate file name to function.
 - [X] In test_iso3166_2 test format of each subdivision code XX-Y, XX-YY, XX-YYY etc.
 - [X] Change flagUrl attribute to just flag?
-- [ ] In custom_subdivisons function, add a flag/parameter whereby if set it creates a hard copy of the existing iso3166-2.json object so it is not directly overwritten. Issue when using the software and iso3166-2.json will not contain added custom subdivision.
+- [X] In custom_subdivisons function, add a flag/parameter whereby if set it creates a hard copy of the existing iso3166-2.json object so it is not directly overwritten. Issue when using the software and iso3166-2.json will not contain added custom subdivision.
 - [ ] In test_get script, create a request session in setup and close session in tearDown to stop resource warning SSL socket no closed - https://stackoverflow.com/questions/48160728/resourcewarning-unclosed-socket-in-python-3-unit-test
 - [X] In iso3166_2.py add repr class function, add more info to __str__. Add unit tests
 - [X] In custom_subdivisions function, allow for the amendment of an exsting subdivision code, e.g changing its local name, flagUrl, latLng etc. Mention on readme that if erroneous data is found for an attribute/subdivision, you can raise an Issue but you could also implement it immediately into the object via the custom_subdivisions function.
@@ -333,10 +331,22 @@ https://iso3166-updates.com/api/year/2020 : up-to-date.
 - [X] In custom_subdivision function, alpha_code and subdivision_code requried
 - [X] In update_subdivisons, alpha_code and subdivison not required because of subdivisons_csv param
 - [X] If custom path input to ISO3166_2(), add validation to see if path already has the full path to object in it, else append filepath to it.
-- [ ] when packaging, download from testpypi, checking correct files/dirs are downloaded, before publishing to pypi.
-- [ ] When adding restCountries keys to output, ensure they are in alphabetical order and appended to the end of the columns.
+- [X] when packaging, download from testpypi, checking correct files/dirs are downloaded, before publishing to pypi.
+- [X] When adding restCountries keys to output, ensure they are in alphabetical order and appended to the end of the columns.
 - [X] Rerun script with new flag atttribute, update filesize and execution time on readme.
 - [X] Read over docs
+- [X] Remove multiple return data types.
+- [X] Update supported python version >3.10
+- [X] Update 1.6.0 - 1.6.1
+- [X] In update_subdivisons, when adding new subdivison, validate parentCode, if it doesnt exist raise error, unless current code being added is same as parent code input. 
+- [X] When updating_subdivision, can add restcountries keys even if other objects don't have these keys
+- [X] Test for get_flag_url function
+- [X] In get_flag URL, if only RHS of subdivision code input to its parameter, prepend alpha code to it.
+- [X] Issue with nested objects in RestCountries - new function that parses the desired attributes
+- [X] In restcountries request, raise for status to catch 404 error
+- [X] Test adding restcountries keys when amending a subdivision code.
+- [X] For some nested restcountirwes keys, if it is a list, join into a string of comma separated.
+- [X] Update user agent headers for get requests, rotate headers.
 
 Future Additions
 ----------------
@@ -368,4 +378,5 @@ Future Additions
 - [ ] Some sort of flag when creating a new class of the sw indicating that custom data is present in the object.
 - [ ] state_city_data parameter in get_all script that gets all the city data per subdivision from Country State City API using get request.
 - [X] Remove type Errors and just force data attribute types.
+- [ ] Can I integrate AI with app?
 <!-- https://github.com/smucode/react-world-flags -->

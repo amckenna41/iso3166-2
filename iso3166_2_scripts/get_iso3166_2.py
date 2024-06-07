@@ -3,13 +3,12 @@ import time
 import json
 import argparse
 import requests
-import getpass
-from importlib.metadata import metadata
 import pycountry
 import iso3166
 import googlemaps
 from tqdm import tqdm
 import natsort
+import random
 import warnings
 from collections import OrderedDict
 import pandas as pd
@@ -20,11 +19,16 @@ try:
 except:
     from iso3166_2_scripts.update_subdivisions import *
 
-#initialise version 
-__version__ = metadata('iso3166-2')['version']
-
-#initalise User-agent header for requests library 
-USER_AGENT_HEADER = {'User-Agent': f"iso3166-2/{__version__} (https://github.com/amckenna41/iso3166-2; {getpass.getuser()})"}
+#at each calling of script and requests.get, select random user agent from below list
+user_agents = [ 
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36", 
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36", 
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Safari/605.1.15",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Safari/605.1.15"\
+] 
+USER_AGENT_HEADER = {'User-Agent': random.choice(user_agents)}
 
 #base URL for RestCountries API
 rest_countries_base_url = "https://restcountries.com/v3.1/"
@@ -134,8 +138,8 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
             return iso3166.countries_by_alpha3[alpha_code].alpha2
     
     #raise error if input alpha code prameter is not of correct type
-    if not (TypeError(alpha_codes, str)):
-        raise ValueError(f"Alpha code input parameter not of correct type, got {type(alpha_codes)}.")
+    if not (isinstance(alpha_codes, str)):
+        raise TypeError(f"Alpha code input parameter not of correct type, got {type(alpha_codes)}.")
 
     #split multiple alpha codes into list, remove any whitespace, uppercase
     alpha_codes = alpha_codes.upper().replace(' ', '').split(',')
@@ -274,12 +278,11 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
         #create country key in json object
         all_country_data[alpha2] = {}
         
-        #make call to RestCountries api if additional rest countries attributes input
+        #make call to RestCountries api if additional rest countries attributes input, raise error if invalid request
         if (rest_countries_keys != ""):
-            try:
-                country_restcountries_data = requests.get(rest_countries_base_url + "alpha/" + alpha2, headers=USER_AGENT_HEADER, timeout=7).json()
-            except:
-                raise requests.exceptions.RequestException(f"Error thrown when trying to get the country-level data for {alpha2} using the RestCountries API at URL {rest_countries_base_url + 'alpha/' + alpha2}.")
+            country_restcountries_response = requests.get(rest_countries_base_url + "alpha/" + alpha2, headers=USER_AGENT_HEADER, timeout=12)
+            country_restcountries_response.raise_for_status()
+            country_restcountries_data = country_restcountries_response.json()
 
         #iterate over all countrys' subdivisions, assigning subdivision code, name, type, parent code and flag URL, where applicable for the json object
         for subd in all_subdivisions:
