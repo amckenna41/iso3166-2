@@ -33,7 +33,7 @@ Table of Contents
 - [Installation](#installation)
 - [Usage](#usage)
 - [Documentation](#documentation)
-- [Usage](#usage-iso3166_2_scriptsupdate_subdivisionspy)
+- [Usage](#usage)
 - [Directories](#directories)
 - [Issues or Contributing](#issues-or-contributing)
 - [Contact](#contact)
@@ -85,7 +85,7 @@ The other endpoints available in the API are:
 * https://iso3166-2-api.vercel.app/api/subdivision/<input_subdivision>
 * https://iso3166-2-api.vercel.app/api/name/<input_subdivision_name>
 
-Five paths/endpoints are available in the API - `/api/all`, `/api/alpha`, `/api/country_name`, `/api/subdivision` and `/api/name`.
+Six paths/endpoints are available in the API - `/api/all`, `/api/alpha`, `/api/country_name`, `/api/subdivision`, `/api/name` and `/api/list_subdivisions`.
 
 * `/api/all`: get all of the ISO 3166 subdivision data for all countries.
 
@@ -96,6 +96,8 @@ Five paths/endpoints are available in the API - `/api/all`, `/api/alpha`, `/api/
 * `/api/subdivision`: get all of the ISO 3166 subdivision data for 1 or more ISO 3166-2 subdivision codes, e.g `/api/subdivision/GB-ABD`. You can also input a comma separated list of subdivision codes from the same and or different countries and the data for each will be returned e.g `/api/subdivision/IE-MO,FI-17,RO-AG`. If the input subdivision code is not in the correct format then an error will be raised. Similarly if an invalid subdivision code that doesn't exist is input then an error will be raised.
 
 * `/api/name/`: get all of the ISO 3166 subdivision data for 1 or more ISO 3166-2 subdivision names, e.g `/api/name/Derry`. You can also input a comma separated list of subdivision name from the same or different countries and the data for each will be returned e.g `/api/name/Paris,Frankfurt,Rimini`. A closeness function is utilised to find the matching subdivision name, if no exact name match found then the most approximate subdivisions will be returned. Some subdivisions may have the same name, in this case each subdivision and its data will be returned e.g `/api/name/Saint George` (this example returns 5 subdivisions). This endpoint also has the likeness score (`?likeness=`) query string parameter that can be appended to the URL. This can be set between 1 - 100, representing a % of likeness to the input name the return subdivisions should be, e.g: a likeness score of 90 will return fewer potential matches whose name only match to a high degree compared to a score of 10 which will create a larger search space, thus returning more potential subdivision matches. A default likeness of 100 (exact match) is used, if no matching subdivision is found then this is reduced to 90. If an invalid subdivision name that doesn't match any is input then an error will be raised.
+
+* `/api/list_subdivisions`: get list of all the subdivision codes for all countries. 
 
 * `/api`: main homepage and API documentation.
 
@@ -228,7 +230,7 @@ Documentation for installation and usage of the software and API is available on
 
 ISO 3166-2 Scripts
 ------------------
-* The [`iso3166_2_scripts/get_iso3166_2.py`](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_scripts) script is used for pulling and exporting the latest ISO 3166-2 data from the various data sources
+* The [`iso3166_2_scripts/get_iso3166_2.py`](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_scripts) script is used for pulling and exporting the latest ISO 3166-2 data from the various data sources. In this script you can also export additional attributes for each country/subdivision via the RestCountries API.
 * The [`iso3166_2_scripts/update_subdivisions.py`](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_scripts) script is used for adding, amending and or deleting subdivisions to the `iso3166-2` software and object.
 
 Please visit the [README](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_scripts) of the `iso3166_2_scripts` folder for more in depth info about the usage and requirements of the above two scripts <b>vital</b> to the `iso3166-2` software.

@@ -8,14 +8,17 @@
 
 ## v1.6.1 - June 2024
 
+
 ### Added
 - list_subdivisions endpoint added to API that returns list of all subdivision codes per country
 - Unit tests for flag_url function in update_subdivisions script
 - Separate function for extracting and parsing data attributes from RestCountries API
 - Added raise_for_status error catcher for requests library
 
+
 ### Changed
 - Rotate user agent headers for any scripts using requests.get 
+
 
 ### Fixed
 - Error in request URL for RestCountries API in update_subdivisions script

@@ -19,7 +19,7 @@ The other endpoints available in the API are:
 * https://iso3166-2-api.vercel.app/api/name/<input_name>
 * https://iso3166-2-api.vercel.app/api/list_subdivisions
 
-Five paths/endpoints are available in the API - `/api/all`, `/api/alpha`, `/api/subdivision`, `/api/country_name`, `/api/name` and `/api/list_subdivisions`.
+Six paths/endpoints are available in the API - `/api/all`, `/api/alpha`, `/api/subdivision`, `/api/country_name`, `/api/name` and `/api/list_subdivisions`.
 
 * `/api/all`: get all of the ISO 3166 subdivision data for all countries.
 
@@ -221,12 +221,6 @@ curl::
     $ curl -i https://iso3166-2-api.vercel.app/api/name/Northern?likeness=0.8
     $ curl -i https://iso3166-2-api.vercel.app/api/name/Southern?likeness=0.8
 
-.. note::
-    A demo of the software and API is available |demo_link|.
-
-.. |demo_link| raw:: html
-
-   <a href="https://colab.research.google.com/drive/1btfEx23bgWdkUPiwdwlDqKkmUp1S-_7U?usp=sharing" target="_blank">here</a>
 
 Get list of all subdivision codes per country
 ---------------------------------------------
@@ -248,3 +242,11 @@ Python Requests:
 curl::
 
     $ curl -i https://iso3166-2-api.vercel.app/api/list_subdivisions
+
+
+.. note::
+    A demo of the software and API is available |demo_link|.
+
+.. |demo_link| raw:: html
+
+   <a href="https://colab.research.google.com/drive/1btfEx23bgWdkUPiwdwlDqKkmUp1S-_7U?usp=sharing" target="_blank">here</a>

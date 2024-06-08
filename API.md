@@ -13,6 +13,7 @@ The other endpoints available in the API are:
 * https://iso3166-2-api.vercel.app/api/country_name/<input_country_name>
 * https://iso3166-2-api.vercel.app/api/subdivision/<input_subdivision>
 * https://iso3166-2-api.vercel.app/api/name/<input_subdivision_name>
+* https://iso3166-2-api.vercel.app/api/list_subdivisions
 
 Six paths/endpoints are available in the API - `/api/all`, `/api/alpha`, `/api/country_name`, `/api/subdivision`, `/api/name` and `/api/list_subdivisions`.
 

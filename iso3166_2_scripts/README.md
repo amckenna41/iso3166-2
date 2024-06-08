@@ -119,6 +119,8 @@ python3 iso3166_2_scripts/update_subdivisions.py --alpha_code=FR --subdivision_c
 python3 iso3166_2_scripts/update_subdivisions.py  --subdivision_csv=new_subdivisions.csv
 ```
 
+[Back to top](#TOP)
+
 
 [python]: https://www.python.org/downloads/release/python-360/
 [requests]: https://requests.readthedocs.io/
