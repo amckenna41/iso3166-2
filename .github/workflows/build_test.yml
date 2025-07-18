@@ -13,7 +13,7 @@ on:
   pull_request:
     branches: [ main ]
 
-  # allow for workflow to be manually initiated from the Actions tab
+  #allow for workflow to be manually initiated from the Actions tab
   workflow_dispatch:
 
 jobs:
@@ -34,17 +34,17 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     
-    # install all required modules and dependancies using pip and setup.py installation
+    # install all required modules and dependencies using pip and setup.py installation
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip3 install pytest pytest-cov bandit safety codecov beautifulsoup4
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        if [ -f tests/requirements.txt ]; then pip install -r tests/requirements.txt; fi
   
     #unit tests using unittest framework
     - name: Running unit tests
-      env: 
-        GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+      # env: 
+      #   GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
       run: |
         echo "Testing using unittest..."
         python3 -m unittest discover tests -v
@@ -58,7 +58,7 @@ jobs:
         matrix:
             # os: [ubuntu-latest, windows-latest] #testing on multiple OS's, macos-latest
             os: [ubuntu-latest]
-            python-version: ["3.8", "3.9", "3.10"]   #testing on multiple python versions
+            python-version: ["3.10"]   #testing on multiple python versions
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
@@ -100,14 +100,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]   #testing on multiple python versions
+        python-version: ["3.10"]   #testing on multiple python versions
 
     steps:
       #checkout repo
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      # install all required modules and dependancies using pip installation
+      # install all required modules and dependencies using pip installation
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -135,7 +135,7 @@ jobs:
           path: flake8_artifacts/flake8_output.txt
           if-no-files-found: error 
 
-  #linter check on repo
+  #code coverage check
   code_coverage:
     runs-on: ubuntu-latest
     strategy:
@@ -147,7 +147,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      # install all required coverage test modules and dependancies 
+      # install all required coverage test modules and dependencies 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -156,8 +156,6 @@ jobs:
 
       #generate codecov report using pytest
       - name: Generate Coverage report
-        env: 
-          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
         run: pytest --cov tests/
 
       #upload to Code Coverage, only if matrix python version is 3.10

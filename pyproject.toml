@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "iso3166-2"
-version = "1.6.1"
-description = "A lightweight Python package, and accompanying API, used to access all of the world's most up-to-date and accurate ISO 3166-2 subdivision data, including: name, local name, code, parent code, type, latitude/longitude and flag."
+version = "1.7.0"
+description = "A lightweight Python package, and accompanying API, used to access all of the world's most up-to-date and accurate ISO 3166-2 subdivision data, including: name, local/other name, code, parent code, type, latitude/longitude, flag and history."
 authors = ["AJ McKenna <amckenna41@qub.ac.uk>"]
 maintainers = ["AJ McKenna <amckenna41@qub.ac.uk>"]
 license = "MIT"
@@ -22,9 +22,10 @@ classifiers = [
         "Programming Language :: Python :: 3 :: Only",
         "Topic :: Scientific/Engineering",
         "Topic :: Scientific/Engineering :: Information Analysis",
+        "Topic :: Software Development :: Libraries",
         "Topic :: Software Development :: Libraries :: Python Modules"
 ]
-keywords = ["iso", "iso3166", "beautifulsoup", "python", "pypi", "countries", "country codes", "iso3166-2", "iso3166-1", "alpha-2", "iso3166-updates", "subdivisions", "regions"]
+keywords = ["iso", "iso3166", "beautifulsoup", "python", "pypi", "countries", "country codes", "iso3166-2", "iso3166-1", "alpha-2", "iso3166-updates", "subdivisions", "regions", "dataset"]
 packages = [{include = "iso3166_2"}]
 homepage = "https://iso3166-2-api.vercel.app/api"
 

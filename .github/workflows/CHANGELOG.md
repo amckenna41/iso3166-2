@@ -4,7 +4,86 @@
 
 ### Added
 - Add list of cities for each subdivision using the country-states-city API
-- Added __version__ attribute to ISO3166_2() class
+- Added __version__ attribute to Subdivisions() class
+- Local names attribute added with up-to-date accurate names
+- For each subdivision's local name in the localName attribute, if the attribute isn't null then add the ISO 639 language code in brackets after the value. If there are multiple local names, separate via comma 
+- Function added to ISO3166_2() class that checks for the latest version of the ISO3166-2 object, returning the differences of the current version
+- When adding a custom subdivision via its respective function, user can also add custom attributes to it e.g population, area etc
+- In Subdivisions class, you can now create an instance of the class but exclude some of the default attributes returned per subdivisions
+- Added unit tests, docs updates and examples in readme's about accessing multiple country's subdivision data via an instance of the object directly
+- For the localOtherName attribute, for non-latin alphabet subdivision, added the phonetic transcriptions e.g for Chinese subdivisions, Pinyin chinese is included for each subdivision 
+- Added filter query string parameter to API, allowing for specific attributes for the subdivisions to be filtered in the API GET request e.g "?filter=name,type" etc
+- Added filter parameter to search function in software, allowing you to search for a subdivision, returning only a subset of desired attributes
+- Added new unit tests for the filter query string parameter
+- In add_local_names function, new parameter called remove_duplicate_translations added. When set to 1, any values in localOtherName column that match the same official subdivision name in the name column, remove the specific local/other name. For example, CG-7: official name in French is Likouala which is the same as it is translated in English, DO-38: official name in Spanish is Enriquillo which is similar to its English translation Enriquillo
+- When importing the local names csv, an error is raised if no language code is specified for the local/other name
+- Additional unit tests added for new local/other name functionality including tests that validate the language code
+- In get script, prior to exporting a message is printed out which includes all the attributes to be exported
+- Added parameter to local names function where you can limit the number of local/other names per subdivision attribute. This is useful for some subdivisions's which have up to 6 or 7 translations/local variants etc
+- Added additional unit tests for subdivision_updates.csv
+- Added extra validation on subdivision_updates.csv, ensuring alpha codes, subdivision codes and date format are the valid format etc
+- The search functionality in the Python package now allows you to include a subset of subdivision attributes via the filter_attributes function parameter
+- The search functionality in the Python package now allows you to search via the localOtherName attribute as well as the default name attribute. By default only the name attribute is searched over
+- Language lookup custom script which creates a Language class and generates an output file of each language used in the local/other names file, including its code and name
+- Language lookup csv which is a custom exported file of language codes and their associated names
+- Unit tests for language lookup functionality 
+- Added utilities module which contains several functions that are used across the project, rather than replicating the functions in multiple modules
+- requirements.txt added to scripts directory to outline the full list of packages for export pipeline
+- Add __str__ and __repr__ functions to language lookup class in export pipeline, added relevant unit tests
+- Added get_alpha_codes_list & export_iso3166_2_data utility functions, cleaning up the main function - relevant unit tests added to test_utils
+- Added patching to unit tests such that system outputs/print statements are not displayed from modules when running tests
+- Added delete language object functionality to language lookup table
+- Added user agent functionality to language lookup script
+- In language lookup export function, you can now put in custom language code to export 
+- In update_subdivisions module and function, you can now add custom attributes to a subdivision via the custom_attributes parameter
+- Added logic to ensure the custom order of attributes in exported iso3166-2 object is maintained 
+- In extract script, optional proxy functionality added to requests.get functions to help avoid 429 errors and timeout errors
+
+### Fixed
+- In convert_to_alpha2 function that converts a alpha-3 or numeric code into alpha-2, if a alpha-2 code was input it returns None instead of the same input alpha-2
+- Some spanish subdivision names had a "*" at the end of their name e.g ES-A, ES-NA, which has now been removed
+- For filter query string param, passing in no value to it would throw an error, now it just returns all data as is
+- Updated all 2 letter ISO 639 language codes in local/other names csv into their ISO 639-2/3 counterparts
+- When including historical updates data when exporting for each subdivision in the get_script, the language codes within the localOtherName column are removed
+- Fixed error where only the first local/other name for a specific row is being imported
+- Convert to alpha_2 code function changed such that if an invalid code is input it is returned from the function and an error raised instead of just returning None/null
+- In custom_subdivision function, the original subdivision data/JSON was being reimported. Now the main self.all attribute is used
+- Several rows (adds, amends, deletes) removed from subdivision_updates.csv as they are implemented in base object now
+- Error with None values in subdivision_updates.csv not being interpreted as None
+
+### Changed
+- Class name of software changed from ISO3166_2() to Subdivisions()
+- In get script, changed alpha_codes_from parameter to alpha_codes_from_to, allowing you to get the ISO 3166-2 data between two alpha codes inclusive. Previously, you would just input a single alpha code and get the data from it alphabetically
+- In CSV with each subdivision's local name (iso3166_2_updates/local_names.csv), the localName column has been changed to localOtherName, meaning that its value can be a local translation of the subdivision name as well as just another name for it
+- If a subdivision doesn't have a local name or variant of its name then the attribute is now set to null
+- When adding new subdivision, latLng attribute value not explicitly required, if not provided it will be set to []
+- Changed add_local_names function in the update_subdivisions.py script to add_local_other_names to reflect "other" names being added to the attribute
+- local_other_names.csv contains the name column as well which is the official ISO subdivision name, added for readability of the file
+- Multiple subdivision names changed to match the language of the majority of their other subdivision names e.g some Finish subdivision name's have been changed from their Swedish name into Finish to match the majority of the subdivision's being in Finish. Also Haiti has majority subdivision's in French, hence 2 are changed from HT to FR languages
+- Removed the localNameSame column from subdivision_updates.csv. Changed the localName column to localOtherName, code to subdivisionCode and alpha_code to alphaCode.
+- All references to localName (vars, comments, functions etc) changed to localOtherName to incorporate the new other name variants for the attribute
+- During the unit tests, any test dirs/folders are exported to the tests folder itself rather than the main dir
+- Split any local name related functions into their own script
+- Changed language description to mention change from local name to local/other name
+- Changed a couple of methods in iso3166 software into static methods
+- Changed name of dir with all main and auxillary scripts from iso3166_2_scripts to scripts
+- Updated the order for the local/other names per subdivision in the csv
+- Changed export filenames for get_script to have a '_' before list of alpha codes rather than a '-'
+- Changed calls to convert_to_alpha function in get_script such that each input alpha code is validated through it rather than just alpha-3 or numeric codes
+- All references to the convert_to_alpha2 function are now used as way to validate and convert the code, raising an error if applicable
+- In any unit tests that use requests library, chaanged from static user agent to using fakeuseragent package
+- Rather than hard coding the list of applicable user agents to use when using the requests library, use the fake-useragent package to randomly select one
+- alpha_codes_from_to parameter name changed to alpha_codes_range 
+- For history attribute, iso3166-updates attribute names updated to their correct name
+- Changed any print statement outputs to f strings
+- Order of language lookup table output updated in export
+- In get script, exclude_lat_lng parameter changed to extract_lat_lng - default of False
+- tqdm loop tidied up
+- iso3166_2_updates folder changed to iso3166_2_resources
+- Split up several code blocks and functionalities of export script into separate functions
+- Removed separate JSON imports for windows/mac
+- All flag icon references on iso3166-flag-icons repo changed to link to the raw image file
+- Throughout software package and API, excludeAttributes changed to filter Attributes - only include the list of attributes input
 
 ## v1.6.1 - June 2024
 
@@ -18,12 +97,12 @@
 
 ### Changed
 - Rotate user agent headers for any scripts using requests.get 
-
+- Contributing page on docs updated
 
 ### Fixed
 - Error in request URL for RestCountries API in update_subdivisions script
 - Raise TypeError if invalid data type input to export_iso3166_2 function rather than system crashing
-
+- When getting the coordinates (latitude/longitude) per subdivision, a more granular and accurate response is ensured by appending the country name to the subdivision name when searching via the Google Maps API
 
 ## v1.6.0 - June 2024
 

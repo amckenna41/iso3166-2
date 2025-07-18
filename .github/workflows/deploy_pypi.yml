@@ -17,7 +17,7 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     strategy:
       matrix:
-        python-version: [3.9]  #deploying using one Python version on 1 runner
+        python-version: [3.10]  #deploying using one Python version on 1 runner
     steps:
     - uses: actions/checkout@v4
     # build distribution package using poetry tool and upload to the PYPi server via custom github action

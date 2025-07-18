@@ -6,7 +6,7 @@ old/
 test-iso3166_2/
 test_iso3166-2/
 iso3166-2-data-archive/
-get_iso3166_2.py
+# get_iso3166_2.py
 .DS_Store
 poetry.lock
 
@@ -139,3 +139,19 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+iso3166_2_comparison.py
+
+notes.txt
+
+successful_tests/
+
+iso3166_2_colab_script.py
+
+iso3166_2_resources/subdivision_updates_original.csv
+iso3166_2_resources/subdivision_updates_adds.csv
+iso3166_2_resources/subdivision_updates_new_old.csv
+
+.github/workflows/ToDo.md
+
+tests/test_output_dir
