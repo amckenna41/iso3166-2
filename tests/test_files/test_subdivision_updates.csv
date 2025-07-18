@@ -1,0 +1,505 @@
+alphaCode,subdivisionCode,name,localOtherName,type,parentCode,flag,latLng,customAttributes,delete,notes,dateIssued
+CF,CF-KG,Kémo-Gribingui,,,,,,,,Changing CF-KG name from its Sango translation to French to align with CF's subdivision names,2024-05-01
+CY,CY-05,Pafos,,,,,,,,Changing CY-05 name from its Turkish translation to Greek to align with CY's other subdivision names,2024-05-01
+CY,CY-06,Keryneia,,,,,,,,Changing CY-06 name from its Turkish translation to Greek to align with CY's other subdivision names,2024-05-01
+DJ,DJ-OB,Obock,,,,,,,,Changing DJ-OB name from its Arabic translation to French to align with DJ's other subdivision names,2024-05-01
+FI,FI-06,Kanta-Häme,,,,,,,,Changing FI-06 name from its Swedish translation to Finish to align with FI's other subdivision names,2024-05-01
+FI,FI-11,Pirkanmaa,,,,,,,,Changing FI-11 name from its Swedish translation to Finish to align with FI's other subdivision names,2024-05-01
+FI,FI-13,Pohjois-Karjala,,,,,,,,Changing FI-13 name from its Swedish translation to Finish to align with FI's other subdivision names,2024-05-01
+FI,FI-14,Pohjois-Pohjanmaa,,,,,,,,Changing FI-14 name from its Swedish translation to Finish to align with FI's other subdivision names,2024-05-01
+FI,FI-15,Pohjois-Savo,,,,,,,,Changing FI-15 name from its Swedish translation to Finish to align with FI's other subdivision names,2024-05-01
+FI,FI-16,Päijät-Häme,,,,,,,,Changing FI-16 name from its Swedish translation to Finish to align with FI's other subdivision names,2024-05-01
+FI,FI-18,Uusimaa,,,,,,,,Changing FI-18 name from its Swedish translation to Finish to align with FI's other subdivision names,2024-05-01
+FI,FI-19,Varsinais-Suomi,,,,,,,,Changing FI-19 name from its Swedish translation to Finish to align with FI's other subdivision names,2024-05-01
+FR,FR-971,,,Overseas departmental collectivity,,,,,,Changing FR-971 subdivision type from overseas department to Overseas departmental collectivity,2021-11-25
+FR,FR-972,,,Overseas unique territorial collectivity,,,,,,Changing FR-972 subdivision type from overseas department to Overseas unique territorial collectivity,2021-11-25
+FR,FR-973,,,Overseas unique territorial collectivity,,,,,,Changing FR-973 subdivision type from overseas department to Overseas unique territorial collectivity,2021-11-25
+FR,FR-974,,,Overseas departmental collectivity,,,,,,Changing FR-974 subdivision type from overseas department to Overseas departmental collectivity,2021-11-25
+FR,FR-976,,,Overseas departmental collectivity,,,,,,Changing FR-976 subdivision type from overseas department to Overseas departmental collectivity,2021-11-25
+FR,FR-67,,,,FR-6AE,,,,,Updating parent code of FR-67 to FR-6AE,2021-11-25
+FR,FR-68,,,,FR-6AE,,,,,Updating parent code of FR-68 to FR-6AE,2021-11-25
+GB,GB-ABC,,,,GB-NIR,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-ABD,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-ABE,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-AGB,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-AGY,,,,GB-WLS,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-AND,,,,GB-NIR,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-ANN,,,,GB-NIR,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-ANS,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-BAS,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-BBD,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-BCP,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-BDF,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-BDG,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-BEN,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-BEX,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-BFS,,,,GB-NIR,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-BGE,,,,GB-WLS,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-BGW,,,,GB-WLS,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-BIR,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-BNE,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-BNH,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-BNS,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-BOL,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-BPL,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-BRC,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-BRD,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-BRY,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-BST,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-BUR,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-CAM,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-CAY,,,,GB-WLS,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-CBF,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-CCG,,,,GB-NIR,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-CGN,,,,GB-WLS,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-CHE,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-CHW,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-CLD,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-CLK,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-CMA,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-CMD,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-CMN,,,,GB-WLS,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-CON,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-COV,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-CRF,,,,GB-WLS,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-CRY,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-CWY,,,,GB-WLS,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-DAL,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-DBY,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-DEN,,,,GB-WLS,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-DER,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-DEV,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-DGY,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-DNC,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-DND,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-DOR,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-DRS,,,,GB-NIR,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-DUD,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-DUR,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-EAL,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-EAW,England and Wales,,Collecting of England and Wales,,,"[52.355, 1.174]",,,Adding GB-EAW subdivision for completeness according to remark 2 on ISO page,2021-11-25
+GB,GB-EAY,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-EDH,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-EDU,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-ELN,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-ELS,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-ENF,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-ERW,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-ERY,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-ESS,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-ESX,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-FAL,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-FIF,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-FLN,,,,GB-WLS,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-FMO,,,,GB-NIR,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-GAT,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-GBN,Great Britain,,Collection of countries,,,"[55.378, 3.436]",,,Adding GB-GBN subdivision for completeness according to remark 2 on ISO page,2021-11-25
+GB,GB-GLG,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-GLS,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-GRE,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-GWN,,,,GB-WLS,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-HAL,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-HAM,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-HAV,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-HCK,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-HEF,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-HIL,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-HLD,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-HMF,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-HNS,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-HPL,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-HRT,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-HRW,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-HRY,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-IOS,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-IOW,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-ISL,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-IVC,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-KEC,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-KEN,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-KHL,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-KIR,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-KTT,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-KWL,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-LAN,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-LBC,,,,GB-NIR,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-LBH,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-LCE,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-LDS,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-LEC,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-LEW,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-LIN,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-LIV,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-LND,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-LUT,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-MAN,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-MDB,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-MDW,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-MEA,,,,GB-NIR,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-MIK,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-MLN,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-MON,,,,GB-WLS,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-MRT,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-MRY,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-MTY,,,,GB-WLS,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-MUL,,,,GB-NIR,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-NAY,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-NBL,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-NEL,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-NET,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-NFK,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-NGM,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-NLK,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-NLN,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-NMD,,,,GB-NIR,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-NTL,,,,GB-WLS,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-NTT,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-NTY,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-NWM,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-NWP,,,,GB-WLS,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-NYK,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-OLD,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-ORK,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-OXF,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-PKN,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-PLY,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-POR,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-POW,,,,GB-WLS,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-PTE,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-RCC,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-RCH,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-RCT,,,,GB-WLS,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-RDB,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-RDG,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-RFW,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-RIC,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-ROT,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-RUT,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-SAW,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-SAY,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-SCB,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-SFK,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-SFT,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-SGC,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-SHF,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-SHN,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-SHR,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-SKP,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-SLF,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-SLG,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-SLK,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-SND,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-SOL,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-SOM,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-SOS,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-SRY,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-STE,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-STG,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-STH,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-STN,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-STS,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-STT,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-STY,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-SWA,,,,GB-WLS,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-SWD,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-SWK,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-TAM,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-TFW,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-THR,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-TOB,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-TOF,,,,GB-WLS,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-TRF,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-TWH,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-VGL,,,,GB-WLS,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-UKM,United Kingdom,,Country,,https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/GB/GB-UKM.svg,"[55.378, 3.436]",,,Adding GB-UKM subdivision for completeness according to remark 2 on ISO page,2021-11-25
+GB,GB-WAR,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-WBK,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-WDU,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-WFT,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-WGN,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-WIL,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-WKF,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-WLL,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-WLN,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-WLV,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-WND,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-WNM,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-WOK,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-WOR,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-WRL,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-WRT,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-WRX,,,,GB-WLS,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-WSM,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-WSX,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-YOR,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
+GB,GB-ZET,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
+GT,GT-AV (GT-16),,,,,,,,,Changing subdivision code from GT-AV to GT-16,2021-11-25
+GT,GT-BV (GT-15),,,,,,,,,Changing subdivision code from GT-BV to GT-15,2021-11-25
+GT,GT-CM (GT-04),,,,,,,,,Changing subdivision code from GT-CM to GT-04,2021-11-25
+GT,GT-CQ (GT-20),,,,,,,,,Changing subdivision code from GT-CQ to GT-20,2021-11-25
+GT,GT-ES (GT-05),,,,,,,,,Changing subdivision code from GT-ES to GT-05,2021-11-25
+GT,GT-GU (GT-01),,,,,,,,,Changing subdivision code from GT-GU to GT-01,2021-11-25
+GT,GT-HU (GT-13),,,,,,,,,Changing subdivision code from GT-HU to GT-13,2021-11-25
+GT,GT-IZ (GT-18),,,,,,,,,Changing subdivision code from GT-IZ to GT-18,2021-11-25
+GT,GT-JA (GT-21),,,,,,,,,Changing subdivision code from GT-JA to GT-21,2021-11-25
+GT,GT-JU (GT-22),,,,,,,,,Changing subdivision code from GT-JU to GT-22,2021-11-25
+GT,GT-PE (GT-17),,,,,,,,,Changing subdivision code from GT-PE to GT-17,2021-11-25
+GT,GT-PR (GT-02),,,,,,,,,Changing subdivision code from GT-PR to GT-02,2021-11-25
+GT,GT-QC (GT-14),,,,,,,,,Changing subdivision code from GT-QC to GT-14,2021-11-25
+GT,GT-QZ (GT-09),,,,,,,,,Changing subdivision code from GT-QZ to GT-09,2021-11-25
+GT,GT-RE (GT-11),,,,,,,,,Changing subdivision code from GT-RE to GT-11,2021-11-25
+GT,GT-SA (GT-03),,,,,,,,,Changing subdivision code from GT-SA to GT-03,2021-11-25
+GT,GT-SM (GT-12),,,,,,,,,Changing subdivision code from GT-SM to GT-12,2021-11-25
+GT,GT-SO (GT-07),,,,,,,,,Changing subdivision code from GT-SO to GT-07,2021-11-25
+GT,GT-SR (GT-06),,,,,,,,,Changing subdivision code from GT-SR to GT-06,2021-11-25
+GT,GT-SU (GT-10),,,,,,,,,Changing subdivision code from GT-SU to GT-10,2021-11-25
+GT,GT-TO (GT-08),,,,,,,,,Changing subdivision code from GT-TO to GT-08,2021-11-25
+GT,GT-ZA (GT-19),,,,,,,,,Changing subdivision code from GT-ZA to GT-19,2021-11-25
+HT,HT-GA,Grande’Anse,,,,,,,,Changing HT-GA name from its Haitian Creole translation to French to align with HT's other subdivision names,2024-05-01
+HT,HT-NI,Nippes,,,,,,,,Changing HT-NI name from its Haitian Creole translation to French to align with HT's other subdivision names,2024-05-01
+HT,HT-OU,Ouest,,,,,,,,Changing HT-OU name from its Haitian Creole translation to French to align with HT's other subdivision names,2024-05-01
+HT,HT-SD,Sud,,,,,,,,Changing HT-SD name from its Haitian Creole translation to French to align with HT's other subdivision names,2024-05-01
+HT,HT-SE,Sud-Est,,,,,,,,Changing HT-SE name from its Haitian Creole translation to French to align with HT's other subdivision names,2024-05-01
+HU,HU-CS,Csongrád-Csanád,,,,,,,,Changing subdivision name from Csongrád to Csongrád-Csanád,2021-11-25
+KG,KG-C,Chüy,,,,,,,,Changing KG-C name from its Russian translation to Kyrgyz to align with KG's subdivision names,2024-05-01
+KG,KG-GO,Osh Shaary,,,,,,,,Changing KG-GO name from its Russian translation to Kyrgyz to align with KG's subdivision names,2024-05-01
+KG,KG-J,Jalal-Abad,,,,,,,,Changing KG-J name from its Russian translation to Kyrgyz to align with KG's subdivision names,2024-05-01
+KG,KG-Y,Ysyk-Köl,,,,,,,,Changing KG-Y name from its Russian translation to Kyrgyz to align with KG's subdivision names,2024-05-01
+LV,LV-JKB,,,,,,,,1,Deletion of LV-JKB republican city,2021-11-25
+LV,LV-VMR,,,,,,,,1,Deletion of LV-VMR republican city,2021-11-25
+LV,LV-001,,,,,,,,1,Deletion of LV-001 municipality,2021-11-25
+LV,LV-003,,,,,,,,1,Deletion of LV-003 municipality,2021-11-25
+LV,LV-004,,,,,,,,1,Deletion of LV-004 municipality,2021-11-25
+LV,LV-005,,,,,,,,1,Deletion of LV-005 municipality,2021-11-25
+LV,LV-006,,,,,,,,1,Deletion of LV-006 municipality,2021-11-25
+LV,LV-008,,,,,,,,1,Deletion of LV-008 municipality,2021-11-25
+LV,LV-009,,,,,,,,1,Deletion of LV-009 municipality,2021-11-25
+LV,LV-010,,,,,,,,1,Deletion of LV-010 municipality,2021-11-25
+LV,LV-012,,,,,,,,1,Deletion of LV-012 municipality,2021-11-25
+LV,LV-013,,,,,,,,1,Deletion of LV-013 municipality,2021-11-25
+LV,LV-014,,,,,,,,1,Deletion of LV-014 municipality,2021-11-25
+LV,LV-017,,,,,,,,1,Deletion of LV-017 municipality,2021-11-25
+LV,LV-018,,,,,,,,1,Deletion of LV-018 municipality,2021-11-25
+LV,LV-019,,,,,,,,1,Deletion of LV-019 municipality,2021-11-25
+LV,LV-020,,,,,,,,1,Deletion of LV-020 municipality,2021-11-25
+LV,LV-021,,,,,,,,1,Deletion of LV-021 municipality,2021-11-25
+LV,LV-023,,,,,,,,1,Deletion of LV-023 municipality,2021-11-25
+LV,LV-024,,,,,,,,1,Deletion of LV-024 municipality,2021-11-25
+LV,LV-025,,,,,,,,1,Deletion of LV-025 municipality,2021-11-25
+LV,LV-027,,,,,,,,1,Deletion of LV-027 municipality,2021-11-25
+LV,LV-028,,,,,,,,1,Deletion of LV-028 municipality,2021-11-25
+LV,LV-029,,,,,,,,1,Deletion of LV-029 municipality,2021-11-25
+LV,LV-030,,,,,,,,1,Deletion of LV-030 municipality,2021-11-25
+LV,LV-031,,,,,,,,1,Deletion of LV-031 municipality,2021-11-25
+LV,LV-032,,,,,,,,1,Deletion of LV-032 municipality,2021-11-25
+LV,LV-034,,,,,,,,1,Deletion of LV-034 municipality,2021-11-25
+LV,LV-035,,,,,,,,1,Deletion of LV-035 municipality,2021-11-25
+LV,LV-036,,,,,,,,1,Deletion of LV-036 municipality,2021-11-25
+LV,LV-037,,,,,,,,1,Deletion of LV-037 municipality,2021-11-25
+LV,LV-038,,,,,,,,1,Deletion of LV-038 municipality,2021-11-25
+LV,LV-039,,,,,,,,1,Deletion of LV-039 municipality,2021-11-25
+LV,LV-040,,,,,,,,1,Deletion of LV-040 municipality,2021-11-25
+LV,LV-043,,,,,,,,1,Deletion of LV-043 municipality,2021-11-25
+LV,LV-044,,,,,,,,1,Deletion of LV-044 municipality,2021-11-25
+LV,LV-045,,,,,,,,1,Deletion of LV-045 municipality,2021-11-25
+LV,LV-046,,,,,,,,1,Deletion of LV-046 municipality,2021-11-25
+LV,LV-048,,,,,,,,1,Deletion of LV-048 municipality,2021-11-25
+LV,LV-049,,,,,,,,1,Deletion of LV-049 municipality,2021-11-25
+LV,LV-051,,,,,,,,1,Deletion of LV-051 municipality,2021-11-25
+LV,LV-053,,,,,,,,1,Deletion of LV-053 municipality,2021-11-25
+LV,LV-055,,,,,,,,1,Deletion of LV-055 municipality,2021-11-25
+LV,LV-057,,,,,,,,1,Deletion of LV-057 municipality,2021-11-25
+LV,LV-060,,,,,,,,1,Deletion of LV-060 municipality,2021-11-25
+LV,LV-061,,,,,,,,1,Deletion of LV-061 municipality,2021-11-25
+LV,LV-063,,,,,,,,1,Deletion of LV-063 municipality,2021-11-25
+LV,LV-064,,,,,,,,1,Deletion of LV-064 municipality,2021-11-25
+LV,LV-065,,,,,,,,1,Deletion of LV-065 municipality,2021-11-25
+LV,LV-066,,,,,,,,1,Deletion of LV-066 municipality,2021-11-25
+LV,LV-069,,,,,,,,1,Deletion of LV-069 municipality,2021-11-25
+LV,LV-070,,,,,,,,1,Deletion of LV-070 municipality,2021-11-25
+LV,LV-071,,,,,,,,1,Deletion of LV-071 municipality,2021-11-25
+LV,LV-072,,,,,,,,1,Deletion of LV-072 municipality,2021-11-25
+LV,LV-074,,,,,,,,1,Deletion of LV-074 municipality,2021-11-25
+LV,LV-075,,,,,,,,1,Deletion of LV-075 municipality,2021-11-25
+LV,LV-076,,,,,,,,1,Deletion of LV-076 municipality,2021-11-25
+LV,LV-078,,,,,,,,1,Deletion of LV-078 municipality,2021-11-25
+LV,LV-079,,,,,,,,1,Deletion of LV-079 municipality,2021-11-25
+LV,LV-081,,,,,,,,1,Deletion of LV-081 municipality,2021-11-25
+LV,LV-082,,,,,,,,1,Deletion of LV-082 municipality,2021-11-25
+LV,LV-083,,,,,,,,1,Deletion of LV-083 municipality,2021-11-25
+LV,LV-084,,,,,,,,1,Deletion of LV-084 municipality,2021-11-25
+LV,LV-085,,,,,,,,1,Deletion of LV-085 municipality,2021-11-25
+LV,LV-086,,,,,,,,1,Deletion of LV-086 municipality,2021-11-25
+LV,LV-090,,,,,,,,1,Deletion of LV-090 municipality,2021-11-25
+LV,LV-092,,,,,,,,1,Deletion of LV-092 municipality,2021-11-25
+LV,LV-093,,,,,,,,1,Deletion of LV-093 municipality,2021-11-25
+LV,LV-095,,,,,,,,1,Deletion of LV-095 municipality,2021-11-25
+LV,LV-096,,,,,,,,1,Deletion of LV-096 municipality,2021-11-25
+LV,LV-098,,,,,,,,1,Deletion of LV-098 municipality,2021-11-25
+LV,LV-100,,,,,,,,1,Deletion of LV-100 municipality,2021-11-25
+LV,LV-103,,,,,,,,1,Deletion of LV-103 municipality,2021-11-25
+LV,LV-104,,,,,,,,1,Deletion of LV-104 municipality,2021-11-25
+LV,LV-105,,,,,,,,1,Deletion of LV-105 municipality,2021-11-25
+LV,LV-107,,,,,,,,1,Deletion of LV-107 municipality,2021-11-25
+LV,LV-108,,,,,,,,1,Deletion of LV-108 municipality,2021-11-25
+LV,LV-109,,,,,,,,1,Deletion of LV-109 municipality,2021-11-25
+LV,LV-110,,,,,,,,1,Deletion of LV-110 municipality,2021-11-25
+LV,LV-DGV,,,State city,,,,,,Changing LV-DGV subdivision type from republican city to state city,2021-11-25
+LV,LV-JEL,,,State city,,,,,,Changing LV-JEL subdivision type from republican city to state city,2021-11-25
+LV,LV-JUR,,,State city,,,,,,Changing LV-JUR subdivision type from republican city to state city,2021-11-25
+LV,LV-LPX,,,State city,,,,,,Changing LV-LPX subdivision type from republican city to state city,2021-11-25
+LV,LV-REZ,,,State city,,,,,,Changing LV-REZ subdivision type from republican city to state city,2021-11-25
+LV,LV-RIX,,,State city,,,,,,Changing LV-RIX subdivision type from republican city to state city,2021-11-25
+LV,LV-VEN,,,State city,,,,,,Changing LV-VEN subdivision type from republican city to state city,2021-11-25
+LT,LT-01,,,,LT-SA,,,,,Updating LT-01 parent subdivision code,2021-11-25
+LT,LT-02,,,,LT-AL,,,,,Updating LT-02 parent subdivision code,2021-11-25
+LT,LT-03,,,,LT-AL,,,,,Updating LT-03 parent subdivision code,2021-11-25
+LT,LT-04,,,,LT-UT,,,,,Updating LT-04 parent subdivision code,2021-11-25
+LT,LT-05,Birštonas,,,LT-KU,,,,,Changing LT-05 subdivision name spelling and assigning parent subdivision code,2021-11-25
+LT,LT-06,,,,LT-PN,,,,,Updating LT-06 parent subdivision code,2021-11-25
+LT,LT-07,,,,LT-AL,,,,,Updating LT-07 parent subdivision code,2021-11-25
+LT,LT-08,,,,LT-VL,,,,,Updating LT-08 parent subdivision code,2021-11-25
+LT,LT-09,,,,LT-UT,,,,,Updating LT-09 parent subdivision code,2021-11-25
+LT,LT-10,,,,LT-KU,,,,,Updating LT-10 parent subdivision code,2021-11-25
+LT,LT-11,,,,LT-SA,,,,,Updating LT-11 parent subdivision code,2021-11-25
+LT,LT-12,,,,LT-TA,,,,,Updating LT-12 parent subdivision code,2021-11-25
+LT,LT-13,,,,LT-KU,,,,,Updating LT-13 parent subdivision code,2021-11-25
+LT,LT-14,Kalvarija,,,LT-MR,,,,,Changing LT-14 subdivision name spelling and assigning parent subdivision code,2021-11-25
+LT,LT-15,,,,LT-KU,,,,,Updating LT-15 parent subdivision code,2021-11-25
+LT,LT-16,,,,LT-KU,,,,,Updating LT-16 parent subdivision code,2021-11-25
+LT,LT-17,,,,LT-MR,,,,,Updating LT-17 parent subdivision code,2021-11-25
+LT,LT-18,,,,LT-KU,,,,,Updating LT-18 parent subdivision code,2021-11-25
+LT,LT-19,,,,LT-SA,,,,,Updating LT-19 parent subdivision code,2021-11-25
+LT,LT-20,,,,LT-KL,,,,,Updating LT-20 parent subdivision code,2021-11-25
+LT,LT-21,,,,LT-KL,,,,,Updating LT-21 parent subdivision code,2021-11-25
+LT,LT-22,,,,LT-KL,,,,,Updating LT-22 parent subdivision code,2021-11-25
+LT,LT-23,,,,LT-PN,,,,,Updating LT-23 parent subdivision code,2021-11-25
+LT,LT-24,,,,LT-AL,,,,,Updating LT-24 parent subdivision code,2021-11-25
+LT,LT-25,,,,LT-MR,,,,,Updating LT-25 parent subdivision code,2021-11-25
+LT,LT-26,,,,LT-TE,,,,,Updating LT-26 parent subdivision code,2021-11-25
+LT,LT-27,,,,LT-UT,,,,,Updating LT-27 parent subdivision code,2021-11-25
+LT,LT-28,,,,LT-KL,,,,,Updating LT-28 parent subdivision code,2021-11-25
+LT,LT-29,,,,LT-TA,,,,,Updating LT-29 parent subdivision code,2021-11-25
+LT,LT-30,,,,LT-SA,,,,,Updating LT-30 parent subdivision code,2021-11-25
+LT,LT-31,,,,LT-KL,,,,,Updating LT-31 parent subdivision code,2021-11-25
+LT,LT-32,,,,LT-PN,,,,,Updating LT-32 parent subdivision code,2021-11-25
+LT,LT-33,,,,LT-PN,,,,,Updating LT-33 parent subdivision code,2021-11-25
+LT,LT-34,,,,LT-PN,,,,,Updating LT-34 parent subdivision code,2021-11-25
+LT,LT-35,,,,LT-TE,,,,,Updating LT-35 parent subdivision code,2021-11-25
+LT,LT-36,,,,LT-KU,,,,,Updating LT-36 parent subdivision code,2021-11-25
+LT,LT-37,,,,LT-SA,,,,,Updating LT-37 parent subdivision code,2021-11-25
+LT,LT-38,,,,LT-KU,,,,,Updating LT-38 parent subdivision code,2021-11-25
+LT,LT-39,Rietavas,,,LT-TE,,,,,Changing LT-39 subdivision name spelling and assigning parent subdivision code,2021-11-25
+LT,LT-40,,,,LT-PN,,,,,Updating LT-40 parent subdivision code,2021-11-25
+LT,LT-41,,,,LT-MR,,,,,Updating LT-41 parent subdivision code,2021-11-25
+LT,LT-42,,,,LT-VL,,,,,Updating LT-42 parent subdivision code,2021-11-25
+LT,LT-43,,,,LT-SA,,,,,Updating LT-43 parent subdivision code,2021-11-25
+LT,LT-44,,,,LT-SA,,,,,Updating LT-44 parent subdivision code,2021-11-25
+LT,LT-45,,,,LT-TA,,,,,Updating LT-45 parent subdivision code,2021-11-25
+LT,LT-46,,,,LT-KL,,,,,Updating LT-46 parent subdivision code,2021-11-25
+LT,LT-47,,,,LT-VL,,,,,Updating LT-47 parent subdivision code,2021-11-25
+LT,LT-48,,,,LT-KL,,,,,Updating LT-48 parent subdivision code,2021-11-25
+LT,LT-49,,,,LT-VL,,,,,Updating LT-49 parent subdivision code,2021-11-25
+LT,LT-50,,,,LT-TA,,,,,Updating LT-50 parent subdivision code,2021-11-25
+LT,LT-51,,,,LT-TE,,,,,Updating LT-51 parent subdivision code,2021-11-25
+LT,LT-52,,,,LT-VL,,,,,Updating LT-52 parent subdivision code,2021-11-25
+LT,LT-53,,,,LT-VL,,,,,Updating LT-53 parent subdivision code,2021-11-25
+LT,LT-54,,,,LT-UT,,,,,Updating LT-54 parent subdivision code,2021-11-25
+LT,LT-55,,,,LT-AL,,,,,Updating LT-55 parent subdivision code,2021-11-25
+LT,LT-56,,,,LT-MR,,,,,Updating LT-56 parent subdivision code,2021-11-25
+LT,LT-57,,,,LT-VL,,,,,Updating LT-57 parent subdivision code,2021-11-25
+LT,LT-58,,,,LT-VL,,,,,Updating LT-58 parent subdivision code,2021-11-25
+LT,LT-59,,,,LT-UT,,,,,Updating LT-59 parent subdivision code,2021-11-25
+LT,LT-60,,,,LT-UT,,,,,Updating LT-60 parent subdivision code,2021-11-25
+NP,NP-P5,Lumbini,Lumbinī,,,,,,,Updating spelling of NP-P5 subdivision name and local name,2021-11-25
+SS,SS-BW,Western Bahr el Ghazal,,,,,,,,Updating SS-BW subdivision name spelling,2021-11-25
+GB,GB-PEM,,,,GB-WLS,,,,,Updating GB-PEM parent subdivision code,2022-03-03
+GB,GB-NSM,,,,GB-ENG,,,,,Updating subdivision parent code,2022-11-25
+FI,FI-17,Satakunta,,,,,,,,Change of spelling for FI-17 region,2022-11-29
+GB,GB-BKM,,,Unitary authority,GB-ENG,,,,,Updating GB-BKM subdivision type,2022-11-29
+KZ,KZ-10,Abay oblysy,,,,,,,,Changing KZ-10 subdivision name to its Kazakstani (kk) translation to align with its other subdivisions,2022-11-29
+KZ,KZ-62,Ulytaū oblysy,,,,,,,,Changing KZ-62 subdivision name to its Kazakstani (kk) translation to align with its other subdivisions,2022-11-29
+KZ,KZ-11,Aqmola oblysy,,,,,,,,Changing KZ-11 subdivision name to its Kazakstani (kk) translation to align with its other subdivisions,2022-11-29
+KZ,KZ-15,Aqtöbe oblysy,,,,,,,,Changing KZ-15 subdivision name to its Kazakstani (kk) translation to align with its other subdivisions,2022-11-29
+KZ,KZ-19,Almaty oblysy,,,,,,,,Changing KZ-19 subdivision name to its Kazakstani (kk) translation to align with its other subdivisions,2022-11-29
+KZ,KZ-23,Atyraū oblysy,,,,,,,,Changing KZ-23 subdivision name to its Kazakstani (kk) translation to align with its other subdivisions,2022-11-29
+KZ,KZ-35,Qaraghandy oblysy,,,,,,,,Changing KZ-35 subdivision name to its Kazakstani (kk) translation to align with its other subdivisions,2022-11-29
+KZ,KZ-39,Qostanay oblysy,,,,,,,,Changing KZ-39 subdivision name to its Kazakstani (kk) translation to align with its other subdivisions,2022-11-29
+KZ,KZ-43,Qyzylorda oblysy,,,,,,,,Changing KZ-43 subdivision name to its Kazakstani (kk) translation to align with its other subdivisions,2022-11-29
+KZ,KZ-59,Soltüstik Qazaqstan oblysy,,,,,,,,Changing KZ-59 subdivision name to its Kazakstani (kk) translation to align with its other subdivisions,2022-11-29
+KZ,KZ-61,Türkistan oblysy,,,,,,,,Changing KZ-61 subdivision name to its Kazakstani (kk) translation to align with its other subdivisions,2022-11-29
+KZ,KZ-ZAP (KZ-27),Batys Qazaqstan oblysy,"Батыс Қазақстан облысы (kk), Западно-Казахстанская область (ru), Zapadno-Kazahstanskaja oblast' (ru), West Kazakhstan (en)",,,,,,,Changing subdivision code from KZ-ZAP to KZ-27,2022-11-29
+KZ,KZ-ZHA (KZ-31),Zhambyl oblysy,"Жамбыл облысы (kk), Жамбылская область (ru), Zhambylskaya oblast' (ru), Jambyl (en)",,,,,,,Changing subdivision code from KZ-ZHA to KZ-31,2022-11-29
+KZ,KZ-KUS (KZ-39),Qostanay oblysy,"Қостанай облысы (kk), Костанайская область (ru), Kostanajskaja oblast' (ru), Kostanay (en)",,,,,,,Changing subdivision code from KZ-KUS to KZ-39,2022-11-29
+KZ,KZ-KZY (KZ-43),Qyzylorda oblysy,"Қызылорда облысы (kk), Кызылординская область (ru), Kyzylordinskaja oblast' (ru), Kyzylorda (en)",,,,,,,Changing subdivision code from KZ-KZY to KZ-43,2022-11-29
+KZ,KZ-MAN (KZ-47),Mangghystaū oblysy,"Маңғыстау облысы (kk), Мангистауская область (ru), Mangistauskaya oblast' (ru), Mangystau (en)",,,,,,,Changing subdivision code from KZ-MAN to KZ-47,2022-11-29
+KZ,KZ-PAV (KZ-55),Pavlodar oblysy,"Павлодар облысы (kk), Павлодарская область (ru), Pavlodarskaya oblast' (ru), Pavlodar (en)",,,,,,,Changing subdivision code from KZ-PAV to KZ-55,2022-11-29
+KZ,KZ-SEV (KZ-59),Soltüstik Qazaqstan oblysy,"Солтүстік Қазақстан облысы (kk), Северо-Казахстанская область (ru), Severo-Kazahstanskaja oblast' (ru), North Kazakhstan (en)",,,,,,,Changing subdivision code from KZ-SEV to KZ-59,2022-11-29
+KZ,KZ-VOS (KZ-63),Shyghys Qazaqstan oblysy,"Шығыс Қазақстан облысы (kk), Восточно-Казахстанская область (ru), Vostochno-Kazakhstanskaya oblast' (ru), East Kazakhstan (en)",,,,,,,Changing subdivision code from KZ-VOS to KZ-63,2022-11-29
+KZ,KZ-AST (KZ-71),,,,,,,,,Changing subdivision code from KZ-AST to KZ-71,2022-11-29
+KZ,KZ-71,Astana,"Астана (kk), Астана (ru), Astana (ru), Astana (en)",,,,,,,Changing subdivision name from Nur-Sultan to Astana,2022-11-29
+KZ,KZ-ALA (KZ-75),,,,,,,,,Changing subdivision code from KZ-ALA to KZ-75,2022-11-29
+KZ,KZ-SHY (KZ-79),,,,,,,,,Changing subdivision code from KZ-SHY to KZ-79,2022-11-29
+KZ,KZ-75,Almaty,"Алматы (kk), Алматы (ru), Almaty (ru), Almaty City	(en)",,,,,,,Changing subdivision local name,2022-11-29
+KZ,KZ-79,Shymkent,"Шымкент (kk), Шымкент (ru), Shymkent (ru), Shymkent (en)",,,,,,,Changing subdivision local name,2022-11-29
+MX,MX-CMX,,,Federal entity,,,,,,Changing subdivision tpye from federal district to federal entity,2022-11-29
+NP,NP-P2,Madhesh,,,,,,,,Change of NP-P2 subdivision name,2022-11-29
+NP,NP-P3,Bagmati,,,,,,,,Change of NP-P3 subdivision name,2022-11-29
+NP,NP-P4,Gandaki,,,,,,,,Changing NP-P4 subdivision name and local name,2022-11-29
+NP,NP-P6,Karnali,,,,,,,,Changing NP-P6 subdivision name and local name,2022-11-29
+NP,NP-P7,Sudurpashchim,,,,,,,,Change of NP-P7 subdivision name,2022-11-29
+NZ,NZ-AUK,,Tāmaki-Makaurau,,,,,,,Updating NZ-AUK subdivision local name,2022-11-29
+NZ,NZ-BOP,,Toi Moana,,,,,,,Updating NZ-BOP subdivision local name,2022-11-29
+NZ,NZ-STL,,Te Taiao Tonga,,,,,,,Updating NZ-STL subdivision local name,2022-11-29
+NZ,NZ-GIS,,Te Tairāwhiti,,,,,,,Updating NZ-GIS subdivision local name,2022-11-29
+NZ,NZ-HKB,,Te Matau-a-Māui,,,,,,,Updating NZ-HKB subdivision local name,2022-11-29
+NZ,NZ-NTL,,Te Tai tokerau,,,,,,,Updating NZ-NTL subdivision local name,2022-11-29
+NZ,NZ-WTC,,Te Tai o Poutini,,,,,,,Updating NZ-WTC subdivision name,2022-11-29
+NZ,NZ-WGN,Greater Wellington,Te Pane Matua Taiao,,,,,,,Updating NZ-WGN subdivision name and local name,2022-11-29
+NZ,NZ-MWT,Manawatū-Whanganui,Manawatū Whanganui,,,,,,,Updating NZ-WGN subdivision name and local name,2022-11-29
+NZ,NZ-WKO,Waikato,,,,,,,,Updating NZ-WKO subdivision name and local name,2022-11-29
+NZ,NZ-TAS,,Te tai o Aorere,,,,,,,Updating NZ-TAS subdivision name,2022-11-29
+PA,PA-NB,Ngäbe-Buglé,,,,,,,,Changing PA-NB subdivision name,2022-11-29
+PE,PE-AMA,Amazonas,,,,,,,,Changing PE-AMA name from its Quechua (qu) translation to Spanish (es) to align with PE's other subdivision names,2024-05-01
+PE,PE-APU,Apurímac,,,,,,,,Changing PE-APU name from its Quechua (qu) translation to Spanish (es) to align with PE's other subdivision names,2024-05-01
+PE,PE-JUN,Junín,,,,,,,,Changing PE-JUN name from its Quechua (qu) translation to Spanish (es) to align with PE's other subdivision names,2024-05-01
+PL,PL-04,Kujawsko-Pomorskie,,,,,,,,Updating PL-04 subdivision name,2022-11-29
+PL,PL-28,Warmińsko-Mazurskie,,,,,,,,Updating PL-04 subdivision name,2022-11-29
+SI,SI-044,Kanal ob Soči,,,,,,,,Updating SI-044 subdivision name,2022-11-29
+SI,SI-197,Kostanjevica na Krki,,,,,,,,Updating SI-197 subdivision name,2022-11-29
+SI,SI-011,,,Urban municipality,,,,,,Updating SI-011 subdivision type from municipality to urban municipality,2022-11-29
+SI,SI-050,,,Urban municipality,,,,,,Updating SI-050 subdivision type from municipality to urban municipality,2022-11-29
+SI,SI-052,,,Urban municipality,,,,,,Updating SI-052 subdivision type from municipality to urban municipality,2022-11-29
+SI,SI-054,,,Urban municipality,,,,,,Updating SI-054 subdivision type from municipality to urban municipality,2022-11-29
+SI,SI-061,,,Urban municipality,,,,,,Updating SI-061 subdivision type from municipality to urban municipality,2022-11-29
+SI,SI-070,,,Urban municipality,,,,,,Updating SI-070 subdivision type from municipality to urban municipality,2022-11-29
+SI,SI-080,,,Urban municipality,,,,,,Updating SI-080 subdivision type from municipality to urban municipality,2022-11-29
+SI,SI-084,,,Urban municipality,,,,,,Updating SI-084 subdivision type from municipality to urban municipality,2022-11-29
+SI,SI-085,,,Urban municipality,,,,,,Updating SI-085 subdivision type from municipality to urban municipality,2022-11-29
+SI,SI-096,,,Urban municipality,,,,,,Updating SI-096 subdivision type from municipality to urban municipality,2022-11-29
+SI,SI-112,,,Urban municipality,,,,,,Updating SI-112 subdivision type from municipality to urban municipality,2022-11-29
+SI,SI-133,,,Urban municipality,,,,,,Updating SI-133 subdivision type from municipality to urban municipality,2022-11-29
+IN,IN-OR (IN-OD),,,,,,,,,Changing IN-OR subdivision code to IN-OD,2023-11-23
+IN,IN-CT (IN-CG),,,,,,,,,Changing IN-CT subdivision code to IN-CG,2023-11-23
+IN,IN-TG (IN-TS),,,,,,,,,Changing IN-TG subdivision code to IN-TS,2023-11-23
+IN,IN-UT (IN-UK),,,,,,,,,Changing IN-UT subdivision code to IN-UK,2023-11-23
+KR,KR-42,,,special self-governing province,,,,,,Changing KR-42 subdivision type from province to self governing province,2023-11-23
+KR,KR-42,Gangwon-teukbyeoljachido,,,,,,,,Changing KR-42 name from Gangwon-do to Gangwon-teukbyeoljachido,2023-11-23
+NP,NP-P1,Koshi,Koshī,,,,,,,Changing NP-P1 subdivision name,2023-11-23
+TD,TD-BA,Batha,,,,,,,,Changing TD-BA name from its Arabic translation to French to align with TD's other subdivision names,2024-05-01
+TD,TD-BG,Bahr el Ghazal,,,,,,,,Changing TD-DG name from its Arabic translation to French to align with TD's other subdivision names,2024-05-01
+TD,TD-LC,Lac,,,,,,,,Changing TD-LC name from its Arabic translation to French to align with TD's other subdivision names,2024-05-01
+TL,TL-LA,Lautém,,,,,,,,Changing TL-LA name to its Portuguese translation to align with TL's other subdivision names,2024-05-01
+TL,TL-LI,Liquiça,,,,,,,,Changing TL-LI name to its Portuguese translation to align with TL's other subdivision names,2024-05-01
+TL,TL-OE,Oé-Cusse Ambeno,,,,,,,,Changing TL-OE name to its Portuguese translation to align with TL's other subdivision names,2024-05-01
+TL,TL-VI,Viqueque,,,,,,,,Changing TL-VI name to its Portuguese translation to align with TL's other subdivision names,2024-05-01
+BY,BY-HM,Horad Minsk,,,,,,,,Changing BY-HM name to its Belarussian translation to align with BY's other subdivision names,2025-07-01
+BY,BY-HO,Homieĺskaja voblasć',,,,,,,,Changing BY-HO name to its Belarussian translation to align with BY's other subdivision names,2025-07-01
+BY,BY-HR,Hrodzienskaja voblasć',,,,,,,,Changing BY-HR name to its Belarussian translation to align with BY's other subdivision names,2025-07-01
+BY,BY-MI,Minskaja voblasć',,,,,,,,Changing BY-MI name to its Belarussian translation to align with BY's other subdivision names,2025-07-01
+CH,CH-BE,Bern,,,,,,,,Changing CH-BE name to its German translation as it is the predominant language,2025-07-01
+ES,ES-A,Alacant,,,,,,,,Changing ES-A name from Alacant* to Alacant removing the *,2025-07-01
+ES,ES-CS,Castelló,,,,,,,,Changing ES-CS name from Castelló* to Castelló removing the *,2025-07-01
+ES,ES-NA,Nafarroa,,,,,,,,Changing ES-NA name from Nafarroa* to Nafarroa removing the *,2025-07-01
+ES,ES-VI,Araba,,,,,,,,Changing ES-VI name from Araba* to Araba removing the *,2025-07-01
+PE,PE-SAM,San Martín,,,,,,,,Changing PE-SAM name to its Spanish translationb to align with PE's subdivision names,2025-07-01

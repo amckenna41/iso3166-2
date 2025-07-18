@@ -1,0 +1,18 @@
+#package requirements for testing
+requests>=2.28.1
+iso3166
+iso3166-2
+iso3166-updates
+googlemaps
+tqdm
+natsort
+pandas
+numpy
+BeautifulSoup4
+pycountry
+dicttoxml
+fake_useragent
+emoji-country-flag
+jsonschema
+free-proxy
+# pycountry==22.3.5

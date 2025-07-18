@@ -1,0 +1,3474 @@
+{
+    "79-aaa-gap": {
+        "name": "Taiwanese Hakka",
+        "scope": "Dialect",
+        "type": "Living",
+        "countries": "TW",
+        "total": 1,
+        "source": "http://www.hortensj-garden.org/index.php?tnc=1&tr=lsr&nid=79-aaa-gap"
+    },
+    "aar": {
+        "name": "Afar",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "DJ",
+        "total": 4,
+        "source": "https://iso639-3.sil.org/code/aar, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=1"
+    },
+    "abk": {
+        "name": "Abkhazian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "GE",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/abk, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=2"
+    },
+    "abq": {
+        "name": "Abaza",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/abq"
+    },
+    "ace": {
+        "name": "Achinese",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ID",
+        "total": 5,
+        "source": "https://iso639-3.sil.org/code/ace, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=3"
+    },
+    "ady": {
+        "name": "Adyghe",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/ady, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=6"
+    },
+    "aeb": {
+        "name": "Tunisian Arabic",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "TN",
+        "total": 13,
+        "source": "https://iso639-3.sil.org/code/aeb"
+    },
+    "afb": {
+        "name": "Gulf Arabic",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "AE",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/afb"
+    },
+    "afr": {
+        "name": "Afrikaans",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ZA",
+        "total": 9,
+        "source": "https://iso639-3.sil.org/code/afr, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=9"
+    },
+    "agx": {
+        "name": "Aghul",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/agx"
+    },
+    "akl": {
+        "name": "Aklanon",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/akl"
+    },
+    "ale": {
+        "name": "Aleut",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "US",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/ale, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=15"
+    },
+    "algh1238": {
+        "name": "Algherese Catalan",
+        "scope": "Dialect",
+        "type": "Living",
+        "countries": "IT",
+        "total": 1,
+        "source": "https://glottolog.org/resource/languoid/id/algh1238"
+    },
+    "alt": {
+        "name": "Southern Altai",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/alt, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=17"
+    },
+    "amh": {
+        "name": "Amharic",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ET",
+        "total": 28,
+        "source": "https://iso639-3.sil.org/code/amh, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=18"
+    },
+    "ami": {
+        "name": "Amis",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "TW",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/ami"
+    },
+    "apl": {
+        "name": "Lipan Apache",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MX",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/apl"
+    },
+    "ara": {
+        "name": "Arabic",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "AE,BH,DJ,DZ,EG,ER,ES,ET,IL,IQ,JO,KM,KW,LB,LY,MA,ML,MR,MY,NG,OM,PH,PS,QA,SA,SD,SO,SS,SY,TD,TN,TR,TZ,YE",
+        "total": 594,
+        "source": "https://iso639-3.sil.org/code/ara, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=22"
+    },
+    "arg": {
+        "name": "Aragonese",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ES",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/arg, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=24"
+    },
+    "arz": {
+        "name": "Egyptian Arabic",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "EG",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/arz"
+    },
+    "asm": {
+        "name": "Assamese",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IN",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/asm, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=31"
+    },
+    "ast": {
+        "name": "Asturian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ES",
+        "total": 5,
+        "source": "https://iso639-3.sil.org/code/ast, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=32"
+    },
+    "ava": {
+        "name": "Avaric",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "AZ,RU",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/ava, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=35"
+    },
+    "ayl": {
+        "name": "Libyan Arabic",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "LY",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/ayl"
+    },
+    "aym": {
+        "name": "Aymara",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "BO,PE",
+        "total": 31,
+        "source": "https://iso639-3.sil.org/code/aym, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=38"
+    },
+    "aze": {
+        "name": "Azerbaijani",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "AZ,GE,RU,TR",
+        "total": 6,
+        "source": "https://iso639-3.sil.org/code/aze, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=39"
+    },
+    "bak": {
+        "name": "Bashkir",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/bak, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=42"
+    },
+    "bal": {
+        "name": "Baluchi",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "AF",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/bal, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=43"
+    },
+    "bam": {
+        "name": "Bambara",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ML",
+        "total": 10,
+        "source": "https://iso639-3.sil.org/code/bam, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=44"
+    },
+    "ban": {
+        "name": "Balinese",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ID",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/ban, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=45"
+    },
+    "bar": {
+        "name": "Bavarian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "AT",
+        "total": 6,
+        "source": "https://iso639-3.sil.org/code/bar"
+    },
+    "bcl": {
+        "name": "Central Bikol",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/bcl"
+    },
+    "bel": {
+        "name": "Belarusian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "BY,LT,LV",
+        "total": 15,
+        "source": "https://iso639-3.sil.org/code/bel, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=51"
+    },
+    "ben": {
+        "name": "Bengali",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "BD,IN",
+        "total": 79,
+        "source": "https://iso639-3.sil.org/code/ben, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=53"
+    },
+    "ber": {
+        "name": "Berber languages",
+        "scope": "Collective",
+        "type": "Living",
+        "countries": "DZ,LY,MA,ML",
+        "total": 11,
+        "source": "https://iso639-3.sil.org/code/ber, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=54"
+    },
+    "berr1239": {
+        "name": "Berrichon",
+        "scope": "Dialect",
+        "type": "Living",
+        "countries": "FR",
+        "total": 1,
+        "source": "https://glottolog.org/resource/languoid/id/berr1239"
+    },
+    "bew": {
+        "name": "Betawi",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ID",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/bew"
+    },
+    "bik": {
+        "name": "Bikol",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "PH",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/bik, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=57"
+    },
+    "bkd": {
+        "name": "Binukid",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/bkd"
+    },
+    "bos": {
+        "name": "Bosnian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MK",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/bos, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=62"
+    },
+    "brab1243": {
+        "name": "Brabantian",
+        "scope": "Dialect",
+        "type": "Living",
+        "countries": "NL",
+        "total": 1,
+        "source": "https://glottolog.org/resource/languoid/id/brab1243"
+    },
+    "bre": {
+        "name": "Breton",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "FR",
+        "total": 8,
+        "source": "https://iso639-3.sil.org/code/bre, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=64"
+    },
+    "bsh": {
+        "name": "Kati",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "AF",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/bsh"
+    },
+    "btw": {
+        "name": "Butuanon",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/btw"
+    },
+    "bua": {
+        "name": "Buriat",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "RU",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/bua, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=66"
+    },
+    "buc": {
+        "name": "Bushi",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "FR",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/buc"
+    },
+    "bul": {
+        "name": "Bulgarian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "BG,MD,RO",
+        "total": 32,
+        "source": "https://iso639-3.sil.org/code/bul, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=68"
+    },
+    "bunj1247": {
+        "name": "Bunjevac",
+        "scope": "Dialect",
+        "type": "Living",
+        "countries": "RS",
+        "total": 1,
+        "source": "https://glottolog.org/resource/languoid/id/bunj1247"
+    },
+    "cal": {
+        "name": "Carolinian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "US",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/cal"
+    },
+    "cang1245": {
+        "name": "Cangin",
+        "scope": "Family",
+        "type": "Living",
+        "countries": "SN",
+        "total": 1,
+        "source": "https://glottolog.org/resource/languoid/id/cang1245"
+    },
+    "car": {
+        "name": "Galibi Carib",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "TT",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/car, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=74"
+    },
+    "cat": {
+        "name": "Catalan",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ES,FR",
+        "total": 11,
+        "source": "https://iso639-3.sil.org/code/cat, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=75"
+    },
+    "cbk": {
+        "name": "Chavacano",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/cbk"
+    },
+    "cbw": {
+        "name": "Kinabalian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/cbw"
+    },
+    "ceb": {
+        "name": "Cebuano",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 34,
+        "source": "https://iso639-3.sil.org/code/ceb, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=77"
+    },
+    "ces": {
+        "name": "Czech",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "AT,HU,SK",
+        "total": 7,
+        "source": "https://iso639-3.sil.org/code/ces, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=107"
+    },
+    "cha": {
+        "name": "Chamorro",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "US",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/cha, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=79"
+    },
+    "chao1238": {
+        "name": "Teochew Min",
+        "scope": "Dialect",
+        "type": "Living",
+        "countries": "TH",
+        "total": 7,
+        "source": "https://glottolog.org/resource/languoid/id/chao1238"
+    },
+    "che": {
+        "name": "Chechen",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/che, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=81"
+    },
+    "chm": {
+        "name": "Mari",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/chm, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=86"
+    },
+    "cho": {
+        "name": "Choctaw",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "US",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/cho, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=88"
+    },
+    "chr": {
+        "name": "Cherokee",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "US",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/chr, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=90"
+    },
+    "chv": {
+        "name": "Chuvash",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/chv, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=92"
+    },
+    "cico1238": {
+        "name": "Cicolano-Reatino-Aquilano",
+        "scope": "Dialect",
+        "type": "Living",
+        "countries": "IT",
+        "total": 1,
+        "source": "https://glottolog.org/resource/languoid/id/cico1238"
+    },
+    "ckb": {
+        "name": "Central Kurdish",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IQ",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/ckb"
+    },
+    "ckt": {
+        "name": "Chukot",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/ckt"
+    },
+    "cnr": {
+        "name": "Montenegrin",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ME",
+        "total": 26,
+        "source": "https://iso639-3.sil.org/code/cnr, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=515"
+    },
+    "cog": {
+        "name": "Chong",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "TH",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/cog"
+    },
+    "cor": {
+        "name": "Cornish",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "GB",
+        "total": 4,
+        "source": "https://iso639-3.sil.org/code/cor, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=96"
+    },
+    "cos": {
+        "name": "Corsican",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "FR",
+        "total": 7,
+        "source": "https://iso639-3.sil.org/code/cos, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=97"
+    },
+    "cps": {
+        "name": "Capiznon",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/cps"
+    },
+    "crb": {
+        "name": "Island Carib",
+        "scope": "Individual",
+        "type": "Extinct",
+        "countries": "FR,TT",
+        "total": 4,
+        "source": "https://iso639-3.sil.org/code/crb"
+    },
+    "crh": {
+        "name": "Crimean Tatar",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "UA",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/crh, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=102"
+    },
+    "crs": {
+        "name": "Seselwa Creole French",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "SC",
+        "total": 23,
+        "source": "https://iso639-3.sil.org/code/crs"
+    },
+    "csb": {
+        "name": "Kashubian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PL",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/csb, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=104"
+    },
+    "cuk": {
+        "name": "San Blas Kuna",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PA",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/cuk"
+    },
+    "cym": {
+        "name": "Welsh",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "AR,GB",
+        "total": 23,
+        "source": "https://iso639-3.sil.org/code/cym, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=487"
+    },
+    "cyo": {
+        "name": "Cuyonon",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/cyo"
+    },
+    "dak": {
+        "name": "Dakota",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "US",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/dak, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=108"
+    },
+    "dan": {
+        "name": "Danish",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "DE,EE,GL",
+        "total": 7,
+        "source": "https://iso639-3.sil.org/code/dan, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=109"
+    },
+    "dar": {
+        "name": "Dargwa",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/dar, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=110"
+    },
+    "de-AT": {
+        "name": "Austrian German",
+        "scope": "Dialect",
+        "type": "Living",
+        "countries": "IT",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/de-AT"
+    },
+    "deu": {
+        "name": "German",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "BE,CH,DE,DK,EE,FR,HU,IT,LT,LU,LV,NL,PG,RO,SI,SK",
+        "total": 99,
+        "source": "https://iso639-3.sil.org/code/deu, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=160"
+    },
+    "div": {
+        "name": "Dhivehi",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MV",
+        "total": 49,
+        "source": "https://iso639-3.sil.org/code/div, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=116"
+    },
+    "dje": {
+        "name": "Zarma",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "NE",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/dje"
+    },
+    "djw": {
+        "name": "Djawi",
+        "scope": "Individual",
+        "type": "Extinct",
+        "countries": "BN",
+        "total": 4,
+        "source": "https://iso639-3.sil.org/code/djw"
+    },
+    "dsb": {
+        "name": "Lower Sorbian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "DE",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/dsb, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=119"
+    },
+    "dzo": {
+        "name": "Dzongkha",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "BT",
+        "total": 20,
+        "source": "https://iso639-3.sil.org/code/dzo, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=125"
+    },
+    "east2276": {
+        "name": "Eastern Lombard",
+        "scope": "Dialect",
+        "type": "Living",
+        "countries": "IT",
+        "total": 2,
+        "source": "https://glottolog.org/resource/languoid/id/east2276"
+    },
+    "egl": {
+        "name": "Emilian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IT",
+        "total": 6,
+        "source": "https://iso639-3.sil.org/code/egl"
+    },
+    "ell": {
+        "name": "Modern Greek",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "CY,GR,IT,TR",
+        "total": 24,
+        "source": "https://iso639-3.sil.org/code/ell, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=175"
+    },
+    "ems": {
+        "name": "Pacific Gulf Yupik",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "US",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/ems"
+    },
+    "eng": {
+        "name": "English",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "AE,AF,AM,AO,AR,AT,AU,AZ,BA,BD,BE,BF,BG,BH,BJ,BN,BR,BS,BT,BW,BY,BZ,CA,CD,CF,CG,CH,CI,CL,CM,CN,CO,CR,CU,CV,CY,CZ,DE,DJ,DK,DO,DZ,EC,EE,EG,ER,ES,ET,FI,FM,FR,GA,GB,GD,GE,GL,GM,GQ,GR,GT,GW,GY,HN,HR,HT,HU,ID,IE,IL,IN,IQ,IR,IS,IT,JM,JO,JP,KG,KH,KI,KM,KN,KP,KR,KW,KZ,LA,LB,LR,LS,LT,LV,LY,MA,MC,MD,ME,MH,MK,MM,MN,MR,MT,MU,MV,MW,MX,MY,NG,NI,NL,NO,NP,NZ,OM,PA,PE,PG,PH,PK,PL,PS,PT,PY,QA,RO,RS,RU,SA,SB,SD,SE,SH,SI,SK,SL,SM,SN,SO,SS,ST,SV,SY,TD,TG,TH,TJ,TL,TM,TO,TR,TT,TV,TW,TZ,UA,UG,UM,US,UY,UZ,VE,VN,VU,WF,WS,YE,ZA,ZW",
+        "total": 3165,
+        "source": "https://iso639-3.sil.org/code/eng, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=130"
+    },
+    "est": {
+        "name": "Estonian",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "EE,LV",
+        "total": 9,
+        "source": "https://iso639-3.sil.org/code/est, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=133"
+    },
+    "esu": {
+        "name": "Central Yupik",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "US",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/esu"
+    },
+    "eus": {
+        "name": "Basque",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ES,FR",
+        "total": 8,
+        "source": "https://iso639-3.sil.org/code/eus, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=47"
+    },
+    "ext": {
+        "name": "Extremaduran",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ES",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/ext"
+    },
+    "fan": {
+        "name": "Fang",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "GQ",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/fan, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=136"
+    },
+    "fas": {
+        "name": "Persian",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "IR,TM",
+        "total": 33,
+        "source": "https://iso639-3.sil.org/code/fas, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=357"
+    },
+    "fax": {
+        "name": "Fala",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ES",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/fax"
+    },
+    "fil": {
+        "name": "Filipino",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 38,
+        "source": "https://iso639-3.sil.org/code/fil, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=140"
+    },
+    "fin": {
+        "name": "Finnish",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "FI,NO,RU,SE",
+        "total": 6,
+        "source": "https://iso639-3.sil.org/code/fin, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=141"
+    },
+    "fit": {
+        "name": "Tornedalen Finnish",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "SE",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/fit"
+    },
+    "fkv": {
+        "name": "Kven Finnish",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "NO",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/fkv"
+    },
+    "fra": {
+        "name": "French",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "AO,BE,BJ,CA,CD,CG,CH,CM,DE,DZ,ES,FR,GQ,HU,IT,KH,LA,MA,MC,ML,MU,NE,RW,SC,SN,TD,UM,US,WF",
+        "total": 136,
+        "source": "https://iso639-3.sil.org/code/fra, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=145"
+    },
+    "frp": {
+        "name": "Arpitan",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "CH,FR,IT",
+        "total": 17,
+        "source": "https://iso639-3.sil.org/code/frp"
+    },
+    "frr": {
+        "name": "Northern Frisian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "DE,DK",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/frr, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=148"
+    },
+    "fry": {
+        "name": "Western Frisian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "NL",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/fry, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=150"
+    },
+    "fub": {
+        "name": "Adamawa Fulfulde",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "NG",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/fub"
+    },
+    "fud": {
+        "name": "East Futuna",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "FR",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/fud"
+    },
+    "fuf": {
+        "name": "Pular",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "GN",
+        "total": 11,
+        "source": "https://iso639-3.sil.org/code/fuf"
+    },
+    "ful": {
+        "name": "Fulah",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "GM,GN,ML,NG",
+        "total": 23,
+        "source": "https://iso639-3.sil.org/code/ful, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=151"
+    },
+    "fur": {
+        "name": "Friulian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IT",
+        "total": 4,
+        "source": "https://iso639-3.sil.org/code/fur, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=152"
+    },
+    "fuzh1239": {
+        "name": "Houguan",
+        "scope": "Dialect",
+        "type": "Living",
+        "countries": "CN",
+        "total": 1,
+        "source": "https://glottolog.org/resource/languoid/id/fuzh1239"
+    },
+    "gad": {
+        "name": "Gaddang",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/gad"
+    },
+    "gag": {
+        "name": "Gagauz",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MD",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/gag"
+    },
+    "gall1275": {
+        "name": "Gallo",
+        "scope": "Dialect",
+        "type": "Living",
+        "countries": "FR",
+        "total": 4,
+        "source": "https://glottolog.org/resource/languoid/id/gall1275"
+    },
+    "gan": {
+        "name": "Gan Chinese",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "CN",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/gan"
+    },
+    "gcf": {
+        "name": "Guadeloupean Creole French",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "FR",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/gcf"
+    },
+    "gcr": {
+        "name": "Guianese Creole French",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "FR",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/gcr"
+    },
+    "gil": {
+        "name": "Gilbertese",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "KI",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/gil, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=162"
+    },
+    "gla": {
+        "name": "Scottish Gaelic",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "CA,GB",
+        "total": 34,
+        "source": "https://iso639-3.sil.org/code/gla, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=163"
+    },
+    "gle": {
+        "name": "Irish",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "GB,IE",
+        "total": 52,
+        "source": "https://iso639-3.sil.org/code/gle, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=164"
+    },
+    "glg": {
+        "name": "Galician",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ES",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/glg, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=165"
+    },
+    "glk": {
+        "name": "Gilaki",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IR",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/glk"
+    },
+    "goh": {
+        "name": "Old High German",
+        "scope": "Individual",
+        "type": "Historical",
+        "countries": "RO",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/goh, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=168"
+    },
+    "gor": {
+        "name": "Gorontalo",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ID",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/gor, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=170"
+    },
+    "gos": {
+        "name": "Gronings",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "NL",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/gos"
+    },
+    "goy": {
+        "name": "Goundo",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "TW",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/goy"
+    },
+    "grn": {
+        "name": "Guarani",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "BO,PY",
+        "total": 6,
+        "source": "https://iso639-3.sil.org/code/grn, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=176"
+    },
+    "gsw": {
+        "name": "Swiss German",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "FR",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/gsw, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=177"
+    },
+    "guc": {
+        "name": "Wayuu",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "CO,VE",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/guc"
+    },
+    "guj": {
+        "name": "Gujarati",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IN",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/guj, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=178"
+    },
+    "guw": {
+        "name": "Gun",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "NG",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/guw"
+    },
+    "gwi": {
+        "name": "Gwich\u02bcin",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "CA",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/gwi, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=179"
+    },
+    "gym": {
+        "name": "Ng\u00e4bere",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PA",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/gym"
+    },
+    "hak": {
+        "name": "Hakka Chinese",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "CN,TW",
+        "total": 4,
+        "source": "https://iso639-3.sil.org/code/hak"
+    },
+    "har": {
+        "name": "Harari",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ET",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/har"
+    },
+    "hat": {
+        "name": "Haitian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "HT,UM",
+        "total": 11,
+        "source": "https://iso639-3.sil.org/code/hat, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=181"
+    },
+    "hau": {
+        "name": "Hausa",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "NE,NG",
+        "total": 12,
+        "source": "https://iso639-3.sil.org/code/hau, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=182"
+    },
+    "haw": {
+        "name": "Hawaiian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "UM,US",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/haw, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=183"
+    },
+    "hbs": {
+        "name": "Serbo-Croatian",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "HU,ME,RO",
+        "total": 31,
+        "source": "https://iso639-3.sil.org/code/hbs"
+    },
+    "heb": {
+        "name": "Hebrew",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IL,PS",
+        "total": 15,
+        "source": "https://iso639-3.sil.org/code/heb, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=184"
+    },
+    "her": {
+        "name": "Herero",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/her, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=185"
+    },
+    "hif": {
+        "name": "Fiji Hindi",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "FJ",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/hif"
+    },
+    "high1290": {
+        "name": "High Alemannic",
+        "scope": "Dialect",
+        "type": "Living",
+        "countries": "AT,LI",
+        "total": 5,
+        "source": "https://glottolog.org/resource/languoid/id/high1290"
+    },
+    "hil": {
+        "name": "Hiligaynon",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 13,
+        "source": "https://iso639-3.sil.org/code/hil, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=186"
+    },
+    "hin": {
+        "name": "Hindi",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IN",
+        "total": 39,
+        "source": "https://iso639-3.sil.org/code/hin, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=188"
+    },
+    "hnd": {
+        "name": "Southern Hindko",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PK",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/hnd"
+    },
+    "hrv": {
+        "name": "Croatian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "AT,HU,RS",
+        "total": 21,
+        "source": "https://iso639-3.sil.org/code/hrv, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=394"
+    },
+    "hsb": {
+        "name": "Upper Sorbian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "DE",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/hsb, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=192"
+    },
+    "hun": {
+        "name": "Hungarian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "AT,HR,HU,RO,RS,SI,SK,TR,UA",
+        "total": 51,
+        "source": "https://iso639-3.sil.org/code/hun, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=193"
+    },
+    "hus": {
+        "name": "Huastec",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MX",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/hus"
+    },
+    "hye": {
+        "name": "Armenian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "AM,AZ,GE,TR",
+        "total": 26,
+        "source": "https://iso639-3.sil.org/code/hye, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=26"
+    },
+    "ibg": {
+        "name": "Ibanag",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/ibg"
+    },
+    "ibl": {
+        "name": "Ibaloi",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/ibl"
+    },
+    "ibo": {
+        "name": "Igbo",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "NG",
+        "total": 7,
+        "source": "https://iso639-3.sil.org/code/ibo, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=196"
+    },
+    "iii": {
+        "name": "Sichuan Yi",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "CN",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/iii, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=200"
+    },
+    "ilo": {
+        "name": "Iloko",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 27,
+        "source": "https://iso639-3.sil.org/code/ilo, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=204"
+    },
+    "ilp": {
+        "name": "Iranun",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/ilp"
+    },
+    "inb": {
+        "name": "Inga",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PE",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/inb"
+    },
+    "ind": {
+        "name": "Indonesian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ID",
+        "total": 25,
+        "source": "https://iso639-3.sil.org/code/ind, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=207"
+    },
+    "inh": {
+        "name": "Ingush",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/inh, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=209"
+    },
+    "ipk": {
+        "name": "Inupiaq",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "US",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/ipk, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=210"
+    },
+    "isd": {
+        "name": "Isnag",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/isd"
+    },
+    "isl": {
+        "name": "Icelandic",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IS",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/isl, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=198"
+    },
+    "ita": {
+        "name": "Italian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "AT,CH,ER,FR,HR,HU,IT,LY,MT,SI,SM,SO",
+        "total": 87,
+        "source": "https://iso639-3.sil.org/code/ita, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=213"
+    },
+    "ita-tus": {
+        "name": "Tuscan",
+        "scope": "Dialect",
+        "type": "Living",
+        "countries": "IT",
+        "total": 1,
+        "source": "https://web.archive.org/web/20221015065035/http://multitree.org/codes/ita-tus"
+    },
+    "itv": {
+        "name": "Itawit",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/itv"
+    },
+    "ivv": {
+        "name": "Ivatan",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/ivv"
+    },
+    "jam": {
+        "name": "Jamaican Creole English",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "JM",
+        "total": 13,
+        "source": "https://iso639-3.sil.org/code/jam"
+    },
+    "jav": {
+        "name": "Javanese",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ID",
+        "total": 4,
+        "source": "https://iso639-3.sil.org/code/jav, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=214"
+    },
+    "jje": {
+        "name": "Jejueo",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "KR",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/jje"
+    },
+    "jpn": {
+        "name": "Japanese",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "JP,MH,PW,TW",
+        "total": 75,
+        "source": "https://iso639-3.sil.org/code/jpn, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=216"
+    },
+    "juri1235": {
+        "name": "Yur\u00c3\u0192\u00c2\u00ad",
+        "scope": "Level 1 Language",
+        "type": "Living",
+        "countries": "CO",
+        "total": 1,
+        "source": "https://glottolog.org/resource/languoid/id/juri1235"
+    },
+    "kaa": {
+        "name": "Kara-Kalpak",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "UZ",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/kaa, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=219"
+    },
+    "kab": {
+        "name": "Kabyle",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "DZ",
+        "total": 4,
+        "source": "https://iso639-3.sil.org/code/kab, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=220"
+    },
+    "kac": {
+        "name": "Kachin",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MM",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/kac, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=221"
+    },
+    "kal": {
+        "name": "Kalaallisut",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "GL",
+        "total": 5,
+        "source": "https://iso639-3.sil.org/code/kal, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=222"
+    },
+    "kan": {
+        "name": "Kannada",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IN",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/kan, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=224"
+    },
+    "kar": {
+        "name": "Karen languages",
+        "scope": "Collective",
+        "type": "Living",
+        "countries": "MM",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/kar, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=225"
+    },
+    "kat": {
+        "name": "Georgian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "AZ,GE,TR",
+        "total": 17,
+        "source": "https://iso639-3.sil.org/code/kat, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=158"
+    },
+    "kaz": {
+        "name": "Kazakh",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "KZ,RU",
+        "total": 22,
+        "source": "https://iso639-3.sil.org/code/kaz, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=229"
+    },
+    "kbd": {
+        "name": "Kabardian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/kbd, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=230"
+    },
+    "kca": {
+        "name": "Khanty",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/kca"
+    },
+    "kcg": {
+        "name": "Tyap",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "NG",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/kcg"
+    },
+    "kdt": {
+        "name": "Kuy",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "TH",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/kdt"
+    },
+    "khm": {
+        "name": "Khmer",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "KH,VN",
+        "total": 54,
+        "source": "https://iso639-3.sil.org/code/khm, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=233"
+    },
+    "kin": {
+        "name": "Kinyarwanda",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RW",
+        "total": 5,
+        "source": "https://iso639-3.sil.org/code/kin, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=236"
+    },
+    "kir": {
+        "name": "Kirghiz",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "KG",
+        "total": 9,
+        "source": "https://iso639-3.sil.org/code/kir, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=237"
+    },
+    "kjh": {
+        "name": "Khakas",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/kjh"
+    },
+    "kjp": {
+        "name": "Pwo Eastern Karen",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MM",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/kjp"
+    },
+    "kne": {
+        "name": "Kankanaey",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/kne"
+    },
+    "koi": {
+        "name": "Komi-Permyak",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/koi"
+    },
+    "kon": {
+        "name": "Kongo",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "AO,CD,CG",
+        "total": 31,
+        "source": "https://iso639-3.sil.org/code/kon, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=241"
+    },
+    "kor": {
+        "name": "Korean",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "KP,KR,RU",
+        "total": 64,
+        "source": "https://iso639-3.sil.org/code/kor, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=242"
+    },
+    "kpv": {
+        "name": "Komi-Zyrian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/kpv"
+    },
+    "krc": {
+        "name": "Karachay-Balkar",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/krc, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=245"
+    },
+    "krj": {
+        "name": "Kinaray-A",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/krj"
+    },
+    "krl": {
+        "name": "Karelian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/krl, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=246"
+    },
+    "kum": {
+        "name": "Kumyk",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/kum, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=250"
+    },
+    "kur": {
+        "name": "Kurdish",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "IQ,SY,TR",
+        "total": 32,
+        "source": "https://iso639-3.sil.org/code/kur, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=251"
+    },
+    "kxm": {
+        "name": "Northern Khmer",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "TH",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/kxm"
+    },
+    "lao": {
+        "name": "Lao",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "LA",
+        "total": 44,
+        "source": "https://iso639-3.sil.org/code/lao, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=256"
+    },
+    "lat": {
+        "name": "Latin",
+        "scope": "Individual",
+        "type": "Ancient",
+        "countries": "EE,FI,FR,GB,HU,IT,SI",
+        "total": 12,
+        "source": "https://iso639-3.sil.org/code/lat, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=257"
+    },
+    "lav": {
+        "name": "Latvian",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "EE,HU,LT,LV",
+        "total": 5,
+        "source": "https://iso639-3.sil.org/code/lav, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=258"
+    },
+    "lbe": {
+        "name": "Lak",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/lbe"
+    },
+    "lez": {
+        "name": "Lezghian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "AZ,RU",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/lez, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=259"
+    },
+    "lij": {
+        "name": "Ligurian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "FR,IT,MC",
+        "total": 5,
+        "source": "https://iso639-3.sil.org/code/lij"
+    },
+    "lim": {
+        "name": "Limburgan",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "BE,DE",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/lim, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=260"
+    },
+    "lin": {
+        "name": "Lingala",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "CD",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/lin, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=261"
+    },
+    "lit": {
+        "name": "Lithuanian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "HU,LT,LV",
+        "total": 33,
+        "source": "https://iso639-3.sil.org/code/lit, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=262"
+    },
+    "liv": {
+        "name": "Liv",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "LV",
+        "total": 5,
+        "source": "https://iso639-3.sil.org/code/liv"
+    },
+    "lkt": {
+        "name": "Lakota",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "US",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/lkt"
+    },
+    "lld": {
+        "name": "Ladin",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IT",
+        "total": 4,
+        "source": "https://iso639-3.sil.org/code/lld"
+    },
+    "lmo": {
+        "name": "Lombard",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IT",
+        "total": 4,
+        "source": "https://iso639-3.sil.org/code/lmo"
+    },
+    "lou": {
+        "name": "Louisiana Creole",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "US",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/lou"
+    },
+    "ltg": {
+        "name": "Latgalian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "LV",
+        "total": 6,
+        "source": "https://iso639-3.sil.org/code/ltg"
+    },
+    "ltz": {
+        "name": "Luxembourgish",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "BE,DE,FR,LU",
+        "total": 16,
+        "source": "https://iso639-3.sil.org/code/ltz, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=265"
+    },
+    "lub": {
+        "name": "Luba-Katanga",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "CD",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/lub, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=267"
+    },
+    "lzz": {
+        "name": "Laz",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "TR",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/lzz"
+    },
+    "mad": {
+        "name": "Madurese",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ID",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/mad, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=275"
+    },
+    "mah": {
+        "name": "Marshallese",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MH,UM",
+        "total": 30,
+        "source": "https://iso639-3.sil.org/code/mah, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=277"
+    },
+    "mal": {
+        "name": "Malayalam",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IN",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/mal, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=280"
+    },
+    "mar": {
+        "name": "Marathi",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IN",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/mar, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=285"
+    },
+    "mba": {
+        "name": "Higaonon",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/mba"
+    },
+    "mbx": {
+        "name": "Mari",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/mbx"
+    },
+    "mcm": {
+        "name": "Malaccan Creole Portuguese",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MY",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/mcm"
+    },
+    "mdf": {
+        "name": "Moksha",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/mdf, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=289"
+    },
+    "mdh": {
+        "name": "Maguindanaon",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 7,
+        "source": "https://iso639-3.sil.org/code/mdh"
+    },
+    "meo": {
+        "name": "Kedah Malay",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MY,TH",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/meo"
+    },
+    "mfa": {
+        "name": "Pattani Malay",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MY,TH",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/mfa"
+    },
+    "mfe": {
+        "name": "Morisyen",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MU",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/mfe"
+    },
+    "mila1243": {
+        "name": "Milanese",
+        "scope": "Dialect",
+        "type": "Living",
+        "countries": "IT",
+        "total": 1,
+        "source": "https://glottolog.org/resource/languoid/id/mila1243"
+    },
+    "min": {
+        "name": "Minangkabau",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ID",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/min, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=294"
+    },
+    "mkd": {
+        "name": "Macedonian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MK",
+        "total": 84,
+        "source": "https://iso639-3.sil.org/code/mkd, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=274"
+    },
+    "mlg": {
+        "name": "Malagasy",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "MG",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/mlg, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=297"
+    },
+    "mlt": {
+        "name": "Maltese",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MT",
+        "total": 75,
+        "source": "https://iso639-3.sil.org/code/mlt, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=298"
+    },
+    "mni": {
+        "name": "Manipuri",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IN",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/mni, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=300"
+    },
+    "mns": {
+        "name": "Mansi",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/mns"
+    },
+    "mnw": {
+        "name": "Mon",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MM",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/mnw"
+    },
+    "mod": {
+        "name": "Mobilian",
+        "scope": "Individual",
+        "type": "Extinct",
+        "countries": "TH",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/mod"
+    },
+    "mon": {
+        "name": "Mongolian",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "MN",
+        "total": 21,
+        "source": "https://iso639-3.sil.org/code/mon, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=304"
+    },
+    "mone1238": {
+        "name": "Milanese",
+        "scope": "Dialect",
+        "type": "Living",
+        "countries": "MC",
+        "total": 9,
+        "source": "https://glottolog.org/resource/languoid/id/mone1238"
+    },
+    "mori1267": {
+        "name": "Moriori",
+        "scope": "Level 1 Language",
+        "type": "Living",
+        "countries": "NZ",
+        "total": 1,
+        "source": "https://glottolog.org/resource/languoid/id/mori1267"
+    },
+    "mqg": {
+        "name": "Kota Bangun Kutai Malay",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ID",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/mqg"
+    },
+    "mri": {
+        "name": "Maori",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "NZ",
+        "total": 19,
+        "source": "https://iso639-3.sil.org/code/mri, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=283"
+    },
+    "mrj": {
+        "name": "Western Mari",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/mrj"
+    },
+    "mrw": {
+        "name": "Maranao",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 5,
+        "source": "https://iso639-3.sil.org/code/mrw"
+    },
+    "msa": {
+        "name": "Malay",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "BN,ID,MY,PH,SG,TH",
+        "total": 71,
+        "source": "https://iso639-3.sil.org/code/msa, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=288"
+    },
+    "msb": {
+        "name": "Masbatenyo",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/msb"
+    },
+    "mwl": {
+        "name": "Mirandese",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PT",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/mwl, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=309"
+    },
+    "mya": {
+        "name": "Burmese",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MM,TH",
+        "total": 17,
+        "source": "https://iso639-3.sil.org/code/mya, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=70"
+    },
+    "myv": {
+        "name": "Erzya",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/myv, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=312"
+    },
+    "mzn": {
+        "name": "Mazanderani",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IR",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/mzn"
+    },
+    "nah": {
+        "name": "Nahuatl languages",
+        "scope": "Collective",
+        "type": "Living",
+        "countries": "MX",
+        "total": 13,
+        "source": "https://iso639-3.sil.org/code/nah, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=313"
+    },
+    "nan": {
+        "name": "Min Nan Chinese",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "CN,MY,TH,TW",
+        "total": 23,
+        "source": "https://iso639-3.sil.org/code/nan"
+    },
+    "nap": {
+        "name": "Neapolitan",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IT",
+        "total": 14,
+        "source": "https://iso639-3.sil.org/code/nap, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=315"
+    },
+    "nau": {
+        "name": "Nauru",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "NR",
+        "total": 8,
+        "source": "https://iso639-3.sil.org/code/nau, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=316"
+    },
+    "nav": {
+        "name": "Navajo",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "US",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/nav, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=317"
+    },
+    "nbl": {
+        "name": "South Ndebele",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ZA",
+        "total": 9,
+        "source": "https://iso639-3.sil.org/code/nbl, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=318"
+    },
+    "nci": {
+        "name": "Classical Nahuatl",
+        "scope": "Individual",
+        "type": "Historical",
+        "countries": "MX",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/nci"
+    },
+    "nde": {
+        "name": "North Ndebele",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ZW",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/nde, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=319"
+    },
+    "ndo": {
+        "name": "Ndonga",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/ndo, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=320"
+    },
+    "nds": {
+        "name": "Low German",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "DE,NL",
+        "total": 12,
+        "source": "https://iso639-3.sil.org/code/nds, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=321"
+    },
+    "nep": {
+        "name": "Nepali",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "NP",
+        "total": 22,
+        "source": "https://iso639-3.sil.org/code/nep, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=322"
+    },
+    "nhn": {
+        "name": "Central Nahuatl",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MX",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/nhn"
+    },
+    "nld": {
+        "name": "Dutch",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "BE,BQ,FR,HU,NL,RW",
+        "total": 26,
+        "source": "https://iso639-3.sil.org/code/nld, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=123"
+    },
+    "nno": {
+        "name": "Norwegian Nynorsk",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "NO",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/nno, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=327"
+    },
+    "nob": {
+        "name": "Norwegian Bokm\u00e5l",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "NO",
+        "total": 14,
+        "source": "https://iso639-3.sil.org/code/nob, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=328"
+    },
+    "nod": {
+        "name": "Northern Thai",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "TH",
+        "total": 7,
+        "source": "https://iso639-3.sil.org/code/nod"
+    },
+    "nog": {
+        "name": "Nogai",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/nog, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=329"
+    },
+    "non": {
+        "name": "Old Norse",
+        "scope": "Individual",
+        "type": "Historical",
+        "countries": "GB",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/non, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=330"
+    },
+    "nor": {
+        "name": "Norwegian",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "NO",
+        "total": 8,
+        "source": "https://iso639-3.sil.org/code/nor, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=331"
+    },
+    "nqo": {
+        "name": "N'Ko",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "CI,GN",
+        "total": 8,
+        "source": "https://iso639-3.sil.org/code/nqo, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=506"
+    },
+    "nrf": {
+        "name": "J\u00e8rriais",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "FR",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/nrf"
+    },
+    "nrn": {
+        "name": "Norn",
+        "scope": "Individual",
+        "type": "Extinct",
+        "countries": "GB",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/nrn"
+    },
+    "nso": {
+        "name": "Pedi",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ZA",
+        "total": 9,
+        "source": "https://iso639-3.sil.org/code/nso, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=332"
+    },
+    "ntp": {
+        "name": "Northern Tepehuan",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MX",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/ntp"
+    },
+    "nya": {
+        "name": "Nyanja",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MW",
+        "total": 31,
+        "source": "https://iso639-3.sil.org/code/nya, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=335"
+    },
+    "oci": {
+        "name": "Occitan",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ES,FR,IT",
+        "total": 51,
+        "source": "https://iso639-3.sil.org/code/oci, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=340"
+    },
+    "olo": {
+        "name": "Livvi",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/olo"
+    },
+    "ood": {
+        "name": "Tohono O'odham",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "US",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/ood"
+    },
+    "ori": {
+        "name": "Oriya",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "IN",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/ori, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=342"
+    },
+    "orm": {
+        "name": "Oromo",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "ET",
+        "total": 5,
+        "source": "https://iso639-3.sil.org/code/orm, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=343"
+    },
+    "oss": {
+        "name": "Ossetian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/oss, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=345"
+    },
+    "ota": {
+        "name": "Ottoman Turkish",
+        "scope": "Individual",
+        "type": "Historical",
+        "countries": "HU,TR",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/ota, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=346"
+    },
+    "oto": {
+        "name": "Otomian languages",
+        "scope": "Collective",
+        "type": "Living",
+        "countries": "MX",
+        "total": 5,
+        "source": "https://iso639-3.sil.org/code/oto, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=347"
+    },
+    "pag": {
+        "name": "Pangasinan",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 10,
+        "source": "https://iso639-3.sil.org/code/pag, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=349"
+    },
+    "paha1256": {
+        "name": "Pahang Malay",
+        "scope": "Dialect",
+        "type": "Living",
+        "countries": "MY",
+        "total": 3,
+        "source": "https://glottolog.org/resource/languoid/id/paha1256"
+    },
+    "pala1356": {
+        "name": "Palawa Kani",
+        "scope": "Artificial",
+        "type": "Constructed",
+        "countries": "AU",
+        "total": 1,
+        "source": "https://glottolog.org/resource/languoid/id/pala1356"
+    },
+    "pam": {
+        "name": "Pampanga",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 4,
+        "source": "https://iso639-3.sil.org/code/pam, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=351"
+    },
+    "pan": {
+        "name": "Panjabi",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IN",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/pan, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=352"
+    },
+    "pap": {
+        "name": "Papiamento",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "BQ,NL",
+        "total": 6,
+        "source": "https://iso639-3.sil.org/code/pap, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=353"
+    },
+    "pau": {
+        "name": "Palauan",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PW",
+        "total": 6,
+        "source": "https://iso639-3.sil.org/code/pau, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=354"
+    },
+    "pcd": {
+        "name": "Picard",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "BE,FR",
+        "total": 7,
+        "source": "https://iso639-3.sil.org/code/pcd"
+    },
+    "pdc": {
+        "name": "Pennsylvania German",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "US",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/pdc"
+    },
+    "pera1260": {
+        "name": "Perak Malay",
+        "scope": "Dialect",
+        "type": "Living",
+        "countries": "MY",
+        "total": 1,
+        "source": "https://glottolog.org/resource/languoid/id/pera1260"
+    },
+    "pfl": {
+        "name": "Pfaelzisch",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "DE",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/pfl"
+    },
+    "pis": {
+        "name": "Pijin",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "SB",
+        "total": 8,
+        "source": "https://iso639-3.sil.org/code/pis"
+    },
+    "pms": {
+        "name": "Piemontese",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IT",
+        "total": 6,
+        "source": "https://iso639-3.sil.org/code/pms"
+    },
+    "pnt": {
+        "name": "Pontic",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "TR",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/pnt"
+    },
+    "poit1240-sant1407": {
+        "name": "Poitevin\u00c3\u00a2\u00e2\u201a\u00ac\u00e2\u20ac\u0153Saintongeais",
+        "scope": "Dialect",
+        "type": "Living",
+        "countries": "FR",
+        "total": 5,
+        "source": "https://glottolog.org/resource/languoid/id/poit1240, https://glottolog.org/resource/languoid/id/sant1407"
+    },
+    "pol": {
+        "name": "Polish",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "EE,HU,LT,LV,SK",
+        "total": 9,
+        "source": "https://iso639-3.sil.org/code/pol, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=361"
+    },
+    "por": {
+        "name": "Portuguese",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "BR,CV,ES,GQ,GW,MZ,ST,TL",
+        "total": 19,
+        "source": "https://iso639-3.sil.org/code/por, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=363"
+    },
+    "prs": {
+        "name": "Dari",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "AF",
+        "total": 34,
+        "source": "https://iso639-3.sil.org/code/prs"
+    },
+    "pus": {
+        "name": "Pushto",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "AF,PK",
+        "total": 36,
+        "source": "https://iso639-3.sil.org/code/pus, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=366"
+    },
+    "pwo": {
+        "name": "Pwo Western Karen",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MM",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/pwo"
+    },
+    "quc": {
+        "name": "K'iche'",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "GT",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/quc"
+    },
+    "que": {
+        "name": "Quechua",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "BO,PE",
+        "total": 27,
+        "source": "https://iso639-3.sil.org/code/que, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=368"
+    },
+    "qwc": {
+        "name": "Classical Quechua",
+        "scope": "Individual",
+        "type": "Historical",
+        "countries": "BO",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/qwc"
+    },
+    "rcf": {
+        "name": "R\u00e9union Creole French",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "FR",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/rcf"
+    },
+    "resi1246": {
+        "name": "Resia",
+        "scope": "Dialect",
+        "type": "Living",
+        "countries": "IT",
+        "total": 1,
+        "source": "https://glottolog.org/resource/languoid/id/resi1246"
+    },
+    "rgn": {
+        "name": "Romagnol",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IT,SM",
+        "total": 10,
+        "source": "https://iso639-3.sil.org/code/rgn"
+    },
+    "rif": {
+        "name": "Tarifit",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ES",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/rif"
+    },
+    "rmn": {
+        "name": "Balkan Romani",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MK",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/rmn"
+    },
+    "rmz": {
+        "name": "Marma",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MM",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/rmz"
+    },
+    "roh": {
+        "name": "Romansh",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "CH",
+        "total": 21,
+        "source": "https://iso639-3.sil.org/code/roh, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=373"
+    },
+    "ron": {
+        "name": "Romanian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "HU,MD,RO,RS",
+        "total": 24,
+        "source": "https://iso639-3.sil.org/code/ron, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=376"
+    },
+    "rsk": {
+        "name": "Ruthenian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RS",
+        "total": 5,
+        "source": "https://iso639-3.sil.org/code/rsk"
+    },
+    "run": {
+        "name": "Rundi",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "BI",
+        "total": 18,
+        "source": "https://iso639-3.sil.org/code/run, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=377"
+    },
+    "rus": {
+        "name": "Russian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "BY,GE,HU,KG,KZ,LV,MD,RU,TJ,TM,UA,US,UZ",
+        "total": 185,
+        "source": "https://iso639-3.sil.org/code/rus, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=379"
+    },
+    "rut": {
+        "name": "Rutul",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/rut"
+    },
+    "sag": {
+        "name": "Sango",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "CF",
+        "total": 18,
+        "source": "https://iso639-3.sil.org/code/sag, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=381"
+    },
+    "sah": {
+        "name": "Yakut",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/sah, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=382"
+    },
+    "sama1302": {
+        "name": "Sama-Bajaw",
+        "scope": "Family",
+        "type": "Living",
+        "countries": "PH",
+        "total": 2,
+        "source": "https://glottolog.org/resource/languoid/id/sama1302"
+    },
+    "sant1407": {
+        "name": "Saintongeais",
+        "scope": "Dialect",
+        "type": "Living",
+        "countries": "FR",
+        "total": 1,
+        "source": "https://glottolog.org/resource/languoid/id/sant1407"
+    },
+    "scn": {
+        "name": "Sicilian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IT",
+        "total": 12,
+        "source": "https://iso639-3.sil.org/code/scn, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=391"
+    },
+    "sco": {
+        "name": "Scots",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "GB",
+        "total": 30,
+        "source": "https://iso639-3.sil.org/code/sco, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=392"
+    },
+    "sdc": {
+        "name": "Sassarese Sardinian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IT",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/sdc"
+    },
+    "sdn": {
+        "name": "Gallurese Sardinian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IT",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/sdn"
+    },
+    "sgd": {
+        "name": "Surigaonon",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/sgd"
+    },
+    "sgs": {
+        "name": "Samogitian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "LT",
+        "total": 6,
+        "source": "https://iso639-3.sil.org/code/sgs"
+    },
+    "sgt": {
+        "name": "Brokpake",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/sgt"
+    },
+    "shi": {
+        "name": "Tachelhit",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MA",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/shi"
+    },
+    "shn": {
+        "name": "Shan",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MM,TH",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/shn, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=399"
+    },
+    "sid": {
+        "name": "Sidamo",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ET",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/sid, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=400"
+    },
+    "sin": {
+        "name": "Sinhala",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "LK",
+        "total": 68,
+        "source": "https://iso639-3.sil.org/code/sin, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=401"
+    },
+    "slk": {
+        "name": "Slovak",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "AT,HU,RO,RS",
+        "total": 28,
+        "source": "https://iso639-3.sil.org/code/slk, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=406"
+    },
+    "slv": {
+        "name": "Slovenian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "AT,HU,IT,SI",
+        "total": 16,
+        "source": "https://iso639-3.sil.org/code/slv, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=407"
+    },
+    "sma": {
+        "name": "Southern Sami",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "NO,SE",
+        "total": 4,
+        "source": "https://iso639-3.sil.org/code/sma, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=408"
+    },
+    "sme": {
+        "name": "Northern Sami",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "FI,NO,SE",
+        "total": 5,
+        "source": "https://iso639-3.sil.org/code/sme, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=409"
+    },
+    "smn": {
+        "name": "Inari Sami",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "FI",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/smn, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=412"
+    },
+    "smo": {
+        "name": "Samoan",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "US,WS",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/smo, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=413"
+    },
+    "sms": {
+        "name": "Skolt Sami",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "FI",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/sms, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=414"
+    },
+    "som": {
+        "name": "Somali",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "DJ,ET,SO,SS",
+        "total": 14,
+        "source": "https://iso639-3.sil.org/code/som, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=419"
+    },
+    "sot": {
+        "name": "Southern Sotho",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "LS,ZA",
+        "total": 11,
+        "source": "https://iso639-3.sil.org/code/sot, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=421"
+    },
+    "soth1248": {
+        "name": "Sotho-Tswana",
+        "scope": "Family",
+        "type": "Living",
+        "countries": "ZA",
+        "total": 1,
+        "source": "https://glottolog.org/resource/languoid/id/soth1248"
+    },
+    "sou": {
+        "name": "Southern Thai",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "TH",
+        "total": 12,
+        "source": "https://iso639-3.sil.org/code/sou"
+    },
+    "spa": {
+        "name": "Spanish",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "AR,BO,BS,BZ,CL,CO,DO,ES,FR,GQ,HN,HU,MX,NI,PA,PE,PH,TT,US,VE",
+        "total": 108,
+        "source": "https://iso639-3.sil.org/code/spa, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=422"
+    },
+    "sqi": {
+        "name": "Albanian",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "AL,ME,MK,RS,TR",
+        "total": 48,
+        "source": "https://iso639-3.sil.org/code/sqi, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=14"
+    },
+    "srd": {
+        "name": "Sardinian",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "IT",
+        "total": 6,
+        "source": "https://iso639-3.sil.org/code/srd, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=423"
+    },
+    "srp": {
+        "name": "Serbian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "BA,HU,ME,RO,RS",
+        "total": 43,
+        "source": "https://iso639-3.sil.org/code/srp, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=390"
+    },
+    "srr": {
+        "name": "Serer",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "SN",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/srr, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=425"
+    },
+    "ssw": {
+        "name": "Swati",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "SZ,ZA",
+        "total": 9,
+        "source": "https://iso639-3.sil.org/code/ssw, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=427"
+    },
+    "stq": {
+        "name": "Saterfriesisch",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "DE",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/stq"
+    },
+    "suba1253": {
+        "name": "Subanen",
+        "scope": "Family",
+        "type": "Living",
+        "countries": "PH",
+        "total": 4,
+        "source": "https://glottolog.org/resource/languoid/id/suba1253"
+    },
+    "sun": {
+        "name": "Sundanese",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ID",
+        "total": 6,
+        "source": "https://iso639-3.sil.org/code/sun, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=429"
+    },
+    "sus": {
+        "name": "Susu",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "GN",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/sus, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=430"
+    },
+    "svm": {
+        "name": "Slavomolisano",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IT",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/svm"
+    },
+    "swa": {
+        "name": "Swahili",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "CD,KM,MW,MZ,TZ,UG",
+        "total": 21,
+        "source": "https://iso639-3.sil.org/code/swa, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=432"
+    },
+    "swb": {
+        "name": "Maore Comorian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "FR",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/swb"
+    },
+    "swe": {
+        "name": "Swedish",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "EE,FI",
+        "total": 22,
+        "source": "https://iso639-3.sil.org/code/swe, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=433"
+    },
+    "sxu": {
+        "name": "Upper Saxon",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "DE",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/sxu"
+    },
+    "syc": {
+        "name": "Classical Syriac",
+        "scope": "Individual",
+        "type": "Historical",
+        "countries": "IQ,SY",
+        "total": 7,
+        "source": "https://iso639-3.sil.org/code/syc, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=511"
+    },
+    "tab": {
+        "name": "Tabassaran",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/tab"
+    },
+    "tah": {
+        "name": "Tahitian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "FR",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/tah, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=435"
+    },
+    "taib1240": {
+        "name": "Taiwanese Mandarin",
+        "scope": "Dialect",
+        "type": "Living",
+        "countries": "TW",
+        "total": 4,
+        "source": "https://glottolog.org/resource/languoid/id/taib1240"
+    },
+    "taib1242": {
+        "name": "Taiwanese Hokkien",
+        "scope": "Dialect",
+        "type": "Living",
+        "countries": "TW",
+        "total": 3,
+        "source": "https://glottolog.org/resource/languoid/id/taib1242"
+    },
+    "tam": {
+        "name": "Tamil",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IN,LK,MY,SG",
+        "total": 88,
+        "source": "https://iso639-3.sil.org/code/tam, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=437"
+    },
+    "tat": {
+        "name": "Tatar",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/tat, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=438"
+    },
+    "tce": {
+        "name": "Southern Tutchone",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "CA",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/tce"
+    },
+    "tel": {
+        "name": "Telugu",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IN",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/tel, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=439"
+    },
+    "tet": {
+        "name": "Tetum",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ID,TL",
+        "total": 15,
+        "source": "https://iso639-3.sil.org/code/tet, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=442"
+    },
+    "tft": {
+        "name": "Ternate",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ID",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/tft"
+    },
+    "tgk": {
+        "name": "Tajik",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "TJ",
+        "total": 5,
+        "source": "https://iso639-3.sil.org/code/tgk, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=443"
+    },
+    "tgl": {
+        "name": "Tagalog",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 113,
+        "source": "https://iso639-3.sil.org/code/tgl, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=444"
+    },
+    "tha": {
+        "name": "Thai",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MM,MY,TH",
+        "total": 114,
+        "source": "https://iso639-3.sil.org/code/tha, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=445"
+    },
+    "tir": {
+        "name": "Tigrinya",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ER,PH",
+        "total": 14,
+        "source": "https://iso639-3.sil.org/code/tir, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=449"
+    },
+    "tkr": {
+        "name": "Tsakhur",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "AZ,RU",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/tkr"
+    },
+    "tli": {
+        "name": "Tlingit",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "US",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/tli, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=453"
+    },
+    "tly": {
+        "name": "Talysh",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "AZ",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/tly"
+    },
+    "tox": {
+        "name": "Tobian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PW",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/tox"
+    },
+    "tpi": {
+        "name": "Tok Pisin",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PG",
+        "total": 23,
+        "source": "https://iso639-3.sil.org/code/tpi, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=457"
+    },
+    "tpn": {
+        "name": "Tupinamb\u00e1",
+        "scope": "Individual",
+        "type": "Extinct",
+        "countries": "BR",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/tpn"
+    },
+    "tsg": {
+        "name": "Tausug",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/tsg"
+    },
+    "tsn": {
+        "name": "Tswana",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ZA",
+        "total": 7,
+        "source": "https://iso639-3.sil.org/code/tsn, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=459"
+    },
+    "tso": {
+        "name": "Tsonga",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ZA",
+        "total": 9,
+        "source": "https://iso639-3.sil.org/code/tso, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=460"
+    },
+    "tsz": {
+        "name": "Purepecha",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MX",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/tsz"
+    },
+    "ttq": {
+        "name": "Tawallammat Tamajaq",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "NE",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/ttq"
+    },
+    "tts": {
+        "name": "Northeastern Thai",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "TH",
+        "total": 13,
+        "source": "https://iso639-3.sil.org/code/tts"
+    },
+    "ttt": {
+        "name": "Muslim Tat",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/ttt"
+    },
+    "tuk": {
+        "name": "Turkmen",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "TM",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/tuk, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=461"
+    },
+    "tur": {
+        "name": "Turkish",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "BG,CY,HU,IQ,MK,TR",
+        "total": 20,
+        "source": "https://iso639-3.sil.org/code/tur, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=464"
+    },
+    "tyv": {
+        "name": "Tuvinian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/tyv, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=468"
+    },
+    "tzh": {
+        "name": "Tzeltal",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MX",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/tzh"
+    },
+    "tzo": {
+        "name": "Tzotzil",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MX",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/tzo"
+    },
+    "udm": {
+        "name": "Udmurt",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/udm, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=469"
+    },
+    "uig": {
+        "name": "Uighur",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "CN",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/uig, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=471"
+    },
+    "ukr": {
+        "name": "Ukrainian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "LT,MD,RO,SK,UA",
+        "total": 63,
+        "source": "https://iso639-3.sil.org/code/ukr, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=472"
+    },
+    "ulst1239": {
+        "name": "Ulster Scots",
+        "scope": "Dialect",
+        "type": "Living",
+        "countries": "GB,IE",
+        "total": 9,
+        "source": "https://glottolog.org/resource/languoid/id/ulst1239"
+    },
+    "umb": {
+        "name": "Umbundu",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "AO",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/umb, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=473"
+    },
+    "urd": {
+        "name": "Urdu",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PK",
+        "total": 7,
+        "source": "https://iso639-3.sil.org/code/urd, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=475"
+    },
+    "uzb": {
+        "name": "Uzbek",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "UZ",
+        "total": 14,
+        "source": "https://iso639-3.sil.org/code/uzb, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=476"
+    },
+    "vec": {
+        "name": "Venetian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "IT",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/vec"
+    },
+    "ven": {
+        "name": "Venda",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ZA",
+        "total": 7,
+        "source": "https://iso639-3.sil.org/code/ven, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=478"
+    },
+    "vep": {
+        "name": "Veps",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/vep"
+    },
+    "vie": {
+        "name": "Vietnamese",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "VN",
+        "total": 14,
+        "source": "https://iso639-3.sil.org/code/vie, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=479"
+    },
+    "vls": {
+        "name": "Vlaams",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "BE",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/vls"
+    },
+    "vro": {
+        "name": "V\u00f5ro",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "EE",
+        "total": 4,
+        "source": "https://iso639-3.sil.org/code/vro"
+    },
+    "war": {
+        "name": "Waray",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 11,
+        "source": "https://iso639-3.sil.org/code/war, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=484"
+    },
+    "west2343": {
+        "name": "Western Lombard",
+        "scope": "Dialect",
+        "type": "Living",
+        "countries": "IT",
+        "total": 4,
+        "source": "https://glottolog.org/resource/languoid/id/west2343"
+    },
+    "wln": {
+        "name": "Walloon",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "BE",
+        "total": 6,
+        "source": "https://iso639-3.sil.org/code/wln, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=489"
+    },
+    "wls": {
+        "name": "Wallisian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "FR,WF",
+        "total": 4,
+        "source": "https://iso639-3.sil.org/code/wls"
+    },
+    "wol": {
+        "name": "Wolof",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "SN",
+        "total": 14,
+        "source": "https://iso639-3.sil.org/code/wol, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=490"
+    },
+    "wuu": {
+        "name": "Wu Chinese",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "CN",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/wuu"
+    },
+    "xal": {
+        "name": "Kalmyk",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MN,RU",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/xal, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=491"
+    },
+    "xdc": {
+        "name": "Dacian",
+        "scope": "Individual",
+        "type": "Ancient",
+        "countries": "RO",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/xdc"
+    },
+    "xho": {
+        "name": "Xhosa",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ZA",
+        "total": 7,
+        "source": "https://iso639-3.sil.org/code/xho, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=492"
+    },
+    "xsb": {
+        "name": "Sambal",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/xsb"
+    },
+    "yap": {
+        "name": "Yapese",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "FM",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/yap, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=494"
+    },
+    "yid": {
+        "name": "Yiddish",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "HU,RO,RU",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/yid, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=495"
+    },
+    "yka": {
+        "name": "Yakan",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "PH",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/yka"
+    },
+    "ymm": {
+        "name": "Maay",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "SO",
+        "total": 4,
+        "source": "https://iso639-3.sil.org/code/ymm"
+    },
+    "yor": {
+        "name": "Yoruba",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "NG",
+        "total": 6,
+        "source": "https://iso639-3.sil.org/code/yor, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=496"
+    },
+    "yrk": {
+        "name": "Nenets",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "RU",
+        "total": 2,
+        "source": "https://iso639-3.sil.org/code/yrk"
+    },
+    "yua": {
+        "name": "Yucateco",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MX",
+        "total": 5,
+        "source": "https://iso639-3.sil.org/code/yua"
+    },
+    "zdj": {
+        "name": "Ngazidja Comorian",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "KM",
+        "total": 3,
+        "source": "https://iso639-3.sil.org/code/zdj"
+    },
+    "zea": {
+        "name": "Zeeuws",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "NL",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/zea"
+    },
+    "zha": {
+        "name": "Zhuang",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "CN",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/zha, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=500"
+    },
+    "zho": {
+        "name": "Chinese",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "CN,ID,MY,RU,SG,TH,TW,VN",
+        "total": 130,
+        "source": "https://iso639-3.sil.org/code/zho, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=84"
+    },
+    "zmi": {
+        "name": "Negeri Sembilan Malay",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "MY",
+        "total": 1,
+        "source": "https://iso639-3.sil.org/code/zmi"
+    },
+    "zul": {
+        "name": "Zulu",
+        "scope": "Individual",
+        "type": "Living",
+        "countries": "ZA",
+        "total": 10,
+        "source": "https://iso639-3.sil.org/code/zul, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=502"
+    },
+    "zza": {
+        "name": "Zaza",
+        "scope": "Macrolanguage",
+        "type": "Living",
+        "countries": "TR",
+        "total": 4,
+        "source": "https://iso639-3.sil.org/code/zza, https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?code_ID=510"
+    }
+}
