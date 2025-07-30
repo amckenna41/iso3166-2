@@ -89,8 +89,7 @@ For each local/other name, the ISO 639 3 letter language code is used to identif
 
 The full dataset of local/other names is available in the repo here [`local_other_names.csv`](https://github.com/amckenna41/iso3166-2/iso3166_2_resources/local_other_names.csv)
 
-
-### Flags
+### Flags
 The other equally important and bespoke/unique attribute that the software package supports is the ``flag`` attribute, which is a link to the subdivision's flag on the [`iso3166-flag-icons`](https://github.com/amckenna41/iso3166-flag-icons) repo. This is another **custom-built** repository, (alongside [`iso3166-2`](https://github.com/amckenna41/iso3166-2) and [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates)) that stores a rich and comprehensive dataset of over **3500** individual subdivision flags. 
 
 The flags repo uses the `iso3166-2` software to get the full list of ISO 3166-2 subdivision codes which is kept up-to-date and accurate via the `iso3166-updates` software. 
