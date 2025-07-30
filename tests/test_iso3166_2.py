@@ -73,15 +73,15 @@ class ISO3166_2_Tests(unittest.TestCase):
     # @unittest.skip("")
     def test_iso3166_2_metadata(self): 
         """ Testing correct iso3166-2 software version and metadata. """
-        # self.assertEqual(metadata('iso3166-2')['version'], "1.7.1", 
-        #     f"iso3166-2 version is not correct, expected 1.7.1, got {metadata('iso3166-2')['version']}.")
+        # self.assertEqual(metadata('iso3166-2')['version'], "1.7.2", 
+        #     f"iso3166-2 version is not correct, expected 1.7.2, got {metadata('iso3166-2')['version']}.")
         self.assertEqual(metadata('iso3166-2')['name'], "iso3166-2", 
             f"iso3166-2 software name is not correct, expected iso3166-2, got {metadata('iso3166-2')['name']}.")
         self.assertEqual(metadata('iso3166-2')['author'], "AJ McKenna", 
             f"iso3166-2 author is not correct, expected AJ McKenna, got {metadata('iso3166-2')['author']}.")
         self.assertEqual(metadata('iso3166-2')['author-email'], "amckenna41@qub.ac.uk", 
             f"iso3166-2 author email is not correct, expected amckenna41@qub.ac.uk, got {metadata('iso3166-2')['author-email']}.")
-        self.assertEqual(metadata('iso3166-2')['summary'], "A lightweight Python package, and accompanying API, used to access all of the world's most up-to-date and accurate ISO 3166-2 subdivision data, including: name, local/other name, code, parent code, type, latitude/longitude, flag and history.", 
+        self.assertEqual(metadata('iso3166-2')['summary'], "A lightweight Python package, and accompanying RESTful API, used to access all of the world's most up-to-date and accurate ISO 3166-2 subdivision data, including: name, local/other name, code, parent code, type, latitude/longitude, flag and history.", 
             f"iso3166-2 package summary is not correct, got:\n{metadata('iso3166-2')['summary']}.")
         self.assertEqual(metadata('iso3166-2')['maintainer'], "AJ McKenna", 
             f"iso3166-2 maintainer is not correct, expected AJ McKenna, got {metadata('iso3166-2')['maintainer']}.")
@@ -637,8 +637,8 @@ class ISO3166_2_Tests(unittest.TestCase):
         search_results_3 = self.all_iso3166_2.search(test_search_3, likeness_score=90, exclude_match_score=0)  #add Match Score to each search result output
         expected_search_result_3 = [
             {
-                "Country Code": "GB",
-                "Subdivision Code": "GB-ABC",
+                "countryCode": "GB",
+                "subdivisionCode": "GB-ABC",
                 "name": "Armagh City, Banbridge and Craigavon",
                 "localOtherName": "'Ard Mhacha, Droichead na Banna agus Creag Abhann (gle)', 'Airmagh, Bannbrig an Craigavon (ulst1239)'",
                 "type": "District",
@@ -649,11 +649,11 @@ class ISO3166_2_Tests(unittest.TestCase):
                     '2019-11-22: Change of subdivision name of GB-ABC, GB-DRS; modification of remark part 2; update list source. (Remark part 2: BS 6879 gives alternative name forms in Welsh (cy) for some of the Welsh unitary authorities (together with alternative code elements). Since this part of ISO 3166 does not allow for duplicate coding of identical subdivisions, such alternative names in Welsh and code elements are shown for information purposes only in square brackets after the English name of the subdivision. BS 6879 has been superseded but remains the original source of the codes. Included for completeness: EAW England and Wales; GBN Great Britain; UKM United Kingdom). Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:GB.', 
                     '2015-11-27: Deletion of district council areas GB-ANT, GB-ARD, GB-ARM, GB-BLA, GB-BLY, GB-BNB, GB-CKF, GB-CSR, GB-CLR, GB-CKT, GB-CGV, GB-DRY, GB-DOW, GB-DGN, GB-FER, GB-LRN, GB-LMV, GB-LSB, GB-MFT, GB-MYL, GB-NYM, GB-NTA, GB-NDN, GB-OMH, GB-STB; change of subdivision category from district council area to district GB-BFS; addition of districts GB-ANN, GB-AND, GB-ABC, GB-CCG, GB-DRS, GB-FMO, GB-LBC, GB-MEA, GB-MUL, GB-NMD; update List Source. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:GB.'
                     ],
-                "Match Score": 100
+                "matchScore": 100
             },
             {
-                "Country Code": "DE",
-                "Subdivision Code": "DE-BE",
+                "countryCode": "DE",
+                "subdivisionCode": "DE-BE",
                 "name": "Berlin",
                 "localOtherName": "Berlin (eng), Grey City (eng)",
                 "type": "Land",
@@ -661,7 +661,7 @@ class ISO3166_2_Tests(unittest.TestCase):
                 "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/DE/DE-BE.svg",
                 "latLng": [52.52, 13.405],
                 "history": None,
-                "Match Score": 100
+                "matchScore": 100
             }
         ]
     
@@ -793,7 +793,7 @@ class ISO3166_2_Tests(unittest.TestCase):
     # @unittest.skip("")
     def test_repr(self):
         """ Testing __repr__ function returns correct object representation for class object. """
-        self.assertEqual(repr(self.all_iso3166_2), "<iso3166-2(version=1.7.1, total_subdivisions=5049, source_file=iso3166-2.json)>",
+        self.assertEqual(repr(self.all_iso3166_2), "<iso3166-2(version=1.7.2, total_subdivisions=5049, source_file=iso3166-2.json)>",
                 f"Expected and observed object representation for class instance do not match:\n{repr(self.all_iso3166_2)}.")
 
     # @unittest.skip("")

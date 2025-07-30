@@ -36,7 +36,7 @@ warnings.filterwarnings(action="ignore", message="unclosed", category=ResourceWa
 
 def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-output", export_filename: str="test-iso3166-2",
                      resources_folder: str="iso3166_2_resources", verbose: bool=1, export_csv: bool=True, export_xml: bool=True, 
-                     alpha_codes_range: str="", rest_countries_keys: str="", exclude_default_attributes: str="", state_city_data: bool=False, 
+                     alpha_codes_range: str="", rest_countries_keys: str="", filter_attributes: str="", state_city_data: bool=False, 
                      history: bool=True, extract_lat_lng: bool=0, save_each_iteration: bool=False, use_proxy=False) -> None:
     """
     Export all ISO 3166-2 subdivision related data to JSON, CSV and or XML files. The default attributes
@@ -104,11 +104,12 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
         appended to each of the subdivisions in the output object. Here is the full list of accepted
         fields/attributes: "idd", "carSigns", "carSide", "continents", "currencies", "languages",
                     "postalCode", "region", "startOfWeek", "subregion", "timezones", "tld".
-    :exclude_default_attributes: str (default="")
+    :filter_attributes: str (default="")
         str of one or more of the default keys/attributes that are exported for each country's subdivision by default,
-        to be excluded from each country's subdivision object. These include: name, localOtherName, type, parentCode,
+        to be included in each country's subdivision object. These include: name, localOtherName, type, parentCode,
         latLng, history and flag. Note the country and subdivision code keys are required for each subdivision
-        and can't be excluded. By default, all of the aforementioned keys will be exported for each subdivision.
+        and will be included by default. Any keys will not included that are in the aforementioned list will be
+        included.
     :state_city_data: bool (default=False)
         include the city-level data per subdivision via the Country State City API. By default these aren't
         included due to the additional verbose data.
@@ -207,26 +208,25 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
 
         rest_countries_keys = rest_countries_keys_converted_list
 
-        # #append rest countries to all attributes list
-        # all_attributes.append(", ".join(rest_countries_keys))
-
-    #parse input default attributes to exclude from export
-    if (exclude_default_attributes != ""):
+    #parse input default attributes to include/exclude from export
+    if (filter_attributes != ""):
         #list of default output keys/attributes per subdivision
-        exclude_default_attributes_expected = ["name", "localOtherName", "type", "parentCode", "flag", "latLng"]
+        filter_attributes_expected = ["name", "localOtherName", "type", "parentCode", "flag", "latLng", "history"]
 
         #parse input attribute string into list, remove whitespace
-        exclude_default_attributes_converted_list = exclude_default_attributes.replace(' ', '').split(',')
+        filter_attributes_converted_list = filter_attributes.replace(' ', '').split(',')
 
         #iterate over all input keys, raise error if invalid key input
-        for key in exclude_default_attributes_converted_list:
-            if not (key in exclude_default_attributes_expected):
-                raise ValueError(f"Attribute/field ({key}) invalid, please refer to list of the acceptable default attributes below:\n{exclude_default_attributes_expected}.")
+        for key in filter_attributes_converted_list:
+            if not (key in filter_attributes_expected):
+                raise ValueError(f"Attribute/field ({key}) invalid, please refer to list of the acceptable default attributes below:\n{filter_attributes_expected}.")
 
-            #remove default key from list
-            all_attributes.remove(key)
+            # #remove default key from list
+            # all_attributes.remove(key)
 
-        exclude_default_attributes = exclude_default_attributes_converted_list
+        #set filter_attributes var to filtered list
+        filter_attributes = filter_attributes_converted_list
+        # all_attributes = [item for item in filter_attributes if item in all_attributes]
 
     #appending the different extra attributes to preserve custom order, 1st original attributes then history then rest country keys then cities
     if (history):
@@ -300,7 +300,7 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
             #skip latLng getting functionality if bool parameter set
             if (extract_lat_lng):
                 #get subdivision coordinates using googlemaps api python client, don't make API call if latLng attribute to be excluded from output
-                if ("latLng" in exclude_default_attributes):
+                if ("latLng" not in filter_attributes):
                     gmaps_latlng = []
                 else:
                     #initialise google maps client with API key, use proxy if input proxy not None
@@ -342,8 +342,8 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
             all_country_data[alpha2][subd.code]["parentCode"] = subd.parent_code
             all_country_data[alpha2][subd.code]["latLng"] = subdivision_coords
 
-            #don't request.get flag URL if attribute excluded in exclude_default_attributes parameter
-            if not ("flag" in exclude_default_attributes):
+            #don't request.get flag URL if not included in filter_attributes parameter
+            if ("flag" in filter_attributes):
                 if (flag_folder_exists):
                   all_country_data[alpha2][subd.code]["flag"] = get_flag_repo_url(subdivision_code=subd.code, alpha2_code=alpha2)
                 else:
@@ -397,8 +397,9 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
                 all_country_data[alpha2][subd.code]["cities"] = sorted(all_country_data[alpha2][subd.code]["cities"])
 
             #iterate over each default attribute to be excluded from subdivision object, delete key, if applicable
-            if (exclude_default_attributes != ""):
-                for key in exclude_default_attributes:
+            if (filter_attributes != ""):
+                attributes_to_delete = list(set(all_attributes).symmetric_difference(filter_attributes))
+                for key in attributes_to_delete:
                     # if (key != "latLng" and not extract_lat_lng):
                     del all_country_data[alpha2][subd.code][key]
             
@@ -425,10 +426,10 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
             
             #append latest subdivision updates/changes from /iso3166_2_resources folder to the iso3166-2 object
             all_country_data = update_subdivision(iso3166_2_filename=export_filepath, subdivision_csv=os.path.join(resources_folder, "subdivision_updates.csv"), export=0,
-                                                exclude_default_attributes=exclude_default_attributes, rest_countries_keys=rest_countries_keys)
+                                                filter_attributes=filter_attributes, rest_countries_keys=rest_countries_keys)
 
             #get local/other name data for each subdivision, unless localOtherName or name attributes to be excluded from export
-            if (exclude_default_attributes == "" or not ("localOtherName" in exclude_default_attributes)):
+            if (filter_attributes == "" or ("localOtherName" in filter_attributes)):
                 all_country_data = add_local_other_names(all_country_data, filepath=local_other_names_filepath)
 
             #add historical subdivision data updates from iso3166-updates software - needs to be done here after all attribute values such as local name added to all subdivision objects
@@ -449,7 +450,7 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
 
             #export the subdivision data object to the output files
             export_iso3166_2_data(all_country_data=all_country_data, export_filepath=export_filepath, export_csv=export_csv, export_xml=export_xml, history=history,
-                    exclude_default_attributes=exclude_default_attributes, rest_countries_keys=rest_countries_keys if isinstance(rest_countries_keys, list) else [])
+                    filter_attributes=filter_attributes, rest_countries_keys=rest_countries_keys if isinstance(rest_countries_keys, list) else [])
     
         #sort subdivision codes in json objects in natural alphabetical/numerical order using natsort library
         # all_country_data[alpha2] = dict(OrderedDict(natsort.natsorted(all_country_data[alpha2].items())))
@@ -491,10 +492,10 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
         
     #append latest subdivision updates/changes from /iso3166_2_resources folder to the iso3166-2 object
     all_country_data = update_subdivision(iso3166_2_filename=export_filepath, subdivision_csv=os.path.join(resources_folder, "subdivision_updates.csv"), export=0,
-                                          exclude_default_attributes=exclude_default_attributes, rest_countries_keys=rest_countries_keys)
+                                          filter_attributes=filter_attributes, rest_countries_keys=rest_countries_keys)
 
     #get local Name data for each subdivision, unless localOtherName or name attributes to be excluded from export
-    if (exclude_default_attributes == "" or not ("localOtherName" in exclude_default_attributes or "name" in exclude_default_attributes)):
+    if (filter_attributes == "" or ("localOtherName" in filter_attributes or "name" in filter_attributes)):
         all_country_data = add_local_other_names(all_country_data, filepath=local_other_names_filepath)
 
     #add historical subdivision data updates from iso3166-updates software - needs to be done here after all attribute values such as local name added to all subdivision objects
@@ -515,7 +516,7 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
 
     #export the subdivision data object to the output files
     export_iso3166_2_data(all_country_data=all_country_data, export_filepath=export_filepath, export_csv=export_csv, export_xml=export_xml, history=history,
-        exclude_default_attributes=exclude_default_attributes, rest_countries_keys=rest_countries_keys if isinstance(rest_countries_keys, list) else [])
+        filter_attributes=filter_attributes, rest_countries_keys=rest_countries_keys if isinstance(rest_countries_keys, list) else [])
 
     #stop counter and calculate elapsed time
     end = time.time()
@@ -551,8 +552,8 @@ if __name__ == '__main__':
         help='Range of alpha codes to export from, inclusive. If only a single alpha code input then it will serve as the starting country.')
     parser.add_argument('-rest_countries_keys', '--rest_countries_keys', type=str, required=False, default="", 
         help='List of additional fields/attributes from RestCountries API to be added to each subdivision object.')
-    parser.add_argument('-exclude_default_attributes', '--exclude_default_attributes', type=str, required=False, default="", 
-        help="List of default fields/attributes to be excluded from each country's subdivision object.")
+    parser.add_argument('-filter_attributes', '--filter_attributes', type=str, required=False, default="", 
+        help="Subset of default fields/attributes to include in each country's subdivision object.")
     parser.add_argument('-state_city_data', '--state_city_data', required=False, action=argparse.BooleanOptionalAction, default=0, 
         help='Set to 1 to include city level data for each subdivision, by default this is not gotten.')
     parser.add_argument('-history', '--history', required=False, action=argparse.BooleanOptionalAction, default=0, 

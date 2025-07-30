@@ -1,6 +1,6 @@
-# Change Log
+# Change Log 🔄
 
-## 1.7.0/1.7.1 - July 2025
+## 1.7.0/1.7.1/1.7.2 - July 2025
 
 ### Added
 - Add list of cities for each subdivision using the country-states-city API
@@ -88,6 +88,8 @@
 - Removed separate JSON imports for windows/mac
 - All flag icon references on iso3166-flag-icons repo changed to link to the raw image file
 - Throughout software package and API, excludeAttributes changed to filter Attributes - only include the list of attributes input
+- Changed the search output attributes to all camelCasing
+- Changed the parameter in /scripts from exclude_default_attributes to filter_attributes, to be more intuitive
 
 ## v1.6.1 - June 2024
 

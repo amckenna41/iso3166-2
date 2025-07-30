@@ -18,7 +18,7 @@ rest_countries_base_url = "https://restcountries.com/v3.1/"
 
 def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="", local_other_name: str="", type_: str="", lat_lng: list|str=None,
                        parent_code: str="", flag: str="", history: str="", delete: bool=0, iso3166_2_filename: str=os.path.join("iso3166_2", "iso3166-2.json"),
-                       subdivision_csv: str="", rest_countries_keys: str="", custom_attributes: dict={}, exclude_default_attributes: str="", export: bool=True) -> dict:
+                       subdivision_csv: str="", rest_countries_keys: str="", custom_attributes: dict={}, filter_attributes: str="", export: bool=True) -> dict:
     """
     Auxiliary function created to streamline the addition, amendment and or deletion
     of subdivisions in/from the iso3166-2.json object. There are two main ways at
@@ -32,11 +32,11 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
 
     The CSV file (iso3166_2_resources/subdivision_updates.csv) has the following
     columns for each subdivision change: alpha_code, code, name, localOtherName, type,
-    parentCode, flag, latLng, delete, notes and dateIssued. Although, some of the
-    default aforementioned columns may be excluded via the "exclude_default_attributes"
-    parameter, meaning they will not be present in the CSV file columns. When creating
-    a row in the CSV, the country code and subdivision code columns are required,
-    otherwise an error will be thrown.
+    parentCode, flag, latLng, delete, notes and dateIssued. Although, the default 
+    aforementioned columns may be filtered via the "filter_attributes"
+    parameter, meaning the ones input will only be present in the CSV file columns. 
+    When creating a row in the CSV, the country code and subdivision code columns 
+    are required, otherwise an error will be thrown.
 
     If deleting an existing subdivision, the subdivision details should be passed
     into the function alongside setting the delete input parameter to 1. Similarly,
@@ -88,11 +88,12 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
         object of custom attributes to add to each subdivision e.g population, largest city, birth rate
         etc. Useful if you want to add extra data per subdivision that isn't exported by default. The
         attributes should be in key-value format e.g custom_attributes={"birthRate": "10"}.
-    :exclude_default_attributes: str (default="")
+    :filter_attributes: str (default="")
         str of one or more of the default keys/attributes that are exported for each country's subdivision by default,
-        to be excluded from each country's subdivision object. These include: name, localOtherName, type, parentCode,
-        latLng, flag and history. Note the country and subdivision code keys are required for each subdivision
-        and can't be excluded. By default, all of the aforementioned keys will be exported for each subdivision.
+        to be included in each country's subdivision object. These include: name, localOtherName, type, parentCode,
+        latLng, history and flag. Note the country and subdivision code keys are required for each subdivision
+        and will be included by default. Any keys will not included that are in the aforementioned list will be
+        included.
     :export: bool (default=True)
         whether to export updated subdivision data to file pointed to by
         iso3166_2_filename parameter, else return the whole updated subdivision
@@ -168,20 +169,28 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
     #list of default output keys/attributes per subdivision
     expected_default_attributes = ["name", "localOtherName", "type", "parentCode", "latLng", "flag", "history"]
 
-    #parse input default attributes to exclude from export
-    if (exclude_default_attributes != ""):
+    #parse input default attributes to include/exclude from export
+    if (filter_attributes != ""):
+        #list of default output keys/attributes per subdivision
+        expected_default_attributes = ["name", "localOtherName", "type", "parentCode", "flag", "latLng", "history"]
         #parse input attribute string into list, remove whitespace and split into comma separated list if string input
-        if (isinstance(exclude_default_attributes, str)):
-            exclude_default_attributes_converted_list = exclude_default_attributes.replace(' ', '').split(',')
+        if (isinstance(filter_attributes, str)):
+            filter_attributes_converted_list = filter_attributes.replace(' ', '').split(',')
         else:
-            exclude_default_attributes_converted_list = exclude_default_attributes
+            filter_attributes_converted_list = filter_attributes
+
 
         #iterate over all input keys, raise error if invalid key input
-        for key in exclude_default_attributes_converted_list:
+        for key in filter_attributes_converted_list:
             if not (key in expected_default_attributes):
                 raise ValueError(f"Attribute/field ({key}) invalid, please refer to list of the acceptable default attributes below:\n{expected_default_attributes}.")
 
-        exclude_default_attributes = exclude_default_attributes_converted_list
+            # #remove default key from list
+            # all_attributes.remove(key)
+
+        #set filter_attributes var to filtered list
+        filter_attributes = filter_attributes_converted_list
+        # all_attributes = [item for item in filter_attributes if item in all_attributes]
 
     #parse input RestCountries attributes/fields, if applicable
     if (rest_countries_keys != ""):
@@ -201,9 +210,15 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
             rest_countries_keys = rest_countries_keys_converted_list
 
     #remove any of the default attributes from list if they are to be excluded
+    # if (exclude_default_attributes != ""):
+    #     for attr in exclude_default_attributes:
+    #         temp_expected_attributes.remove(attr)
+
     temp_expected_attributes = expected_default_attributes
-    if (exclude_default_attributes != ""):
-        for attr in exclude_default_attributes:
+    #iterate over each default attribute to be excluded from subdivision object, delete key, if applicable
+    if (filter_attributes != ""):
+        attributes_to_delete = list(set(expected_default_attributes).symmetric_difference(filter_attributes))
+        for key in attributes_to_delete:
             temp_expected_attributes.remove(attr)
 
     #append default attributes list with rest countries list if applicable
@@ -211,7 +226,7 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
         temp_expected_attributes.extend(sorted(rest_countries_keys))
 
     #parse lat_lng attribute, should be array of 2 str, can accept just a comma separated str, raise error if invalid input
-    if (lat_lng != None and lat_lng != [] and not 'latLng' in exclude_default_attributes):
+    if ((lat_lng != None and lat_lng != []) or 'latLng' in filter_attributes):
         if (isinstance(lat_lng, str)):
             try:
                 temp_lat_lng = []

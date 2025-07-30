@@ -42,7 +42,7 @@ class Subdivisions():
     Parameters
     ==========
     :country_code: str (default="")
-        ISO 3166-1 alpha-2, alpha-3 or numeric country code to get subdivision data for. A list
+        ISO 3166-1 alpha-2, alpha-3 or numeric countryCode to get subdivision data for. A list
         of country codes can also be input. If the alpha-3 or numeric codes are input, they are
         converted into their alpha-2 counterparts.
     :iso3166_2_filepath: str (default="")
@@ -169,7 +169,7 @@ class Subdivisions():
         self.iso3166_2_filepath = iso3166_2_filepath
         self.iso3166_json_filename= "iso3166-2.json"
         self.filter_attributes = filter_attributes
-        self.__version__ = "1.7.1"
+        self.__version__ = "1.7.2"
 
         #get full path to default object
         self.iso3166_2_module_path = os.path.join(os.path.dirname(os.path.abspath(sys.modules[self.__module__].__file__)), self.iso3166_json_filename)
@@ -728,9 +728,9 @@ class Subdivisions():
                 if code not in found:
                     found[code] = {
                         **self.all[alpha2][code],
-                        "Match Score": score,
-                        "Country Code": alpha2,
-                        "Subdivision Code": code
+                        "matchScore": score,
+                        "countryCode": alpha2,
+                        "subdivisionCode": code
                     }
 
         #filter out attributes from subdivision object, if applicable
@@ -745,13 +745,13 @@ class Subdivisions():
                 raise ValueError(f"Invalid attribute(s) in filter_attribute: {filter_list}")
             #iterate over search results, filtering out the non-required attributes & keeping the main default attributes
             for code in list(found.keys()):
-                match_score = found[code].get("Match Score")
-                country_code = found[code].get("Country Code")
+                match_score = found[code].get("matchScore")
+                country_code = found[code].get("countryCode")
                 filtered = {k: v for k, v in found[code].items() if k in filter_list}
-                filtered["Subdivision Code"] = code
-                filtered["Country Code"] = country_code
+                filtered["subdivisionCode"] = code
+                filtered["countryCode"] = country_code
                 if not exclude_match_score and match_score is not None:
-                    filtered["Match Score"] = match_score
+                    filtered["matchScore"] = match_score
                 found[code] = filtered
 
         #exclude the % match score attribute from subdivision objects
@@ -759,9 +759,9 @@ class Subdivisions():
             grouped = {}
             #iterate over nested subdivision objects, removing Match Score, Country Code & Subdivision Code attributes
             for code, data in found.items():
-                data.pop("Match Score", None)
-                country_code = data.pop("Country Code", "")
-                sub_code = data.pop("Subdivision Code", code)
+                data.pop("matchScore", None)
+                country_code = data.pop("countryCode", "")
+                sub_code = data.pop("subdivisionCode", code)
                 #set the parent key of the subdivision object to its alpha country code
                 grouped.setdefault(country_code, {})[sub_code] = data
             return dict(sorted(grouped.items()))
@@ -770,16 +770,16 @@ class Subdivisions():
             #iterate over all subdivision objects, reordering attributes with inclusion of Match Score
             for code, data in found.items():
                 entry = {
-                    "Country Code": data.pop("Country Code", ""),
-                    "Subdivision Code": data.pop("Subdivision Code", code),
+                    "countryCode": data.pop("countryCode", ""),
+                    "subdivisionCode": data.pop("subdivisionCode", code),
                     **data,
-                    "Match Score": data.pop("Match Score", 0)
+                    "matchScore": data.pop("matchScore", 0)
                 }
                 #append to results array
                 final_results.append(entry)
 
             #reorder results via Match Score attribute, descending
-            final_results.sort(key=lambda x: x.get("Match Score", 0), reverse=True)
+            final_results.sort(key=lambda x: x.get("matchScore", 0), reverse=True)
 
             return final_results
 
