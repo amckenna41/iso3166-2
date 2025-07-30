@@ -44,6 +44,10 @@ def convert_to_alpha2(alpha_code: str) -> str:
     if not (isinstance(alpha_code, str)):
         raise TypeError(f"Expected input alpha code to be a string, got {type(alpha_code)}.")
 
+    #raise error if more than 1 country code input
+    if ("," in alpha_code):
+        raise ValueError(f"Only one country code should be input into the function: {alpha_code}.")
+    
     #uppercase alpha code, initial_alpha_code var maintains the original alpha code pre-uppercasing
     alpha_code = alpha_code.upper().replace(' ', '')
     initial_alpha_code = alpha_code
@@ -67,7 +71,7 @@ def convert_to_alpha2(alpha_code: str) -> str:
         return iso3166.countries_by_alpha3[alpha_code].alpha2
 
     #return error by default if input code not returned already
-    raise ValueError(f"Invalid alpha country code input: {alpha_code}.")
+    raise ValueError(f"Invalid ISO 3166-1 alpha country code input: {alpha_code}.")
 
 def get_alpha_codes_list(alpha_codes: str="", alpha_codes_range: str="") -> tuple[list, str]:
     """

@@ -10,6 +10,9 @@
 [![License: MIT](https://img.shields.io/github/license/amckenna41/iso3166-2)](https://opensource.org/licenses/MIT)
 [![Issues](https://img.shields.io/github/issues/amckenna41/iso3166-2)](https://github.com/amckenna41/iso3166-2/issues)
 
+*** - here
+ 
+
 Documentation
 -------------
 Documentation for installation and usage of the software is available on the readthedocs platform:
@@ -101,8 +104,8 @@ iso.search("Castelo Branco", likeness=100)
 #searching for the Roche Caiman district in Seychelles (SC-25) - returning exact matching subdivision (likeness=100)
 iso.search("Roche Caiman")
 
-#searching for any subdivisions that have "Southern" in their name, using a likeness score of 80
-iso.search("Southern", likeness_score=80)
+#searching for any subdivisions that have "Southern" in their name, using a likeness score of 80, include the % match score name is to search terms
+iso.search("Southern", likeness_score=80, exclude_match_score=0)
 
 #searching for any subdivisions that have "City" in their name or localOtherName attributes, using a likeness score of 40%
 iso.search("City", likeness=40, local_other_name_search=True)
@@ -127,14 +130,14 @@ from iso3166_2 import *
 iso = Subdivisions()
 
 #adding custom Belfast province to Ireland
-iso.custom_subdivision("IE", "IE-BF", name="Belfast", local_name="Béal Feirste", type_="province", lat_lng=[54.596, -5.931], parent_code=None, flag=None)
+iso.custom_subdivision("IE", "IE-BF", name="Belfast", local_other_name="Béal Feirste", type_="province", lat_lng=[54.596, -5.931], parent_code=None, flag=None)
 
 #adding custom Alaska province to Russia with additional population and area attribute values
 iso.custom_subdivision("RU", "RU-ASK", name="Alaska Oblast", local_other_name="Аляска", type_="Republic", lat_lng=[63.588, 154.493], parent_code=None, flag=None, 
       custom_attributes={"population": "733,583", "gini": "0.43", "gdpPerCapita": "71,996"})
 
 #adding custom Republic of Molossia state to United States 
-iso.custom_subdivision("US", "US-ML", name="Republic of Molossia", local_name="", type_="State", lat_lng=[39.236, -119.588], parent_code=None, flag="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_the_Republic_of_Molossia.svg")
+iso.custom_subdivision("US", "US-ML", name="Republic of Molossia", local_other_name="", type_="State", lat_lng=[39.236, -119.588], parent_code=None, flag="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_the_Republic_of_Molossia.svg")
 
 #deleting above custom subdivisions from object
 iso.custom_subdivision("IE", "IE-BF", delete=1)

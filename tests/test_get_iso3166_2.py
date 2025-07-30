@@ -15,6 +15,7 @@ unittest.TestLoader.sortTestMethodsUsing = None
 #ignore resource warnings
 warnings.filterwarnings(action="ignore", message="unclosed", category=ResourceWarning)
 
+# @unittest.skip("Skipping get_iso3166_2 tests.")
 class Get_ISO3166_2_Tests(unittest.TestCase):
     """
     Test suite for testing get_iso3166_2.py script that has the full export pipeline that
@@ -77,7 +78,7 @@ class Get_ISO3166_2_Tests(unittest.TestCase):
         # self.patcher = patch('sys.stdout', new_callable=io.StringIO)
         # self.mock_stdout = self.patcher.start()
     
-    @unittest.skip("")  
+    # @unittest.skip("")  
     def test_export_iso3166_2(self):
         """ Testing export functionality for getting ISO 3166-2 subdivision data from data sources. """
         test_alpha_dk = "DK" #Denmark
@@ -314,7 +315,7 @@ class Get_ISO3166_2_Tests(unittest.TestCase):
             export_iso3166_2(alpha_codes=True)
             export_iso3166_2(alpha_codes=10.9)
 
-    @unittest.skip("Current issue with exporting restcountries data, skipping for now.")  
+    # @unittest.skip("Current issue with exporting restcountries data, skipping for now.")  
     def test_export_iso3166_restcountries(self):
         """ Testing export functionality for getting ISO 3166-2 subdivision data from data sources, including additional RestCountries API attributes. """
         test_alpha_gt = "GT" #Guatemala - continents & subregion
@@ -426,7 +427,7 @@ class Get_ISO3166_2_Tests(unittest.TestCase):
             export_iso3166_2(export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, rest_countries_keys=test_rest_countries_keys_error2, extract_lat_lng=False) #ABCDEF
             export_iso3166_2(export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, rest_countries_keys=test_rest_countries_keys_error3, extract_lat_lng=False) #1234
     
-    @unittest.skip("")
+    # @unittest.skip("")
     def test_export_exclude_default_attributes(self):
         """ Testing export functionality for getting ISO 3166-2 subdivision data from data sources, with some default attributes excluded. """
         test_alpha_ge = "GE" #Georgia - exclude latLng & type
@@ -514,7 +515,7 @@ class Get_ISO3166_2_Tests(unittest.TestCase):
             export_iso3166_2(export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, exclude_default_attributes=test_exclude_keys_error2, extract_lat_lng=False) #ABCDEF
             export_iso3166_2(export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, exclude_default_attributes=test_exclude_keys_error3, extract_lat_lng=False) #1234
 
-    @unittest.skip("Skipping to not overload test instances.") 
+    # @unittest.skip("Skipping to not overload test instances.") 
     def test_export_iso3166_2_alpha_code_range(self): 
         """ Testing correct ISO 3166-2 data is exported and pulled from data sources using a range of alpha codes via the alpha_codes_range parameter. """
         test_alpha_at_be = "AT-BE" #Austria - Belgium
@@ -582,7 +583,7 @@ class Get_ISO3166_2_Tests(unittest.TestCase):
             export_iso3166_2(alpha_codes_range=10.05, export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, export_csv=1, extract_lat_lng=False) #10.4
             export_iso3166_2(alpha_codes_range=False, export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, export_csv=1, extract_lat_lng=False) #False
 
-    @unittest.skip("")
+    # @unittest.skip("")
     def test_export_history(self):
         """ Testing correct ISO 3166-2 data with history attribute included are exported correctly. """
         test_alpha_ae = "AE" #UAE   
@@ -832,7 +833,7 @@ class Get_ISO3166_2_Tests(unittest.TestCase):
     @classmethod
     def tearDown(self):
         """ Delete any temp export folder. """
-        # shutil.rmtree(self.test_output_dir)
+        shutil.rmtree(self.test_output_dir)
 
 if __name__ == '__main__':  
     #run all unit tests

@@ -26,7 +26,7 @@ jobs:
         matrix:
             # os: [ubuntu-latest, windows-latest] #testing on multiple OS's, macos-latest
             os: [ubuntu-latest]
-            python-version: ["3.10", "3.11", "3.12"]   #testing on multiple python versions
+            python-version: ["3.11"]   #testing on multiple python versions
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}

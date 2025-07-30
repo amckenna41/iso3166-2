@@ -8,6 +8,7 @@ import os
 import unittest
 unittest.TestLoader.sortTestMethodsUsing = None
 
+# @unittest.skip("Skipping local/other name unit tests.")
 class Local_Other_Name_Tests(unittest.TestCase):
     """
     Test suite for testing the database of local/other names for each subdivision in the 

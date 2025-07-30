@@ -19,7 +19,7 @@
   <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/ISO_Logo_%28Red_square%29.svg" alt="iso" height="300" width="400"/> -->
 </div>
 
-> `iso3166-2` is a lightweight custom-built Python package, and accompanying RESTful API, that can be used to access all of the world's ISO 3166-2 subdivision data. A plethora of data attributes are available per country and subdivision including: name, local/other name, code, parent code, type, lat/longitude, flag & history. Currently, the package and API supports data from 250 countries/territories and >5000 subdivisions, according to the ISO 3166-1 & ISO 3166-2 standards, respectively. The software uses another custom-built Python package called [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates/tree/main) to ensure all the subdivision data is accurate, reliable and up-to-date.
+> `iso3166-2` is a structured lightweight custom-built Python package, and accompanying RESTful API, that can be used to access all of the world's ISO 3166-2 subdivision data. A plethora of data attributes are available per country and subdivision including: name, local/other name, code, parent code, type, lat/longitude, flag & history. Currently, the package and API supports data from 250 countries/territories and >5000 subdivisions, according to the ISO 3166-1 & ISO 3166-2 standards, respectively. The software uses another custom-built Python package called [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates/tree/main) to ensure all the subdivision data is accurate, reliable and up-to-date.
 
 Quick Start 🏃
 -------------
@@ -61,7 +61,7 @@ The full list of subdivision data attributes supported are:
 * **Flag** - subdivision flag from [`iso3166-flag-icons`](https://github.com/amckenna41/iso3166-flag-icons) repo; this is another ISO 3166 related custom-built dataset of over **3500** regional/subdivision flags
 * **History** - historical updates/changes to the subdivision code and naming conventions, as per the custom-built [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates) repo.
 
-The above 8 attributes were chosen as they are the most relevant and useful pieces of data for each subdivision. Other attributes are available in scattered data sources such as area, population, regional name translations, geonames ID, FIPS code etc, but these were deemed less relevant than the ones included... unless someone really desires the population of the Bhutan region of Bumthang (17,820 btw). It was an aim during development to make the package as lightweight as possible, therefore for example if the 5 aforementioned attributes were included for the existing **5,049** codes, this would significantly increase the size of the dataset from **~3MB to ~4MB**. 
+<!-- The above 8 attributes were chosen as they are the most relevant and useful pieces of data for each subdivision. Other attributes are available in scattered data sources such as area, population, regional name translations, geonames ID, FIPS code etc, but these were deemed less relevant than the ones included... unless someone really desires the population of the Bhutan region of Bumthang (17,820 btw). It was an aim during development to make the package as lightweight as possible, therefore for example if the 5 aforementioned attributes were included for the existing **5,049** codes, this would significantly increase the size of the dataset from **~3MB to ~4MB**.  -->
 
 ### Motivation
 The primary motivation for building this software was for use in my [`iso3166-flag-icons`](https://github.com/amckenna41/iso3166-flag-icons) project. When building the dataset of flags, I found that some existing projects/softwares were **inaccurate**, **outdated** and or **not maintained**. As mentioned, the ISO 3166-2 is a dynamic and ever-changing standard therefore it can be difficult to maintain and keep up-to-date; although in the case for this software, that problem is largely alleviated thanks to the custom-built [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates) package (see below sections).
@@ -75,10 +75,10 @@ This package is particularly useful for developers and researchers building geog
 
 ## Bespoke Features
 
-There are two main attributes supported by the software that make it stand out and add a significant amount of value and data per subdivision, in comparison to some the other iso3166-2 datasets, these are the **local/other name** and the **flag** attributes.
+There are three main attributes supported by the software that make it stand out and add a significant amount of value and data per subdivision, in comparison to some the other iso3166-2 datasets, these are the **local/other name**, **flag** and **history** attributes.
 
 ### Local/Other names
-One of the most <b>important</b> and <b>bespoke</b> attributes that the software supports, that many others do not, is the **local/other name** attribute. This attribute is built from a custom dataset of local language variants and alternative names/nicknames  for the <b>over 5000</b> subdivisions. In total there are <b>>3700</b> local/other names for the <b>>5000</b> subdivisions. Primarily the attribute contains local language translations for the subdivisions, but many also include <b>nicknames</b> and **alternative variants** that the subdivision may be known by, either locally or globally. 
+One of the most <b>important</b> and <b>bespoke</b> attributes that the software supports, that many others do not, is the **local/other name** attribute. This attribute is built from a custom dataset of local language variants and alternative names/nicknames  for the <b>over 5000</b> subdivisions. In total there are <b>>3700</b> local/other names for the <b>>5000</b> subdivisions. Primarily, the attribute contains local language translations for the subdivisions, but many also include <b>nicknames</b> and **alternative variants** that the subdivision may be known by, either locally or globally. 
 
 For each local/other name, the ISO 639 3 letter language code is used to identify the language of the name. Some translations do not have available ISO 639 codes, therefore the [Glottolog](https://glottolog.org/) or other databases (e.g [IETF](https://support.elucidat.com/hc/en-us/articles/6068623875217-IETF-language-tags)) language codes are used. Some example local/other name entries are: 
 * **Sindh (Pakistan PK-SD)**: "سِنْدھ (urd), Sindh (eng), SD (eng), Mehran/Gateway (eng), Bab-ul-Islam/Gateway of Islam (eng)"
@@ -88,6 +88,7 @@ For each local/other name, the ISO 639 3 letter language code is used to identif
 
 The full dataset of local/other names is available in the repo here [`local_other_names.csv`](https://github.com/amckenna41/iso3166-2/iso3166_2_resources/local_other_names.csv)
 
+
 ### Flags
 The other equally important and bespoke/unique attribute that the software package supports is the ``flag`` attribute, which is a link to the subdivision's flag on the [`iso3166-flag-icons`](https://github.com/amckenna41/iso3166-flag-icons) repo. This is another **custom-built** repository, (alongside [`iso3166-2`](https://github.com/amckenna41/iso3166-2) and [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates)) that stores a rich and comprehensive dataset of over **3500** individual subdivision flags. 
 
@@ -95,6 +96,13 @@ The flags repo uses the `iso3166-2` software to get the full list of ISO 3166-2 
 
    <div align="center">❤️ iso3166-2 🤝 iso3166-updates 🤝 iso3166-flag-icons ❤️</div>
    
+
+### History
+The `history` attribute has any applicable historical updates/changes to the individual subdivisions, if applicable. The data source for this is another custom-built software package previously mentioned [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates). This package keeps track of all the published changes that the ISO make to the ISO 3166 standard which include addition of new subdivisions, deletion of existing subdivisions or amendments to existing subdivisions. Thus [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates) helps ensure that the data in the `iso3166-2` package is also kept up-to-date and accurate. If any updates are found for the subdivision a short description of the change, it's publication date as well as its source will be included.
+
+   <div align="center">❤️ iso3166-2 🤝 iso3166-updates ❤️</div>
+
+
 ## Requirements
 * [python][python] >= 3.9
 * [iso3166][iso3166] >= 2.1.1
@@ -178,7 +186,9 @@ returning either a subdivision with the exact match or subdivisions whose names
 approximately match the sought input name according to the likeness input parameter.
 The likeness input parameter is a % similarity the input search terms have to be to 
 the subdivision names, with 100% being an exact match, vice versa. Reducing this
-value will thus increase the search space and return more like results.
+value will thus increase the search space and return more like results. You can 
+exclude the Match Score attribute in the search results by setting the excludeMatchScore
+parameter to 1.
 '''
 from iso3166_2 import *
 
@@ -194,8 +204,8 @@ iso.search("Castelo Branco", likeness=100)
 #searching for the Roche Caiman district in Seychelles (SC-25) - returning exact matching subdivision (likeness=100)
 iso.search("Roche Caiman")
 
-#searching for any subdivisions that have "Southern" in their name, using a likeness score of 80
-iso.search("Southern", likeness_score=80)
+#searching for any subdivisions that have "Southern" in their name, using a likeness score of 80, exclude Match Score attribute
+iso.search("Southern", likeness_score=80, exclude_match_score=1)
 
 #searching for any subdivisions that have "City" in their name or localOtherName attributes, using a likeness score of 40%
 iso.search("City", likeness=40, local_other_name_search=True)
@@ -212,7 +222,9 @@ code elements of the ISO 3166-1 standard. Custom subdivisions and subdivision
 codes can be used for in-house/bespoke applications that are using the 
 iso3166-2 software but require additional custom subdivisions to be represented.
 You can also add custom attributes for the custom subdivision, e.g population,
-area, gdp etc, via the custom_attribute parameter.
+area, gdp etc, via the custom_attribute parameter. You can save the custom
+object with the new subdivision data added to a custom file via the save_new
+and save_new_filename parameters.
 '''
 from iso3166_2 import *
 
@@ -220,14 +232,14 @@ from iso3166_2 import *
 iso = Subdivisions()
 
 #adding custom Belfast province to Ireland
-iso.custom_subdivision("IE", "IE-BF", name="Belfast", local_name="Béal Feirste", type_="province", lat_lng=[54.596, -5.931], parent_code=None, flag=None)
+iso.custom_subdivision("IE", "IE-BF", name="Belfast", local_other_name="Béal Feirste", type_="province", lat_lng=[54.596, -5.931], parent_code=None, flag=None)
 
-#adding custom Alaska province to Russia with additional population and area attribute values
+#adding custom Alaska province to Russia with additional population and area attribute values, save object to new file
 iso.custom_subdivision("RU", "RU-ASK", name="Alaska Oblast", local_other_name="Аляска", type_="Republic", lat_lng=[63.588, 154.493], parent_code=None, flag=None, 
-      custom_attributes={"population": "733,583", "gini": "0.43", "gdpPerCapita": "71,996"})
+      custom_attributes={"population": "733,583", "gini": "0.43", "gdpPerCapita": "71,996"}, save_new=1, save_new_filename="ru-ask-custom.json")
 
 #adding custom Republic of Molossia state to United States 
-iso.custom_subdivision("US", "US-ML", name="Republic of Molossia", local_name="", type_="State", lat_lng=[39.236, -119.588], parent_code=None, flag="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_the_Republic_of_Molossia.svg")
+iso.custom_subdivision("US", "US-ML", name="Republic of Molossia", local_other_name="", type_="State", lat_lng=[39.236, -119.588], parent_code=None, flag="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_the_Republic_of_Molossia.svg")
 
 #deleting above custom subdivisions from object
 iso.custom_subdivision("IE", "IE-BF", delete=1)
@@ -267,7 +279,7 @@ An important thing to note about the ISO 3166-2 and its subdivision codes/names 
 
 The [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates) repo is another open-source software package and accompanying RESTful API that pulls the latest updates and changes for any and all countries in the ISO 3166 from a variety of data sources including the ISO website itself. A script is called periodically to check for any updates/changes to the subdivisions, which are communicated via the ISO's Online Browsing Platform [[4]](#references), and will then be manually incorporated into this repo. Please visit the repository home page for more info about the purpose and process of the software and API - [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates).
 
-The list of ISO 3166 updates was last updated on <strong>November 2024</strong>. A log of the latest ISO 3166 updates can be seen in the [UPDATES.md][updates_md] file.
+The list of ISO 3166 updates was last updated on <strong>November 2024</strong> (the last published ISO subdivision change). A log of the latest ISO 3166 updates can be seen in the [UPDATES.md][updates_md] file.
 
 ## API
 The main API endpoint is:
@@ -284,6 +296,8 @@ The other endpoints available in the API are:
 
 Six paths/endpoints are available in the API - `/api/all`, `/api/alpha`, `/api/country_name`, `/api/subdivision`, `/api/search` and `/api/list_subdivisions`.
 
+* `/api`: main homepage and API documentation.
+
 * `/api/all`: get all of the ISO 3166 subdivision data for all countries.
 
 * `/api/alpha`: get all of the ISO 3166 subdivision data for 1 or more inputted ISO 3166-1 alpha-2, alpha-3 or numeric country codes, e.g. `/api/alpha/FR,DE,HU,ID,MA`, `/api/alpha/FRA,DEU,HUN,IDN,MAR` and `/api/alpha/428,504,638`. A comma separated list of multiple alpha codes can also be input. If an invalid country code is input then an error will be returned.
@@ -292,13 +306,12 @@ Six paths/endpoints are available in the API - `/api/all`, `/api/alpha`, `/api/c
 
 * `/api/subdivision`: get all of the ISO 3166 subdivision data for 1 or more ISO 3166-2 subdivision codes, e.g `/api/subdivision/GB-ABD`. You can also input a comma separated list of subdivision codes from the same and or different countries and the data for each will be returned e.g `/api/subdivision/IE-MO,FI-17,RO-AG`. If the input subdivision code is not in the correct format then an error will be raised. Similarly if an invalid subdivision code that doesn't exist is input then an error will be raised.
 
-* `/api/search/`: get all of the ISO 3166 subdivision data for 1 or more ISO 3166-2 subdivision names that match the inputted search terms, e.g `/api/search/Derry`, `/api/search/Kimpala`. You can also input a comma separated list of subdivision name from the same or different countries and the data for each will be returned e.g `/api/name/Paris,Frankfurt,Rimini`. A closeness function is utilised to find the matching subdivision name, if no exact name match found then the most approximate subdivisions will be returned. Some subdivisions may have the same name, in this case each subdivision and its data will be returned e.g `/api/name/Saint George` (this example returns 5 subdivisions). If an invalid subdivision name that doesn't match any is input then an error will be raised. The `likeness` query string parameter can be used with this endpoint. 
+* `/api/search/`: get all of the ISO 3166 subdivision data for 1 or more ISO 3166-2 subdivision names that match the inputted search terms, e.g `/api/search/Derry`, `/api/search/Kimpala`. You can also input a comma separated list of subdivision name from the same or different countries and the data for each will be returned e.g `/api/name/Paris,Frankfurt,Rimini`. A closeness function is utilised to find the matching subdivision name, if no exact name match found then the most approximate subdivisions will be returned. Some subdivisions may have the same name, in this case each subdivision and its data will be returned e.g `/api/name/Saint George` (this example returns 5 subdivisions). If an invalid subdivision name that doesn't match any is input then an error will be raised. The `likeness` and `excludeMatchScore` query string parameters can be used with this endpoint. 
 
-* `/api/list_subdivisions`: get list of all the subdivision codes for all countries. 
+* `/api/list_subdivisions`: get list of all the subdivision codes for all countries. You can also get the list of subdivisions from a subset of 
+countries via their ISO 3166-1 country code.
 
-* `/api`: main homepage and API documentation.
-
-### Attributes
+<!-- ### Attributes
 There are 8 main default attributes supported for all subdivision objects that will be returned:
 
 * **Code** - ISO 3166-2 subdivision code
@@ -308,7 +321,7 @@ There are 8 main default attributes supported for all subdivision objects that w
 * **Type** - subdivision type, e.g. region, state, canton, parish etc
 * **Latitude/Longitude** - subdivision coordinates, from GoogleMaps API
 * **Flag** - subdivision flag from the custom-built [`iso3166-flag-icons`](https://github.com/amckenna41/iso3166-flag-icons) repo; this is another ISO 3166 related custom-built dataset of over **3500** regional/subdivision flags
-* **History** - historical updates/changes to the subdivision code and naming conventions, as per the custom-built [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates) repo
+* **History** - historical updates/changes to the subdivision code and naming conventions, as per the custom-built [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates) repo -->
 
 ### Query String Parameters
 There are three main query string parameters that can be passed through several of the endpoints of the API:
@@ -318,13 +331,15 @@ inputted search terms have to match to the subdivision data in the subdivision c
 having a lower value will return less exact but more total matches, e.g ``/api/search/Paris?likeness=50``, 
 ``/api/country_name/Tajikist?likeness=90`` (default=100).
 * **filterAttributes** - this is a list of the default supported attributes that you want to include in the output. By default all attributes will be returned but this parameter is useful if you only require a subset of attributes, e.g `api/alpha/DEU?filterAttributes=latLng,flag`, `api/subdivision/PL-02?filterAttributes=localOtherName`.
+* **excludeMatchScore** - this allows you to exclude the matchScore attribute from the search results when using the `/api/search endpoint`. The match score is the % of a match each returned subdivision data object is to the search terms, with 100% being an exact match. By default the match score is returned for each object, e.g `/api/search/Bucharest?excludeMatchScore=1`, ``/api/search/Oregon?excludeMatchScore=1`` (default=0).
+
 
 The API documentation and usage with all useful commands and examples to the API is available on the [API.md][api_md] file. 
 
 A demo of the software and API is available [here][demo].
 
 
-## ISO 3166-2 Scripts
+<!-- ## ISO 3166-2 Scripts
 * [`scripts/get_iso3166_2.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts) - used for pulling and exporting the latest ISO 3166-2 data from the various data sources. In this script you can also export additional attributes for each country/subdivision via the RestCountries and CountryStateCity APIs.
 * [`scripts/update_subdivisions.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts) - used for adding, amending and or deleting subdivisions to the `iso3166-2` software and object.
 * [`scripts/local_other_names.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/local_other_names.py) - used for adding the data from the local_other_names.csv dataset, including any validation checks on the data.
@@ -332,11 +347,11 @@ A demo of the software and API is available [here][demo].
 * [`scripts/language_lookup.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/language_lookup.py) - uses the `local_other_names.csv` dataset to encapsulate and validate the hundreds of language code used throughout the dataset and project.
 
 
-Please visit the [README](https://github.com/amckenna41/iso3166-2/blob/main/scripts) of the `scripts` folder for more in depth info about the usage and requirements of the above scripts that are <b>vital</b> to the `iso3166-2` software.
+Please visit the [README](https://github.com/amckenna41/iso3166-2/blob/main/scripts) of the `scripts` folder for more in depth info about the usage and requirements of the above scripts that are <b>vital</b> to the `iso3166-2` software. -->
 
 ## Directories
 * `/iso3166_2` - source code for `iso3166-2` software.
-* `/scripts` - scripts for the full export pipeline for the ISO 3166-2 subdivision data. 
+* `/scripts` - scripts for the full export pipeline for the ISO 3166-2 subdivision data.  -->
 * `/iso3166_2_resources` - several resource/utility and dataset files required for the full export pipeline for the ISO 3166-2 subdivision data. 
 * `/docs` - documentation for `iso3166-2`, available on [readthedocs](https://iso3166-2.readthedocs.io/en/latest/).
 * `/tests` - unit and integration tests for `iso3166-2`
@@ -359,6 +374,7 @@ If you have any questions, comments or suggestions, please contact amckenna41@qu
 Below are some of my other **custom-built** repositories that relate to the ISO 3166 standard! ⚡
 
 * [iso3166-2-api](https://github.com/amckenna41/iso3166-2-api): frontend RESTful API for iso3166-2.
+<!-- * [iso3166-2-export](https://github.com/amckenna41/iso3166-2-export): scripts for full ISO 3166-2 subdivision data export. -->
 * [iso3166-updates](https://github.com/amckenna41/iso3166-update): software and accompanying RESTful API that checks for any updates/changes to the ISO 3166-1 and ISO 3166-2 country codes and subdivision naming conventions, as per the ISO 3166 newsletter (https://www.iso.org/iso-3166-country-codes.html) and Online Browsing Platform (OBP) (https://www.iso.org/obp/ui).
 * [iso3166-updates-api](https://github.com/amckenna41/iso3166-updates-api): frontend RESTful API for iso3166-updates.
 * [iso3166-flag-icons](https://github.com/amckenna41/iso3166-flag-icons): a comprehensive library of over 3500 country and regional flags from the ISO 3166-1 and ISO 3166-2 standards.
@@ -395,7 +411,6 @@ Below are some of my other **custom-built** repositories that relate to the ISO 
 [demo_get_iso3166_2]: https://colab.research.google.com/drive/1PXMhpazjsLXVr33RSLZ3w7Tq0RomwPol?usp=sharing
 [api]: https://iso3166-2-api.vercel.app/
 [api_md]: https://github.com/amckenna41/iso3166-2-api/API.md 
-[flag_icons_repo]: https://github.com/amckenna41/iso3166-flag-icons
 [issues]: https://github.com/amckenna41/iso3166-2/issues
 [medium]: https://ajmckenna69.medium.com/iso3166-2-71a13d9157f7
 [updates_md]: https://github.com/amckenna41/iso3166-2/blob/main/UPDATES.md

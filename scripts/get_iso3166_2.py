@@ -232,7 +232,7 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
     if (history):
         all_attributes.append("history")
     if (rest_countries_keys):
-        all_attributes.append(", ".join(rest_countries_keys))
+        all_attributes.extend(rest_countries_keys)
     if (state_city_data):
         all_attributes.append("cities")
     # if not (extract_lat_lng):     #removing latLng attribute from default if not extracting
@@ -284,7 +284,7 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
             country_restcountries_response = requests.get(f'{rest_countries_base_url}alpha/{alpha2}', headers=USER_AGENT_HEADER, proxies=proxy, timeout=12)
             country_restcountries_response.raise_for_status()
             country_restcountries_data = country_restcountries_response.json()
-
+        
         #validating that flag folder for current country exists on iso3166-flag-icons repo
         flag_folder_exists = False
         if (requests.get("https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/" + alpha2, headers=USER_AGENT_HEADER, proxies=proxy, timeout=15).status_code != 404):
@@ -352,7 +352,7 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
                 all_country_data[alpha2][subd.code]["flag"] = None #temporary key for flag URL attribute
 
             #append rest country key data to country output object if inputted
-            if (rest_countries_keys != ""):
+            if (rest_countries_keys != "" and rest_countries_keys is not None):
                 for key in rest_countries_keys:
                     #some rest country object data is in nested dict
                     if (key == "carSigns"):
@@ -422,7 +422,7 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
             #read json data with all current subdivision data
             with open(export_filepath, 'r', encoding='utf-8') as input_json:
                 all_country_data = json.load(input_json)
-                
+            
             #append latest subdivision updates/changes from /iso3166_2_resources folder to the iso3166-2 object
             all_country_data = update_subdivision(iso3166_2_filename=export_filepath, subdivision_csv=os.path.join(resources_folder, "subdivision_updates.csv"), export=0,
                                                 exclude_default_attributes=exclude_default_attributes, rest_countries_keys=rest_countries_keys)
@@ -488,7 +488,7 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
     #read json data with all current subdivision data
     with open(export_filepath, 'r', encoding='utf-8') as input_json:
         all_country_data = json.load(input_json)
-
+        
     #append latest subdivision updates/changes from /iso3166_2_resources folder to the iso3166-2 object
     all_country_data = update_subdivision(iso3166_2_filename=export_filepath, subdivision_csv=os.path.join(resources_folder, "subdivision_updates.csv"), export=0,
                                           exclude_default_attributes=exclude_default_attributes, rest_countries_keys=rest_countries_keys)

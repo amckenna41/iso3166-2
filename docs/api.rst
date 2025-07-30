@@ -20,7 +20,7 @@ The other endpoints available in the API are:
 * https://iso3166-2-api.vercel.app/api/subdivision/<input_subdivision>
 * https://iso3166-2-api.vercel.app/api/country_name/<input_country_name>
 * https://iso3166-2-api.vercel.app/api/search/<input_search>
-* https://iso3166-2-api.vercel.app/api/list_subdivisions
+* https://iso3166-2-api.vercel.app/api/list_subdivisions/<input_alpha>
 
 .. Six paths/endpoints are available in the API - `/api/all`, `/api/alpha`, `/api/country_name`, `/api/subdivision`, `/api/search` and `/api/list_subdivisions`.
 
@@ -50,6 +50,7 @@ There are 3 main query string parameters available throughout the API that can b
 
 Get subdivision data for ALL countries
 --------------------------------------
+Return all available subdivision data for all countries via the `/api/all` endpoint.
 
 Python Requests:
 
@@ -171,7 +172,7 @@ curl::
 Get all subdivision data for a specific country, using its name
 ---------------------------------------------------------------
 Get all subdivision data using the officially recognized country name, as it is commonly known in English. 
-For example, accessing all subdivision data for Tajikistan (TJ), Seychelles (SC), Uganda (UG):
+For example, accessing all subdivision data for Tajikistan (TJ), Seychelles (SC) and Uganda (UG):
 
 Python Requests:
 
@@ -202,7 +203,11 @@ match to a high degree compared to a score of 10 which will create a larger sear
 likeness of 100 (exact match) is used, if no matching subdivision is found then this is reduced to 90. If an invalid subdivision name that doesn't match 
 any is input then an error will be raised.
 
-For example, accessing all subdivision data for Saarland (DE-SL), Brokopondo (SR-BR), Delaware (US-DE):
+The output will be sorted by an attributes called *matchScore* which is the % likeness that the subdivision name is to the input search terms. This 
+attribute can be excluded via the *excludeMatchScore* query string parameter, which will cause the output to be sorted alphabetically as like the
+other endpoints.
+
+For example, accessing all subdivision data for Saarland (DE-SL), Brokopondo (SR-BR) and Delaware (US-DE):
 
 Python Requests:
 
@@ -242,7 +247,7 @@ Python Requests:
     import requests
 
     base_url = "https://iso3166-2-api.vercel.app/api/"
-    input_name = "Northern" #Southern
+    input_search = "Northern" #Southern
     all_data = requests.get(f'{base_url}/search/{input_search}', params={"likeness": 80).json()
 
 curl::
@@ -251,9 +256,28 @@ curl::
     $ curl -i https://iso3166-2-api.vercel.app/api/search/Southern?likeness=80
 
 
+Accessing all subdivision's that have "Saint George" in them, excluding the *Match Score* attribute:
+
+Python Requests:
+
+.. code-block:: python
+
+    import requests
+
+    base_url = "https://iso3166-2-api.vercel.app/api/"
+    input_search = "Saint George" 
+    all_data = requests.get(f'{base_url}/search/{input_search}', params={"excludeMatchScore": 1).json()
+
+curl::
+
+    $ curl -i https://iso3166-2-api.vercel.app/api/search/Northern?likeness=80
+    
+
+
 Get list of all subdivision codes per country
 ---------------------------------------------
-Return a list of all ISO 3166-2 subdivision codes for each country.
+Return a list of all ISO 3166-2 subdivision codes for each country. You can get the list of
+subdivisions per country by appending its ISO 3166-1 country code.
 
 Python Requests:
 
@@ -268,9 +292,22 @@ Python Requests:
     all_data["OM"] #subdivision data for Oman
     all_data["US"] #subdivision data for US
 
+    #get specific subdivision list via country code
+    base_url = "https://iso3166-2-api.vercel.app/api/list_subdivisions/DE"
+    all_data = requests.get(base_url)
+
+    base_url = "https://iso3166-2-api.vercel.app/api/list_subdivisions/OM"
+    all_data = requests.get(base_url)
+
+    base_url = "https://iso3166-2-api.vercel.app/api/list_subdivisions/US"
+    all_data = requests.get(base_url)
+
 curl::
 
     $ curl -i https://iso3166-2-api.vercel.app/api/list_subdivisions
+    $ curl -i https://iso3166-2-api.vercel.app/api/list_subdivisions/DE
+    $ curl -i https://iso3166-2-api.vercel.app/api/list_subdivisions/OM
+    $ curl -i https://iso3166-2-api.vercel.app/api/list_subdivisions/US
 
 
 .. note::

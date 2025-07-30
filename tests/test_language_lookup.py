@@ -5,6 +5,7 @@ import os
 import unittest
 unittest.TestLoader.sortTestMethodsUsing = None
 
+# @unittest.skip("Skipping language lookup module tests.")
 class Language_Lookup_Tests(unittest.TestCase):
     """
     Test suite for testing the language lookup script & class which generates several 

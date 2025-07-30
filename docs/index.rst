@@ -11,7 +11,7 @@ interchangeably with regions/states/provinces etc. Currently, the package and AP
 data from **250** countries/territories, according to the ISO 3166-1 standard. The software uses 
 another custom-built Python package called |iso3166_updates_repo_link| to ensure all the subdivision 
 data is **accurate, reliable and up-to-date**. The ISO 3166-2 was first published in 1998 and as of 
-June 2024 there are **5,039** codes defined in it.
+June 2025 there are *5,049** codes defined in it.
 
 The ISO 3166-2 standard is part of the broader ISO 3166 family, maintained by the International Organization 
 for Standardization (ISO). It provides codes for the names of the principal subdivisions (e.g., provinces or states) 
@@ -30,8 +30,8 @@ There are 7 main data attributes available for each subdivision/subdivision code
 
 Bespoke Features
 ----------------
-There are two main attributes supported by the software that make it stand out and add a significant amount of value and data per subdivision,  
-in comparison to some the other iso3166-2 datasets, these are the **local/other name** and the **flag** attributes.
+There are three main attributes supported by the software that make it stand out and add a significant amount of value and data per subdivision,  
+in comparison to some the other iso3166-2 datasets, these are the **local/other name**, **flag** and **history** attributes.
 
 Local/other name
 ~~~~~~~~~~~~~~~~
@@ -62,13 +62,27 @@ The flags repo uses the |iso3166_2_repo_link| software to get the full list of I
 
    <div align="center">❤️ iso3166-2 🤝 iso3166-updates 🤝 iso3166-flag-icons ❤️</div>
 
+
+History
+~~~~~~~
+The ``history`` attribute has any applicable historical updates/changes to the individual subdivisions. The data source for this is another 
+custom-built software package previously mentioned called |iso3166_updates_repo_link|. This package keeps track of all the published changes that the ISO make to 
+the ISO 3166 standard which include addition of new subdivisions, deletion of existing subdivisions or amendments to existing subdivisions. Thus 
+|iso3166_updates_repo_link| helps ensure that the data in the `iso3166-2` package is also kept **up-to-date** and **accurate**. If any updates are found for the subdivision 
+a short description of the change, it's publication date as well as its source will be included.
+
+.. raw:: html
+
+   <div align="center">❤️ iso3166-2 🤝 iso3166-updates ❤️</div>
+
+
 Version
 =======
 The **iso3166-2** software is currently at version |version_link|.
 
 Last Updated
 ============
-The ISO 3166-2 data was last updated on **May 2025**. A log of the latest ISO 3166-2 updates can be seen in the 
+The ISO 3166-2 data was last updated on **June 2025**. A log of the latest ISO 3166-2 updates can be seen in the 
 |updates_md_link| file in the repository.
 
 License
@@ -84,7 +98,12 @@ repository's |issues_link| tab.
 If you would like to contribute any functional/feature changes to the software, please make a pull
 request on the |repo_link|.
 
-Any other queries or issues, please contact me via email: amckenna41@qub.ac.uk 😁
+Any other queries or issues, please contact me via email: amckenna41@qub.ac.uk.
+
+Credits
+=======
+The Python software and accompanying API are solely developed and maintained by |me_link| 😁. 
+
 
 .. note:: 
 
@@ -119,7 +138,7 @@ Any other queries or issues, please contact me via email: amckenna41@qub.ac.uk �
 
 .. |version_link| raw:: html
 
-   <a href="https://pypi.org/project/iso3166-2/" target="_blank">v1.7.0</a>
+   <a href="https://pypi.org/project/iso3166-2/" target="_blank">v1.7.1</a>
 
 .. |updates_md_link| raw:: html
 
@@ -148,6 +167,10 @@ Any other queries or issues, please contact me via email: amckenna41@qub.ac.uk �
 .. |medium_link| raw:: html
 
    <a href="https://ajmckenna69.medium.com/iso3166-2-71a13d9157f7" target="_blank">here</a>
+
+.. |me_link| raw:: html
+
+   <a href="https://github.com/amckenna41" target="_blank">me</a>
 
 
 Contents

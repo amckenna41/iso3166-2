@@ -1,6 +1,6 @@
 # Change Log
 
-## 1.7.0 - TBC
+## 1.7.0/1.7.1 - July 2025
 
 ### Added
 - Add list of cities for each subdivision using the country-states-city API
@@ -38,6 +38,9 @@
 - In update_subdivisions module and function, you can now add custom attributes to a subdivision via the custom_attributes parameter
 - Added logic to ensure the custom order of attributes in exported iso3166-2 object is maintained 
 - In extract script, optional proxy functionality added to requests.get functions to help avoid 429 errors and timeout errors
+- In custom subdivision function is sw, you can now pass in an object of updates attributes
+- Added exclude_match_score attribute to search function that allows you to include/exclude the % match the subdivision names are to the input search terms
+- Added new file saving functionality for custom_subdivisions function
 
 ### Fixed
 - In convert_to_alpha2 function that converts a alpha-3 or numeric code into alpha-2, if a alpha-2 code was input it returns None instead of the same input alpha-2
@@ -50,6 +53,7 @@
 - In custom_subdivision function, the original subdivision data/JSON was being reimported. Now the main self.all attribute is used
 - Several rows (adds, amends, deletes) removed from subdivision_updates.csv as they are implemented in base object now
 - Error with None values in subdivision_updates.csv not being interpreted as None
+- Fixed error with adding rest country data to subdivisions 
 
 ### Changed
 - Class name of software changed from ISO3166_2() to Subdivisions()

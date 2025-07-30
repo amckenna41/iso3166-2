@@ -11,7 +11,7 @@ from importlib.metadata import metadata
 import unittest
 unittest.TestLoader.sortTestMethodsUsing = None
 
-# @unittest.skip("")
+# @unittest.skip("Skipping main iso3166-2 unit tests.")
 class ISO3166_2_Tests(unittest.TestCase):
     """
     Test suite for testing the iso3166-2 Python software package. 
@@ -65,33 +65,34 @@ class ISO3166_2_Tests(unittest.TestCase):
         #class instance with all ISO 3166-2 data
         self.all_iso3166_2 = Subdivisions()
 
-        #create test output directory - remove if already present
+        #create test output directory
         self.test_output_dir = os.path.join("tests", "test_output")
-        if (os.path.isdir(self.test_output_dir)):
-            shutil.rmtree(self.test_output_dir)
-        os.mkdir(self.test_output_dir)
+        if not (os.path.isdir(self.test_output_dir)):
+            os.mkdir(self.test_output_dir)
 
-    @unittest.skip("")
+    # @unittest.skip("")
     def test_iso3166_2_metadata(self): 
         """ Testing correct iso3166-2 software version and metadata. """
-        # self.assertEqual(metadata('iso3166-2')['version'], "1.7.0", 
-        #     "iso3166-2 version is not correct, expected 1.7.0, got {}.".format(metadata('iso3166-2')['version']))
+        # self.assertEqual(metadata('iso3166-2')['version'], "1.7.1", 
+        #     f"iso3166-2 version is not correct, expected 1.7.1, got {metadata('iso3166-2')['version']}.")
         self.assertEqual(metadata('iso3166-2')['name'], "iso3166-2", 
             f"iso3166-2 software name is not correct, expected iso3166-2, got {metadata('iso3166-2')['name']}.")
         self.assertEqual(metadata('iso3166-2')['author'], "AJ McKenna", 
             f"iso3166-2 author is not correct, expected AJ McKenna, got {metadata('iso3166-2')['author']}.")
         self.assertEqual(metadata('iso3166-2')['author-email'], "amckenna41@qub.ac.uk", 
             f"iso3166-2 author email is not correct, expected amckenna41@qub.ac.uk, got {metadata('iso3166-2')['author-email']}.")
-        self.assertEqual(metadata('iso3166-2')['summary'], "A lightweight Python package, and accompanying API, used to access all of the world's most up-to-date and accurate ISO 3166-2 subdivision data, including: name, local name, code, parent code, type, latitude/longitude, flag and history.", 
+        self.assertEqual(metadata('iso3166-2')['summary'], "A lightweight Python package, and accompanying API, used to access all of the world's most up-to-date and accurate ISO 3166-2 subdivision data, including: name, local/other name, code, parent code, type, latitude/longitude, flag and history.", 
             f"iso3166-2 package summary is not correct, got:\n{metadata('iso3166-2')['summary']}.")
-        self.assertEqual(metadata('iso3166-2')['keywords'], "iso,iso3166,beautifulsoup,python,pypi,countries,country codes,iso3166-2,iso3166-1,alpha-2,iso3166-updates,iso3166-flag-icons,subdivisions,regions",
-            f"iso3166-2 keywords are not correct, got:\n{metadata('iso3166-2')['keywords']}.")
-        self.assertEqual(metadata('iso3166-2')['home-page'], "https://iso3166-2-api.vercel.app/api", 
-            f"iso3166-2 home page url is not correct, expected https://iso3166-2-api.vercel.app/api, got {metadata('iso3166-2')['home-page']}.")
         self.assertEqual(metadata('iso3166-2')['maintainer'], "AJ McKenna", 
             f"iso3166-2 maintainer is not correct, expected AJ McKenna, got {metadata('iso3166-2')['maintainer']}.")
         self.assertEqual(metadata('iso3166-2')['license'], "MIT", 
             f"iso3166-2 license type is not correct, expected MIT, got {metadata('iso3166-2')['license']}.")
+        # self.assertEqual(metadata('iso3166-2')['keywords'], "iso,iso3166,beautifulsoup,python,pypi,countries,country codes,iso3166-2,iso3166-1,alpha-2,iso3166-updates,iso3166-flag-icons,subdivisions,regions,dataset",
+        #     f"iso3166-2 keywords are not correct, got:\n{metadata('iso3166-2')['keywords']}.")
+        # self.assertEqual(metadata('iso3166-2')['documentation'], "https://iso3166-2.readthedocs.io/en/latest/", 
+        #     f"iso3166-2 documentation url is not correct, expected https://iso3166-2.readthedocs.io/en/latest/, got {metadata('iso3166-2')['documentation']}.")
+        # self.assertEqual(metadata('iso3166-2')['Home-page'], "Homepage, https://github.com/amckenna41/iso3166-2", 
+        #     f"iso3166-2 home page url is not correct, expected Homepage, https://github.com/amckenna41/iso3166-2, got {metadata('iso3166-2')['Home-page']}.")
 
     # @unittest.skip("")
     def test_iso3166_2(self):
@@ -601,9 +602,9 @@ class ISO3166_2_Tests(unittest.TestCase):
         test_search_10 = True
         test_search_11 = 4.6
 #1.)
-        search_results_1 = self.all_iso3166_2.search(test_search_1) 
+        search_results_1 = self.all_iso3166_2.search(test_search_1, exclude_match_score=1) 
         expected_search_result_1 =  {
-            'IE-MN': {
+            'IE': {'IE-MN': {
                 'name': 'Monaghan', 
                 'localOtherName': 'Contae Mhuineacháin (gle), The Drumlin County (eng), The Farney County (eng)', 
                 'type': 'County', 
@@ -613,11 +614,13 @@ class ISO3166_2_Tests(unittest.TestCase):
                 'history': None
                 }
             }
+        }
+
         self.assertEqual(search_results_1, expected_search_result_1, f"Observed and expected output objects do not match:\n{search_results_1}.")
 #2.)
-        search_results_2 = self.all_iso3166_2.search(test_search_2, likeness_score=100) 
+        search_results_2 = self.all_iso3166_2.search(test_search_2, likeness_score=100)
         expected_search_result_2 = {
-            'LV-068': {
+            'LV': {'LV-068': {
                 'name': 'Olaines novads', 
                 'localOtherName': 'Olaine Municipality (eng)', 
                 'type': 'Municipality', 
@@ -627,57 +630,55 @@ class ISO3166_2_Tests(unittest.TestCase):
                 'history': None
                 }
             }
+        }
+
         self.assertEqual(search_results_2, expected_search_result_2, f"Observed and expected output objects do not match:\n{search_results_2}.")
 #3.)
-        search_results_3 = self.all_iso3166_2.search(test_search_3, likeness_score=90)
-        expected_search_result_3 = {
-            'DE-BE': {
-                'name': 'Berlin',
-                'localOtherName': 'Berlin (eng), Grey City (eng)',
-                'type': 'Land',
-                'parentCode': None,
-                'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/DE/DE-BE.svg',
-                'latLng': [52.52, 13.405],
-                'history': None,
+        search_results_3 = self.all_iso3166_2.search(test_search_3, likeness_score=90, exclude_match_score=0)  #add Match Score to each search result output
+        expected_search_result_3 = [
+            {
+                "Country Code": "GB",
+                "Subdivision Code": "GB-ABC",
+                "name": "Armagh City, Banbridge and Craigavon",
+                "localOtherName": "'Ard Mhacha, Droichead na Banna agus Creag Abhann (gle)', 'Airmagh, Bannbrig an Craigavon (ulst1239)'",
+                "type": "District",
+                "parentCode": "GB-NIR",
+                "flag": None,
+                "latLng": [54.393, -6.456],
+                "history": [
+                    '2019-11-22: Change of subdivision name of GB-ABC, GB-DRS; modification of remark part 2; update list source. (Remark part 2: BS 6879 gives alternative name forms in Welsh (cy) for some of the Welsh unitary authorities (together with alternative code elements). Since this part of ISO 3166 does not allow for duplicate coding of identical subdivisions, such alternative names in Welsh and code elements are shown for information purposes only in square brackets after the English name of the subdivision. BS 6879 has been superseded but remains the original source of the codes. Included for completeness: EAW England and Wales; GBN Great Britain; UKM United Kingdom). Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:GB.', 
+                    '2015-11-27: Deletion of district council areas GB-ANT, GB-ARD, GB-ARM, GB-BLA, GB-BLY, GB-BNB, GB-CKF, GB-CSR, GB-CLR, GB-CKT, GB-CGV, GB-DRY, GB-DOW, GB-DGN, GB-FER, GB-LRN, GB-LMV, GB-LSB, GB-MFT, GB-MYL, GB-NYM, GB-NTA, GB-NDN, GB-OMH, GB-STB; change of subdivision category from district council area to district GB-BFS; addition of districts GB-ANN, GB-AND, GB-ABC, GB-CCG, GB-DRS, GB-FMO, GB-LBC, GB-MEA, GB-MUL, GB-NMD; update List Source. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:GB.'
+                    ],
+                "Match Score": 100
             },
-            'GB-ABC': {
-                'name': 'Armagh City, Banbridge and Craigavon',
-                'localOtherName': "'Ard Mhacha, Droichead na Banna agus Creag Abhann (gle)', 'Airmagh, Bannbrig an Craigavon (ulst1239)'",
-                'type': 'District',
-                'parentCode': 'GB-NIR',
-                'flag': None,
-                'latLng': [54.393, -6.456],
-                'history': [
-                    '2019-11-22: Change of subdivision name of GB-ABC, GB-DRS; modification of remark part 2; update list source. '
-                    '(Remark part 2: BS 6879 gives alternative name forms in Welsh (cy) for some of the Welsh unitary authorities '
-                    '(together with alternative code elements). Since this part of ISO 3166 does not allow for duplicate coding of '
-                    'identical subdivisions, such alternative names in Welsh and code elements are shown for information purposes only '
-                    'in square brackets after the English name of the subdivision. BS 6879 has been superseded but remains the original '
-                    'source of the codes. Included for completeness: EAW England and Wales; GBN Great Britain; UKM United Kingdom). '
-                    'Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:GB.',
-                    '2015-11-27: Deletion of district council areas GB-ANT, GB-ARD, GB-ARM, GB-BLA, GB-BLY, GB-BNB, GB-CKF, GB-CSR, '
-                    'GB-CLR, GB-CKT, GB-CGV, GB-DRY, GB-DOW, GB-DGN, GB-FER, GB-LRN, GB-LMV, GB-LSB, GB-MFT, GB-MYL, GB-NYM, GB-NTA, '
-                    'GB-NDN, GB-OMH, GB-STB; change of subdivision category from district council area to district GB-BFS; addition of '
-                    'districts GB-ANN, GB-AND, GB-ABC, GB-CCG, GB-DRS, GB-FMO, GB-LBC, GB-MEA, GB-MUL, GB-NMD; update List Source. '
-                    'Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:GB.'
-                ],
-            },
-        }
-        
+            {
+                "Country Code": "DE",
+                "Subdivision Code": "DE-BE",
+                "name": "Berlin",
+                "localOtherName": "Berlin (eng), Grey City (eng)",
+                "type": "Land",
+                "parentCode": None,
+                "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/DE/DE-BE.svg",
+                "latLng": [52.52, 13.405],
+                "history": None,
+                "Match Score": 100
+            }
+        ]
+    
         self.assertEqual(search_results_3, expected_search_result_3, f"Observed and expected output objects do not match:\n{search_results_3}.")
 #4.)
         search_results_4 = self.all_iso3166_2.search(test_search_4, likeness_score=80) #North - likeness score of 80%
-        expected_search_result_4 = {'CM-NO': {'name': 'North', 'localOtherName': 'Nord (fra)', 'type': 'Region', 'parentCode': None, 'flag': None, 'latLng': [8.581, 13.914], 'history': None}, 
-                                    'GW-N': {'name': 'Norte', 'localOtherName': 'North (eng)', 'type': 'Province', 'parentCode': None, 'flag': None, 'latLng': [11.804, -15.18], 'history': None}}
+        expected_search_result_4 = {'CM': {'CM-NO': {'name': 'North', 'localOtherName': 'Nord (fra)', 'type': 'Region', 'parentCode': None, 'flag': None, 'latLng': [8.581, 13.914], 'history': None}}, 
+                                    'GW': {'GW-N': {'name': 'Norte', 'localOtherName': 'North (eng)', 'type': 'Province', 'parentCode': None, 'flag': None, 'latLng': [11.804, -15.18], 'history': None}}}
 
         self.assertEqual(search_results_4, expected_search_result_4, f"Observed and expected output objects do not match:\n{search_results_4}.")
 #5.)
         search_results_5 = self.all_iso3166_2.search(test_search_5, likeness_score=75, filter_attribute="localOtherName, name", local_other_name_search=True) #Saint George - filtering out all attributes except localOtherName and name & searching the localOtherName attribute to expand the search space
-        expected_search_result_5 = {'AG-03': {'name': 'Saint George', 'localOtherName': None}, 
-                                    'BB-03': {'name': 'Saint George', 'localOtherName': None}, 
-                                    'DM-04': {'name': 'Saint George', 'localOtherName': None}, 
-                                    'GD-03': {'name': 'Saint George', 'localOtherName': 'The Cathedral Parish (eng)'}, 
-                                    'VC-04': {'name': 'Saint George', 'localOtherName': None}}           
+        expected_search_result_5 = {'AG': {'AG-03': {'name': 'Saint George', 'localOtherName': None}}, 
+                                    'BB': {'BB-03': {'name': 'Saint George', 'localOtherName': None}}, 
+                                    'DM': {'DM-04': {'name': 'Saint George', 'localOtherName': None}}, 
+                                    'GD': {'GD-03': {'name': 'Saint George', 'localOtherName': 'The Cathedral Parish (eng)'}}, 
+                                    'VC': {'VC-04': {'name': 'Saint George', 'localOtherName': None}}}          
 
         self.assertEqual(search_results_5, expected_search_result_5, f"Observed and expected output objects do not match:\n{search_results_5}.")
 #6.)
@@ -711,32 +712,29 @@ class ISO3166_2_Tests(unittest.TestCase):
         all_iso3166_2_custom_subdivision = Subdivisions(iso3166_2_filepath=self.test_iso3166_2_copy)
 
         #add below test subdivisions to respective country objects
-        all_iso3166_2_custom_subdivision.custom_subdivision("AD", "AD-ZZ", name="Bogus Subdivision", local_other_name="Bogus Subdivision", type_="District", lat_lng=[42.520, 1.657], parent_code=None, flag=None)
-        all_iso3166_2_custom_subdivision.custom_subdivision("DE", "DE-100", name="Made up subdivision", local_other_name="Made up subdivision", type_="Land", lat_lng=[48.84, 11.479], parent_code=None, flag=None,)
-        all_iso3166_2_custom_subdivision.custom_subdivision("GY", "GY-ABC", name="New Guyana subdivision", local_other_name="New Guyana subdivision", type_="Region", lat_lng=[6.413, -60.123], parent_code=None, flag=None)
-        all_iso3166_2_custom_subdivision.custom_subdivision("ZA", "ZA-123", name="Zambian province", local_other_name="Zambian province", type_="Province", lat_lng=[-28.140, 26.777], parent_code=None, flag=None)
-        all_iso3166_2_custom_subdivision.custom_subdivision("IE", "IE-BF", name="Belfast", local_other_name="Béal Feirste", type_="Province", lat_lng=[54.596, -5.931], parent_code=None, flag=None, custom_attributes={"population": "345,318", "area": "115Km2"})
-        all_iso3166_2_custom_subdivision.custom_subdivision("RU", "RU-ASK", name="Alaska Oblast", local_other_name="Аляска", type_="Republic", lat_lng=[63.588, 154.493], parent_code=None, flag=None, custom_attributes={"population": "733,583", "gini": "0.43", "gdpPerCapita": "71,996"})
-
-        #reinstantiating instance of class with above custom subdivisions added
-        all_iso3166_2_custom_subdivision = Subdivisions(iso3166_2_filepath=self.test_iso3166_2_copy)
-#1.) 
-        self.assertEqual(all_iso3166_2_custom_subdivision.all["AD"]["AD-ZZ"], {'flag': None, 'latLng': [42.52, 1.657], 'name': 'Bogus Subdivision', 'localOtherName': 'Bogus Subdivision', 'parentCode': None, 'type': 'District'},
+        all_iso3166_2_custom_subdivision.custom_subdivision("AD", "AD-ZZ", name="Bogus Subdivision", local_other_name="Bogus Subdivision", type_="District", lat_lng=[42.520, 1.657], parent_code=None, flag=None, save_new=1, save_new_filename=os.path.join(self.test_output_dir, "iso3166_2_custom_ad_zz.json"))
+        all_iso3166_2_custom_subdivision.custom_subdivision("DE", "DE-100", name="Made up subdivision", local_other_name="Made up subdivision", type_="Land", lat_lng=[48.84, 11.479], parent_code=None, flag=None, save_new=1, save_new_filename=os.path.join(self.test_output_dir, "iso3166_2_custom_de_100.json"))
+        all_iso3166_2_custom_subdivision.custom_subdivision("GY", "GY-ABC", name="New Guyana subdivision", local_other_name="New Guyana subdivision", type_="Region", lat_lng=[6.413, -60.123], parent_code=None, flag=None, history="blahblahblah", save_new=1, save_new_filename=os.path.join(self.test_output_dir, "iso3166_2_custom_gy_abc.json"))
+        all_iso3166_2_custom_subdivision.custom_subdivision("ZA", "ZA-123", name="Zambian province", local_other_name="Zambian province", type_="Province", lat_lng=[-28.140, 26.777], parent_code=None, flag=None, history="historical subdivision updates", save_new=1, save_new_filename=os.path.join(self.test_output_dir, "iso3166_2_custom_za_123.json"))
+        all_iso3166_2_custom_subdivision.custom_subdivision("IE", "IE-BF", name="Belfast", local_other_name="Béal Feirste", type_="Province", lat_lng=[54.596, -5.931], parent_code=None, flag=None, custom_attributes={"population": "345,318", "area": "115Km2"}, save_new=1, save_new_filename=os.path.join(self.test_output_dir, "iso3166_2_custom_ie_bf.json"))
+        all_iso3166_2_custom_subdivision.custom_subdivision("RU", "RU-ASK", name="Alaska Oblast", local_other_name="Аляска", type_="Republic", lat_lng=[63.588, 154.493], parent_code=None, flag=None, custom_attributes={"population": "733,583", "gini": "0.43", "gdpPerCapita": "71,996"}, save_new=1, save_new_filename=os.path.join(self.test_output_dir, "iso3166_2_custom_ru_ask.json"))
+#1.)    
+        self.assertEqual(all_iso3166_2_custom_subdivision.all["AD"]["AD-ZZ"], {'flag': None, 'latLng': [42.52, 1.657], 'name': 'Bogus Subdivision', 'localOtherName': 'Bogus Subdivision', 'parentCode': None, 'type': 'District', 'history': None},
             f"Expected dict for custom AD-ZZ subdivision does not match output:\n{all_iso3166_2_custom_subdivision.all['AD']['AD-ZZ']}.")
 #2.)
-        self.assertEqual(all_iso3166_2_custom_subdivision.all["DE"]["DE-100"], {'flag': None, 'latLng': [48.84, 11.479], 'name': 'Made up subdivision', 'localOtherName': 'Made up subdivision', 'parentCode': None, 'type': 'Land'},
+        self.assertEqual(all_iso3166_2_custom_subdivision.all["DE"]["DE-100"], {'flag': None, 'latLng': [48.84, 11.479], 'name': 'Made up subdivision', 'localOtherName': 'Made up subdivision', 'parentCode': None, 'type': 'Land', 'history': None},
             f"Expected dict for custom DE-100 subdivision does not match output:\n{all_iso3166_2_custom_subdivision.all['DE']['DE-100']}.")
 #3.)
-        self.assertEqual(all_iso3166_2_custom_subdivision.all["GY"]["GY-ABC"], {'flag': None, 'latLng': [6.413, -60.123], 'name': 'New Guyana subdivision', 'localOtherName': 'New Guyana subdivision', 'parentCode': None, 'type': 'Region'},
+        self.assertEqual(all_iso3166_2_custom_subdivision.all["GY"]["GY-ABC"], {'flag': None, 'latLng': [6.413, -60.123], 'name': 'New Guyana subdivision', 'localOtherName': 'New Guyana subdivision', 'parentCode': None, 'type': 'Region', "history": "blahblahblah"},
             f"Expected dict for custom GY-ABC subdivision does not match output:\n{all_iso3166_2_custom_subdivision.all['GY']['GY-ABC']}.")
 #4.)
-        self.assertEqual(all_iso3166_2_custom_subdivision.all["ZA"]["ZA-123"], {'flag': None, 'latLng': [-28.14, 26.777], 'name': 'Zambian province', 'localOtherName': 'Zambian province', 'parentCode': None, 'type': 'Province'},
+        self.assertEqual(all_iso3166_2_custom_subdivision.all["ZA"]["ZA-123"], {'flag': None, 'latLng': [-28.14, 26.777], 'name': 'Zambian province', 'localOtherName': 'Zambian province', 'parentCode': None, 'type': 'Province', "history": "historical subdivision updates"},
             f"Expected dict for custom ZA-123 subdivision does not match output:\n{all_iso3166_2_custom_subdivision.all['ZA']['ZA-123']}.")
 #5.)
-        self.assertEqual(all_iso3166_2_custom_subdivision.all["IE"]["IE-BF"], {'flag': None, 'latLng': [54.596, -5.931], 'name': 'Belfast', 'localOtherName': 'Béal Feirste', 'parentCode': None, 'type': 'Province', "population": "345,318", "area": "115Km2"},
+        self.assertEqual(all_iso3166_2_custom_subdivision.all["IE"]["IE-BF"], {'flag': None, 'latLng': [54.596, -5.931], 'name': 'Belfast', 'localOtherName': 'Béal Feirste', 'parentCode': None, 'type': 'Province', "population": "345,318", "area": "115Km2", "history": None},
             f"Expected dict for custom IE-BF subdivision does not match output:\n{all_iso3166_2_custom_subdivision.all['IE']['IE-BF']}.")
 #6.)
-        self.assertEqual(all_iso3166_2_custom_subdivision.all["RU"]["RU-ASK"], {'flag': None, 'gdpPerCapita': '71,996', 'gini': '0.43', 'latLng': [63.588, 154.493], 'localOtherName': 'Аляска', 'name': 'Alaska Oblast', 'parentCode': None, 'population': '733,583', 'type': 'Republic'},
+        self.assertEqual(all_iso3166_2_custom_subdivision.all["RU"]["RU-ASK"], {'flag': None, 'gdpPerCapita': '71,996', 'gini': '0.43', 'latLng': [63.588, 154.493], 'localOtherName': 'Аляска', 'name': 'Alaska Oblast', 'parentCode': None, 'population': '733,583', 'type': 'Republic', "history": None},
             f"Expected dict for custom RU-ASK subdivision does not match output:\n{all_iso3166_2_custom_subdivision.all['RU']['RU-ASK']}.")
 
         #delete above custom subdivisions
@@ -792,10 +790,10 @@ class ISO3166_2_Tests(unittest.TestCase):
         self.assertEqual(str(self.all_iso3166_2), f"Instance of Subdivisions class. Path: {self.all_iso3166_2.iso3166_2_module_path}, Version {self.all_iso3166_2.__version__}.", 
                 f"Expected and observed string output for class instance do not match:\n{str(self.all_iso3166_2)}.")
         
-    @unittest.skip("")
+    # @unittest.skip("")
     def test_repr(self):
         """ Testing __repr__ function returns correct object representation for class object. """
-        self.assertEqual(repr(self.all_iso3166_2), "<iso3166-2(version='1.7.0', total_subdivisions=5049, source_file='test_iso3166-2.json')>",
+        self.assertEqual(repr(self.all_iso3166_2), "<iso3166-2(version=1.7.1, total_subdivisions=5049, source_file=iso3166-2.json)>",
                 f"Expected and observed object representation for class instance do not match:\n{repr(self.all_iso3166_2)}.")
 
     # @unittest.skip("")

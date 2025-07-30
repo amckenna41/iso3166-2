@@ -199,9 +199,12 @@ search functionality uses a fuzzy search algorithm via *thefuzz* package, search
 an exact name match or those with an approximate name match, according to a score via the *likeness* input
 parameter. The *likeness* parameter accepts a value between 1 and 100, with 100 being an exact match and 
 the values representing a percentage likeness that the subdivision name have to be to the input search terms. 
-By default the search functionality only uses the *name* data attribute but the search space can be expanded 
-and use the *localOtherName* attribute in addition via the *local_other_name_search* parameter. A subset of 
-sought data attributes can be returned from the search results via the *filter_attributes* parameter. 
+By default, the output will be sorted via the Match Score attribute which is the % likeness the subdivision
+name is to the input search terms. To exclude this Match Score attribute, set the *excludeMatchScore*
+attribute to False. By default the search functionality only uses the *name* data attribute 
+but the search space can be expanded and use the *localOtherName* attribute in addition via the 
+*local_other_name_search* parameter. A subset of sought data attributes can be returned from the search 
+results via the *filter_attributes* parameter. 
 
 .. code-block:: python
 
@@ -219,8 +222,8 @@ sought data attributes can be returned from the search results via the *filter_a
    #searching for the Roche Caiman district in Seychelles (SC-25) - returning exact matching subdivision (likeness=100)
    iso.search("Roche Caiman")
 
-   #searching for any subdivisions that have "Southern" in their name, using a likeness score of 70
-   iso.search("Southern", likeness=70)
+   #searching for any subdivisions that have "Southern" in their name, using a likeness score of 70, exclude Match Score attribute
+   iso.search("Southern", likeness=70, exclude_match_score=1)
 
    #searching for any subdivisions that have "City" in their name or localOtherName attributes, using a likeness score of 40
    iso.search("City", likeness=40, local_other_name_search=True)
@@ -238,7 +241,8 @@ any differing attribute values you input will be used to amend the existing subd
 
 If the added subdivision is required to be deleted from the object, then you can call the same function with the alpha-2 and subdivision codes' 
 parameters but also setting the ``delete`` parameter to 1/True. This functionality works on the object that the software uses but you can create a copy 
-of the object prior to adding/deleting a subdivision via the ``copy`` parameter, setting it to 1/True.
+of the object prior to adding/deleting a subdivision via the ``copy`` parameter, setting it to 1/True. Furthermore, you can also save the updated 
+subdivision object to a new object via the ``save_new`` and ``save_new_filename`` parameters. 
 
 You can also add custom attributes to the subdivision via the ``custom_attributes`` parameter, e.g the population, area, gdp per capita etc.
 
@@ -252,8 +256,9 @@ You can also add custom attributes to the subdivision via the ``custom_attribute
    #adding custom Belfast province to Ireland (IE)
    iso.custom_subdivision("IE", "IE-BF", name="Belfast", local_other_name="Béal Feirste", type_="province", lat_lng=[54.596, -5.931], parent_code=None, flag=None, history=None, copy=1)
 
-   #adding custom Mariehamn province to Aland Islands (AX)
-   iso.custom_subdivision("AX", "AX-M", name="Mariehamn", local_other_name="Maarianhamina", type_="province", lat_lng=[60.0969, 19.934], parent_code=None, flag=None, history=None, copy=1)
+   #adding custom Mariehamn province to Aland Islands (AX), export to new file
+   iso.custom_subdivision("AX", "AX-M", name="Mariehamn", local_other_name="Maarianhamina", type_="province", lat_lng=[60.0969, 19.934], parent_code=None, flag=None, history=None, copy=1,
+      save_new=1, save_new_filename="iso3166-2-AX-M.json")
 
    #adding custom Alaska province to Russia with additional population and area attribute values
    iso.custom_subdivision("RU", "RU-ASK", name="Alaska Oblast", local_other_name="Аляска", type_="Republic", lat_lng=[63.588, 154.493], parent_code=None, flag=None, 
@@ -266,9 +271,9 @@ You can also add custom attributes to the subdivision via the ``custom_attribute
 
 .. warning::
     When adding a custom subdivision the software will be out of sync with the official ISO 3166-2 dataset, therefore its important to keep track
-    of the custom subdivisions you add to the object. 
+    of the custom subdivisions you add to the object.
     
-    To return to the original dataset you can delete the added custom subdivision, as described above, or you could reinstall the software. 
+    To return to the original dataset you can delete the added custom subdivision, as described above, or you could reinstall the software.
 
 
 Get all subdivision data but with subset of available attributes
@@ -303,6 +308,23 @@ Get the total number of individual ISO 3166-2 subdivision objects within the mai
 
    #get total number of subdivision objects via len()
    len(iso)
+
+
+Check for the latest Subdivision data
+------------------------------------
+Pull the latest subdivision data object from the `iso3166-2` GitHub repo and compare data with that of the object currently installed. If
+any changes are found then they will be output & it is advised that you upgrade or reinstall the software package to keep your data in sync
+with that of the latest version. 
+
+.. code-block:: python
+
+   from iso3166_2 import *
+
+   #create instance of Subdivisions class
+   iso = Subdivisions()
+
+   #compare latest subdivision data from repo
+   iso.check_for_updates()
 
 
 .. note::

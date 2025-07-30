@@ -62,12 +62,15 @@ class Subdivisions():
     subdivision_names(alpha_code=""):
         return a list or dict of all ISO 3166-2 subdivision names for one or more
         countries specified by their ISO 3166-1 alpha-2, alpha-3 or numeric country codes.
-    search(name="", likeness_score=100, filter_attribute="", local_other_name_search=False):
+    search(name="", likeness_score=100, filter_attribute="", local_other_name_search=False,
+        exclude_match_score=True):
         searching for a particular subdivision and its data using its name. Setting the 
         'local_other_name_search' parameter to True will include the 'localOtherName'
-        attribute in the search space. 
+        attribute in the search space. Setting exclude_match_score to False will include
+        the % matching score the subdivision names are to the input. 
     custom_subdivision(alpha_code="", subdivision_code="", name="", local_other_name="", type_="", 
-            lat_lng=[], parent_code=None, flag=None, history=None, delete=0, custom_attributes={}):
+            lat_lng=[], parent_code=None, flag=None, history=None, delete=0, custom_attributes={},
+            save_new=0, save_new_filename: str="iso3166_2_copy.json"):
         add or delete a custom subdivision to an existing country on the main iso3166-2.json 
         object. Custom subdivisions and subdivision codes can be used for in-house/bespoke 
         applications that are using the iso3166-2 software but require additional custom 
@@ -126,14 +129,21 @@ class Subdivisions():
 
     #adding custom Belfast province to Ireland
     all_subdivisions = Subdivisions()
-    all_subdivisions.custom_subdivision("IE", "IE-BF", name="Belfast", local_other_name="Béal Feirste", type_="province", lat_lng=[54.596, -5.931], parent_code=None, flag=None)
+    all_subdivisions.custom_subdivision("IE", "IE-BF", name="Belfast", local_other_name="Béal Feirste", type_="province", lat_lng=[54.596, -5.931], parent_code=None, flag=None, history=None)
 
     #adding custom Alaska province to Russia with additional population and area attribute values
     all_subdivisions.custom_subdivision("RU", "RU-ASK", name="Alaska Oblast", local_other_name="Аляска", type_="Republic", lat_lng=[63.588, 154.493], parent_code=None, flag=None, custom_attributes={"population": "733,583", "gini": "0.43", "gdpPerCapita": "71,996"})
 
+    #delete the above custom subdivisions
+    all_subdivisions.custom_subdivision("IE", "IE-BF", delete=1)
+    all_subdivisions.custom_subdivision("RU", "RU-ASK", delete=1)
+
     #searching for the Monaghan county in Ireland (IE-MN) - returning exact matching subdivision
     all_subdivisions = Subdivisions()
     all_subdivisions.search("Monaghan")
+
+    #searching for the Roche Caiman district in Seychelles (SC-25) - returning exact matching subdivision (likeness=100), include Match Score attribute
+    all_subdivisions.search("Roche Caiman", exclude_match_score=0)
 
     #searching for any subdivisions that have "Southern" in their name, with a likeness score of 80 (%)
     all_subdivisions = Subdivisions()
@@ -159,7 +169,7 @@ class Subdivisions():
         self.iso3166_2_filepath = iso3166_2_filepath
         self.iso3166_json_filename= "iso3166-2.json"
         self.filter_attributes = filter_attributes
-        self.__version__ = "1.7.0"
+        self.__version__ = "1.7.1"
 
         #get full path to default object
         self.iso3166_2_module_path = os.path.join(os.path.dirname(os.path.abspath(sys.modules[self.__module__].__file__)), self.iso3166_json_filename)
@@ -388,7 +398,9 @@ class Subdivisions():
                 return subdivision_names_
     
     def custom_subdivision(self, alpha_code: str, subdivision_code: str, name: str=None, local_other_name: str=None, type_: str=None, 
-                           lat_lng: list|str=None, parent_code: str=None, flag: str=None, delete: bool=0, copy: bool=0, custom_attributes: dict={}) -> None:
+                           lat_lng: list|str=None, parent_code: str=None, flag: str=None, history: str=None, delete: bool=0, copy: bool=0, 
+                           custom_attributes: dict={}, custom_subdivision_object: dict={}, save_new: bool=0, 
+                           save_new_filename: str="iso3166_2_copy.json") -> None:
         """ 
         Add or delete a custom subdivision to an existing country in the main iso3166-2.json 
         object. The purpose of this functionality is similar to that of the user-assigned 
@@ -425,6 +437,8 @@ class Subdivisions():
             array or str of subdivision's latitude/longitude.
         :parent_code: str (default=None)
             parent subdivision code for subdivision.
+        :history: str (default=None)
+            historical updates of subdivision, according to ISO, if applicable.
         :flag: str (default=None)
             URL for subdivision flag from iso3166-flag-icons repo, if applicable.
         :delete: bool (default=0)
@@ -436,6 +450,15 @@ class Subdivisions():
         :custom_attributes: dict (default={})
             for each custom subdivision, you can also add custom attributes e.g population,
             area, gdp etc. Both the attribute and its value need to be input in a dict.
+        :custom_subdivision_object: dict (default={})
+            object of the new custom subdivision object with the required attributes and values. 
+            If this object is populated, the values in this object will be prioritised over the 
+            individual parameter values. 
+        :save_new: bool (default=0)
+            save a new copy of the iso3166-2.json object with the new changes applied,
+            such that the original object is not overwritten. 
+        :save_new_filename: str (default="iso3166_2_copy.json")
+            filename for copied iso3166-2.json object with the new changes applied.
 
         Returns
         =======
@@ -452,7 +475,7 @@ class Subdivisions():
         iso.custom_subdivision("US", "US-ML", name="Republic of Molossia", local_other_name="", type_="State", lat_lng=[39.236, -119.588], parent_code=None, flag="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_the_Republic_of_Molossia.svg")
         
         #adding custom Belfast province to Ireland
-        iso.custom_subdivision("IE", "IE-BF", name="Belfast", local_other_name="Béal Feirste", type_="province", lat_lng=[54.596, -5.931], parent_code=None, flag=None)
+        iso.custom_subdivision("IE", "IE-BF", name="Belfast", local_other_name="Béal Feirste", type_="province", lat_lng=[54.596, -5.931], parent_code=None, flag=None, history=None)
 
         #adding custom Belfast province to Ireland with additional population and area attribute values
         iso.custom_subdivision("IE", "IE-BF", name="Belfast", local_other_name="Béal Feirste", type_="province", lat_lng=[54.596, -5.931], parent_code=None, flag=None, custom_attributes={"population": "345,318", "area": "115Km2"})
@@ -470,6 +493,7 @@ class Subdivisions():
             Incorrect format for latLng attribute.
             Invalid alpha-2 code input.
             New custom subdivision code should be unique and not already present in the object.
+            No matching subdivision object found when delete=1.
         """
         #raise type error if input isn't a string
         if not (isinstance(alpha_code, str)):
@@ -514,34 +538,71 @@ class Subdivisions():
             with open(test_iso3166_2_copy, "w") as output_json:
                 json.dump(self.all, output_json)
 
-        #delete subdivision if delete parameter set
+        #get subdivision data for country code
+        all_subdivision_data = self.all[alpha_code]
+
+        #bool to track if custom subdivisions are valid and should be added to the existing object
+        new_update_object = False
+
+        #delete subdivision if delete parameter set, raise error if no matching subdivision found
         if (delete):
-            if (subdivision_code in list(self.all[alpha_code].keys())):
-                del self.all[alpha_code][subdivision_code] 
+            if (custom_subdivision_object):
+                #raise error if no subdivision code found to delete
+                if not (custom_subdivision_object[subdivision_code] in list(all_subdivision_data.keys())):
+                    raise ValueError(f"No matching subdivision code found to delete: {custom_subdivision_object}")
+
+                #delete subdivision object from all attribute
+                del self.all[alpha_code][custom_subdivision_object[subdivision_code]]
+            else:
+                #raise error if no subdivision code found to delete
+                if not (subdivision_code in list(all_subdivision_data.keys())):
+                    raise ValueError(f"No matching subdivision code found to delete: {subdivision_code}")
+
+                #delete subdivision object from all attribute
+                del self.all[alpha_code][subdivision_code]
         else:
-            #raise error if subdivision already present in object, cannot add custom subdivision that overwrites existing subdivision
-            if (subdivision_code in list(self.all[alpha_code].keys())):
-                raise ValueError(f"Custom subdivision codes should be unique and not already present as an existing code: {subdivision_code}.")
-            
-            #adding new subdivision data to object from input parameters
-            custom_subdivision_data = {"name": name, "localOtherName": local_other_name, "type": type_, "parentCode": parent_code, "latLng": lat_lng, "flag": flag}  
+            if (custom_subdivision_object):
+                #raise error if subdivision already present in object, cannot add custom subdivision that overwrites existing subdivision
+                # if (custom_subdivision_object[subdivision_code] in list(all_subdivision_data.keys())):
+                #     raise ValueError(f"Custom subdivision codes should be unique and not already present as an existing code: {custom_subdivision_object[subdivision_code]}.")
+                
+                #create object of new data to be added, reorder attributes
+                custom_subdivision_data = {key: custom_subdivision_object[key] for key in ['name', 'localOtherName', 'type', 'parentCode', 'flag', 'latLng', 'history']}
 
-            #add custom attributes to subdivision
-            if (custom_attributes != {}):
-                for attribute, value in custom_attributes.items():
-                    custom_subdivision_data[attribute] = value
+                #add custom attributes to subdivision, if applicable
+                if (custom_attributes != {}):
+                    for attribute, value in custom_attributes.items():
+                        custom_subdivision_data[attribute] = value
 
-            #add new subdivision object to main object            
+                #new object valid and can be added to updates object
+                new_update_object = True 
+            else:
+                #create object of new data to be added from input parameters, reorder attributes
+                custom_subdivision_data = {"name": name, "localOtherName": local_other_name, "type": type_, "parentCode": parent_code, "flag": flag, "latLng": lat_lng, "history": history}
+
+                #add custom attributes to subdivision, if applicable
+                if (custom_attributes != {}):
+                    for attribute, value in custom_attributes.items():
+                        custom_subdivision_data[attribute] = value
+
+                #new object valid and can be added to updates object
+                new_update_object = True
+
+        #add new subdivision object to main all attribute
+        if (new_update_object):
             self.all[alpha_code][subdivision_code] = custom_subdivision_data
 
-            #reorder keys of subdivision object into alphabetical order
-            self.all[alpha_code][subdivision_code] = dict(OrderedDict(natsort.natsorted(self.all[alpha_code][subdivision_code].items())))
+        #export new subdivision object to custom output file if parameter set
+        if (save_new):
+            with open(save_new_filename, 'w', encoding='utf-8') as output_json:
+                json.dump(self.all, output_json, ensure_ascii=False, indent=4)  
+        #export new subdivision object to existing object
+        else:
+            with open(os.path.join(self.iso3166_2_module_path), 'w', encoding='utf-8') as output_json:
+                json.dump(self.all, output_json, ensure_ascii=False, indent=4)  
 
-        #export the updated custom subdivision object
-        with open(os.path.join(self.iso3166_2_module_path), 'w', encoding='utf-8') as output_json:
-            json.dump(self.all, output_json, ensure_ascii=False, indent=4)  
-
-    def search(self, name: str = "", likeness_score: int = 100, filter_attribute: str = "", local_other_name_search: bool = True) -> dict:
+    def search(self, input_search_term: str, likeness_score: int=100, filter_attribute: str="", local_other_name_search: bool=True, 
+               exclude_match_score: bool=1) -> dict:
         """
         Search for a subdivision and its corresponding data using it's subdivision name. 
         The 'likeness_score' input parameter determines if the function searches for an exact 
@@ -554,7 +615,9 @@ class Subdivisions():
         If the default likeness score is input and no exact matching subdivision is found, 
         the likeness score will be reduced to 85, and then if no match is found after this 
         then an error will be raised. If multiple matching subdivisions are found then a 
-        list of dicts will be returned.
+        list of dicts will be returned. By default, the Match Score attribute will be added
+        to each subdivision object, this is % score that the input search terms are to the
+        found subdivision object, the output is sorted by this score.
 
         The filter_attribute query string parameter allows you to include only a subset of 
         required data attributes for the sought subdivisions e.g "name,localOtherName", 
@@ -563,10 +626,14 @@ class Subdivisions():
         You can also increase the search space by searching over the localOtherName attribute
         in addition to the default name attribute by setting the local_other_name_search 
         parameter to True.
+
+        The exclude_match_score parameter allows you to exclude the Match Score attribute
+        from the found subdivision objects. If this parameter is set then the output will
+        be sorted alphabetically.
          
         Parameters
         ==========
-        :name: str (default="")
+        :name: str
             subdivision name to search for.
         :likeness_score: int (default=100)
             likeness score between 0 and 100 that sets the percentage of likeness the input 
@@ -578,26 +645,33 @@ class Subdivisions():
         :local_other_name_search: bool (default=False)
             search via the localOtherName attribute as well as the default name attribute
             for any potential matches, increasing the function search space. 
+        :exclude_match_score: bool (default=True)
+            set to True to exclude the % match the returned subdivision objects are to the input
+            search keywords. If this attribute is excluded from the output, a dict of outputs
+            will be returned, sorted alphabetically by country code, otherwise a list will be 
+            returned, sorted by match score.
 
         Returns
         =======
-        :output_subdivisions: dict/list
-            if one subdivision found then a dict of its data will be returned.
+        :final_results: dict/list
+            resultant subdivision object found from input search terms. If one subdivision found then 
+            a dict of its data will be returned, otherwise a list multiple subdivisions will be returned.
         
         Raises
         ======
         TypeError:
             Incorrect data type for name parameter.
         ValueError:
+            Invalid likeness score range, should be between 1 and 100.
             Invalid attributes input to filter attributes parameter.
         """
-        #raise error if name parameter isn't a string
-        if not (isinstance(name, str)):
-            raise TypeError(f"Input subdivision name should be of type str, got {type(name)}.")
+        #raise error if search_term parameter isn't a string
+        if not isinstance(input_search_term, str):
+            raise TypeError(f"Input subdivision name should be of type str, got {type(input_search_term)}.")
 
-        #set likeness value to 100 (exact match) if invalid or out of range value input
+        #raise error if invalid likeness score input (has to between 1 and 100)
         if not (0 <= likeness_score <= 100):
-            likeness_score = 100
+            raise ValueError(f"Likeness score must be between 0 and 100, got {likeness_score}.")
 
         #create list of subdivision attributes to search across, add localOtherName to list if applicable
         attributes_list = ["name"]
@@ -606,7 +680,7 @@ class Subdivisions():
 
         #create object of normalized subdivision entries: (normalized_name, alpha2, code)
         entries = []
-        comma_names_set = set() #set of subdivision names that have commas in them
+        comma_names_set = set()
         for alpha2 in self.all:
             for code, data in self.all[alpha2].items():
                 for attr in attributes_list:
@@ -614,66 +688,100 @@ class Subdivisions():
                     if val:
                         normalized = unquote_plus(val).lower()
                         entries.append((normalized.replace(" ", ""), alpha2, code))
-                        if "," in val:
+                        #add normalized name to separate list for names that have a comma in them
+                        if ("," in val):
                             comma_names_set.add(normalized)
 
-        #normalize input name and extract known comma-containing names first
-        input_normalized = unquote_plus(name).lower()
-        terms = []
+        #normalize, remove quotes & lowercase input search terms
+        input_normalized = unquote_plus(input_search_term).lower()
 
         #iterate over subdivision names with commas in them and add to terms list and normalize
+        terms = []
         for full_name in comma_names_set:
             if full_name in input_normalized:
                 terms.append(full_name.replace(" ", ""))
                 input_normalized = input_normalized.replace(full_name, "")
-
-        #create list comma separated search terms, excluding those without comma already in their name
         leftover_terms = [t.strip().replace(" ", "") for t in input_normalized.split(",") if t.strip()]
         terms.extend(leftover_terms)
 
-        #object to keep found search matches
-        found = {}
-
         #iterate over input search terms, use a fuzzy search algorithm to get any matching names/localOther names,
         # using the likeness parameter as a % likeness the input terms have to be to the subdivision names
+        found = {}
         for term in terms:
             matches = []
             for norm_name, alpha2, code in entries:
                 likeness = fuzz.ratio(term, norm_name)
                 if likeness_score == 100 and likeness == 100:
-                    matches.append((alpha2, code))
+                    matches.append((alpha2, code, likeness))
                 elif likeness_score < 100 and likeness >= likeness_score:
-                    matches.append((alpha2, code))
+                    matches.append((alpha2, code, likeness))
 
-            #if no matches found, reduce the likeness slightly
+            #fallback: if no matches found, reduce the likeness slightly
             if likeness_score == 100 and not matches:
                 for norm_name, alpha2, code in entries:
-                    if fuzz.ratio(term, norm_name) >= 85:
-                        matches.append((alpha2, code))
+                    likeness = fuzz.ratio(term, norm_name)
+                    if likeness >= 85:
+                        matches.append((alpha2, code, likeness))
 
-            #add found matching objects to found object
-            for alpha2, code in matches:
-                if (code not in found):
-                    found[code] = self.all[alpha2][code]
+            #add found matching objects to found object, including % Match Score, Country & Subdivision Code
+            for alpha2, code, score in matches:
+                if code not in found:
+                    found[code] = {
+                        **self.all[alpha2][code],
+                        "Match Score": score,
+                        "Country Code": alpha2,
+                        "Subdivision Code": code
+                    }
 
         #filter out attributes from subdivision object, if applicable
         if filter_attribute:
             filter_list = filter_attribute.replace(" ", "").split(",")
             valid_attrs = {"name", "localOtherName", "type", "parentCode", "flag", "latLng", "history"}
-
-            #if "*" in filter attributes parameter, include all the attributes which will be the default
+            #if wildcard in filter list, add all attributes to output
             if "*" in filter_list:
                 filter_list = list(valid_attrs)
-            #raise error if invalid attribute in list
+            #raise error if invalid attribute input
             elif not all(attr in valid_attrs for attr in filter_list):
                 raise ValueError(f"Invalid attribute(s) in filter_attribute: {filter_list}")
-
-            #iterate over all subdivision objects in found object, filtering out any applicable attributes
+            #iterate over search results, filtering out the non-required attributes & keeping the main default attributes
             for code in list(found.keys()):
-                found[code] = {k: v for k, v in found[code].items() if k in filter_list}
+                match_score = found[code].get("Match Score")
+                country_code = found[code].get("Country Code")
+                filtered = {k: v for k, v in found[code].items() if k in filter_list}
+                filtered["Subdivision Code"] = code
+                filtered["Country Code"] = country_code
+                if not exclude_match_score and match_score is not None:
+                    filtered["Match Score"] = match_score
+                found[code] = filtered
 
-        #sort returned dict by subdivision code
-        return dict(sorted(found.items()))
+        #exclude the % match score attribute from subdivision objects
+        if exclude_match_score:
+            grouped = {}
+            #iterate over nested subdivision objects, removing Match Score, Country Code & Subdivision Code attributes
+            for code, data in found.items():
+                data.pop("Match Score", None)
+                country_code = data.pop("Country Code", "")
+                sub_code = data.pop("Subdivision Code", code)
+                #set the parent key of the subdivision object to its alpha country code
+                grouped.setdefault(country_code, {})[sub_code] = data
+            return dict(sorted(grouped.items()))
+        else:
+            final_results = []
+            #iterate over all subdivision objects, reordering attributes with inclusion of Match Score
+            for code, data in found.items():
+                entry = {
+                    "Country Code": data.pop("Country Code", ""),
+                    "Subdivision Code": data.pop("Subdivision Code", code),
+                    **data,
+                    "Match Score": data.pop("Match Score", 0)
+                }
+                #append to results array
+                final_results.append(entry)
+
+            #reorder results via Match Score attribute, descending
+            final_results.sort(key=lambda x: x.get("Match Score", 0), reverse=True)
+
+            return final_results
 
     @staticmethod
     def convert_to_alpha2(alpha_code: str) -> str:
@@ -699,14 +807,19 @@ class Subdivisions():
             Invalid data type for alpha code parameter input.
         ValueError:
             Issue converting the inputted alpha code into alpha-2 code.
+            More than 1 country code input, only 1 should be.
         """
         #raise error if invalid type input
         if not (isinstance(alpha_code, str)):
             raise TypeError(f"Expected input alpha code to be a string, got {type(alpha_code)}.")
 
+        #raise error if more than 1 country code input
+        if ("," in alpha_code):
+            raise ValueError(f"Only one country code should be input into the function: {alpha_code}.")
+        
         #uppercase alpha code, remove leading/trailing whitespace
         alpha_code = alpha_code.upper().strip()
-        
+
         #use iso3166 package to find corresponding alpha-2 code from its numeric code, return error if numeric code not found
         if (alpha_code.isdigit()):
             if not (alpha_code in list(iso3166.countries_by_numeric.keys())):
@@ -899,7 +1012,7 @@ class Subdivisions():
     
     def __repr__(self) -> str:
         """ Return object representation of class instance. """
-        return f"<iso3166-2(version={self.__version__}, total_subdivisions={len(self)}, source_file={self.iso3166_2_module_path}."
+        return f"<iso3166-2(version={self.__version__}, total_subdivisions={len(self)}, source_file={os.path.basename(self.iso3166_2_module_path)})>"
 
     def __len__(self) -> int:
         """ Return total number of ISO 3166-2 subdivisions. """
