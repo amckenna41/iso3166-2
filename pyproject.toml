@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iso3166-2"
-version = "1.7.2"
+version = "1.8.0"
 description = "A lightweight Python package, and accompanying RESTful API, used to access all of the world's most up-to-date and accurate ISO 3166-2 subdivision data, including: name, local/other name, code, parent code, type, latitude/longitude, flag and history."
 authors = ["AJ McKenna <amckenna41@qub.ac.uk>"]
 maintainers = ["AJ McKenna <amckenna41@qub.ac.uk>"]
