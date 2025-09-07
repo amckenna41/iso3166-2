@@ -42,7 +42,7 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
     Export all ISO 3166-2 subdivision related data to JSON, CSV and or XML files. The default attributes
     exported for each subdivision include: subdivision code, name, local name, type, parent code, flag
     URL, history and latitude/longitude. The flag URL attribute is taken from the custom-built
-    iso3166-flag-icons (https://github.com/amckenna41/iso3166-flag-icons) repo, the history attribute
+    iso3166-flags (https://github.com/amckenna41/iso3166-flags) repo, the history attribute
     is taken from the custom-built iso3166-updates (https://github.com/amckenna41/iso3166-updates) repo
     and latitude/longitude is retrieved via the GoogleMaps API. By default all of the subdivision data
     for each ISO 3166 country will be exported but a string of 1 or more country alpha codes can
@@ -206,20 +206,32 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
             if not (key in rest_countries_keys_expected):
                 raise ValueError(f"Attribute/field ({key}) not available in RestCountries API, please refer to list of acceptable attributes below:\n{rest_countries_keys_expected}.")
 
-        rest_countries_keys = rest_countries_keys_converted_list
-
+        #sort rest country key list alphabetically
+        rest_countries_keys = sorted(rest_countries_keys_converted_list)
+    
     #parse input default attributes to include/exclude from export
-    if (filter_attributes != ""):
+    if (filter_attributes != "" and filter_attributes != []):
         #list of default output keys/attributes per subdivision
-        filter_attributes_expected = ["name", "localOtherName", "type", "parentCode", "flag", "latLng", "history"]
+        filter_attributes_expected = ["name", "localOtherName", "type", "parentCode", "flag", "latLng"]
+        
+        #if parameter is a list, convert to str
+        if (isinstance(filter_attributes, list)):
+            filter_attributes = " ,".join(filter_attributes)
 
         #parse input attribute string into list, remove whitespace
         filter_attributes_converted_list = filter_attributes.replace(' ', '').split(',')
-
+        
         #iterate over all input keys, raise error if invalid key input
         for key in filter_attributes_converted_list:
             if not (key in filter_attributes_expected):
                 raise ValueError(f"Attribute/field ({key}) invalid, please refer to list of the acceptable default attributes below:\n{filter_attributes_expected}.")
+
+        #extend history attribute if applicable, set history parameter to True if it is in filter_attributes input param
+        if (history):
+            filter_attributes_expected.extend("history")
+        else:
+            if ("history" in filter_attributes_converted_list):
+                history = True
 
             # #remove default key from list
             # all_attributes.remove(key)
@@ -227,16 +239,18 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
         #set filter_attributes var to filtered list
         filter_attributes = filter_attributes_converted_list
         # all_attributes = [item for item in filter_attributes if item in all_attributes]
+    else:
+        filter_attributes = all_attributes
 
     #appending the different extra attributes to preserve custom order, 1st original attributes then history then rest country keys then cities
-    if (history):
-        all_attributes.append("history")
+    if (history and "history" not in filter_attributes):
+        filter_attributes.append("history")
     if (rest_countries_keys):
-        all_attributes.extend(rest_countries_keys)
+        filter_attributes.extend(rest_countries_keys)
     if (state_city_data):
-        all_attributes.append("cities")
+        filter_attributes.append("cities")
     # if not (extract_lat_lng):     #removing latLng attribute from default if not extracting
-    #     all_attributes.remove('latLng')
+    #     filter_attributes.remove('latLng')
 
     print(f"Exporting {len(alpha_codes)} ISO 3166-2 country's data to folder {export_folder} with the following attributes:\n{', '.join(all_attributes)}.")
     print('##################################################################################################\n')
@@ -285,10 +299,11 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
             country_restcountries_response.raise_for_status()
             country_restcountries_data = country_restcountries_response.json()
         
-        #validating that flag folder for current country exists on iso3166-flag-icons repo
+        #validating that flag folder for current country exists on iso3166-flags repo, only check if flag in desired attributes
         flag_folder_exists = False
-        if (requests.get("https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/" + alpha2, headers=USER_AGENT_HEADER, proxies=proxy, timeout=15).status_code != 404):
-          flag_folder_exists = True
+        if ("flag" in filter_attributes):
+            if (requests.get("https://github.com/amckenna41/iso3166-flags/blob/main/iso3166-2-flags/" + alpha2, headers=USER_AGENT_HEADER, proxies=proxy, timeout=15).status_code != 404):
+                flag_folder_exists = True
 
         #iterate over all country's' subdivisions, assigning subdivision code, name, type, parent code and flag URL, where applicable for the json object
         for subd in all_subdivisions:
@@ -336,7 +351,7 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
 
             #initialise subdivision code object and its attributes
             all_country_data[alpha2][subd.code] = {}
-            all_country_data[alpha2][subd.code]["name"] = subd.name
+            all_country_data[alpha2][subd.code]["name"] = subdivision_name
             all_country_data[alpha2][subd.code]["localOtherName"] = None
             all_country_data[alpha2][subd.code]["type"] = subd.type
             all_country_data[alpha2][subd.code]["parentCode"] = subd.parent_code
@@ -396,12 +411,12 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
                 #sort cities into alphabetical order
                 all_country_data[alpha2][subd.code]["cities"] = sorted(all_country_data[alpha2][subd.code]["cities"])
 
-            #iterate over each default attribute to be excluded from subdivision object, delete key, if applicable
-            if (filter_attributes != ""):
-                attributes_to_delete = list(set(all_attributes).symmetric_difference(filter_attributes))
-                for key in attributes_to_delete:
-                    # if (key != "latLng" and not extract_lat_lng):
-                    del all_country_data[alpha2][subd.code][key]
+            # #iterate over each default attribute to be excluded from subdivision object, delete key, if applicable
+            # if (filter_attributes != ""):
+            #     attributes_to_delete = list(set(filter_attributes).symmetric_difference(filter_attributes))
+            #     for key in attributes_to_delete:
+            #         # if (key != "latLng" and not extract_lat_lng):
+            #         del all_country_data[alpha2][subd.code][key]
             
         #save current exported country subdivision data at the current iteration - useful for saving exported process if one iteration fails 
         if (save_each_iteration):
@@ -426,14 +441,14 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
             
             #append latest subdivision updates/changes from /iso3166_2_resources folder to the iso3166-2 object
             all_country_data = update_subdivision(iso3166_2_filename=export_filepath, subdivision_csv=os.path.join(resources_folder, "subdivision_updates.csv"), export=0,
-                                                filter_attributes=filter_attributes, rest_countries_keys=rest_countries_keys)
+                                                    rest_countries_keys=rest_countries_keys)
 
             #get local/other name data for each subdivision, unless localOtherName or name attributes to be excluded from export
             if (filter_attributes == "" or ("localOtherName" in filter_attributes)):
                 all_country_data = add_local_other_names(all_country_data, filepath=local_other_names_filepath)
 
             #add historical subdivision data updates from iso3166-updates software - needs to be done here after all attribute values such as local name added to all subdivision objects
-            if (history):
+            if (history or "history" in filter_attributes):
                 all_country_data = add_history(all_country_data)
             
             #sort individual subdivision attributes into order and sort subdivision codes into natural order
@@ -441,7 +456,7 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
                 country_code: {
                     subdivision_code: {
                         key: subdivisions[subdivision_code].get(key)
-                        for key in all_attributes
+                        for key in filter_attributes
                     }
                     for subdivision_code in sorted(subdivisions)
                 }
@@ -449,8 +464,7 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
             }
 
             #export the subdivision data object to the output files
-            export_iso3166_2_data(all_country_data=all_country_data, export_filepath=export_filepath, export_csv=export_csv, export_xml=export_xml, history=history,
-                    filter_attributes=filter_attributes, rest_countries_keys=rest_countries_keys if isinstance(rest_countries_keys, list) else [])
+            export_iso3166_2_data(all_country_data=all_country_data, export_filepath=export_filepath, export_csv=export_csv, export_xml=export_xml)
     
         #sort subdivision codes in json objects in natural alphabetical/numerical order using natsort library
         # all_country_data[alpha2] = dict(OrderedDict(natsort.natsorted(all_country_data[alpha2].items())))
@@ -489,17 +503,17 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
     #read json data with all current subdivision data
     with open(export_filepath, 'r', encoding='utf-8') as input_json:
         all_country_data = json.load(input_json)
-        
+    
     #append latest subdivision updates/changes from /iso3166_2_resources folder to the iso3166-2 object
     all_country_data = update_subdivision(iso3166_2_filename=export_filepath, subdivision_csv=os.path.join(resources_folder, "subdivision_updates.csv"), export=0,
-                                          filter_attributes=filter_attributes, rest_countries_keys=rest_countries_keys)
+                                          rest_countries_keys=rest_countries_keys)
 
     #get local Name data for each subdivision, unless localOtherName or name attributes to be excluded from export
     if (filter_attributes == "" or ("localOtherName" in filter_attributes or "name" in filter_attributes)):
         all_country_data = add_local_other_names(all_country_data, filepath=local_other_names_filepath)
 
     #add historical subdivision data updates from iso3166-updates software - needs to be done here after all attribute values such as local name added to all subdivision objects
-    if (history):
+    if (history or "history" in filter_attributes):
         all_country_data = add_history(all_country_data)
 
     #sort subdivision objects into natural order and convert to regular dicts
@@ -507,7 +521,7 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
         country_code: {
             subdivision_code: {
                 key: subdivisions[subdivision_code].get(key)
-                for key in all_attributes
+                for key in filter_attributes
             }
             for subdivision_code in sorted(subdivisions)
         }
@@ -515,8 +529,7 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
     }
 
     #export the subdivision data object to the output files
-    export_iso3166_2_data(all_country_data=all_country_data, export_filepath=export_filepath, export_csv=export_csv, export_xml=export_xml, history=history,
-        filter_attributes=filter_attributes, rest_countries_keys=rest_countries_keys if isinstance(rest_countries_keys, list) else [])
+    export_iso3166_2_data(all_country_data=all_country_data, export_filepath=export_filepath, export_csv=export_csv, export_xml=export_xml)
 
     #stop counter and calculate elapsed time
     end = time.time()
@@ -525,7 +538,7 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
     if (verbose):
         print('\n######################################################################\n')
         print(f"ISO 3166-2 data successfully exported to {export_filepath}.")
-        print("\nElapsed Time for exporting all ISO 3166-2 data: {0:.2f} minutes.".format(elapsed / 60))
+        print(f"\nElapsed Time for exporting all ISO 3166-2 data: {(elapsed / 60):.2f} minutes.")
 
 if __name__ == '__main__':
 

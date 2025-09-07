@@ -5,13 +5,12 @@ All of the modules and functionalities of `iso3166-2` are thoroughly tested usin
 ## Module tests:
 
 * `test_iso3166_2` - unit tests for `iso3166-2` package.
-* `test_iso3166_2_api` - unit tests for `iso3166-2` API, hosted on Vercel.
-* `test_get_iso3166_2` - unit tests for `get_iso3166_2.py` script that pulls the ISO 3166-2 subdivision data from the data sources.
+* `test_export_iso3166_2` - unit tests for `export_iso3166_2.py` script that pulls the ISO 3166-2 subdivision data from the data sources.
 * `test_update_subdivisions` - unit tests for `update_subdivisions.py` script that is used for the streamlining of subdivision additions, changes or deletions to the ISO 3166-2 data object.
 * `test_local_other_names` - unit tests for 
 * `test_language_lookup` - unit tests for Language Lookup class which encapsulates all the language codes from the local/other names csv.
 * `test_utils` - unit tests for `utils.py` module that has a series of utily functions used throughout project.
-* `test_iso3166_2_api` - unit tests for ISO 3166-2 API.
+* `test_iso3166_2_api` - unit tests for `iso3166-2` API, hosted on Vercel.
 
 ## Running Tests
 

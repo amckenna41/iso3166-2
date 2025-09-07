@@ -1190,7 +1190,7 @@ ER,ER-DU,Al Janūbī,"الجنوبي (ara), Southern (eng), ደቡብ (tir), Deb
 ER,ER-GB,Gash-Barka,"قش بركاح (ara), Gash-Barka (eng), ጋሽ ባርካ (tir), Gash-Barka (tir), Regione di Gash-Barka (ita)"
 ER,ER-MA,Al Awsaţ,"الأوسط (ara), Central (eng), ማእከል (tir), Ma’ĭkel (tir), Maakel (tir), Regione Centrale (ita)"
 ER,ER-SK,Semienawi K’eyyĭḥ Baḥri,"الشمالي البهري آل الأحمر (ara), Northern Red Sea (eng), ሰሜናዊ ቀይሕ ባሕሪ (tir), Semienawi K’eyyĭḥ Baḥri (tir), Regione Settentrionale del Mar Rosso (ita)"
-ES,ES-A,Alacant,"Alicante (spa), Alacant* (cat)"
+ES,ES-A,Alacant,"Alicante (spa), Alacant (cat)"
 ES,ES-AB,Albacete,
 ES,ES-AL,Almería,
 ES,ES-AN,Andalucía,Andalusia (eng)
@@ -1211,7 +1211,7 @@ ES,ES-CM,Castilla-La Mancha,Castile-La Mancha (eng)
 ES,ES-CN,Canarias,Canary Islands (eng)
 ES,ES-CO,Córdoba,Cordova (eng)
 ES,ES-CR,Ciudad Real,
-ES,ES-CS,Castelló,"Castellón (spa), Castelló* (cat)"
+ES,ES-CS,Castelló,"Castellón (spa), Castelló (cat)"
 ES,ES-CT,Catalunya [Cataluña],"Catalonia (eng), Catalonha (oci)"
 ES,ES-CU,Cuenca,
 ES,ES-EX,Extremadura,"Estremaúra (ext), Estremadura (por), Extremaúra (fax)"
@@ -1234,7 +1234,7 @@ ES,ES-MC,"Murcia, Región de","Region of Murcia (eng), Regió de Múrcia (cat)"
 ES,ES-MD,"Madrid, Comunidad de",Community of Madrid (eng)
 ES,ES-ML,Melilla,"مَلِيلْيَة (ara), Mřič (rif)"
 ES,ES-MU,Murcia,Regió de Múrcia (cat)
-ES,ES-NA,Nafarroa,"Navarra (spa), Chartered Community of Navarre (eng), Comunidad Foral de Navarra (spa), Nafarroako Foru Komunitatea (eus), Nafarroa* (eus)"
+ES,ES-NA,Nafarroa,"Navarra (spa), Chartered Community of Navarre (eng), Comunidad Foral de Navarra (spa), Nafarroako Foru Komunitatea (eus), Nafarroa (eus)"
 ES,ES-NC,Nafarroako Foru Komunitatea,"Chartered Community of Navarre (eng), Nafarroako Foru Komunitatea (eus)"
 ES,ES-O,Asturias,"Asturies (ast), Principado de Asturias (spa), Principality of Asturias (eng), Principáu dAsturies (ast)"
 ES,ES-OR,Ourense [Orense],

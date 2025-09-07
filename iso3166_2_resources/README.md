@@ -54,7 +54,7 @@ The [`local_other_names.csv`](https://github.com/amckenna41/iso3166-2/blob/main/
 
 **Overall, this file has ~500 individual subdivision additions/deletions/amendments for the >5000 subdivisions.**
 
-The [`subdivision_updates.csv`](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_resources/subdivision_updates.csv) file maintains and tracks all of the latest and accurate ISO 3166-2 data changes for the `iso3166-2` JSON object in the software, from 2022 onwards. New subdivisions, amendments to existing subdivisions as well as deletions of subdivisions are appended to the CSV file. During execution of the main `scripts/get_iso3166_2.py` script, this CSV is read in and the relevant changes are implemented to the exported objects. 
+The [`subdivision_updates.csv`](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_resources/subdivision_updates.csv) file maintains and tracks all of the latest and accurate ISO 3166-2 data changes for the `iso3166-2` JSON object in the software, from 2022 onwards. New subdivisions, amendments to existing subdivisions as well as deletions of subdivisions are appended to the CSV file. During execution of the main `scripts/export_iso3166_2.py` script, this CSV is read in and the relevant changes are implemented to the exported objects. 
 
 The purpose for the creation of this script and dataset was that several of the data sources for the subdivision data was out-of-date, inaccurate or missing in comparison to the true list of ISO 3166-2 data. Therefore this file ensures during the exporting process that the dataset is **accurate**, **up-to-date** and **reliable**.
 
@@ -67,7 +67,7 @@ The [`subdivision_updates.csv`](https://github.com/amckenna41/iso3166-2/blob/mai
 * **localOtherName** - subdivision local name translation or alternative variant of its name with the ISO 639 language code in brackets
 * **type** - subdivision type
 * **parentCode** - subdivision parent code
-* **flag** - subdivision flag URL from [`iso3166-flag-icons`](https://github.com/amckenna41/iso3166-flag-icons) repo (a custom-built repo with over 3500 individual subdivision flags)
+* **flag** - subdivision flag URL from [`iso3166-flags`](https://github.com/amckenna41/iso3166-flags) repo (a custom-built repo with over 3500 individual subdivision flags)
 * **latLng** - subdivision latitude/longitude
 * **customAttributes** - object of custom attributes and their values e.g population, gdp, hdi etc
 * **delete** - set to 1 if subdivision is to be deleted

@@ -54,13 +54,13 @@ Flags
 ~~~~~
 The other equally important and bespoke/unique attribute that the software package supports is the ``flag`` attribute, which is a link to the subdivision's 
 flag on the |iso3166_flag_icons_repo_link| repo. This is another **custom-built** repository, (alongside |iso3166_2_repo_link| and |iso3166_updates_repo_link|) 
-that stores a rich and comprehensive dataset of over **3500** official individual subdivision flags. 
+that stores a rich and comprehensive dataset of over **2800** official individual subdivision flags. 
 
 The flags repo uses the |iso3166_2_repo_link| software to get the full list of ISO 3166-2 subdivision codes which is kept up-to-date and accurate via the |iso3166_updates_repo_link| software.
 
 .. raw:: html
 
-   <div align="center">❤️ iso3166-2 🤝 iso3166-updates 🤝 iso3166-flag-icons ❤️</div>
+   <div align="center">❤️ iso3166-2 🤝 iso3166-updates 🤝 iso3166-flags ❤️</div>
 
 
 History
@@ -122,7 +122,7 @@ The Python software and accompanying API are solely developed and maintained by 
 
 .. |iso3166_flag_icons_repo_link| raw:: html
 
-   <a href="https://github.com/amckenna41/iso3166-flag-icons" target="_blank">iso3166-flag-icons</a>
+   <a href="https://github.com/amckenna41/iso3166-flags" target="_blank">iso3166-flags</a>
 
 .. |local_other_names_link| raw:: html
 
@@ -138,7 +138,7 @@ The Python software and accompanying API are solely developed and maintained by 
 
 .. |version_link| raw:: html
 
-   <a href="https://pypi.org/project/iso3166-2/" target="_blank">v1.7.2</a>
+   <a href="https://pypi.org/project/iso3166-2/" target="_blank">v1.8.0</a>
 
 .. |updates_md_link| raw:: html
 

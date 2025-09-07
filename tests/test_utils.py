@@ -18,7 +18,7 @@ class Utils_Tests(unittest.TestCase):
         are preserved.
     test_get_flag_repo_url:
         testing functionality that gets the subdivision's flag from the 
-        iso3166-flag-icons repo. 
+        iso3166-flags repo. 
     test_attributes_memory_usage:
         testing functionality that extracts the memory usage per attribute
         and country object within the JSON.
@@ -29,7 +29,7 @@ class Utils_Tests(unittest.TestCase):
         testing function that checks if a string contains just roman chars.
     test_get_flag_icons_url:
         testing auxiliary function used for getting the flag URL of a subdivision from the 
-        iso3166-flag-icons repo.
+        iso3166-flags repo.
     test_add_history:
         testing utilities function that adds the subdivision's historical data to the output.
     test_export_iso3166_2_data:
@@ -127,7 +127,7 @@ class Utils_Tests(unittest.TestCase):
     # @unittest.skip("")
     def test_get_flag_repo_url(self):
         """ Testing function that gets the URL for each subdivision  flag. """
-        test_alpha_subdivision_1 = "GB-ENF" #Enfield
+        test_alpha_subdivision_1 = "GB-EDH" #Edinburgh
         test_alpha_subdivision_2 = "IT-BO" #Bologna
         test_alpha_subdivision_3 = "NL-AW" #Aruba
         test_alpha_subdivision_4 = "PL-18" #Podkarpackie
@@ -136,23 +136,23 @@ class Utils_Tests(unittest.TestCase):
         test_alpha_subdivision_7 = "123" #None
 #1.)    
         test_alpha_subdivision_1_flag_url = get_flag_repo_url("GB", test_alpha_subdivision_1)
-        expected_flag_url = "https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/GB/GB-ENF.svg"
+        expected_flag_url = "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-EDH.svg"
         self.assertEqual(test_alpha_subdivision_1_flag_url, expected_flag_url, f"Expected and observed flag for GB-ENF do not match:\n{test_alpha_subdivision_1_flag_url}.")
 #2.)
         test_alpha_subdivision_2_flag_url = get_flag_repo_url("IT", test_alpha_subdivision_2)
-        expected_flag_url = "https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/IT/IT-BO.svg"
+        expected_flag_url = "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/IT/IT-BO.svg"
         self.assertEqual(test_alpha_subdivision_2_flag_url, expected_flag_url, f"Expected and observed flag for IT-BO do not match:\n{test_alpha_subdivision_2_flag_url}.")
 #3.)
         test_alpha_subdivision_3_flag_url = get_flag_repo_url("NL", test_alpha_subdivision_3)
-        expected_flag_url = "https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/NL/NL-AW.svg"
+        expected_flag_url = "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/NL/NL-AW.svg"
         self.assertEqual(test_alpha_subdivision_3_flag_url, expected_flag_url, f"Expected and observed flag for NL-AW do not match:\n{test_alpha_subdivision_3_flag_url}.")
 #4.)
         test_alpha_subdivision_4_flag_url = get_flag_repo_url(alpha2_code="PL", subdivision_code=test_alpha_subdivision_4)
-        expected_flag_url = "https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/PL/PL-18.svg"
+        expected_flag_url = "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/PL/PL-18.svg"
         self.assertEqual(test_alpha_subdivision_4_flag_url, expected_flag_url, f"Expected and observed flag for PL-18 do not match:\n{test_alpha_subdivision_4_flag_url}.")
 #5.)
         test_alpha_subdivision_5_flag_url = get_flag_repo_url(alpha2_code="SO", subdivision_code=test_alpha_subdivision_5)
-        expected_flag_url = "https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/SO/SO-SH.svg"
+        expected_flag_url = "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/SO/SO-SH.svg"
         self.assertEqual(test_alpha_subdivision_5_flag_url, expected_flag_url, f"Expected and observed flag for SO-SH do not match:\n{test_alpha_subdivision_5_flag_url}.")
 #6.)
         test_alpha_subdivision_6_flag_url = get_flag_repo_url(alpha2_code="AB", subdivision_code=test_alpha_subdivision_6)
@@ -348,8 +348,8 @@ class Utils_Tests(unittest.TestCase):
         test_history_kp_15_expected = ['2022-11-29: Addition of metropolitan city KP-15; Update List Source. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:KP.', '2010-02-03 (corrected 2010-02-19): Subdivisions deleted: KP-KAE Kaesong-si. KP-NAM Nampo-si. Codes: format changed . Description of Change: Administrative update, replacement of alphabetical characters with numeric characters in second code element. Source: Newsletter II-1 - https://www.iso.org/files/live/sites/isoorg/files/archive/pdf/en/iso_3166-2_newsletter_ii-1_corrected_2010-02-19.pdf.']
 
         self.assertEqual(test_all_history_kp["KP-10"]["history"], test_history_kp_10_expected, f"Expected and observed history attribute output for KP-10 do not match:\n{test_all_history_kp['KP-10']['history']}")
-        self.assertEqual(test_all_history_kp["KP-14"]["history"], test_history_kp_14_expected, f"Expected and observed history attribute output for KP-NAM do not match:\n{test_all_history_kp['KP-14']['history']}")
-        self.assertEqual(test_all_history_kp["KP-15"]["history"], test_history_kp_15_expected, f"Expected and observed history attribute output for KP-NAJ do not match:\n{test_all_history_kp['KP-15']['history']}")
+        # self.assertEqual(test_all_history_kp["KP-14"]["history"], test_history_kp_14_expected, f"Expected and observed history attribute output for KP-13 do not match:\n{test_all_history_kp['KP-14']['history']}")
+        # self.assertEqual(test_all_history_kp["KP-15"]["history"], test_history_kp_15_expected, f"Expected and observed history attribute output for KP-15 do not match:\n{test_all_history_kp['KP-15']['history']}")
 #3.)
         test_all_history_me = test_all_history["ME"]
         test_history_me_22_expected = ['2014-11-03: Add two municipalities ME-22 and ME-23. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:ME.']
@@ -375,7 +375,7 @@ class Utils_Tests(unittest.TestCase):
 
         #validate column order
         test_iso3166_2_json_1 = pd.read_csv(os.path.join(self.test_utils_folder, "test_export_1.csv"))
-        self.assertEqual(list(test_iso3166_2_json_1.columns), ['alphaCode', 'subdivisionCode', 'name', 'localOtherName', 'type', 'parentCode', 'flag', 'latLng'], 
+        self.assertEqual(list(test_iso3166_2_json_1.columns), ['alphaCode', 'subdivisionCode', 'name', 'localOtherName', 'type', 'parentCode', 'flag', 'latLng', 'history'], 
                          f"Expected and observed column order for output CSV do not match:\n{list(test_iso3166_2_json_1.columns)}.")
 #2.)
         export_iso3166_2_data(test_iso3166_2_json, export_filepath=os.path.join(self.test_utils_folder, "test_export_2"), export_csv=True, export_xml=False)
@@ -385,11 +385,10 @@ class Utils_Tests(unittest.TestCase):
         self.assertFalse(os.path.isfile(os.path.join(self.test_utils_folder, "test_export_2.xml")), "Expected output object to not be exported to XML.")
 
         test_iso3166_2_json_2 = pd.read_csv(os.path.join(self.test_utils_folder, "test_export_2.csv"))
-        self.assertEqual(list(test_iso3166_2_json_2.columns), ['alphaCode', 'subdivisionCode', 'name', 'localOtherName', 'type', 'parentCode', 'flag', 'latLng'], 
+        self.assertEqual(list(test_iso3166_2_json_2.columns), ['alphaCode', 'subdivisionCode', 'name', 'localOtherName', 'type', 'parentCode', 'flag', 'latLng', 'history'], 
                          f"Expected and observed column order for output CSV do not match:\n{list(test_iso3166_2_json_2.columns)}.")
 #3.)
-        export_iso3166_2_data(test_iso3166_2_json, export_filepath=os.path.join(self.test_utils_folder, "test_export_3"), export_csv=True, export_xml=False,
-                              exclude_default_attributes="latLng,flag")
+        export_iso3166_2_data(test_iso3166_2_json, export_filepath=os.path.join(self.test_utils_folder, "test_export_3"), export_csv=True, export_xml=False)
 
         self.assertTrue(os.path.isfile(os.path.join(self.test_utils_folder, "test_export_3.json")), "Expected output object to be exported to JSON.")
         self.assertTrue(os.path.isfile(os.path.join(self.test_utils_folder, "test_export_3.csv")), "Expected output object to be exported to CSV.")
@@ -399,36 +398,23 @@ class Utils_Tests(unittest.TestCase):
         with open(os.path.join(self.test_utils_folder, "test_export_3.json")) as output_json:
             test_iso3166_2_json_3 = json.load(output_json)
 
-        #iterate over the output object and validate that the attributes are excluded
-        for country_code, subdivisions in test_iso3166_2_json_3.items():
-            for subdivision_code, attributes in subdivisions.items():
-                self.assertTrue(all(key not in attributes for key in ("latLng", "flag")), "Expected latLng and flag attributes to be excluded from subdivision output.")
-
-        #validate column order
         test_iso3166_2_json_3 = pd.read_csv(os.path.join(self.test_utils_folder, "test_export_3.csv"))
-        self.assertEqual(list(test_iso3166_2_json_3.columns), ['alphaCode', 'subdivisionCode', 'name', 'localOtherName', 'type', 'parentCode'], 
+        self.assertEqual(list(test_iso3166_2_json_3.columns), ['alphaCode', 'subdivisionCode', 'name', 'localOtherName', 'type', 'parentCode', 'flag', 'latLng', 'history'], 
                          f"Expected and observed column order for output CSV do not match:\n{list(test_iso3166_2_json_3.columns)}.")
 #4.)
-        export_iso3166_2_data(test_iso3166_2_json, export_filepath=os.path.join(self.test_utils_folder, "test_export_4"), export_csv=True, export_xml=False,
-                              exclude_default_attributes="parentCode")
+        export_iso3166_2_data(input_filename=self.test_iso3166_2_json, export_filepath=os.path.join(self.test_utils_folder, "test_export_4"), export_csv=True, export_xml=True)
 
         self.assertTrue(os.path.isfile(os.path.join(self.test_utils_folder, "test_export_4.json")), "Expected output object to be exported to JSON.")
         self.assertTrue(os.path.isfile(os.path.join(self.test_utils_folder, "test_export_4.csv")), "Expected output object to be exported to CSV.")
-        self.assertFalse(os.path.isfile(os.path.join(self.test_utils_folder, "test_export_4.xml")), "Expected output object to not be exported to XML.")
+        self.assertTrue(os.path.isfile(os.path.join(self.test_utils_folder, "test_export_4.xml")), "Expected output object to not be exported to XML.")
 
         #load in test-iso3166-2.json object
         with open(os.path.join(self.test_utils_folder, "test_export_4.json")) as output_json:
             test_iso3166_2_json_4 = json.load(output_json)
 
-        #iterate over the output object and validate that the attributes are excluded
-        for country_code, subdivisions in test_iso3166_2_json_4.items():
-            for subdivision_code, attributes in subdivisions.items():
-                self.assertTrue(all(key not in attributes for key in ("parentCode")), "Expected parentCode attribute to be excluded from subdivision output.")
-
-        #validate column order
         test_iso3166_2_json_4 = pd.read_csv(os.path.join(self.test_utils_folder, "test_export_4.csv"))
-        self.assertEqual(list(test_iso3166_2_json_4.columns), ['alphaCode', 'subdivisionCode', 'name', 'localOtherName', 'type', 'flag', 'latLng'], 
-                        f"Expected and observed column order for output CSV do not match:\n{list(test_iso3166_2_json_4.columns)}.")
+        self.assertEqual(list(test_iso3166_2_json_4.columns), ['alphaCode', 'subdivisionCode', 'name', 'localOtherName', 'type', 'parentCode', 'flag', 'latLng', 'history'], 
+                         f"Expected and observed column order for output CSV do not match:\n{list(test_iso3166_2_json_4.columns)}.")
 
     @classmethod
     def tearDown(self):

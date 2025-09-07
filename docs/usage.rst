@@ -57,7 +57,7 @@ For example, accessing all Canadian (CA, CAN, 124) subdivision data:
    ca_alberta = iso["CA"]["CA-AB"]
    ca_alberta.name #Alberta
    ca_alberta.type #Province
-   ca_alberta.flag #https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/CA/CA-AB.svg
+   ca_alberta.flag #https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-icons/CA/CA-AB.svg
 
    #CA-MB Manitoba
    ca_manitoba = iso["CA"]["CA-MB"]
@@ -68,7 +68,7 @@ For example, accessing all Canadian (CA, CAN, 124) subdivision data:
    #CA-NS Nova Scotia
    ca_nova_scotia = iso["CA"]["CA-NS"]
    ca_nova_scotia.name #Nova Scotia
-   ca_nova_scotia.flag #https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/CA/CA-NS.svg
+   ca_nova_scotia.flag #https://github.com/amckenna41/iso3166-flags/blob/main/iso3166-2-icons/CA/CA-NS.svg
    ca_nova_scotia.history #None
 
 Accessing all Danish (DK, DNK, 208) subdivision data:
@@ -87,14 +87,14 @@ Accessing all Danish (DK, DNK, 208) subdivision data:
    #DK-84 Hovedstaden
    dk_hovedstaden = iso["DNK"]["DK-84"]
    dk_hovedstaden.name #Hovedstaden
-   dk_hovedstaden.flag #https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/DK/DK-84.svg
+   dk_hovedstaden.flag #https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-icons/DK/DK-84.svg
    dk_hovedstaden.parentCode #null
 
    #DK-85 Sjælland
    dk_sjalland = iso["DK"]["DNK-85"]
    dk_sjalland.name #Sjælland
    dk_sjalland.type #Region
-   dk_sjalland.flag #https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/DK/DK-85.svg
+   dk_sjalland.flag #https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-icons/DK/DK-85.svg
 
 Accessing all Estonian (EE, EST, 233) subdivision data:
 
@@ -113,7 +113,7 @@ Accessing all Estonian (EE, EST, 233) subdivision data:
    ee_alutaguse = iso["233"]["EE-130"]
    ee_alutaguse.name #Alutaguse
    ee_alutaguse.parentCode #EE-45
-   ee_alutaguse.flag #https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/EE/EE-130.svg
+   ee_alutaguse.flag #https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-icons/EE/EE-130.svg
 
    #EE-338 Kose
    ee_kose = iso["233"]["EE-338"]
@@ -156,6 +156,13 @@ Extract all subdivision codes for Singapore (SG, SGP, 702), Somalia (SO, SOM, 70
 
    iso.subdivision_codes("SG, SOM, 768")
 
+You can also extract the subdivision codes after subscripting object via its country code:
+
+.. code-block:: python
+
+   iso["AL"].subdivision_names()
+   iso["ET"].subdivision_names()
+
 
 Get list of all subdivision names
 ---------------------------------
@@ -190,6 +197,13 @@ Extract all subdivision names for Georgia (GE, GEO, 268), Guinea (GN, GIN, 324) 
 .. code-block:: python
 
    iso.subdivision_names("GE, GIN, 404")
+
+You can also extract the subdivision names after subscripting object via its country code:
+
+.. code-block:: python
+
+   iso["BA"].subdivision_names()
+   iso["MI"].subdivision_names()
 
 
 Searching for a subdivision

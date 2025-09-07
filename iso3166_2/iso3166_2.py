@@ -169,7 +169,7 @@ class Subdivisions():
         self.iso3166_2_filepath = iso3166_2_filepath
         self.iso3166_json_filename= "iso3166-2.json"
         self.filter_attributes = filter_attributes
-        self.__version__ = "1.7.2"
+        self.__version__ = "1.8.0"
 
         #get full path to default object
         self.iso3166_2_module_path = os.path.join(os.path.dirname(os.path.abspath(sys.modules[self.__module__].__file__)), self.iso3166_json_filename)
@@ -440,7 +440,7 @@ class Subdivisions():
         :history: str (default=None)
             historical updates of subdivision, according to ISO, if applicable.
         :flag: str (default=None)
-            URL for subdivision flag from iso3166-flag-icons repo, if applicable.
+            URL for subdivision flag from iso3166-flags repo, if applicable.
         :delete: bool (default=0)
             the delete flag is set to 1 if the inputted subdivision is to be deleted
             from json object.      
@@ -794,7 +794,7 @@ class Subdivisions():
         Parameters 
         ==========
         :alpha_code: str
-            2 letter letter ISO 3166-1 alpha-2 or 3 letter alpha-3 or numeric country code.
+            2 letter letter ISO 3166-1 alpha-2 or 3 letter alpha-3/ numeric country code.
         
         Returns
         =======
@@ -820,26 +820,23 @@ class Subdivisions():
         #uppercase alpha code, remove leading/trailing whitespace
         alpha_code = alpha_code.upper().strip()
 
-        #use iso3166 package to find corresponding alpha-2 code from its numeric code, return error if numeric code not found
+        #use iso3166 package to find corresponding alpha-2 code from its numeric code
         if (alpha_code.isdigit()):
-            if not (alpha_code in list(iso3166.countries_by_numeric.keys())):
-                raise ValueError(f"Invalid alpha numeric country code input {alpha_code}.")
-            return iso3166.countries_by_numeric[alpha_code].alpha2
+            if (alpha_code in list(iso3166.countries_by_numeric.keys())):
+                return iso3166.countries_by_numeric[alpha_code].alpha2
 
-        #return input alpha code if its valid, return error if alpha-2 code not found
+        #return input alpha code if its valid
         if len(alpha_code) == 2:
-            if not (alpha_code in list(iso3166.countries_by_alpha2.keys())):
-                raise ValueError(f"Invalid alpha-2 country code input {alpha_code}.")
-            return alpha_code
+            if (alpha_code in list(iso3166.countries_by_alpha2.keys())):
+                return alpha_code
 
-        #use iso3166 package to find corresponding alpha-2 code from its alpha-3 code, return error if code not found
+        #use iso3166 package to find corresponding alpha-2 code from its alpha-3 code
         if len(alpha_code) == 3:
-            if not (alpha_code in list(iso3166.countries_by_alpha3.keys())):
-                raise ValueError(f"Invalid alpha-3 country code: {alpha_code}.")
-            return iso3166.countries_by_alpha3[alpha_code].alpha2
+            if (alpha_code in list(iso3166.countries_by_alpha3.keys())):
+                return iso3166.countries_by_alpha3[alpha_code].alpha2
         
-        #return error by default if input code not returned already
-        raise ValueError(f"Invalid alpha country code input {alpha_code}.")
+        #return error by default if input country code invalid and can't be converted into alpha-2
+        raise ValueError(f"Invalid ISO 3166-1 country code input {alpha_code}.")
 
     def __getitem__(self, alpha_code: str) -> dict:
         """
@@ -925,11 +922,21 @@ class Subdivisions():
                 if (isinstance(country[alpha_code[code]][key], dict)):
                     country[alpha_code[code]][key] = Map(country[alpha_code[code]][key])
 
-        #if only one alpha-2 code input then return list of its country data and attributes else return dict object for all inputs
+        #if only one alpha-2 code input then return its country view; else return dict of views
         if len(alpha_code) == 1:
-            return country[alpha_code[0]]
+            a2 = alpha_code[0]
+            return CountrySubdivisions(self, a2, country[a2])
         else:
+            #wrap each country entry so you can also do subd["AD"].subdivision_names() & subd["AD"].subdivision_codes()
+            for a2 in list(country.keys()):
+                country[a2] = CountrySubdivisions(self, a2, country[a2])
             return country
+
+        # #if only one alpha-2 code input then return list of its country data and attributes else return dict object for all inputs
+        # if len(alpha_code) == 1:
+        #     return country[alpha_code[0]]
+        # else:
+        #     return country
     
     def check_for_updates(self):
         """ 
@@ -1082,3 +1089,21 @@ class Map(dict):
     def __delitem__(self, key):
         super(Map, self).__delitem__(key)
         del self.__dict__[key]
+        
+class CountrySubdivisions(Map):
+    """
+    Auxiliary class for the subscriptable subdivision data via the Map class,
+    allowing the subdivision_codes() and subdivision_names() functions to be called.
+   ."""
+    def __init__(self, parent: "Subdivisions", alpha2: str, data: dict):
+        super().__init__(data)
+        object.__setattr__(self, "_parent", parent)
+        object.__setattr__(self, "_alpha2", alpha2)
+
+    def subdivision_codes(self) -> list[str]:
+        #call the function of the parent via the country's alpha-2
+        return self._parent.subdivision_codes(self._alpha2)
+
+    def subdivision_names(self) -> list[str]:
+        #call the function of the parent via the country's alpha-2
+        return self._parent.subdivision_names(self._alpha2)

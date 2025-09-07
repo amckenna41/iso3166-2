@@ -3,14 +3,11 @@ graft docs/*
 include README.md
 recursive-exclude __pycache__ *
 exclude API.md
-exclude ATTRIBUTES.md
 exclude get_iso3166_2.py
-recursive-exclude iso3166_2_scripts
-recursive-exclude iso3166_2_updates
+recursive-exclude scripts
+recursive-exclude iso3166_2_resources
 recursive-exclude .github
-exclude ToDo.md
-exclude setup.cfg
 exclude poetry.lock
+exclude .DS_Store
 exclude .readthedocs.yml
-exclude requirements.txt
 prune __pycache__ tests

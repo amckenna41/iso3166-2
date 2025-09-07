@@ -16,9 +16,9 @@ except:
 #base url for RestCountries URL
 rest_countries_base_url = "https://restcountries.com/v3.1/"
 
-def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="", local_other_name: str="", type_: str="", lat_lng: list|str=None,
+def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="", local_other_name: str="", type_: str="", lat_lng: list|str=[],
                        parent_code: str="", flag: str="", history: str="", delete: bool=0, iso3166_2_filename: str=os.path.join("iso3166_2", "iso3166-2.json"),
-                       subdivision_csv: str="", rest_countries_keys: str="", custom_attributes: dict={}, filter_attributes: str="", export: bool=True) -> dict:
+                       subdivision_csv: str="", rest_countries_keys: str="", custom_attributes: dict={}, export: bool=True, archive: bool=False) -> dict:
     """
     Auxiliary function created to streamline the addition, amendment and or deletion
     of subdivisions in/from the iso3166-2.json object. There are two main ways at
@@ -32,23 +32,21 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
 
     The CSV file (iso3166_2_resources/subdivision_updates.csv) has the following
     columns for each subdivision change: alpha_code, code, name, localOtherName, type,
-    parentCode, flag, latLng, delete, notes and dateIssued. Although, the default 
-    aforementioned columns may be filtered via the "filter_attributes"
-    parameter, meaning the ones input will only be present in the CSV file columns. 
-    When creating a row in the CSV, the country code and subdivision code columns 
-    are required, otherwise an error will be thrown.
+    parentCode, flag, latLng, delete, notes and dateIssued. When creating a row in the 
+    CSV, the country code and subdivision code columns are required, otherwise an error 
+    will be thrown.
 
     If deleting an existing subdivision, the subdivision details should be passed
     into the function alongside setting the delete input parameter to 1. Similarly,
     in the CSV file, there is a delete column which should be set to 1 if deleting
     the subdivision specified in the row.
 
-    For both of the above methods, the existing ISO 3166-2 object with all the
-    subdivision data is duplicated/archived in case of any errors made when
-    making changes/updates to the subdivision data. Additionally, to assist in
-    this there is a dry run option, meaning all of the changes made to the file
-    will be outputted but not directly exported. After all the unit tests for
-    the software have completed and passed successfully, the archived data object
+    The archive inout parameter can be set to True, which will duplicate the existing 
+    ISO 3166-2 object with all the subdivision data is duplicated/archived in case of 
+    any errors made when making changes/updates to the subdivision data. Additionally, 
+    to assist in this there is a dry run option, meaning all of the changes made to 
+    the file will be outputted but not directly exported. After all the unit tests 
+    for the software have completed and passed successfully, the archived data object
     is deleted.
 
     Parameters
@@ -68,7 +66,7 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
     :parent_code: str (default="")
         parent subdivision code for subdivision.
     :flag: str (default="")
-        URL for subdivision flag on iso3166-flag-icons repo, if applicable.
+        URL for subdivision flag on iso3166-flags repo, if applicable.
     :history: str (default="")
         history of subdivision as per iso3166-updates software.
     :delete: bool (default=0)
@@ -88,16 +86,13 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
         object of custom attributes to add to each subdivision e.g population, largest city, birth rate
         etc. Useful if you want to add extra data per subdivision that isn't exported by default. The
         attributes should be in key-value format e.g custom_attributes={"birthRate": "10"}.
-    :filter_attributes: str (default="")
-        str of one or more of the default keys/attributes that are exported for each country's subdivision by default,
-        to be included in each country's subdivision object. These include: name, localOtherName, type, parentCode,
-        latLng, history and flag. Note the country and subdivision code keys are required for each subdivision
-        and will be included by default. Any keys will not included that are in the aforementioned list will be
-        included.
     :export: bool (default=True)
         whether to export updated subdivision data to file pointed to by
         iso3166_2_filename parameter, else return the whole updated subdivision
         object.
+    :archive: bool (default=False)
+        set to True to create a copy of the existing ISO 3166-2 object before the main one is overwritten with 
+        the updated subdivision data.
 
     Returns
     =======
@@ -143,7 +138,7 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
     update_subdivision("DZ", "DZ-49", name="Timimoun", local_other_name="ولاية تيميمون", type="Province", latLng=[29.263, 0.241], parent_code=None, flag=None, history="abc")
 
     #adding Waterford County of Ireland (IE-WD) to ISO 3166-2 object - subdivision already present so no changes made
-    update_subdivision("IE", "IE-WD", "Waterford", local_other_name="Port Láirge", type="County", latLng=[52.260, -7.110], parent_code="IE-M", flag="https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/IE/IE-WD.png")
+    update_subdivision("IE", "IE-WD", "Waterford", local_other_name="Port Láirge", type="County", latLng=[52.260, -7.110], parent_code="IE-M", flag="https://github.com/amckenna41/iso3166-flags/blob/main/iso3166-2-flags/IE/IE-WD.png")
     #iso.update_subdivision("IE", "IE-WD") - this will also work as only the first 2 params requried
 
     #amending the subdivision name of subdivision FI-17 from Satakunda to Satakunta (from newsletter 2022-11-29)
@@ -166,32 +161,6 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
     with open(iso3166_2_filename, 'r', encoding='utf-8') as input_json:
         all_subdivision_data = json.load(input_json)
 
-    #list of default output keys/attributes per subdivision
-    expected_default_attributes = ["name", "localOtherName", "type", "parentCode", "latLng", "flag", "history"]
-
-    #parse input default attributes to include/exclude from export
-    if (filter_attributes != ""):
-        #list of default output keys/attributes per subdivision
-        expected_default_attributes = ["name", "localOtherName", "type", "parentCode", "flag", "latLng", "history"]
-        #parse input attribute string into list, remove whitespace and split into comma separated list if string input
-        if (isinstance(filter_attributes, str)):
-            filter_attributes_converted_list = filter_attributes.replace(' ', '').split(',')
-        else:
-            filter_attributes_converted_list = filter_attributes
-
-
-        #iterate over all input keys, raise error if invalid key input
-        for key in filter_attributes_converted_list:
-            if not (key in expected_default_attributes):
-                raise ValueError(f"Attribute/field ({key}) invalid, please refer to list of the acceptable default attributes below:\n{expected_default_attributes}.")
-
-            # #remove default key from list
-            # all_attributes.remove(key)
-
-        #set filter_attributes var to filtered list
-        filter_attributes = filter_attributes_converted_list
-        # all_attributes = [item for item in filter_attributes if item in all_attributes]
-
     #parse input RestCountries attributes/fields, if applicable
     if (rest_countries_keys != ""):
         #list of rest country attributes that can be appended to output object
@@ -209,24 +178,12 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
 
             rest_countries_keys = rest_countries_keys_converted_list
 
-    #remove any of the default attributes from list if they are to be excluded
-    # if (exclude_default_attributes != ""):
-    #     for attr in exclude_default_attributes:
-    #         temp_expected_attributes.remove(attr)
-
-    temp_expected_attributes = expected_default_attributes
-    #iterate over each default attribute to be excluded from subdivision object, delete key, if applicable
-    if (filter_attributes != ""):
-        attributes_to_delete = list(set(expected_default_attributes).symmetric_difference(filter_attributes))
-        for key in attributes_to_delete:
-            temp_expected_attributes.remove(attr)
-
-    #append default attributes list with rest countries list if applicable
-    if (rest_countries_keys != ""):
-        temp_expected_attributes.extend(sorted(rest_countries_keys))
+    # #append default attributes list with rest countries list if applicable
+    # if (rest_countries_keys != ""):
+    #     temp_expected_attributes.extend(sorted(rest_countries_keys))
 
     #parse lat_lng attribute, should be array of 2 str, can accept just a comma separated str, raise error if invalid input
-    if ((lat_lng != None and lat_lng != []) or 'latLng' in filter_attributes):
+    if ((lat_lng != None and lat_lng != [])):
         if (isinstance(lat_lng, str)):
             try:
                 temp_lat_lng = []
@@ -238,7 +195,8 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
             raise TypeError(f"lat_lng attribute expected to be a list of floats or strings or a comma separated list of 2 elements, got {lat_lng}.")
 
         #round coordinates to 3d.p if applicable
-        lat_lng[0], lat_lng[1] = round(float(lat_lng[0]), 3), round(float(lat_lng[1]), 3)
+        if (lat_lng != []):
+            lat_lng[0], lat_lng[1] = round(float(lat_lng[0]), 3), round(float(lat_lng[1]), 3)
 
     #raise TypeError if custom attributes is set and not a dict
     if (custom_attributes):
@@ -290,13 +248,14 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
             raise ValueError(f"Input subdivision code does not have the matching country alpha code in it: {subdivision_code}.")
 
         #create temporary archive folder that will store the previous iso3166-2 objects before any changes were made to it
-        if not (os.path.isdir("iso3166-2-data-archive")):
-            os.makedirs("iso3166-2-data-archive")
+        if (archive):
+            if not (os.path.isdir("iso3166-2-data-archive")):
+                os.makedirs("iso3166-2-data-archive")
 
-        #create duplicate of current iso3166-2 object before making any changes to it
-        with open(os.path.join("iso3166-2-data-archive", "archive-iso3166-2_" + \
-            str(datetime.date(datetime.now())) + ".json"), 'w', encoding='utf-8') as output_json:
-            json.dump(all_subdivision_data, output_json, ensure_ascii=False, indent=4)
+            #create duplicate of current iso3166-2 object before making any changes to it
+            with open(os.path.join("iso3166-2-data-archive", "archive-iso3166-2_" + \
+                str(datetime.date(datetime.now())) + ".json"), 'w', encoding='utf-8') as output_json:
+                json.dump(all_subdivision_data, output_json, ensure_ascii=False, indent=4)
 
         #delete subdivision if delete parameter set, raise error if code not found
         if (delete):
@@ -326,10 +285,9 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
                 #add subdivision data with updated subdivision code key to object
                 all_subdivision_data[alpha_code][new_subdivision_code] = temp_subdivision[new_subdivision_code]
 
-                #when changing a subdivision's code itself, need to search for the subdivision's flag using its new code, from the iso3166-flag-icons repo
-                if not ("flag" in temp_expected_attributes):
-                    if (all_subdivision_data[alpha_code][new_subdivision_code]["flag"] == None or all_subdivision_data[alpha_code][new_subdivision_code]["flag"] == ""):
-                        all_subdivision_data[alpha_code][new_subdivision_code]["flag"] = get_flag_repo_url(alpha_code, new_subdivision_code)
+                #when changing a subdivision's code itself, need to search for the subdivision's flag using its new code, from the iso3166-flags repo
+                if (all_subdivision_data[alpha_code][new_subdivision_code]["flag"] == None or all_subdivision_data[alpha_code][new_subdivision_code]["flag"] == ""):
+                    all_subdivision_data[alpha_code][new_subdivision_code]["flag"] = get_flag_repo_url(alpha_code, new_subdivision_code)
 
                 #add rest countries key to object if applicable
                 if (rest_countries_keys != ""):
@@ -338,7 +296,7 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
                 #order attributes of individual subdivision using natsort
                 all_subdivision_data[alpha_code][new_subdivision_code] = dict(OrderedDict(natsort.natsorted(all_subdivision_data[alpha_code][new_subdivision_code].items())))
 
-                #validate if amended subdivision code has a flag on iso3166-flag-icons repo, if not then keep flag URL to the original code
+                #validate if amended subdivision code has a flag on iso3166-flags repo, if not then keep flag URL to the original code
                 new_subdivision_flag = get_flag_repo_url(alpha_code, new_subdivision_code)
                 if (new_subdivision_flag != None):
                     all_subdivision_data[alpha_code][new_subdivision_code]["flag"] = new_subdivision_flag
@@ -348,22 +306,22 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
             else:
                 #amend existing subdivision data with input parameters provided
                 if (subdivision_code in all_subdivision_data[alpha_code]):
-                    if (name != "" and not 'name' in exclude_default_attributes):
+                    if (name != ""):
                         all_subdivision_data[alpha_code][subdivision_code]["name"] = name
-                    if (local_other_name != "" and not 'localOtherName' in exclude_default_attributes):
+                    if (local_other_name != ""):
                         all_subdivision_data[alpha_code][subdivision_code]["localOtherName"] = local_other_name
-                    if (type_ != "" and not 'type' in exclude_default_attributes):
+                    if (type_ != ""):
                         all_subdivision_data[alpha_code][subdivision_code]["type"] = type_
-                    if (lat_lng != None and not 'latLng' in exclude_default_attributes):
+                    if (lat_lng != []):
                         all_subdivision_data[alpha_code][subdivision_code]["latLng"] = lat_lng
-                    if ((parent_code != "" and parent_code is not None) and not 'parentCode' in exclude_default_attributes):
+                    if ((parent_code != "" and parent_code is not None)):
                         if not ((parent_code != "" and parent_code is not None) and (parent_code in list(all_subdivision_data[alpha_code].keys())) and (parent_code != subdivision_code)): #***
                             raise ValueError(f"Parent code {parent_code} not found in list of subdivision codes:\n{list(all_subdivision_data[alpha_code].keys())}.")
                         else:
                             all_subdivision_data[alpha_code][subdivision_code]["parentCode"] = parent_code
-                    if (flag != "" and not 'flag' in exclude_default_attributes):
+                    if (flag != ""):
                         all_subdivision_data[alpha_code][subdivision_code]["flag"] = flag
-                    if (history != "" and not 'history' in exclude_default_attributes):
+                    if (history != ""):
                         all_subdivision_data[alpha_code][subdivision_code]["history"] = history
 
                     #amend custom attribute values in subdivision object, if attribute not found then raise error
@@ -377,23 +335,22 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
                 else:
                     #adding new subdivision data to object from input parameters, exclude attributes if applicable
                     new_subdivision_data = {}
-                    if not ('name' in exclude_default_attributes):
+                    if (name != ""):
                         new_subdivision_data["name"] = name
-                    if not ('localOtherName' in exclude_default_attributes):
+                    if (local_other_name != ""):
                         new_subdivision_data["localOtherName"] = local_other_name
-                    if not ('type' in exclude_default_attributes):
+                    if (type_ != ""):
                         new_subdivision_data["type"] = type_
-                    if not ('parentCode' in exclude_default_attributes):
-                        if (parent_code != "" and parent_code is not None):
-                            #raise error if parent code not an existing subdivision code
-                            if not (parent_code in list(all_subdivision_data[alpha_code].keys())) and (parent_code != subdivision_code):
-                                raise ValueError(f"Parent code {parent_code} not found in list of subdivision codes:\n{list(all_subdivision_data[alpha_code].keys())}.")
+                    if (parent_code != "" and parent_code is not None):
+                        #raise error if parent code not an existing subdivision code
+                        if not (parent_code in list(all_subdivision_data[alpha_code].keys())) and (parent_code != subdivision_code):
+                            raise ValueError(f"Parent code {parent_code} not found in list of subdivision codes:\n{list(all_subdivision_data[alpha_code].keys())}.")
                         new_subdivision_data["parentCode"] = parent_code
-                    if not ('latLng' in exclude_default_attributes):
+                    if (lat_lng != ""):
                         new_subdivision_data["latLng"] = lat_lng
-                    if not ('flag' in exclude_default_attributes):
+                    if (flag != ""):
                         new_subdivision_data["flag"] = flag
-                    if not ('history' in exclude_default_attributes):
+                    if (history != ""):
                         new_subdivision_data["history"] = history
 
                     #append restcountries attribute values to new subdivision
@@ -407,6 +364,11 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
 
                     #add new subdivision object to main subdivision data object
                     all_subdivision_data[alpha_code][subdivision_code] = new_subdivision_data
+
+                #ensure keys exist even if empty
+                all_subdivision_data[alpha_code][subdivision_code].setdefault("flag", "")
+                all_subdivision_data[alpha_code][subdivision_code].setdefault("latLng", "")
+                all_subdivision_data[alpha_code][subdivision_code].setdefault("parentCode", "")
 
                 #reorder attributes of individual subdivision using natsort
                 all_subdivision_data[alpha_code][subdivision_code] = dict(OrderedDict(natsort.natsorted(all_subdivision_data[alpha_code][subdivision_code].items())))
@@ -486,7 +448,7 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
                     #delete existing subdivision code data in object
                     del all_subdivision_data[alpha_code][original_subdivision_code]
 
-                    #validate if amended subdivision code has a flag on iso3166-flag-icons repo, if not then keep flag URL to the original code
+                    #validate if amended subdivision code has a flag on iso3166-flags repo, if not then keep flag URL to the original code
                     new_subdivision_flag = get_flag_repo_url(alpha_code, new_subdivision_code)
                     if (new_subdivision_flag != None):
                         all_subdivision_data[alpha_code][new_subdivision_code]["flag"] = new_subdivision_flag
@@ -506,55 +468,49 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
                 else:
                     #if subdivision already in object, make changes to its attributes according to its values in row of csv
                     if (subdivision_code in list(all_subdivision_data[alpha_code].keys())):
-                        if (row['name'] != None and row['name'] != "" and not ('name' in exclude_default_attributes)):
+                        if (row['name'] not in (None, "")):
                             all_subdivision_data[alpha_code][subdivision_code]['name'] = row['name']
-                        if (row['type'] != None and row['type'] != "" and not ('type' in exclude_default_attributes)):
+                        if ((row['type'] not in (None, ""))):
                             all_subdivision_data[alpha_code][subdivision_code]['type'] = row['type']
-                        if (row['parentCode'] is not None and row['parentCode'] != "" and not ('parentCode' in exclude_default_attributes)):
+                        if ((row['parentCode'] not in (None, ""))):
                             if not ((row['parentCode'] in list(all_subdivision_data[alpha_code].keys())) and (row['parentCode'] != subdivision_code)): #validate parent code
                                 raise ValueError(f"Parent code {row['parentCode']} for row not found in list of subdivision codes::\n{row}\n{list(all_subdivision_data[alpha_code].keys())}.")
                             else:
                                 all_subdivision_data[alpha_code][subdivision_code]['parentCode'] = row['parentCode']
-                        if (row['flag'] != None and row['flag'] != "" and not ('flag' in exclude_default_attributes)):
+                        if ((row['flag'] not in (None, ""))):
                             all_subdivision_data[alpha_code][subdivision_code]['flag'] = row['flag']
-                        if (row['latLng'] != None and row['latLng'] != "" and not ('latLng' in exclude_default_attributes)):
+                        if ((row['latLng'] not in (None, ""))):
                             all_subdivision_data[alpha_code][subdivision_code]['latLng'] = json.loads(row["latLng"]) #convert string of array into array
-                        if (row['localOtherName'] != None and row['localOtherName'] != "" and not ('localOtherName' in exclude_default_attributes)):
+                        if ((row['localOtherName'] not in (None, ""))):
                             all_subdivision_data[alpha_code][subdivision_code]['localOtherName'] = row['localOtherName']
                         if ("history" in subdivision_df.columns.to_list()):
-                            if (row['history'] != None and row['history'] != "" and not ('history' in exclude_default_attributes)):
+                            if ((row['history'] not in (None, ""))):
                                 all_subdivision_data[alpha_code][subdivision_code]['history'] = row['history']
                     else:
                         #adding new subdivision
                         all_subdivision_data[alpha_code][subdivision_code] = {}
 
                         #raise error if subdivision name not present in row when adding a new subdivision
-                        if not ('name' in exclude_default_attributes):
-                            if (row['name'] == None or row['name'] == ""):
-                                raise ValueError(f"Adding a new subdivision: Subdivision name cannot be missing or null. Country code: {alpha_code}, Subdivision code: {subdivision_code}:\n{row}.")
-                            all_subdivision_data[alpha_code][subdivision_code]["name"] = row["name"]
+                        if (row['name'] in (None, "")):
+                            raise ValueError(f"Adding a new subdivision: Subdivision name cannot be missing or null. Country code: {alpha_code}, Subdivision code: {subdivision_code}:\n{row}.")
+                        all_subdivision_data[alpha_code][subdivision_code]["name"] = row["name"]
 
                         #raise error if subdivision type not present in row when adding a new subdivision
-                        if not ('type' in exclude_default_attributes):
-                            if (row['type'] == None or row['type'] == ""):
-                                raise ValueError(f"Adding a new subdivision: Subdivision type cannot be missing or null. Country code: {alpha_code}, Subdivision code: {subdivision_code}:\n{row}.")
-                            all_subdivision_data[alpha_code][subdivision_code]["type"] = row["type"]
+                        if (row['type'] in (None, "")):
+                            raise ValueError(f"Adding a new subdivision: Subdivision type cannot be missing or null. Country code: {alpha_code}, Subdivision code: {subdivision_code}:\n{row}.")
+                        all_subdivision_data[alpha_code][subdivision_code]["type"] = row["type"]
 
                         #add latLng attribute to object
-                        if not ('latLng' in exclude_default_attributes):
-                            all_subdivision_data[alpha_code][subdivision_code]["latLng"] = json.loads(row["latLng"]) #convert string of array into array
+                        all_subdivision_data[alpha_code][subdivision_code]["latLng"] = json.loads(row["latLng"]) #convert string of array into array
 
                         #add localOtherName attribute to object
-                        if not ('localOtherName' in exclude_default_attributes):
-                            all_subdivision_data[alpha_code][subdivision_code]["localOtherName"] = row["localOtherName"]
+                        all_subdivision_data[alpha_code][subdivision_code]["localOtherName"] = row["localOtherName"]
 
                         #add parentCode attribute to object
-                        if not ('parentCode' in exclude_default_attributes):
-                            all_subdivision_data[alpha_code][subdivision_code]["parentCode"] = row["parentCode"]
+                        all_subdivision_data[alpha_code][subdivision_code]["parentCode"] = row["parentCode"]
 
                         #add flag attribute to object
-                        if not ('flag' in exclude_default_attributes):
-                            all_subdivision_data[alpha_code][subdivision_code]["flag"] = row["flag"]
+                        all_subdivision_data[alpha_code][subdivision_code]["flag"] = row["flag"]
 
                         # #add history attribute to object
                         # if not ('history' in exclude_default_attributes):
@@ -646,7 +602,7 @@ if __name__ == '__main__':
     parser.add_argument('-parent_code', '--parent_code', type=str, required=False, default="", 
         help='ISO 3166-2 subdivision parent subdivision code.')
     parser.add_argument('-flag', '--flag', type=str, required=False, default="", 
-        help='ISO 3166-2 subdivision flag URL from iso3166-flag-icons repo.')
+        help='ISO 3166-2 subdivision flag URL from iso3166-flags repo.')
     parser.add_argument('-history', '--history', type=str, required=False, default="", 
         help='ISO 3166-2 updates history.')
     parser.add_argument('-delete', '--delete', required=False, action=argparse.BooleanOptionalAction, default=0, 

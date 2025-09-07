@@ -46,3 +46,30 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     steps:
       - run: echo "Test workflow failure, package not deployed to PyPI server"
+      
+  #redeploy Vercel API app once new version of iso3166-2 PyPI software deployed    
+  vercel_redeploy:
+    name: Trigger Vercel redeploy
+    needs: [test_success]
+    runs-on: ubuntu-latest
+    if: ${{ needs.test_success.result == 'success' }}
+    concurrency:
+      group: vercel-deploy-${{ github.run_id }}
+      cancel-in-progress: true
+    steps:
+      - name: Ensure Vercel Deploy Hook is configured
+        run: |
+          if [ -z "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}" ]; then
+            echo "VERCEL_DEPLOY_HOOK_URL secret is not set"; exit 1;
+          fi
+
+      - name: Call Vercel Deploy Hook (with retry)
+        run: |
+          for i in 1 2 3; do
+            curl -fsS -X POST "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}" \
+              -H "Content-Type: application/json" \
+              -d "{\"workflow\":\"Deploy to PyPI\",\"run_id\":\"${{ github.run_id }}\"}" \
+              && exit 0 || echo "Retry $i failed, retrying..."
+            sleep 5
+          done
+          echo "Failed to trigger Vercel deploy after retries"; exit 1

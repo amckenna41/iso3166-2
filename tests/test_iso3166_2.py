@@ -34,6 +34,8 @@ class ISO3166_2_Tests(unittest.TestCase):
         testing correct ISO 3166-2 subdivision names are returned from the subdivision_names() class function.
     test_filter_attributes:
         testing correct objects are returned with the relevant attributes included.
+    test_valid_flag:
+        testing each flag within the subdivision objects are valid.
     test_search:
         testing searching by subdivision name or local/other name functionality.
     test_custom_subdivision:
@@ -56,8 +58,8 @@ class ISO3166_2_Tests(unittest.TestCase):
         user_agent = UserAgent()
         self.user_agent_header = {"headers": user_agent.random}
     
-        #base url for flag icons on iso3166-flag-icons repo
-        self.flag_icons_base_url = "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/"
+        #base url for flag icons on iso3166-flags repo
+        self.flag_icons_base_url = "https://github.com/amckenna41/iso3166-flags/blob/main/iso3166-2-flags/"
 
         #list of data attributes for main iso3166-2 json
         self.correct_output_attributes = ['name', 'localOtherName', 'type', 'parentCode', 'latLng', 'flag', 'history']
@@ -73,8 +75,8 @@ class ISO3166_2_Tests(unittest.TestCase):
     # @unittest.skip("")
     def test_iso3166_2_metadata(self): 
         """ Testing correct iso3166-2 software version and metadata. """
-        # self.assertEqual(metadata('iso3166-2')['version'], "1.7.2", 
-        #     f"iso3166-2 version is not correct, expected 1.7.2, got {metadata('iso3166-2')['version']}.")
+        # self.assertEqual(metadata('iso3166-2')['version'], "1.8.0", 
+        #     f"iso3166-2 version is not correct, expected 1.8.0, got {metadata('iso3166-2')['version']}.")
         self.assertEqual(metadata('iso3166-2')['name'], "iso3166-2", 
             f"iso3166-2 software name is not correct, expected iso3166-2, got {metadata('iso3166-2')['name']}.")
         self.assertEqual(metadata('iso3166-2')['author'], "AJ McKenna", 
@@ -87,7 +89,7 @@ class ISO3166_2_Tests(unittest.TestCase):
             f"iso3166-2 maintainer is not correct, expected AJ McKenna, got {metadata('iso3166-2')['maintainer']}.")
         self.assertEqual(metadata('iso3166-2')['license'], "MIT", 
             f"iso3166-2 license type is not correct, expected MIT, got {metadata('iso3166-2')['license']}.")
-        # self.assertEqual(metadata('iso3166-2')['keywords'], "iso,iso3166,beautifulsoup,python,pypi,countries,country codes,iso3166-2,iso3166-1,alpha-2,iso3166-updates,iso3166-flag-icons,subdivisions,regions,dataset",
+        # self.assertEqual(metadata('iso3166-2')['keywords'], "iso,iso3166,beautifulsoup,python,pypi,countries,country codes,iso3166-2,iso3166-1,alpha-2,iso3166-updates,iso3166-flags,subdivisions,regions,dataset",
         #     f"iso3166-2 keywords are not correct, got:\n{metadata('iso3166-2')['keywords']}.")
         # self.assertEqual(metadata('iso3166-2')['documentation'], "https://iso3166-2.readthedocs.io/en/latest/", 
         #     f"iso3166-2 documentation url is not correct, expected https://iso3166-2.readthedocs.io/en/latest/, got {metadata('iso3166-2')['documentation']}.")
@@ -133,7 +135,7 @@ class ISO3166_2_Tests(unittest.TestCase):
                 "localOtherName": "Брчко Дистрикт (srp), Brčko District of Bosnia and Herzegovina (eng)",
                 "type": "District with special status",
                 "parentCode": None,
-                "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/BA/BA-BRC.svg",
+                "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/BA/BA-BRC.svg",
                 "latLng": [44.873, 18.811],
                 "history": [
                     "2010-06-30: Subdivisions added: BA-BRC Brčko Distrikt. Description of Change: Addition of the country code prefix as the first code element, addition of names in administrative languages, update of the administrative structure and of the list source. Source: Newsletter II-2 - https://www.iso.org/files/live/sites/isoorg/files/archive/pdf/en/iso_3166-2_newsletter_ii-2_2010-06-30.pdf."
@@ -144,7 +146,7 @@ class ISO3166_2_Tests(unittest.TestCase):
                 "localOtherName": "Република Српска (srp), Republic of Srpska (eng)",
                 "type": "Entity",
                 "parentCode": None,
-                "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/BA/BA-SRP.svg",
+                "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/BA/BA-SRP.svg",
                 "latLng": [44.728, 17.315],
                 "history": None,
             },
@@ -164,7 +166,7 @@ class ISO3166_2_Tests(unittest.TestCase):
                 "localOtherName": "Λευκωσία (ell), Lefkoşa (tur), Nicosia (eng)",
                 "type": "District",
                 "parentCode": None,
-                "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/CY/CY-01.svg",
+                "flag": None,
                 "latLng": [35.186, 33.382],
                 "history": None,
             },
@@ -587,6 +589,15 @@ class ISO3166_2_Tests(unittest.TestCase):
             filter_subdivision_attributes_8 = Subdivisions(filter_attributes=123) 
             filter_subdivision_attributes_9 = Subdivisions(filter_attributes=False)
 
+    @unittest.skip("")
+    def test_valid_flag(self):
+        """ Testing that each flag is valid within each subdivision object. """
+#1.)
+        for country in self.all_iso3166_2.all:
+            for subd in self.all_iso3166_2.all[country]:
+                if not (self.all_iso3166_2.all[country][subd]["flag"] is None):
+                    self.assertEqual(requests.get(self.all_iso3166_2.all[country][subd]["flag"], headers=self.user_agent_header).status_code, 200, f"Flag URL invalid: {self.all_iso3166_2.all[country][subd]['flag']}.")
+
     # @unittest.skip("")
     def test_search(self):
         """ Testing searching by subdivision name functionality. """
@@ -609,7 +620,7 @@ class ISO3166_2_Tests(unittest.TestCase):
                 'localOtherName': 'Contae Mhuineacháin (gle), The Drumlin County (eng), The Farney County (eng)', 
                 'type': 'County', 
                 'parentCode': 'IE-U', 
-                'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/IE/IE-MN.png', 
+                'flag': None, 
                 'latLng': [54.249, -6.968], 
                 'history': None
                 }
@@ -625,7 +636,7 @@ class ISO3166_2_Tests(unittest.TestCase):
                 'localOtherName': 'Olaine Municipality (eng)', 
                 'type': 'Municipality', 
                 'parentCode': None, 
-                'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/LV/LV-068.png', 
+                'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/LV/LV-068.png', 
                 'latLng': [56.787, 23.942], 
                 'history': None
                 }
@@ -643,7 +654,7 @@ class ISO3166_2_Tests(unittest.TestCase):
                 "localOtherName": "'Ard Mhacha, Droichead na Banna agus Creag Abhann (gle)', 'Airmagh, Bannbrig an Craigavon (ulst1239)'",
                 "type": "District",
                 "parentCode": "GB-NIR",
-                "flag": None,
+                "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-ABC.png",
                 "latLng": [54.393, -6.456],
                 "history": [
                     '2019-11-22: Change of subdivision name of GB-ABC, GB-DRS; modification of remark part 2; update list source. (Remark part 2: BS 6879 gives alternative name forms in Welsh (cy) for some of the Welsh unitary authorities (together with alternative code elements). Since this part of ISO 3166 does not allow for duplicate coding of identical subdivisions, such alternative names in Welsh and code elements are shown for information purposes only in square brackets after the English name of the subdivision. BS 6879 has been superseded but remains the original source of the codes. Included for completeness: EAW England and Wales; GBN Great Britain; UKM United Kingdom). Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:GB.', 
@@ -658,13 +669,13 @@ class ISO3166_2_Tests(unittest.TestCase):
                 "localOtherName": "Berlin (eng), Grey City (eng)",
                 "type": "Land",
                 "parentCode": None,
-                "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/DE/DE-BE.svg",
+                "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/DE/DE-BE.svg",
                 "latLng": [52.52, 13.405],
                 "history": None,
                 "matchScore": 100
             }
         ]
-    
+        
         self.assertEqual(search_results_3, expected_search_result_3, f"Observed and expected output objects do not match:\n{search_results_3}.")
 #4.)
         search_results_4 = self.all_iso3166_2.search(test_search_4, likeness_score=80) #North - likeness score of 80%
@@ -793,13 +804,13 @@ class ISO3166_2_Tests(unittest.TestCase):
     # @unittest.skip("")
     def test_repr(self):
         """ Testing __repr__ function returns correct object representation for class object. """
-        self.assertEqual(repr(self.all_iso3166_2), "<iso3166-2(version=1.7.2, total_subdivisions=5049, source_file=iso3166-2.json)>",
+        self.assertEqual(repr(self.all_iso3166_2), "<iso3166-2(version=1.8.0, total_subdivisions=5049, source_file=iso3166-2.json)>",
                 f"Expected and observed object representation for class instance do not match:\n{repr(self.all_iso3166_2)}.")
 
     # @unittest.skip("")
     def test_sizeof(self):
         """ Testing __sizeof__ function returns correct output for class object. """
-        self.assertEqual(self.all_iso3166_2.__sizeof__(), 2.815, f"Expected and observed output for sizeof function do not match:\n{self.all_iso3166_2.__sizeof__()}.")
+        self.assertEqual(self.all_iso3166_2.__sizeof__(), 2.779, f"Expected and observed output for sizeof function do not match:\n{self.all_iso3166_2.__sizeof__()}.")
 
     @classmethod
     def tearDown(self):

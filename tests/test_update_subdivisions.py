@@ -1,4 +1,4 @@
-from scripts.get_iso3166_2 import *
+from scripts.export_iso3166_2 import *
 from scripts.utils import *
 from iso3166_2 import *
 import json
@@ -23,9 +23,11 @@ class Update_Subdivisions_Tests(unittest.TestCase):
         testing deleting existing subdivisions to the main subdivisions object via update_subdivisions function.
     test_update_subdivisions_csv:
         testing current csv used for updating subdivisions when exporting the ISO 3166-2 data.
-        (iso3166_2_resources/subdivision_updates.csv).
+        (tests/test_subdivision_updates.csv).
     test_update_subdivision_csv:
         testing metadata, row count and columns of the subdivision updates csv.
+    test_update_subdivision_csv_implementation:
+        testing that rows in subdivision updates CSV get implemented into the ISO 3166-2 object correctly.
     test_update_subdivisions_csv_unique:
         testing each row in the updates csv is unique.
     test_valid_subdivision_updates_alpha_subdivision_codes_names:
@@ -59,7 +61,7 @@ class Update_Subdivisions_Tests(unittest.TestCase):
                                "local_other_name": "Local subdivision name", "type": "District", "lat_lng": None, "parent_code": "GH-AA", "flag": ""} #Ghana
         test_subdivision_lt = {"alpha_code": "LT", "subdivision_code": "LT-100", "name": "Vilnius 2.0 municipality", 
                                "local_other_name": "Vilnius 2.0 municipality", "type": "City municipality", "parent_code": "LT-UT", 
-                               "flag": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/LT/LT-100.svg", "rest_countries_keys": "currencies,idd,carSigns"} #Lithuania
+                               "flag": "https://github.com/amckenna41/iso3166-flags/blob/main/iso3166-2-flags/LT/LT-100.svg", "rest_countries_keys": "currencies,idd,carSigns"} #Lithuania
         test_subdivision_hk = {"alpha_code": "HKG", "subdivision_code": "HK-HK", "name": "Hong Kong Island", "local_other_name": "香港", "type": "District", 
                                "lat_lng": [22.3193, 114.1694], "parent_code": "HK-HK", "flag": "", "custom_attributes": {"population": 1188500, "area": 78}} #Hong Kong - adding additional RestCountries attributes of currencies, idd and carSigns, as well as custom population & area attributes
         test_subdivision_kz = {"alpha_code": "398", "subdivision_code": "KZ-100", "name": "New oblysy", "local_other_name": "жаңа облысы", "type": "region",
@@ -68,7 +70,7 @@ class Update_Subdivisions_Tests(unittest.TestCase):
         test_subdivision_gh_update_subdivisions_output = update_subdivision(alpha_code=test_subdivision_gh["alpha_code"], subdivision_code=test_subdivision_gh["subdivision_code"], name=test_subdivision_gh["name"],   #Ghana (GH)
                                                                       local_other_name=test_subdivision_gh["local_other_name"], type_=test_subdivision_gh["type"], lat_lng=test_subdivision_gh["lat_lng"], parent_code=test_subdivision_gh["parent_code"], 
                                                                       flag="", iso3166_2_filename=self.test_iso3166_2_copy, export=True)
-        expected_test_subdivision_gh_output = {'flag': '', 'history': '', 'latLng': None, 'localOtherName': 'Local subdivision name', 'name': 'New Ghanian subdivision', 'parentCode': 'GH-AA', 'type': 'District'}
+        expected_test_subdivision_gh_output = {'flag': '', 'latLng': None, 'localOtherName': 'Local subdivision name', 'name': 'New Ghanian subdivision', 'parentCode': 'GH-AA', 'type': 'District'}
 
         #import json with newly added subdivision
         with open(self.test_iso3166_2_copy, "r") as subdivision_update_json:
@@ -85,8 +87,8 @@ class Update_Subdivisions_Tests(unittest.TestCase):
                                                                       local_other_name=test_subdivision_lt["local_other_name"], type_=test_subdivision_lt["type"], parent_code=test_subdivision_lt["parent_code"], 
                                                                       flag=test_subdivision_lt["flag"], iso3166_2_filename=self.test_iso3166_2_copy, rest_countries_keys=test_subdivision_lt["rest_countries_keys"], export=True)
         expected_test_subdivision_lt_output = {"name": "Vilnius 2.0 municipality", "localOtherName": "Vilnius 2.0 municipality", "type": "City municipality", 
-                                         "latLng": None, "parentCode": "LT-UT", "flag": "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/LT/LT-100.svg",
-                                         "currencies": {"EUR": {"name": "Euro", "symbol": "€"}}, "carSigns": ["LT"], "idd": "Root: +3, Suffixes: ['70']", "history": ""}
+                                         "latLng": [], "parentCode": "LT-UT", "flag": "https://github.com/amckenna41/iso3166-flags/blob/main/iso3166-2-flags/LT/LT-100.svg",
+                                         "currencies": {"EUR": {"name": "Euro", "symbol": "€"}}, "carSigns": ["LT"], "idd": "Root: +3, Suffixes: ['70']"}
         
         #import json with newly added subdivision
         with open(self.test_iso3166_2_copy, "r") as subdivision_update_json:
@@ -102,7 +104,7 @@ class Update_Subdivisions_Tests(unittest.TestCase):
         test_subdivision_hk_update_subdivisions_output = update_subdivision(alpha_code=test_subdivision_hk["alpha_code"], subdivision_code=test_subdivision_hk["subdivision_code"], name=test_subdivision_hk["name"],  #Hong Kong (HK)
                                                                       local_other_name=test_subdivision_hk["local_other_name"], type_=test_subdivision_hk["type"], parent_code=test_subdivision_hk["parent_code"], 
                                                                       flag=test_subdivision_hk["flag"], custom_attributes=test_subdivision_hk["custom_attributes"], iso3166_2_filename=self.test_iso3166_2_copy, export=True)
-        expected_test_subdivision_hk_output = {'area': 78, 'flag': '', 'history': '', 'latLng': None, 'localOtherName': '香港', 'name': 'Hong Kong Island', 'parentCode': 'HK-HK', 'population': 1188500, 'type': 'District'}
+        expected_test_subdivision_hk_output = {'area': 78, 'flag': '', 'latLng': [], 'localOtherName': '香港', 'name': 'Hong Kong Island', 'parentCode': 'HK-HK', 'population': 1188500, 'type': 'District'}
 
         #import json with newly added subdivision
         with open(self.test_iso3166_2_copy, "r") as subdivision_update_json:
@@ -118,7 +120,7 @@ class Update_Subdivisions_Tests(unittest.TestCase):
         test_subdivision_kz_update_subdivisions_output = update_subdivision(alpha_code=test_subdivision_kz["alpha_code"], subdivision_code=test_subdivision_kz["subdivision_code"], name=test_subdivision_kz["name"],   #Kazakhstan (KZ)
                                                                       local_other_name=test_subdivision_kz["local_other_name"], type_=test_subdivision_kz["type"], lat_lng=test_subdivision_kz["lat_lng"], parent_code=test_subdivision_kz["parent_code"], 
                                                                       flag=test_subdivision_kz["flag"], custom_attributes=test_subdivision_kz["custom_attributes"], iso3166_2_filename=self.test_iso3166_2_copy, export=True)
-        expected_test_subdivision_kz_output = {'flag': '', 'gini': 0.5, 'hdi': 0.6, 'history': '', 'latLng': [], 'localOtherName': 'жаңа облысы', 'name': 'New oblysy', 'parentCode': 'KZ-71', 'type': 'region'}
+        expected_test_subdivision_kz_output = {'flag': '', 'gini': 0.5, 'hdi': 0.6, 'latLng': [], 'localOtherName': 'жаңа облысы', 'name': 'New oblysy', 'parentCode': 'KZ-71', 'type': 'region'}
 
         #import json with newly added subdivision
         with open(self.test_iso3166_2_copy, "r") as subdivision_update_json:
@@ -151,8 +153,8 @@ class Update_Subdivisions_Tests(unittest.TestCase):
             update_subdivision(alpha_code="ID", subdivision_code="ID-12", parent_code=123, iso3166_2_filename=self.test_iso3166_2_copy)
             update_subdivision(alpha_code="ID", subdivision_code="ID-12", flag=False, iso3166_2_filename=self.test_iso3166_2_copy)
             update_subdivision(alpha_code="ID", subdivision_code="ID-12", rest_countries_keys=9.05, iso3166_2_filename=self.test_iso3166_2_copy)
-            update_subdivision(alpha_code="ID", subdivision_code="ID-12", exclude_default_attributes=True, iso3166_2_filename=self.test_iso3166_2_copy)
-            update_subdivision(alpha_code="ID", subdivision_code="ID-12", custom_attributes="blahblah", exclude_default_attributes=True, iso3166_2_filename=self.test_iso3166_2_copy)
+            update_subdivision(alpha_code="ID", subdivision_code="ID-12", iso3166_2_filename=self.test_iso3166_2_copy)
+            update_subdivision(alpha_code="ID", subdivision_code="ID-12", custom_attributes="blahblah", iso3166_2_filename=self.test_iso3166_2_copy)
 
     # @unittest.skip("")
     def test_update_subdivisions_amend(self):
@@ -179,7 +181,7 @@ class Update_Subdivisions_Tests(unittest.TestCase):
 #2.)
         test_subdivision_rs_00_update_subdivisions_output = update_subdivision(alpha_code=test_subdivision_rs_00["alpha_code"], subdivision_code=test_subdivision_rs_00["subdivision_code"], type_=test_subdivision_rs_00["type"], 
                                                                                parent_code=test_subdivision_rs_00["parent_code"], iso3166_2_filename=self.test_iso3166_2_copy, export=True)  #Serbia (RS)
-        expected_test_subdivision_rs_00_output = {'flag': None, 'history': None, 'latLng': [44.813, 20.461], 'localOtherName': 'Београд (srp), Belgrade (eng)', 'name': 'Beograd', 'parentCode': 'RS-10', 'type': 'Region'}
+        expected_test_subdivision_rs_00_output = {'flag': "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/RS/RS-00.svg", 'history': None, 'latLng': [44.813, 20.461], 'localOtherName': 'Београд (srp), Belgrade (eng)', 'name': 'Beograd', 'parentCode': 'RS-10', 'type': 'Region'}
         
         #import json with newly amended subdivision
         with open(self.test_iso3166_2_copy, "r") as subdivision_update_json:
@@ -205,7 +207,7 @@ class Update_Subdivisions_Tests(unittest.TestCase):
 #4.)
         test_subdivision_wf_sg_update_subdivisions_output = update_subdivision(alpha_code=test_subdivision_wf_sg["alpha_code"], subdivision_code=test_subdivision_wf_sg["subdivision_code"], 
                                                                          iso3166_2_filename=self.test_iso3166_2_copy, export=True)  #Wallis and Futuna (WF)
-        expected_test_subdivision_wf_sg_output = {'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/WF/WF-SG.svg', 'history': ['2015-11-27: Addition of administrative precinct WF-AL, WF-SG, WF-UV; update List Source code source and categories. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:WF.'], 'latLng': [-14.297, -178.158], 'localOtherName': 'Singave (eng), Sigavé (wls)', 'name': 'Sigave', 'parentCode': None, 'type': 'Administrative precinct'}
+        expected_test_subdivision_wf_sg_output = {'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/WF/WF-SG.svg', 'history': ['2015-11-27: Addition of administrative precinct WF-AL, WF-SG, WF-UV; update List Source code source and categories. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:WF.'], 'latLng': [-14.297, -178.158], 'localOtherName': 'Singave (eng), Sigavé (wls)', 'name': 'Sigave', 'parentCode': None, 'type': 'Administrative precinct'}
 
         #import json with newly added subdivision
         with open(self.test_iso3166_2_copy, "r") as subdivision_update_json:
@@ -285,9 +287,9 @@ class Update_Subdivisions_Tests(unittest.TestCase):
 
     # @unittest.skip("")
     def test_updates_subdivision_csv(self):
-        """ Testing current csv used for updating subdivisions when exporting the ISO 3166-2 data (iso3166_2_resources/subdivision_updates.csv). """
+        """ Testing current csv used for updating subdivisions when exporting the ISO 3166-2 data (tests/test_files/test_subdivision_updates.csv). """
         #import csv, replace any Nan values with None
-        update_subdivisions_csv = pd.read_csv(os.path.join("iso3166_2_resources", "subdivision_updates.csv"), header=0)
+        update_subdivisions_csv = pd.read_csv(os.path.join("tests", "test_files", "test_subdivision_updates.csv"), header=0)
         update_subdivisions_csv = update_subdivisions_csv.replace(np.nan, None)
 #1.)
         self.assertEqual(list(update_subdivisions_csv.columns), ["alphaCode", "subdivisionCode", "name", "localOtherName", "type", "parentCode", "flag", "latLng", "customAttributes", "delete", "notes", "dateIssued"],
@@ -336,6 +338,12 @@ class Update_Subdivisions_Tests(unittest.TestCase):
         duplicates = self.subdivision_updates_df.duplicated()
         self.assertEqual(duplicates.sum(), 0, f"Found {duplicates.sum()} duplicate rows in the CSV.")
 
+    @unittest.skip("")
+    def test_updates_subdivision_csv_implementation(self):
+        """ Testing that rows in subdivision updates CSV get implemented into the ISO 3166-2 object correctly. """
+#1.)    
+        test_updated_subdivision_data = update_subdivision(iso3166_2_filename=self.test_iso3166_2_copy, subdivision_csv=self.subdivision_updates_csv_filepath)
+
     # @unittest.skip("Need to rerun after exporting data.")
     def test_valid_subdivision_updates_alpha_subdivision_codes_names(self):
         """ Testing valid country and subdivision codes for each row. """
@@ -343,15 +351,21 @@ class Update_Subdivisions_Tests(unittest.TestCase):
         country_codes_to_check = self.subdivision_updates_df["alphaCode"]
         invalid_country_codes = country_codes_to_check[~country_codes_to_check.isin(list(iso3166.countries_by_alpha2.keys()))]
         self.assertTrue(invalid_country_codes.empty, f"Expected all country codes to be valid ISO 3166-1 alpha-2 codes:\n{invalid_country_codes}.")
-# #2.)    
-#         #create instance of Subdivisions class from iso3166-2 software
-#         iso3166_2_obj = Subdivisions()
+#2.)    
+        #create instance of Subdivisions class from iso3166-2 software
+        iso3166_2_obj = Subdivisions()
 
-#         all_subdivision_codes = [code for codes in iso3166_2_obj.subdivision_codes().values() for code in codes]
-#         subdivisions_codes_to_check = self.subdivision_updates_df["subdivisionCode"]
-#         invalid_subdivision_codes = subdivisions_codes_to_check[~subdivisions_codes_to_check.isin(all_subdivision_codes)]
-#         self.assertTrue(invalid_subdivision_codes.empty, f"Expected all subdivision codes to be valid ISO 3166-2 subdivision codes:\n{invalid_subdivision_codes}.")
-    
+        #get list of valid subdivision codes in updates CSV, if any codes contain brackets, parse the code from the brackets, ignore rows where delete=1
+        all_subdivision_codes = [code for codes in iso3166_2_obj.subdivision_codes().values() for code in codes]
+        non_deletion_subdivisions_mask = pd.to_numeric(self.subdivision_updates_df.get("delete", 0), errors="coerce").fillna(0).astype(int) != 1
+        non_deletion_subdivisions_df = self.subdivision_updates_df[non_deletion_subdivisions_mask]
+        subdivisions_codes_to_check = non_deletion_subdivisions_df["subdivisionCode"]
+        brackets_mask = subdivisions_codes_to_check.str.contains(r'\(', na=False)
+        subdivisions_codes_clean = subdivisions_codes_to_check.where(~brackets_mask, subdivisions_codes_to_check.str.extract(r'\(([^()]+)\)', expand=False).str.strip())
+        invalid_subdivision_codes = subdivisions_codes_clean[~subdivisions_codes_clean.isin(all_subdivision_codes)]
+       
+        self.assertTrue(invalid_subdivision_codes.empty, f"Expected all subdivision codes to be valid ISO 3166-2 subdivision codes:\n{invalid_subdivision_codes}.")
+
     @classmethod
     def tearDown(self):
         """ Delete any temp export folder. """

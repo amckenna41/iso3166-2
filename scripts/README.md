@@ -2,13 +2,14 @@
 
 # Scripts for exporting and updating all ISO 3166-2 data
 
-*  [`get_iso3166_2.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/get_iso3166_2.py) - main pipeline script for pulling and exporting the latest ISO 3166-2 data from the various data sources
+*  [`export_iso3166_2.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/export_iso3166_2.py) - main pipeline script for pulling and exporting the latest ISO 3166-2 data from the various data sources
 * [`update_subdivisions.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/update_subdivisions.py) - script for adding, amending and or deleting subdivision data to the `iso3166-2` software and object
 * [`local_other_names.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/local_other_names.py) - script for adding the data from the [`local_other_names.csv`](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_resources/local_other_names.csv) dataset, including any validation checks on the data
-* [`utils.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/utils.py) - script of utility functions used throughout the software, mainly used by the [`get_iso3166_2.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/get_iso3166_2.py) script
+* [`utils.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/utils.py) - script of utility functions used throughout the software, mainly used by the [`export_iso3166_2.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/export_iso3166_2.py) script
 * [`language_lookup.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/language_lookup.py) - script containing the `LanguageLookup` class for extracting and working with the language lookup table and data
+* [`export_iso3166_2_metadata.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/export_iso3166_2_metadata.py) - script that exports a plethora of useful and informative attributes and data about the iso366-2 dataset
 
-<!-- Requirements (get_iso3166_2.py)
+<!-- Requirements (export_iso3166_2.py)
 ------------------------------
 * [python][python] >= 3.9
 * [iso3166-updates][iso3166-updates] >= 1.8.4
@@ -27,9 +28,9 @@
 * [iso3166-2][iso3166_2] >= 1.5.5 -->
 
 
-Usage: get_iso3166_2.py
+Usage: export_iso3166_2.py
 -----------------------
-The script `get_iso3166_2.py` is the full pipeline code for gathering and exporting subdivision data for ALL countries. It uses the [pycountry][pycountry] package as a baseline for the subdivison object and uses other libraries and datasets to gather additional subdivision related info, including the [iso3166-updates][iso3166-updates], [Googlemaps][googlemaps], [CountryStateCityAPI][country-state-city], [RestCountriesAPI][rest-countries-api] and the [local_other_names.csv](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_resources/local_other_names.csv). Calling the script using its default parameters will gather all the subdivision data for ALL countries in the ISO 3166, but the <i>alpha_codes</i> parameter can be set to pull the latest data for a specific list of one or more countries using their ISO 3166-1 alpha codes (alpha-2, alpha-3 or numeric codes). You can also export a range of alpha codes data via the <i>alpha_codes_range</i> parameter, with the code on the left being the starting alpha code and the latter being the end code e.g "AD-LY", "MA-PA" etc.
+The script `export_iso3166_2.py` is the full pipeline code for gathering and exporting subdivision data for ALL countries. It uses the [pycountry][pycountry] package as a baseline for the subdivison object and uses other libraries and datasets to gather additional subdivision related info, including the [iso3166-updates][iso3166-updates], [Googlemaps][googlemaps], [CountryStateCityAPI][country-state-city], [RestCountriesAPI][rest-countries-api] and the [local_other_names.csv](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_resources/local_other_names.csv). Calling the script using its default parameters will gather all the subdivision data for ALL countries in the ISO 3166, but the <i>alpha_codes</i> parameter can be set to pull the latest data for a specific list of one or more countries using their ISO 3166-1 alpha codes (alpha-2, alpha-3 or numeric codes). You can also export a range of alpha codes data via the <i>alpha_codes_range</i> parameter, with the code on the left being the starting alpha code and the latter being the end code e.g "AD-LY", "MA-PA" etc.
 
 The primary keys/attributes that can be exported by default are <i>name, localName, type, parentCode, flag and latLng.</i> The <i>history</i> attribute can be exported via the [iso3166-updates][iso3166-updates] custom-built software via the <i>history</i> input parameter and stores the historical ISO 3166 updates per subdivision, if applicable. The [RestCountries API](https://restcountries.com/) allows for a plethora of additional country-level attributes to be appended to each subdivision, the fields supported are: idd, carSigns, carSide, continents, currencies, languages, postalCode, region, startOfWeek, subregion, timezones and tld. An explanation of each of these attributes can be seen on the [RestCountries](https://gitlab.com/restcountries/restcountries/-/blob/master/FIELDS.md) repo. These can be passed in as a string via the <i>rest_countries_keys</i> parameter. You can also get the city-level data per subdivision via the [CountryStateCityAPI][country-state-city] and setting the <i>state_city_data</i> parameter to True. 
 
@@ -37,9 +38,9 @@ To export the <i>latLng</i> attribute data you will have to set up a GoogleMaps 
 
 By default, when running the script, the data will be exported to a <i>JSON</i> and a <i>CSV</i>, but you can also export to <i>XML</i> by setting the <i>export_xml</i> parameter to True.
 
-To download all of the latest ISO 3166-2 subdivision data for all countries, from the main repo dir, run the `get_iso3166_2.py` in a terminal or command line below; (the script takes around **1 hour and 20 mins** to execute):
+To download all of the latest ISO 3166-2 subdivision data for all countries, from the main repo dir, run the `export_iso3166_2.py` in a terminal or command line below; (the script takes around **1 hour and 20 mins** to execute):
 ```bash
-python3 scripts/get_iso3166_2.py --export_filename=iso3166_2.json --export_folder=iso3166_2 --verbose --export_csv
+python3 scripts/export_iso3166_2.py --export_filename=iso3166_2.json --export_folder=iso3166_2 --verbose --export_csv
 
 #alpha_codes: list of 1 or more ISO 3166-1 alpha country codes (if not specified then all country codes will be used).
 #export_filename: output filename for exported files.
@@ -59,27 +60,27 @@ python3 scripts/get_iso3166_2.py --export_filename=iso3166_2.json --export_folde
 
 To download all of the latest ISO 3166-2 subdivision data for Germany, Portugal and Spain (the data will be exported to a JSON and CSV file called <em>iso3166_2_DE,ES,PT.json, iso3166_2_DE,ES,PT.csv</em>):
 ```bash
-python3 scripts/get_iso3166_2.py --alpha_codes=DE,PT,ESP --export_filename=iso3166_2.json --verbose --export_csv
+python3 scripts/export_iso3166_2.py --alpha_codes=DE,PT,ESP --export_filename=iso3166_2.json --verbose --export_csv
 ```
 
 To download all of the latest ISO 3166-2 subdivision data for countries in the range FR-HU (the data will be exported to a JSON and CSV file called <em>iso3166_2_FR-HU.json, iso3166_2_FR-HU.csv, iso3166_2_FR-HU.xml</em>):
 ```bash
-python3 scripts/get_iso3166_2.py --alpha_codes_range=FR-HU --export_filename=iso3166_2.json --verbose --export_csv --export_xml
+python3 scripts/export_iso3166_2.py --alpha_codes_range=FR-HU --export_filename=iso3166_2.json --verbose --export_csv --export_xml
 ```
 
 To download all of the latest ISO 3166-2 subdivision data for all countries, additionally including the languages, subregion and tld attributes (from RestCountries API) for each subdivision:
 ```bash
-python3 scripts/get_iso3166_2.py --export_filename=iso3166_2 --rest_countries_keys=languages,subregion,tld --verbose --export_csv
+python3 scripts/export_iso3166_2.py --export_filename=iso3166_2 --rest_countries_keys=languages,subregion,tld --verbose --export_csv
 ```
 
 To download all of the latest ISO 3166-2 subdivision data for all countries, excluding the default attributes of lat_lng and flag:
 ```bash
-python3 scripts/get_iso3166_2.py --export_filename=iso3166_2 --exclude_default_keys=lat_lng,flag --verbose --export_csv
+python3 scripts/export_iso3166_2.py --export_filename=iso3166_2 --exclude_default_keys=lat_lng,flag --verbose --export_csv
 ```
 
 To download all of the latest ISO 3166-2 subdivision data for all countries, saving the subdivision data per iteration:
 ```bash
-python3 scripts/get_iso3166_2.py --export_filename=iso3166_2 --verbose --export_csv --save_each_iteration
+python3 scripts/export_iso3166_2.py --export_filename=iso3166_2 --verbose --export_csv --save_each_iteration
 ```
 
 <!-- Requirements (update_subdivisions.py)
@@ -106,7 +107,7 @@ from scripts.update_subdivisions import *
 update_subdivision("DZ", "DZ-49", name="Timimoun", local_name="ولاية تيميمون", type_="Province", lat_lng=[29.263, 0.241], parent_code=None, flag=None, history=None)
 
 #adding Waterford County of Ireland (IE-WD) to ISO 3166-2 object - subdivision already present so no changes made
-update_subdivision("IE", "IE-WD", "Waterford", local_name="Port Láirge", type_="County", lat_lng=[52.260, -7.110], parent_code="IE-M", flag="https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/IE/IE-WD.png")
+update_subdivision("IE", "IE-WD", "Waterford", local_name="Port Láirge", type_="County", lat_lng=[52.260, -7.110], parent_code="IE-M", flag="https://github.com/amckenna41/iso3166-flags/blob/main/iso3166-2-flagss/IE/IE-WD.png")
 #iso.update_subdivision("IE", "IE-WD") - this will also work as only the first 2 params requried
 
 #amending the subdivision name of subdivision FI-17 from Satakunda to Satakunta (from newsletter 2022-11-29)
@@ -133,7 +134,7 @@ python3 scripts/update_subdivisions.py --alpha_code=DZ --subdivision_code=DZ-99 
 ```
 
 ```bash
-python3 scripts/update_subdivisions.py --alpha_code=IE --subdivision_code=IE-WD --name=Waterford --local_name="Port Láirge" --type_=County --lat_lng="[52.260, -7.110]" --parent_code=IE-M --flag="https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/IE/IE-WD.png"
+python3 scripts/update_subdivisions.py --alpha_code=IE --subdivision_code=IE-WD --name=Waterford --local_name="Port Láirge" --type_=County --lat_lng="[52.260, -7.110]" --parent_code=IE-M --flag="https://github.com/amckenna41/iso3166-flags/blob/main/iso3166-2-flagss/IE/IE-WD.png"
 ```
 
 ```bash
@@ -161,7 +162,7 @@ Usage: local_other_names.py
 ---------------------------
 The [`local_other_names.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/local_other_names.py) script is used for implementing the data from the [`local_other_names.csv`](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_resources/local_other_names.csv) dataset. This dataset holds thousands of individual alternative names for each subdivision that are incorporated in the `localOtherName` attribute in the iso3166-2 dataset. The `add_local_other_names()` function streamlines the addition of all the local/other names data of each subdivision to the main iso3166-2 data object. Additionally, it also contains the `validate_local_other_names()` function that validates the local/other name data per subdivision, prior to being incorporated into the dataset. The final function `convert_iso_639_language_codes()` was a temporary auxillary function that converted all the language codes per local/other name into their offiical ISO 639 3 letter counterparts.
 
-There are no individual usage examples for this function as it is meant to be used within the `get_iso3166_2` script and is not meant to be called on its own.
+There are no individual usage examples for this function as it is meant to be used within the `export_iso3166_2` script and is not meant to be called on its own.
 
 
 <!-- Requirements (language_lookup.py)
@@ -225,8 +226,16 @@ language_obj.delete_language_code("deu")
 len(language_obj)
 ```
 
-[Back to top](#TOP)
+Usage: export_iso3166_2_metadata.py
+-----------------------------------
+The [`export_iso3166_2_metadata.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/export_iso3166_2_metadata.py) script exports a file containing a verbose collection of useful data attributes. These include:  
 
+
+```bash
+python3 scripts/export_iso3166_2_metadata.py --export_filename="iso3166_2_metadata.csv"
+```
+
+[Back to top](#TOP)
 
 [python]: https://www.python.org/downloads/release/python-360/
 [requests]: https://requests.readthedocs.io/
@@ -248,4 +257,4 @@ len(language_obj)
 [fake_user_agent]: https://pypi.org/project/fake-useragent/
 [numpy]: https://numpy.org/
 [iso3166-updates]: https://github.com/amckenna41/iso3166-updates
-[flag_icons_repo]: https://github.com/amckenna41/iso3166-flag-icons
+[flag_icons_repo]: https://github.com/amckenna41/iso3166-flags

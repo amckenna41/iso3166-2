@@ -1,6 +1,38 @@
 # Change Log 🔄
 
-## 1.7.0/1.7.1/1.7.2 - July 2025
+## v1.8.0 - September 2025
+
+### Added
+
+- Added new file saving functionality for custom_subdivisions function
+- Added API tests to /tests dir
+- Added Vercel webhook to the workflow, this redeploys the API vercel app once new version of the software released from this repo
+- In script dir added a metadata script that exports a plethora of useful metadata about the software and data object
+- Added functionality to the iso3166-2 main software such that the subdivision_codes() and subdivision_names() functions can be called through the subscripted country code object
+- Added optional 'archive' parameter to update_subdivisions() function that can be set to True/False and will archive the existing iso3166-2 object before any changes are made
+- Added CSV and XML of iso3166-2 dataset to iso3166_2_resources dir on repo
+- When exporting the individual data to JSON, CSV and XML, in the function you can now import an already exported JSON file to just export the CSV and XML files
+- Created function that allows you to combines multiple exports into one file, use case is for when alpha_codes_range was used to export a batch of export data and you need to combine into one master file
+- Added unit test that checks that each flag url is valid
+
+### Changed
+
+- Updated MANIFEST.in file to align with updated project structure
+- Fixed deprecated upload-artefact error in github workflow
+- Main export function name changed in get_iso3166_2 as it was very similar to the export data function in utils
+- Removed filter_attributes functionality from utils export function
+- Updated all references of iso3166-flag-icons to iso3166-flags to reflect updated repository name - including for each individual flag url in object
+- Removed filter_attributes functionality from update_subdivisions function
+- Changed export script name from get_iso3166_2 to export_iso3166_2
+
+### Fixed
+
+- RestCountries keys error fixed where the keys were getting added to the same column in the csv output
+- Fixed column export for csv
+- Ensured all empty attributes "" are converted to null 
+- Several subdivision names and local/other names still contained * the † in them 
+
+## v1.7.0/1.7.1/1.7.2 - July 2025
 
 ### Added
 - Add list of cities for each subdivision using the country-states-city API
@@ -40,7 +72,7 @@
 - In extract script, optional proxy functionality added to requests.get functions to help avoid 429 errors and timeout errors
 - In custom subdivision function is sw, you can now pass in an object of updates attributes
 - Added exclude_match_score attribute to search function that allows you to include/exclude the % match the subdivision names are to the input search terms
-- Added new file saving functionality for custom_subdivisions function
+
 
 ### Fixed
 - In convert_to_alpha2 function that converts a alpha-3 or numeric code into alpha-2, if a alpha-2 code was input it returns None instead of the same input alpha-2

@@ -1,4 +1,4 @@
-from scripts.get_iso3166_2 import *
+from scripts.export_iso3166_2 import *
 import requests
 import json
 import os
@@ -15,10 +15,10 @@ unittest.TestLoader.sortTestMethodsUsing = None
 #ignore resource warnings
 warnings.filterwarnings(action="ignore", message="unclosed", category=ResourceWarning)
 
-# @unittest.skip("Skipping get_iso3166_2 tests.")
-class Get_ISO3166_2_Tests(unittest.TestCase):
+# @unittest.skip("Skipping export_iso3166_2 tests.")
+class Export_ISO3166_2_Tests(unittest.TestCase):
     """
-    Test suite for testing get_iso3166_2.py script that has the full export pipeline that
+    Test suite for testing export_iso3166_2.py script that has the full export pipeline that
     pulls all the ISO 3166-2 subdivision data for all countries from the data sources. 
 
     Test Cases
@@ -29,9 +29,9 @@ class Get_ISO3166_2_Tests(unittest.TestCase):
     test_export_iso3166_restcountries:
         testing correct ISO 3166-2 data is exported and pulled from data sources,
         with additional attributes from RestCountries exported.
-    test_export_exclude_default_attributes:
+    test_export_filter_attributes:
         testing correct ISO 3166-2 data is exported and pulled from data sources,
-        with some of the default attributes excluded from export.
+        with some of the default attributes filtered from export.
     test_export_iso3166_2_alpha_code_range:
         testing correct ISO 3166-2 data is exported and pulled from data sources to 
         and from the inputted alpha codes via the alpha_codes_range parameter.
@@ -70,9 +70,9 @@ class Get_ISO3166_2_Tests(unittest.TestCase):
         #turn off tqdm progress bar functionality when running tests
         os.environ["TQDM_DISABLE"] = "1"
 
-        #base url for flag icons on iso3166-flag-icons repo
-        # self.flag_icons_base_url = "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/"
-        self.flag_icons_base_url = "https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/"
+        #base url for flag icons on iso3166-flags repo
+        # self.flag_icons_base_url = "https://github.com/amckenna41/iso3166-flags/blob/main/iso3166-2-flags/"
+        self.flag_icons_base_url = "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/"
 
         #patch sys.stdout such that any print statements/outputs from the individual test cases aren't run
         # self.patcher = patch('sys.stdout', new_callable=io.StringIO)
@@ -83,7 +83,7 @@ class Get_ISO3166_2_Tests(unittest.TestCase):
         """ Testing export functionality for getting ISO 3166-2 subdivision data from data sources. """
         test_alpha_dk = "DK" #Denmark
         test_alpha_fi = "FI" #Finland
-        test_alpha_np = "NPL" #Nepal
+        test_alpha_nz = "NZL" #New Zealand
         test_alpha_kg_mg_nr = "KG,MDG,520" #Kyrgyzstan, Madagascar, Nauru
         test_alpha_error1 = "ZZ"
         test_alpha_error2 = "ABCDEF"
@@ -131,12 +131,12 @@ class Get_ISO3166_2_Tests(unittest.TestCase):
         
         #DK-81 - Nordjylland
         test_iso3166_2_dk_json_dk_81_expected = {"name": "Nordjylland", "localOtherName": "North Denmark (eng), North Jutland Region (eng)", "parentCode": None, 
-            "type": "Region", "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/DK/DK-81.svg", "latLng": None}
+            "type": "Region", "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/DK/DK-81.svg", "latLng": None}
         self.assertEqual(test_iso3166_2_dk_json_dk_81_expected, test_iso3166_2_dk_json["DK"]["DK-81"], 
             f"Expected and observed subdivision output for DK-81 do not match:\n{test_iso3166_2_dk_json_dk_81_expected}\n{test_iso3166_2_dk_json['DK']['DK-81']}.")
         #DK-82 - Midtjylland
         test_iso3166_2_dk_json_dk_82_expected = {"name": "Midtjylland", "localOtherName": "Central Denmark (eng), Central Jutland Region (eng), Mid-Jutland (eng)", 
-            "parentCode": None, "type": "Region", "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/DK/DK-82.svg", "latLng": None}
+            "parentCode": None, "type": "Region", "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/DK/DK-82.svg", "latLng": None}
         self.assertEqual(test_iso3166_2_dk_json_dk_82_expected, test_iso3166_2_dk_json["DK"]["DK-82"], 
             f"Expected and observed subdivision output for DK-81 do not match:\n{test_iso3166_2_dk_json_dk_82_expected}\n{test_iso3166_2_dk_json['DK']['DK-82']}.")
 #2.)    
@@ -182,66 +182,64 @@ class Get_ISO3166_2_Tests(unittest.TestCase):
 
         #FI-02 - Etelä-Karjala
         test_iso3166_2_fi_json_fi_02_expected = {"name": "Etelä-Karjala", "localOtherName": "Södra Karelen (swe), South Karelia (eng)", "parentCode": None, 
-            "type": "Region", "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/FI/FI-02.svg", "latLng": None}
+            "type": "Region", "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/FI/FI-02.png", "latLng": None}
         self.assertEqual(test_iso3166_2_fi_json_fi_02_expected, test_iso3166_2_fi_json["FI"]["FI-02"], 
             f"Expected and observed subdivision output for FI-02 do not match:\n{test_iso3166_2_fi_json_fi_02_expected}\n{test_iso3166_2_fi_json['FI']['FI-02']}.")
         #FI-17 - Satakunda
         test_iso3166_2_fi_json_fi_17_expected = {"name": "Satakunta", "localOtherName": "Satakunta (swe), Satakunta (eng)", "parentCode": None, 
-            "type": "Region", "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/FI/FI-17.svg", "latLng": None}
+            "type": "Region", "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/FI/FI-17.svg", "latLng": None}
         self.assertEqual(test_iso3166_2_fi_json_fi_17_expected, test_iso3166_2_fi_json["FI"]["FI-17"], 
             f"Expected and observed subdivision output for FI-17 do not match:\n{test_iso3166_2_fi_json_fi_02_expected}\n{test_iso3166_2_fi_json['FI']['FI-17']}.")
 #3.)
-        export_iso3166_2(test_alpha_np, export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, export_csv=1, 
-                         export_xml=True, extract_lat_lng=False, history=False) #Nepal
+        export_iso3166_2(test_alpha_nz, export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, export_csv=1, 
+                         export_xml=True, extract_lat_lng=False, history=False) #New Zealand
 
         #open exported json, csv and xml
-        with open(os.path.join(self.test_output_dir, self.test_output_filename + "_NP.json")) as output_json:
-            test_iso3166_2_np_json = json.load(output_json)
-        test_iso3166_2_np_csv = pd.read_csv(os.path.join(self.test_output_dir, self.test_output_filename + "_NP.csv"))
-        test_iso3166_2_np_xml = ET.parse(os.path.join(self.test_output_dir, self.test_output_filename + "_NP.xml"))
+        with open(os.path.join(self.test_output_dir, self.test_output_filename + "_NZ.json")) as output_json:
+            test_iso3166_2_nz_json = json.load(output_json)
+        test_iso3166_2_nz_csv = pd.read_csv(os.path.join(self.test_output_dir, self.test_output_filename + "_NZ.csv"))
+        test_iso3166_2_nz_xml = ET.parse(os.path.join(self.test_output_dir, self.test_output_filename + "_NZ.xml"))
 
-        self.assertEqual(len(test_iso3166_2_np_json["NP"]), 7, f"Expected subdivisions in output, got {len(test_iso3166_2_np_json)}.")
-        self.assertEqual(list(test_iso3166_2_np_json["NP"].keys()), ["NP-P1", "NP-P2", "NP-P3", "NP-P4", "NP-P5", "NP-P6", "NP-P7"], 
-            f"Expected list of subdivision codes doesn't match output:\n{list(test_iso3166_2_np_json['NP'].keys())}.")  
-        self.assertTrue(os.path.isfile(os.path.join(self.test_output_dir, os.path.splitext(self.test_output_filename)[0] + "_NP.csv")), 
-            f"Expected subdivision data to be exported to a CSV: {os.path.join(self.test_output_dir, os.path.splitext(self.test_output_filename)[0])}-NP.csv.") 
-        self.assertEqual(list(test_iso3166_2_np_csv.columns), self.correct_default_output_columns[1:], f"Expected column names don't match CSV columns:\n{test_iso3166_2_np_csv.columns}.")
-        self.assertEqual(len(test_iso3166_2_np_csv), 7, "Expected there to be 7 rows in the exported subdivision CSV.")
-        self.assertTrue(os.path.isfile(os.path.join(self.test_output_dir, os.path.splitext(self.test_output_filename)[0] + "_NP.xml")), 
+        self.assertEqual(len(test_iso3166_2_nz_json['NZ']), 17, f"Expected subdivisions in output, got {len(test_iso3166_2_nz_json)}.")
+        self.assertEqual(list(test_iso3166_2_nz_json['NZ'].keys()), ['NZ-AUK', 'NZ-BOP', 'NZ-CAN', 'NZ-CIT', 'NZ-GIS', 'NZ-HKB', 'NZ-MBH', 'NZ-MWT', 'NZ-NSN', 'NZ-NTL', 'NZ-OTA', 'NZ-STL', 'NZ-TAS', 'NZ-TKI', 'NZ-WGN', 'NZ-WKO', 'NZ-WTC'], 
+            f"Expected list of subdivision codes doesn't match output:\n{list(test_iso3166_2_nz_json['NZ'].keys())}.")  
+        self.assertTrue(os.path.isfile(os.path.join(self.test_output_dir, os.path.splitext(self.test_output_filename)[0] + "_NZ.csv")), 
+            f"Expected subdivision data to be exported to a CSV: {os.path.join(self.test_output_dir, os.path.splitext(self.test_output_filename)[0])}-NZ.csv.") 
+        self.assertEqual(list(test_iso3166_2_nz_csv.columns), self.correct_default_output_columns[1:], f"Expected column names don't match CSV columns:\n{test_iso3166_2_nz_csv.columns}.")
+        self.assertEqual(len(test_iso3166_2_nz_csv), 17, "Expected there to be 17 rows in the exported subdivision CSV.")
+        self.assertTrue(os.path.isfile(os.path.join(self.test_output_dir, os.path.splitext(self.test_output_filename)[0] + "_NZ.xml")), 
             f"Expected subdivision data to be exported to an XML: {os.path.join(self.test_output_dir, os.path.splitext(self.test_output_filename)[0])}-NP.xml.")
-        self.assertEqual([elem.tag for elem in test_iso3166_2_np_xml.getroot()], ["NP"], f"Expected top-level element NP does not match output, got {list(test_iso3166_2_np_xml.getroot())}.")
-        self.assertEqual(len(test_iso3166_2_np_xml.find("NP")), 7, f"Expected 7 sub-level elements (subdivisions) in the output xml, got {len(test_iso3166_2_np_xml.find('NP'))}.")
-        for top_level in test_iso3166_2_np_xml.getroot():
+        self.assertEqual([elem.tag for elem in test_iso3166_2_nz_xml.getroot()], ['NZ'], f"Expected top-level element NP does not match output, got {list(test_iso3166_2_nz_xml.getroot())}.")
+        self.assertEqual(len(test_iso3166_2_nz_xml.find("NZ")), 17, f"Expected 17 sub-level elements (subdivisions) in the output xml, got {len(test_iso3166_2_nz_xml.find('NZ'))}.")
+        for top_level in test_iso3166_2_nz_xml.getroot():
             for second_level in top_level:
                 self.assertEqual(set([child.tag for child in second_level]), set(self.correct_default_output_attributes), 
                                  f"Expected second-level names in XML do match attributes, got {[child.tag for child in second_level]}.")
                 
-        for subd in test_iso3166_2_np_json["NP"]:
-            self.assertIsNot(test_iso3166_2_np_json["NP"][subd]["name"], None, 
-                f"Expected subdivision name to not be None, got {test_iso3166_2_np_json['NP'][subd]['name']}.")
-            if not (test_iso3166_2_np_json["NP"][subd]["parentCode"] is None):
-                self.assertIn(test_iso3166_2_np_json["NP"][subd]["parentCode"], list(test_iso3166_2_np_json["NP"][subd].keys()), 
-                    f"Parent code {test_iso3166_2_np_json['NP'][subd]['parentCode']} not found in list of subdivision codes.")
-            if not (test_iso3166_2_np_json["NP"][subd]["flag"] is None):
-                self.assertEqual(os.path.splitext(test_iso3166_2_np_json["NP"][subd]["flag"])[0], self.flag_icons_base_url + "NP/" + subd, 
-                    f"Expected flag URL to be {self.flag_icons_base_url}NP/{subd}, got {os.path.splitext(test_iso3166_2_np_json['NP'][subd]['flag'])[0]}.") 
-                # self.assertEqual(requests.get(test_iso3166_2_np_json["NP"][subd]["flag"], headers={"User-Agent": self.user_agent_header}).status_code, 200, 
-                #     f"Flag URL invalid: {test_iso3166_2_np_json['NP'][subd]['flag']}.")
-            for key in list(test_iso3166_2_np_json["NP"][subd].keys()):
+        for subd in test_iso3166_2_nz_json['NZ']:
+            self.assertIsNot(test_iso3166_2_nz_json['NZ'][subd]["name"], None, 
+                f"Expected subdivision name to not be None, got {test_iso3166_2_nz_json['NZ'][subd]['name']}.")
+            if not (test_iso3166_2_nz_json['NZ'][subd]["parentCode"] is None):
+                self.assertIn(test_iso3166_2_nz_json['NZ'][subd]["parentCode"], list(test_iso3166_2_nz_json['NZ'][subd].keys()), 
+                    f"Parent code {test_iso3166_2_nz_json['NZ'][subd]['parentCode']} not found in list of subdivision codes.")
+            if not (test_iso3166_2_nz_json['NZ'][subd]["flag"] is None):
+                self.assertEqual(os.path.splitext(test_iso3166_2_nz_json['NZ'][subd]["flag"])[0], self.flag_icons_base_url + "NZ/" + subd, 
+                    f"Expected flag URL to be {self.flag_icons_base_url}NZ/{subd}, got {os.path.splitext(test_iso3166_2_nz_json['NZ'][subd]['flag'])[0]}.") 
+                # self.assertEqual(requests.get(test_iso3166_2_nz_json['NZ'][subd]["flag"], headers={"User-Agent": self.user_agent_header}).status_code, 200, 
+                #     f"Flag URL invalid: {test_iso3166_2_nz_json['NZ'][subd]['flag']}.")
+            for key in list(test_iso3166_2_nz_json['NZ'][subd].keys()):
                 self.assertIn(key, self.correct_default_output_attributes, f"Attribute {key} not found in list of correct attributes:\n{self.correct_default_output_attributes}.")
-        self.assertFalse(any(x in list(test_iso3166_2_np_json["NP"].keys()) for x in ["NP-BA", "NP-BH", "NP-DH", "NP-GA", "NP-JA", "NP-KA", "NP-KO", "NP-LU", "NP-MA", "NP-ME", "NP-NA", "NP-RA", "NP-SA", "NP-SE"]),
-            f"Deleted subdivisions should not be in output object:\n{list(test_iso3166_2_np_json['NP'].keys())}.")
 
-        #NP-P1 - Koshi
-        test_iso3166_2_np_json_np_p1_expected = {"name": "Koshi", "localOtherName": "Koshī (nep), कोशी (nep), Pradesh 1 (nep), Province 1 (eng)", 
-            "parentCode": None, "type": "Province", "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/NP/NP-P1.png", "latLng": None}
-        self.assertEqual(test_iso3166_2_np_json_np_p1_expected, test_iso3166_2_np_json["NP"]["NP-P1"], 
-            f"Expected and observed subdivision output for NP-P1 do not match:\n{test_iso3166_2_np_json_np_p1_expected}\n{test_iso3166_2_np_json['NP']['NP-P1']}.")
-        #NP-P3 - Bagmati
-        test_iso3166_2_np_json_np_p3_expected = {"name": "Bagmati", "localOtherName": "Bāgmatī (nep), बागमती (nep), Pradesh 3 (nep), Province 3 (eng)", 
-            "parentCode": None, "type": "Province", "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/NP/NP-P3.jpeg", "latLng": None}
-        self.assertEqual(test_iso3166_2_np_json_np_p3_expected, test_iso3166_2_np_json["NP"]["NP-P3"], 
-            f"Expected and observed subdivision output for NP-P3 do not match:\n{test_iso3166_2_np_json_np_p3_expected}\n{test_iso3166_2_np_json['NP']['NP-P3']}.")
+        #NZ-OTA - Otago
+        test_iso3166_2_nz_json_nz_ota_expected = {"name": "Otago", "localOtherName": "Ō Tākou (mri)", 
+            "parentCode": None, "type": "Region", "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/NZ/NZ-OTA.svg", "latLng": None}
+        self.assertEqual(test_iso3166_2_nz_json_nz_ota_expected, test_iso3166_2_nz_json['NZ']["NZ-OTA"], 
+            f"Expected and observed subdivision output for NZ-OTA do not match:\n{test_iso3166_2_nz_json_nz_ota_expected}\n{test_iso3166_2_nz_json['NZ']['NZ-OTA']}.")
+        #NZ-TKI - Taranaki
+        test_iso3166_2_nz_json_nz_tki_expected = {"name": "Taranaki", "localOtherName": "Taranaki (mri)", 
+            "parentCode": None, "type": "Region", "flag": None, "latLng": None}
+        self.assertEqual(test_iso3166_2_nz_json_nz_tki_expected, test_iso3166_2_nz_json['NZ']["NZ-TKI"], 
+            f"Expected and observed subdivision output for NZ-TKI do not match:\n{test_iso3166_2_nz_json_nz_tki_expected}\n{test_iso3166_2_nz_json['NZ']['NZ-TKI']}.")
 #4.)
         export_iso3166_2(alpha_codes=test_alpha_kg_mg_nr, export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, export_csv=1, 
                          export_xml=True, extract_lat_lng=False, history=False) #Kyrgyzstan, Madagascar, Nauru
@@ -293,7 +291,7 @@ class Get_ISO3166_2_Tests(unittest.TestCase):
         
         #KG-GB - Bishkek Shaary
         test_iso3166_2_kg_json_kg_gb_expected = {"name": "Bishkek Shaary", "localOtherName": "Бишкек шаары (kir), Город Бишкек (rus), Gorod Bishkek (rus), Gorod Biškek (rus), Bishkek (eng)", 
-            "parentCode": None, "type": "City", "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/KG/KG-GB.svg", "latLng": None}
+            "parentCode": None, "type": "City", "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/KG/KG-GB.svg", "latLng": None}
         self.assertEqual(test_iso3166_2_kg_json_kg_gb_expected, test_iso3166_2_kg_mg_nr_json["KG"]["KG-GB"], 
             f"Expected and observed subdivision output for KG-GB do not match:\n{test_iso3166_2_kg_json_kg_gb_expected}\n{test_iso3166_2_kg_mg_nr_json['KG']['KG-GB']}.")
         #MG-D - Antsiranana
@@ -315,7 +313,7 @@ class Get_ISO3166_2_Tests(unittest.TestCase):
             export_iso3166_2(alpha_codes=True)
             export_iso3166_2(alpha_codes=10.9)
 
-    # @unittest.skip("Current issue with exporting restcountries data, skipping for now.")  
+    # @unittest.skip("")  
     def test_export_iso3166_restcountries(self):
         """ Testing export functionality for getting ISO 3166-2 subdivision data from data sources, including additional RestCountries API attributes. """
         test_alpha_gt = "GT" #Guatemala - continents & subregion
@@ -428,40 +426,38 @@ class Get_ISO3166_2_Tests(unittest.TestCase):
             export_iso3166_2(export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, rest_countries_keys=test_rest_countries_keys_error3, extract_lat_lng=False) #1234
     
     # @unittest.skip("")
-    def test_export_exclude_default_attributes(self):
-        """ Testing export functionality for getting ISO 3166-2 subdivision data from data sources, with some default attributes excluded. """
-        test_alpha_ge = "GE" #Georgia - exclude latLng & type
-        test_alpha_gw = "GNB" #Guinea-Bissau - exclude name & localOtherName
-        test_alpha_ki = "296" #Kiribati - exclude name, parentCode & flag
+    def test_export_filter_attributes(self):
+        """ Testing export functionality for getting ISO 3166-2 subdivision data from data sources, with some default attributes filtered out. """
+        test_alpha_ge = "GE" #Georgia - filtering the name, latLng & type
+        test_alpha_gw = "GNB" #Guinea-Bissau - filtering the name & localOtherName
+        test_alpha_ki = "296" #Kiribati - filtering latLng, parentCode & flag
         test_exclude_keys_error1 = "ZZ"
         test_exclude_keys_error2 = "ABCDEF"
         test_exclude_keys_error3 = 1234    
 #1.)
-        export_iso3166_2(alpha_codes=test_alpha_ge, export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, export_csv=1,
-                         exclude_default_attributes="latLng, type", extract_lat_lng=False) #Georgia - excluding the latLng and type default attributes 
+        export_iso3166_2(alpha_codes=test_alpha_ge, export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, export_csv=1, 
+                      filter_attributes="name,latLng,type", history=False, extract_lat_lng=False) #Georgia - filtering only the name, latLng and type default attributes 
     
         #open exported json & csv
         with open(os.path.join(self.test_output_dir, self.test_output_filename + "_GE.json")) as output_json:
-            test_alpha_ge_json = json.load(output_json)
+            test_iso3166_2_ge_json = json.load(output_json)
         test_iso3166_2_ge_csv = pd.read_csv(os.path.join(self.test_output_dir, self.test_output_filename + "_" + test_alpha_ge + ".csv"))
 
-        self.assertEqual(len(test_alpha_ge_json["GE"]), 12, f"Expected 12 subdivisions in output dict, got {len(test_alpha_ge_json['GE'])}.")
-        self.assertEqual(list(test_alpha_ge_json["GE"].keys()), ['GE-AB', 'GE-AJ', 'GE-GU', 'GE-IM', 'GE-KA', 'GE-KK', 'GE-MM', 'GE-RL', 'GE-SJ', 'GE-SK', 'GE-SZ', 'GE-TB'], 
-            f"Expected list of subdivision codes doesn't match output:\n{list(test_alpha_ge_json['GE'].keys())}.")   
+        self.assertEqual(len(test_iso3166_2_ge_json["GE"]), 12, f"Expected 12 subdivisions in output dict, got {len(test_iso3166_2_ge_json['GE'])}.")
+        self.assertEqual(list(test_iso3166_2_ge_json["GE"].keys()), ['GE-AB', 'GE-AJ', 'GE-GU', 'GE-IM', 'GE-KA', 'GE-KK', 'GE-MM', 'GE-RL', 'GE-SJ', 'GE-SK', 'GE-SZ', 'GE-TB'], 
+            f"Expected list of subdivision codes doesn't match output:\n{list(test_iso3166_2_ge_json['GE'].keys())}.")   
         self.assertTrue(os.path.isfile(os.path.join(self.test_output_dir, os.path.splitext(self.test_output_filename)[0] + "_GE.csv")), 
             f"Expected subdivision data to be exported to a CSV: {os.path.join(self.test_output_dir, os.path.splitext(self.test_output_filename)[0] + '-GE.csv')}.")
-        self.assertEqual(list(test_iso3166_2_ge_csv.columns), ['subdivisionCode', 'name', 'localOtherName', 'parentCode', 'flag', 'history'], 
+        self.assertEqual(list(test_iso3166_2_ge_csv.columns), ['subdivisionCode', 'name', 'latLng', 'type'], 
             f"Expected column names don't match CSV columns:\n{test_iso3166_2_ge_csv.columns}.")
         self.assertEqual(len(test_iso3166_2_ge_csv), 12, "Expected there to be 12 rows in the exported subdivision CSV.")
-        for country in test_alpha_ge_json:
-            for subd in test_alpha_ge_json[country]:
-                self.assertNotIn("latLng", list(test_alpha_ge_json[country][subd].keys()), 
-                    f"Expected latLng default attribute to not be in subdivision attributes:\n{list(test_alpha_ge_json[country][subd].keys())}.")
-                self.assertNotIn("type", list(test_alpha_ge_json[country][subd].keys()), 
-                    f"Expected type default attribute to not be in subdivision attributes:\n{list(test_alpha_ge_json[country][subd].keys())}.")
+        for country in test_iso3166_2_ge_json:
+            for subd in test_iso3166_2_ge_json[country]:
+                self.assertNotIn(["localOtherName", "parentCode", "flag", "history"], list(test_iso3166_2_ge_json[country][subd].keys()),
+                    f"Expected the localOtherName, parentCode, flag and history default attributes to not be in subdivision attributes:\n{list(test_iso3166_2_ge_json[country][subd].keys())}.")
 #2.) 
         export_iso3166_2(alpha_codes=test_alpha_gw, export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, export_csv=1,
-                         exclude_default_attributes="localOtherName, name", history=False, extract_lat_lng=False) #Guinea-Bissau - excluding the localOtherName and name default attributes 
+                      filter_attributes=["name", "localOtherName"], history=False, extract_lat_lng=False) #Guinea-Bissau - filtering the localOtherName and name default attributes 
     
         #open exported json & csv
         with open(os.path.join(self.test_output_dir, self.test_output_filename + "_GW.json")) as output_json:
@@ -473,18 +469,16 @@ class Get_ISO3166_2_Tests(unittest.TestCase):
             f"Expected list of subdivision codes doesn't match output:\n{list(test_iso3166_2_gw_json['GW'].keys())}.")   
         self.assertTrue(os.path.isfile(os.path.join(self.test_output_dir, os.path.splitext(self.test_output_filename)[0] + "_GW.csv")), 
             f"Expected subdivision data to be exported to a CSV: {os.path.join(self.test_output_dir, os.path.splitext(self.test_output_filename)[0] + '-GW.csv')}.")
-        self.assertEqual(list(test_iso3166_2_gw_csv.columns), ['subdivisionCode', 'type', 'parentCode', 'flag', 'latLng'], 
+        self.assertEqual(list(test_iso3166_2_gw_csv.columns), ['subdivisionCode', 'name', 'localOtherName'], 
             f"Expected column names don't match CSV columns:\n{test_iso3166_2_gw_csv.columns}.")
         self.assertEqual(len(test_iso3166_2_gw_csv), 12, "Expected there to be 12 rows in the exported subdivision CSV.")
         for country in test_iso3166_2_gw_json:
             for subd in test_iso3166_2_gw_json[country]:
-                self.assertNotIn("localOtherName", list(test_iso3166_2_gw_json[country][subd].keys()), 
-                    f"Expected localOtherName default attribute to not be in subdivision attributes:\n{list(test_iso3166_2_gw_json[country][subd].keys())}.")
-                self.assertNotIn("name", list(test_iso3166_2_gw_json[country][subd].keys()), 
-                    f"Expected name default attribute to not be in subdivision attributes:\n{list(test_iso3166_2_gw_json[country][subd].keys())}.")
+                self.assertNotIn(["type", "parentCode", "flag", "latLng", "history"], list(test_iso3166_2_gw_json[country][subd].keys()),
+                    f"Expected the type, parentCode, flag, latLng and history default attributes to not be in subdivision attributes:\n{list(test_iso3166_2_gw_json[country][subd].keys())}.")
 #3.)
         export_iso3166_2(alpha_codes=test_alpha_ki, export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, export_csv=1,
-                         exclude_default_attributes="name, parentCode, flag", history=False, extract_lat_lng=False) #Kiribati - excluding the name, parentCode and flag default attributes 
+                         filter_attributes="parentCode, flag", history=False, extract_lat_lng=False) #Kiribati - filtering the parentCode and flag default attributes 
     
         #open exported json & csv
         with open(os.path.join(self.test_output_dir, self.test_output_filename + "_KI.json")) as output_json:
@@ -497,23 +491,19 @@ class Get_ISO3166_2_Tests(unittest.TestCase):
             f"Expected list of subdivision codes doesn't match output:\n{list(test_iso3166_2_ki_json['KI'].keys())}.")   
         self.assertTrue(os.path.isfile(os.path.join(self.test_output_dir, os.path.splitext(self.test_output_filename)[0] + "_KI.csv")), 
             f"Expected subdivision data to be exported to a CSV: {os.path.join(self.test_output_dir, os.path.splitext(self.test_output_filename)[0] + '_KI.csv')}.")
-        self.assertEqual(list(test_iso3166_2_ki_csv.columns), ['subdivisionCode', 'localOtherName', 'type', 'latLng'], 
+        self.assertEqual(list(test_iso3166_2_ki_csv.columns), ['subdivisionCode', 'parentCode', 'flag'], 
             f"Expected column names don't match CSV columns:\n{test_iso3166_2_ki_csv.columns}.")
         self.assertEqual(len(test_iso3166_2_ki_csv), 3, 
             f"Expected there to be 3 rows in the exported subdivision CSV, got {len(test_iso3166_2_ki_csv)}.")        
         for country in test_iso3166_2_ki_json:
             for subd in test_iso3166_2_ki_json[country]:
-                self.assertNotIn("parentCode", list(test_iso3166_2_ki_json[country][subd].keys()), 
-                    f"Expected parentCode default attribute to not be in subdivision attributes:\n{list(test_iso3166_2_ki_json[country][subd].keys())}.")
-                self.assertNotIn("name", list(test_iso3166_2_ki_json[country][subd].keys()), 
-                    f"Expected name default attribute to not be in subdivision attributes:\n{list(test_iso3166_2_ki_json[country][subd].keys())}.")
-                self.assertNotIn("flag", list(test_iso3166_2_ki_json[country][subd].keys()), 
-                    f"Expected flag default attribute to not be in subdivision attributes:\n{list(test_iso3166_2_ki_json[country][subd].keys())}.")
+                self.assertNotIn(["name", "localOtherName", "type", "latLng", "history"], list(test_iso3166_2_ki_json[country][subd].keys()),
+                    f"Expected the name, localOtherName, type, latLng and history default attributes to not be in subdivision attributes:\n{list(test_iso3166_2_ki_json[country][subd].keys())}.")
 #4.)
         with (self.assertRaises(ValueError)):
-            export_iso3166_2(export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, exclude_default_attributes=test_exclude_keys_error1, extract_lat_lng=False) #ZZ
-            export_iso3166_2(export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, exclude_default_attributes=test_exclude_keys_error2, extract_lat_lng=False) #ABCDEF
-            export_iso3166_2(export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, exclude_default_attributes=test_exclude_keys_error3, extract_lat_lng=False) #1234
+            export_iso3166_2(export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, filter_attributes=test_exclude_keys_error1, extract_lat_lng=False) #ZZ
+            export_iso3166_2(export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, filter_attributes=test_exclude_keys_error2, extract_lat_lng=False) #ABCDEF
+            export_iso3166_2(export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, filter_attributes=test_exclude_keys_error3, extract_lat_lng=False) #1234
 
     # @unittest.skip("Skipping to not overload test instances.") 
     def test_export_iso3166_2_alpha_code_range(self): 
@@ -583,7 +573,7 @@ class Get_ISO3166_2_Tests(unittest.TestCase):
             export_iso3166_2(alpha_codes_range=10.05, export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, export_csv=1, extract_lat_lng=False) #10.4
             export_iso3166_2(alpha_codes_range=False, export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, export_csv=1, extract_lat_lng=False) #False
 
-    # @unittest.skip("")
+    @unittest.skip("")
     def test_export_history(self):
         """ Testing correct ISO 3166-2 data with history attribute included are exported correctly. """
         test_alpha_ae = "AE" #UAE   

@@ -3,15 +3,13 @@
 # iso3166-2 🌎
 [![iso3166_2](https://img.shields.io/pypi/v/iso3166-2)](https://pypi.org/project/iso3166-2/)
 [![pytest](https://github.com/amckenna41/iso3166-2/workflows/Building%20and%20Testing/badge.svg)](https://github.com/amckenna41/iso3166-2/actions?query=workflowBuilding%20and%20Testing)
+[![status](https://img.shields.io/badge/status-stable-green)](https://github.com/amckenna41/iso3166-2)
 <!-- [![CircleCI](https://dl.circleci.com/status-badge/img/gh/amckenna41/iso3166-2/tree/main.svg?style=svg&circle-token=f399bc09886e183a1866efe27808ebecb21a5ea9)](https://dl.circleci.com/status-badge/redirect/gh/amckenna41/iso3166-2/tree/main) -->
 [![PythonV](https://img.shields.io/pypi/pyversions/iso3166-2?logo=2)](https://pypi.org/project/iso3166-2/)
 [![Platforms](https://img.shields.io/badge/platforms-linux%2C%20macOS%2C%20Windows-green)](https://pypi.org/project/iso3166-2/)
 [![Documentation Status](https://readthedocs.org/projects/iso3166-2/badge/?version=latest)](https://iso3166-2.readthedocs.io/en/latest/?badge=latest)
 [![License: MIT](https://img.shields.io/github/license/amckenna41/iso3166-2)](https://opensource.org/licenses/MIT)
 [![Issues](https://img.shields.io/github/issues/amckenna41/iso3166-2)](https://github.com/amckenna41/iso3166-2/issues)
-
-*** - here
- 
 
 Documentation
 -------------
@@ -90,11 +88,6 @@ The likeness input parameter is a % similarity the input search terms have to be
 the subdivision names, with 100% being an exact match, vice versa. Reducing this
 value will thus increase the search space and return more like results.
 '''
-from iso3166_2 import *
-
-#create instance of Subdivisions class
-iso = Subdivisions()
-
 #searching for the Monaghan county in Ireland (IE-MN) - returning exact matching subdivision (likeness=100)
 iso.search("Monaghan")
 
@@ -114,6 +107,33 @@ iso.search("City", likeness=40, local_other_name_search=True)
 iso.search("Texas, Meuse", filter_attributes="name,type") 
 ```
 
+**Get list of all subdivision codes for one or more countries using alpha code:**
+```python
+#get list of all subdivision codes - returns a key value pair of country code and subdivision codess: {"AD": [...], "AE": [...], "AF": [...]}
+iso.subdivision_codes()
+
+#get list of all subdivision codes for HU, MY & NP
+iso.subdivision_codes("HU,MY,NP")
+
+#you can also call the subdivision_codes() function after subscripting a country code
+iso["AD"].subdivision_codes()
+```
+
+**Get list of all subdivision names for one or more countries using alpha code:**
+```python
+#create instance of Subdivisions class
+iso = Subdivisions()
+
+#get list of all subdivision names - returns a key value pair of country code and subdivision names: {"AD": [...], "AE": [...], "AF": [...]}
+iso.subdivision_names()
+
+#get list of all subdivision names for PL, RW & ST
+iso.subdivision_names("PL,RW,ST")
+
+#you can also call the subdivision_names() function after subscripting a country code
+iso["AL"].subdivision_names()
+```
+
 **Adding a custom subdivision to the iso3166-2 object:**
 ```python
 '''
@@ -124,11 +144,6 @@ iso3166-2 software but require additional custom subdivisions to be represented.
 You can also add custom attributes for the custom subdivision, e.g population,
 area, gdp etc, via the custom_attribute parameter.
 '''
-from iso3166_2 import *
-
-#create instance of Subdivisions class
-iso = Subdivisions()
-
 #adding custom Belfast province to Ireland
 iso.custom_subdivision("IE", "IE-BF", name="Belfast", local_other_name="Béal Feirste", type_="province", lat_lng=[54.596, -5.931], parent_code=None, flag=None)
 
@@ -136,8 +151,8 @@ iso.custom_subdivision("IE", "IE-BF", name="Belfast", local_other_name="Béal Fe
 iso.custom_subdivision("RU", "RU-ASK", name="Alaska Oblast", local_other_name="Аляска", type_="Republic", lat_lng=[63.588, 154.493], parent_code=None, flag=None, 
       custom_attributes={"population": "733,583", "gini": "0.43", "gdpPerCapita": "71,996"})
 
-#adding custom Republic of Molossia state to United States 
-iso.custom_subdivision("US", "US-ML", name="Republic of Molossia", local_other_name="", type_="State", lat_lng=[39.236, -119.588], parent_code=None, flag="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_the_Republic_of_Molossia.svg")
+#adding custom Republic of Molossia state to United States, save to new output file
+iso.custom_subdivision("US", "US-ML", name="Republic of Molossia", local_other_name="", type_="State", lat_lng=[39.236, -119.588], parent_code=None, flag="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_the_Republic_of_Molossia.svg", save_new=1, save_new_filename="us-ml-custom-output.json")
 
 #deleting above custom subdivisions from object
 iso.custom_subdivision("IE", "IE-BF", delete=1)

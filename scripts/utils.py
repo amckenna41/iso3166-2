@@ -19,19 +19,19 @@ USER_AGENT_HEADER = {"User-Agent": user_agent.random}
 def convert_to_alpha2(alpha_code: str) -> str:
     """ 
     Auxiliary function that converts an ISO 3166 country's 3 letter alpha-3 
-    or numeric country code into its 2 letter alpha-2 counterpart. The 
-    function also validates the input alpha-2 or converted alpha-2 code, 
-    raising an error if it is invalid. 
+    or numeric code into its 2 letter alpha-2 counterpart. The function also
+    validates the input alpha-2 or converted alpha-2 code, raising an error 
+    if it is invalid. 
 
     Parameters 
     ==========
     :alpha_code: str
-        3 letter ISO 3166-1 alpha-3 or numeric country code.
+        2 letter letter ISO 3166-1 alpha-2 or 3 letter alpha-3/ numeric country code.
     
     Returns
     =======
     :iso3166.countries_by_alpha3[alpha_code].alpha2|iso3166.countries_by_numeric[alpha_code].alpha: str
-        2 letter ISO 3166 alpha-2 country code. 
+        converted 2 letter ISO 3166 alpha-2 country code. 
     
     Raises
     ======
@@ -39,6 +39,7 @@ def convert_to_alpha2(alpha_code: str) -> str:
         Invalid data type for alpha code parameter input.
     ValueError:
         Issue converting the inputted alpha code into alpha-2 code.
+        More than 1 country code input, only 1 should be.
     """
     #raise error if invalid type input
     if not (isinstance(alpha_code, str)):
@@ -48,30 +49,26 @@ def convert_to_alpha2(alpha_code: str) -> str:
     if ("," in alpha_code):
         raise ValueError(f"Only one country code should be input into the function: {alpha_code}.")
     
-    #uppercase alpha code, initial_alpha_code var maintains the original alpha code pre-uppercasing
-    alpha_code = alpha_code.upper().replace(' ', '')
-    initial_alpha_code = alpha_code
-    
-    #use iso3166 package to find corresponding alpha-2 code from its numeric code, return error if numeric code not found
+    #uppercase alpha code, remove leading/trailing whitespace
+    alpha_code = alpha_code.upper().strip()
+
+    #use iso3166 package to find corresponding alpha-2 code from its numeric code
     if (alpha_code.isdigit()):
-        if not (alpha_code in list(iso3166.countries_by_numeric.keys())):
-            raise ValueError(f"Invalid ISO 3166-1 alpha numeric country code input: {initial_alpha_code}.")
-        return iso3166.countries_by_numeric[alpha_code].alpha2
+        if (alpha_code in list(iso3166.countries_by_numeric.keys())):
+            return iso3166.countries_by_numeric[alpha_code].alpha2
 
-    #return input alpha code if its valid, return error if alpha-2 code not found
+    #return input alpha code if its valid
     if len(alpha_code) == 2:
-        if not (alpha_code in list(iso3166.countries_by_alpha2.keys())):
-            raise ValueError(f"Invalid ISO 3166-1 alpha-2 country code input: {initial_alpha_code}.")
-        return alpha_code
+        if (alpha_code in list(iso3166.countries_by_alpha2.keys())):
+            return alpha_code
 
-    #use iso3166 package to find corresponding alpha-2 code from its alpha-3 code, return error if code not found
+    #use iso3166 package to find corresponding alpha-2 code from its alpha-3 code
     if len(alpha_code) == 3:
-        if not (alpha_code in list(iso3166.countries_by_alpha3.keys())):
-            raise ValueError(f"Invalid ISO 3166-1 alpha-3 country code: {initial_alpha_code}.")
-        return iso3166.countries_by_alpha3[alpha_code].alpha2
-
-    #return error by default if input code not returned already
-    raise ValueError(f"Invalid ISO 3166-1 alpha country code input: {alpha_code}.")
+        if (alpha_code in list(iso3166.countries_by_alpha3.keys())):
+            return iso3166.countries_by_alpha3[alpha_code].alpha2
+    
+    #return error by default if input country code invalid and can't be converted into alpha-2
+    raise ValueError(f"Invalid ISO 3166-1 country code input {alpha_code}.")
 
 def get_alpha_codes_list(alpha_codes: str="", alpha_codes_range: str="") -> tuple[list, str]:
     """
@@ -221,7 +218,7 @@ def split_preserving_quotes(text: str) -> list:
 
 def get_flag_repo_url(alpha2_code: str, subdivision_code: str="") -> str|None:
     """ 
-    Get URL for inputted subdivision code from the iso3166-flag-icons repo.
+    Get URL for inputted subdivision code from the iso3166-flags repo.
     The alpha-2 code for the subdivision is optional as it should be able to 
     be parsed from the subdivision code, e.g "GB-ABC", although if just "ABC"
     is input into subdivision_code parameter then an error may be raised. 
@@ -249,8 +246,8 @@ def get_flag_repo_url(alpha2_code: str, subdivision_code: str="") -> str|None:
         the country code for the subdivision can't be parsed.
     """
     #base url for flag icons repo
-    flag_icons_folder_base_url = "https://github.com/amckenna41/iso3166-flag-icons/blob/main/iso3166-2-icons/"
-    flag_icons_file_base_url = "https://raw.githubusercontent.com/amckenna41/iso3166-flag-icons/main/iso3166-2-icons/"
+    # flag_icons_folder_base_url = "https://github.com/amckenna41/iso3166-flags/blob/main/iso3166-2-flags/"
+    flag_icons_file_base_url = "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/"
 
     #list of flag file extensions, in order of preference 
     flag_file_extensions = ['.svg', '.png', '.jpeg', '.jpg']
@@ -271,7 +268,7 @@ def get_flag_repo_url(alpha2_code: str, subdivision_code: str="") -> str|None:
     #uppercase alpha and subdivision code
     alpha2_code, subdivision_code = alpha2_code.upper(), subdivision_code.upper()
         
-    #url to flag in iso3166-flag-icons repo
+    #url to flag in iso3166-flags repo
     alpha2_flag = flag_icons_file_base_url + alpha2_code + "/" + subdivision_code
 
     #verify that path on flag icons repo exists, if not set flag url value to None
@@ -279,7 +276,6 @@ def get_flag_repo_url(alpha2_code: str, subdivision_code: str="") -> str|None:
         
     #iterate over all image extensions checking existence of flag in repo, if no flag with extensions found then set to null
     for extension in range(0, len(flag_file_extensions)):
-            
             #if subdivision has a valid flag in flag icons repo set to its GitHub url, else set to None
             if (requests.get(alpha2_flag + flag_file_extensions[extension], headers=USER_AGENT_HEADER, timeout=15).status_code == 200):
                 time.sleep(1)
@@ -471,63 +467,65 @@ def add_history(all_country_data: dict) -> dict:
                 
     return all_country_data
 
-def export_iso3166_2_data(all_country_data: dict, export_filepath: str, export_csv: bool=True, export_xml: bool=True, history: bool=False,
-                exclude_default_attributes=[], rest_countries_keys=[]):
+def export_iso3166_2_data(all_country_data: dict={}, input_filename: str="", export_filepath: str="iso366-2-export", export_csv: bool=True, export_xml: bool=True):
     """
     Export the extracted ISO 3166-2 subdivision data to the output files. By default, the subdivision data
     is exported to JSON but it can also be exported to CSV and XML via the export_csv and export_xml
-    parameters, respectively. 
+    parameters, respectively. You can input the data directly via the all_country_data variable but a
+    JSON file can also be imported via the input_filename, allowing you to export to the other file 
+    formats. If both of these aforementioned vars are populated, the all_country_data will take
+    precedence. 
     
     Parameters
     ==========
-    :all_country_data: dict
+    :all_country_data: dict (default={})
         object of all the extracted subdivision data, ordered per country code.
-    :export_filepath: str
+    :input_filename: str (default="")
+        input filename for already exported JSON filepath.
+    :export_filepath: str (default="iso3166-2-export")
         export filename for subdivision output.
-    :history: bool (default=False)
-        whether the subdivision historical data is exported with the subdivision data.
     :export_csv: bool (default=False)
         export the subdivision data to CSV.
     :export_xml: bool (default=False)
         export the subdivision data to XML.
-    :exclude_default_attributes: list (default=[])
-        list of the default attributes to exclude in the output files.
-    :rest_countries_keys: list (default=[])
-        list of attributes/keys from the RestCountries API to include in the exported output
 
     Returns
     =======
     None
     """
-    #add .json extension to filename if not present
-    if (os.path.splitext(export_filepath)[1] == ""):
-        export_filepath = export_filepath + ".json"
+    #raise error if no filename for JSON data input to function, no data to work with
+    if (not all_country_data and input_filename == ""):
+        raise ValueError("No ISO 3166-2 data available, needs to be input via the all_country_data var or importing it via input_filename.")
+    elif (not all_country_data and os.path.isfile(input_filename)):
+        with open(input_filename, 'r', encoding='utf-8') as file:
+            all_country_data = json.load(file)
 
-    #column order for CSV output
-    base_cols = ['alphaCode', 'subdivisionCode', 'name', 'localOtherName', 'type', 'parentCode', 'flag', 'latLng']
+    #convert any empty attribute values in the object to null
+    def empty_to_none(x):
+        return (
+            {k: empty_to_none(v) for k, v in x.items()} if isinstance(x, dict) else
+            [empty_to_none(v) for v in x] if isinstance(x, list) else
+            (None if x in ("", None) else x)
+        )
+    all_country_data = empty_to_none(all_country_data)
 
-    #convert input string to list if applicable
-    if (isinstance(exclude_default_attributes, str)):
-        exclude_default_attributes = [k.strip() for k in exclude_default_attributes.split(",")]
+    #remove the extension from the export filename
+    if (os.path.splitext(export_filepath)[1] != ""):
+        export_filepath = os.path.splitext(export_filepath)[0]
 
-    #remove any attributes that are to be excluded
-    for key in exclude_default_attributes:
-        if key in base_cols:
-            base_cols.remove(key)
-
-    #remove any keys/attributes to be excluded from output 
-    for country_code, subdivisions in all_country_data.items():
-        for subdivision_code, attributes in subdivisions.items():
-            for field in exclude_default_attributes:
-                attributes.pop(field, None)  #remove attribute if present
+    #export list of subdivision attributes using the first non-empty subdivision object using an iterable
+    first_country = next((cc for cc, subs in all_country_data.items() if subs), None)
+    if first_country is None:
+        raise ValueError("No subdivisions found: object might be empty.")
+    first_subdivision = next(iter(all_country_data[first_country]))
+    base_cols = list(all_country_data[first_country][first_subdivision].keys())
 
     #export subdivision data to JSON
-    with open(export_filepath, 'w', encoding='utf-8') as f:
+    with open(export_filepath + ".json", 'w', encoding='utf-8') as f:
         json.dump(all_country_data, f, ensure_ascii=False, indent=4)
 
     #export subdivision data to CSV
     if export_csv:
-        csv_filepath = os.path.splitext(export_filepath)[0] + ".csv"
         all_country_csv = []
 
         #iterate over each subdivision object, append each to list
@@ -537,21 +535,14 @@ def export_iso3166_2_data(all_country_data: dict, export_filepath: str, export_c
                 temp["subdivisionCode"] = subd
                 temp["alphaCode"] = country
                 all_country_csv.append(temp)
-        
+
+        #prepend the alpha and subdivision code attributes to CSV column output
+        csv_base_cols = base_cols
+        csv_base_cols = ["alphaCode", "subdivisionCode"] + csv_base_cols 
+
         #transform list of subdivision data into dataframe
-        all_country_data_df = pd.DataFrame(all_country_csv)
+        all_country_data_df = pd.DataFrame(all_country_csv, columns=csv_base_cols)
 
-        #append history attribute, if applicable
-        if history:
-            base_cols.append("history")
-
-        #reorder rest countries attributes to end of column order, if applicable 
-        if rest_countries_keys:
-            rest_country_cols = sorted(rest_countries_keys)
-            all_country_data_df = all_country_data_df.reindex(columns=base_cols + rest_country_cols)
-        else:
-            all_country_data_df = all_country_data_df.reindex(columns=base_cols)
-        
         #sort output by country code and subdivision code, reindex
         all_country_data_df = all_country_data_df.sort_values(['alphaCode', 'subdivisionCode']).reset_index(drop=True)
 
@@ -560,7 +551,7 @@ def export_iso3166_2_data(all_country_data: dict, export_filepath: str, export_c
             all_country_data_df.drop("alphaCode", axis=1, inplace=True)
 
         #convert dataframe to csv
-        all_country_data_df.to_csv(csv_filepath, index=False)
+        all_country_data_df.to_csv(export_filepath + ".csv", index=False)
 
     #export subdivision data to XML
     if export_xml:
@@ -587,5 +578,52 @@ def export_iso3166_2_data(all_country_data: dict, export_filepath: str, export_c
         indent(root)
 
         #export XML to output folder
-        xml_filepath = os.path.splitext(export_filepath)[0] + ".xml"
-        ET.ElementTree(root).write(xml_filepath, encoding="utf-8", xml_declaration=True)
+        ET.ElementTree(root).write(export_filepath + ".xml", encoding="utf-8", xml_declaration=True)
+
+def combine_multiple_exports(file_list: list, export_file_name: str) -> None:
+    """
+    Concatenate multiple exported JSON ISO 3166-2 data into one master file. The use case for this
+    function is when multiple batched exports of the data was exported and they need to be combined
+    into one master file, e.g when using the alpha_codes_range parameter.
+    
+    Parameters
+    ==========
+    :file_list: list
+        list of 1 or more previously exported ISO 3166-2 data files to be concatenated.
+    :export_file_name: str
+        filename for concatenated master data file.
+
+    Returns
+    =======
+    None
+
+    Raises
+    ======
+    OSError:
+        One or more of the exported JSON files not found from given path.
+    """
+    #raise error if any of the input JSONs are not found
+    for file in file_list:
+        if not (os.path.isfile(file)):
+            raise OSError(f"File not found in path {file}.")
+
+    #object of combined JSONs
+    combined_json = {}
+
+    for file in file_list:
+        #load json
+        with open(file, 'r', encoding='utf-8') as file:
+            iso3166_2_json = json.load(file)
+            for country, subdiv in iso3166_2_json.items():
+                if (country not in combined_json):
+                    combined_json[country] = subdiv
+                else:
+                    combined_json[country].update(subdiv)
+
+    #add extension to output file
+    if (os.path.splitext(export_file_name)[1] != ".json"):
+        export_file_name = export_file_name + ".json"
+
+    #export combined data into JSON
+    with open(export_file_name + ".json", 'w', encoding='utf-8') as f:
+        json.dump(combined_json, f, ensure_ascii=False, indent=4)
