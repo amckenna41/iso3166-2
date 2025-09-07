@@ -128,7 +128,7 @@ jobs:
       
       #upload artifacts to repo
       - name: Upload flake8 Artifact
-        uses: actions/upload-artifact@4
+        uses: actions/upload-artifact@v4
         with:
           name: flake8_artifact
           path: flake8_artifacts/flake8_output.txt
