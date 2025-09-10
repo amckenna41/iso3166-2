@@ -3,7 +3,6 @@
 # iso 3166-2 🌎
 
 [![iso3166_2](https://img.shields.io/pypi/v/iso3166-2)](https://pypi.org/project/iso3166-2/)
-[![status](https://img.shields.io/badge/status-stable-green)](https://github.com/amckenna41/iso3166-2)
 [![pytest](https://github.com/amckenna41/iso3166-2/workflows/Building%20and%20Testing/badge.svg)](https://github.com/amckenna41/iso3166-2/actions?query=workflowBuilding%20and%20Testing)
 <!-- [![CircleCI](https://dl.circleci.com/status-badge/img/gh/amckenna41/iso3166-2/tree/main.svg?style=svg&circle-token=b9d41c530558587fb44ade899c532158d885b193)](https://dl.circleci.com/status-badge/redirect/gh/amckenna41/iso3166-2/tree/main) -->
 [![PythonV](https://img.shields.io/pypi/pyversions/iso3166-2?logo=2)](https://pypi.org/project/iso3166-2/)
@@ -15,6 +14,7 @@
 <!-- [![Size](https://img.shields.io/github/repo-size/amckenna41/iso3166-2)](https://github.com/amckenna41/iso3166-2) -->
 <!-- [![Commits](https://img.shields.io/github/commit-activity/w/amckenna41/iso3166-2)](https://github.com/iso3166-2) -->
 <!-- [![codecov](https://codecov.io/gh/amckenna41/iso3166-2/branch/main/graph/badge.svg)](https://codecov.io/gh/amckenna41/iso3166-2) -->
+<!-- [![status](https://img.shields.io/badge/status-stable-green)](https://github.com/amckenna41/iso3166-2) -->
 
 <div alt="images" style="justify-content: center; display:flex; margin-left=10px;">
   <img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/Flag-map_of_the_world_%282017%29.png" alt="globe" height="300" width="600"/>
@@ -23,8 +23,12 @@
 
 > `iso3166-2` is a structured lightweight custom-built Python package and dataset, and accompanying RESTful API, that can be used to access all of the world's ISO 3166-2 subdivision data. A plethora of data attributes are available per country and subdivision including: name, local/other name, code, parent code, type, lat/longitude, flag & history. Currently, the package and API supports data from 250 countries/territories and >5000 subdivisions, according to the ISO 3166-1 & ISO 3166-2 standards, respectively. The software uses another custom-built Python package called [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates/tree/main) to ensure all the subdivision data is accurate, reliable and up-to-date.
 
-<!-- iso3166-2 Stats 🔢
------------------- -->
+
+iso3166-2 Stats 🔢
+------------------ 
+| Total Subdivisions | Total Countries | Dataset Size (MB) | Total Attributes | Average Subdivisions per Country | No Subdivisions Total | Max Subdivisions Country | Local/Other Names Total | Flag Total |
+|-------------------:|----------------:|------------------:|-----------------:|---------------------------------:|----------------------:|:-------------------------|------------------------:|----------:|
+| 5,049              | 250             | 2.779            | 35,343           | 20                               | 50                    | GB, 224                  | 8,275                  |     2,205      |
 
 
 Quick Start 🏃

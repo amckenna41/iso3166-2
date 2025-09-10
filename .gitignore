@@ -156,6 +156,4 @@ iso3166_2_resources/subdivision_updates_new_old.csv
 
 tests/test_output_dir
 
-export_iso3166_2_metadata.py
-
 git_status_logs.txt

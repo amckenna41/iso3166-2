@@ -10,6 +10,7 @@ on:
       - 'docs/**/*'
       - LICENSE
       - .gitignore
+      - .**/.toml
   pull_request:
     branches: [ main ]
 

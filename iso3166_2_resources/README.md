@@ -8,6 +8,9 @@ This directory has a series of data/utility files required for the building of t
 * **subdivision_updates.csv** - CSV of new subdivisions, amendments to existing subdivisions as well as deletion of subdivisions required for the dataset
 * **language_lookup.json/md** - JSON and markdown files showing useful info and data about each of the languages/language codes used in the local_other_names.csv
 * **UPDATES.md** - markdown displaying the individual ISO 3166-2 data updates implemented into the dataset from 2022-present, pulled from the [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates) software
+* **iso3166-2-export.csv** - CSV version of the ISO 3166-2 JSON
+* **iso3166-2-export.xml** - XML version of the ISO 3166-2 JSON
+* **iso3166-2-metadata.json** - JSON containing a plethora of useful data and attributes around the iso3166-2 repository
 
 ## Local/Other Names
 
