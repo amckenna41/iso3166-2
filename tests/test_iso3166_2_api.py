@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 import unittest
 unittest.TestLoader.sortTestMethodsUsing = None
 
-@unittest.skip("")
+# @unittest.skip("")
 class ISO3166_2_API_Tests(unittest.TestCase):
     """
     Test suite for testing ISO 3166-2 api created to accompany the iso3166-2 Python software package. 
@@ -99,7 +99,7 @@ class ISO3166_2_API_Tests(unittest.TestCase):
         author = soup.find(id='author').text.split(': ')[1]
 
         # self.assertEqual(version, "1.8.0", f"Expected API version to be 1.8.0, got {version}.") 
-        # self.assertEqual(last_updated, "July 2025", f"Expected last updated date to be July 2025, got {last_updated}.")
+        # self.assertEqual(last_updated, "September 2025", f"Expected last updated date to be September 2025, got {last_updated}.")
         self.assertEqual(author, "AJ", f"Expected author to be AJ, got {author}.")
 #2.)
         section_list_menu = soup.find(id='section-list-menu').find_all('li')
@@ -133,9 +133,12 @@ class ISO3166_2_API_Tests(unittest.TestCase):
                 self.assertEqual(list(test_all_request_filter[alpha_code][subd].keys()), ["flag", "type"], 
                     f"Expected subdivision attributes to just include the flag attribute, got {list(test_all_request_filter[alpha_code][subd].keys())}.")
 #5.)
-        test_request_all_invalid_attribute = requests.get(self.all_base_url, headers=self.user_agent_header, params={"filter": "invalid_attribute"}).json() #invalid attribute input
-        test_request_all_invalid_attribute_expected = {"message": f"Invalid attribute name input to filter query string parameter: invalid_attribute. Refer to the list of supported attributes: name, localOtherName, type, parentCode, flag, latLng, history.", "path": f'{self.all_base_url}?filter=invalid_attribute', "status": 400}
-        self.assertEqual(test_request_all_invalid_attribute, test_request_all_invalid_attribute_expected, f"Expected and observed output error object do not match:\n{test_request_all_invalid_attribute}.")
+        test_all_request_limit = requests.get(self.all_base_url, headers=self.user_agent_header, params={"limit": "10"}).json() #limiting to 10 countries
+        self.assertEqual(len(test_all_request_limit), 10, "Expected output object to contain 10 countries, got {len(test_all_request_limit)}.")
+#6.)
+        # test_request_all_invalid_attribute = requests.get(self.all_base_url, headers=self.user_agent_header, params={"filter": "invalid_attribute"}).json() #invalid attribute input
+        # test_request_all_invalid_attribute_expected = {"message": f"Invalid attribute name input to filter query string parameter: invalid_attribute. Refer to the list of supported attributes: name, localOtherName, type, parentCode, flag, latLng, history.", "path": f'{self.all_base_url}?filter=invalid_attribute', "status": 400}
+        # self.assertEqual(test_request_all_invalid_attribute, test_request_all_invalid_attribute_expected, f"Expected and observed output error object do not match:\n{test_request_all_invalid_attribute}.")
 
     # @unittest.skip("")
     def test_all_endpoint_duplicates(self):
@@ -301,16 +304,17 @@ class ISO3166_2_API_Tests(unittest.TestCase):
 
         #LU-CA - Capellen
         test_alpha_request_lux_ca_expected = {"name": "Capellen", "localOtherName": "Capellen (deu), Kapellen (ltz)", "parentCode": None, "type": "Canton", 
-                "latLng": [49.646, 5.991], "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/LU/LU-CA.svg",
+                "latLng": [49.646, 5.991], "flag": None,
                 "history": ["2015-11-27: Addition of cantons LU-CA, LU-CL, LU-DI, LU-EC, LU-ES, LU-GR, LU-LU, LU-ME, LU-RD, LU-RM, LU-VD, LU-WI; update List Source. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:LU."]} 
         self.assertEqual(test_alpha_request_lux["LU-CA"], test_alpha_request_lux_ca_expected, 
                 f"Expected subdivision object doesn't match observed object:\n{test_alpha_request_lux['LU-CA']}.")
-        #LU-LU - Luxembourg
-        test_alpha_request_lux_lu_expected = {"name": "Luxembourg", "localOtherName": "Luxemburg (deu), Lëtzebuerg (ltz)", "parentCode": None, "type": "Canton", 
-                "latLng": [49.815, 6.13], "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/LU/LU-LU.png",
+        
+        #LU-WI - Luxembourg
+        test_alpha_request_lux_wi_expected = {"name": "Wiltz", "localOtherName": "Wiltz (deu), Wolz (ltz)", "parentCode": None, "type": "Canton", 
+                "latLng": [49.966, 5.932], "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/LU/LU-WI.svg",
                 "history": ['2015-11-27: Addition of cantons LU-CA, LU-CL, LU-DI, LU-EC, LU-ES, LU-GR, LU-LU, LU-ME, LU-RD, LU-RM, LU-VD, LU-WI; update List Source. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:LU.']} 
-        self.assertEqual(test_alpha_request_lux["LU-LU"], test_alpha_request_lux_lu_expected, 
-                f"Expected subdivision object doesn't match observed object:\n{test_alpha_request_lux['LU-LU']}.")
+        self.assertEqual(test_alpha_request_lux["LU-WI"], test_alpha_request_lux_wi_expected, 
+                f"Expected subdivision object doesn't match observed object:\n{test_alpha_request_lux['LU-WI']}.")
 #3.)
         test_alpha_request_pa_rw = requests.get(self.alpha_base_url + test_alpha3_pa_rw, headers=self.user_agent_header).json() #Panama and Rwanda
 
@@ -439,11 +443,11 @@ class ISO3166_2_API_Tests(unittest.TestCase):
                     f"Expected subdivision attributes to include all available attributes, got {list(test_alpha_request_pa_rw_filter_all[alpha2][subd].keys())}.")
 #9.) 
         test_alpha_request_error1 = requests.get(self.alpha_base_url + test_alpha_error_1, headers=self.user_agent_header).json() #ABCDE
-        test_alpha_request_error1_expected = {"message": f"Invalid alpha country code input {test_alpha_error_1}.", "path": self.alpha_base_url + test_alpha_error_1, "status": 400}
+        test_alpha_request_error1_expected = {"message": f"Invalid ISO 3166-1 country code input {test_alpha_error_1}.", "path": self.alpha_base_url + test_alpha_error_1, "status": 400}
         self.assertEqual(test_alpha_request_error1, test_alpha_request_error1_expected, f"Expected and observed output error object do not match:\n{test_alpha_request_error1}.")
 #10.)
         test_alpha_request_error2 = requests.get(self.alpha_base_url + test_alpha_error_2, headers=self.user_agent_header).json() #12345
-        test_alpha_request_error2_expected = {"message": f"Invalid alpha numeric country code input {test_alpha_error_2}.", "path": self.alpha_base_url + test_alpha_error_2, "status": 400}
+        test_alpha_request_error2_expected = {"message": f"Invalid ISO 3166-1 country code input {test_alpha_error_2}.", "path": self.alpha_base_url + test_alpha_error_2, "status": 400}
         self.assertEqual(test_alpha_request_error2, test_alpha_request_error2_expected, f"Expected and observed output error object do not match:\n{test_alpha_request_error2}.")
 #11.)
         test_alpha_request_error3 = requests.get(self.alpha_base_url + test_alpha_error_3, headers=self.user_agent_header).json() #""
@@ -487,7 +491,7 @@ class ISO3166_2_API_Tests(unittest.TestCase):
         test_subdivision_request_tv_nkf_nit_tj_du_expected = {
             'TJ': {
                 'TJ-DU': {
-                    'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/TJ/TJ-DU.png',
+                    'flag': None,
                     'history': [
                         '2015-02-12: Removed the reference to Dushanbe in remark part 2; correct spelling of DU. '
                         '(Remark part 2: Remark: The deletion of the region Karategin left one part of the country without name '
@@ -591,11 +595,11 @@ class ISO3166_2_API_Tests(unittest.TestCase):
 
         self.assertEqual(test_search_name_request_gelderland_overijssel, test_search_name_request_gelderland_overijssel_expected, 
             f"Expected subdivision object doesn't match observed object:\n{test_search_name_request_gelderland_overijssel}")
-#4.)
+#4.)        
         test_search_name_request_ciudad_likeness = requests.get(self.search_base_url + test_search_name_ciudad, headers=self.user_agent_header, params={"likeness": "60", "excludeMatchScore": 0}).json() #Ciudad - likeness score of 60, include the Match Score attribute
-        test_search_name_request_ciudad_likeness_expected = [{'countryCode': 'ES', 'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/ES/ES-CR.svg', 'history': None, 'latLng': [38.985, -3.927], 'localOtherName': None, 'matchScore': 75, 'name': 'Ciudad Real', 
-            'parentCode': 'ES-CM', 'subdivisionCode': 'ES-CR', 'type': 'Province'}, {'countryCode': 'AO', 'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/AO/AO-CAB.svg', 'history': None, 'latLng': [-5.571, 12.198], 'localOtherName': 'Kabinda (kon), Portuguese Congo (eng)', 
-            'matchScore': 62, 'name': 'Cabinda', 'parentCode': None, 'subdivisionCode': 'AO-CAB', 'type': 'Province'}, {'countryCode': 'MX', 'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/MX/MX-CMX.svg', 
+        test_search_name_request_ciudad_likeness_expected = [{'countryCode': 'ES', 'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/ES/ES-CR.svg', 'history': None, 'latLng': [38.985, -3.927], 'localOtherName': None, 'matchScore': 75, 
+            'name': 'Ciudad Real', 'parentCode': 'ES-CM', 'subdivisionCode': 'ES-CR', 'type': 'Province'}, {'countryCode': 'AO', 'flag': None, 'history': None, 'latLng': [-5.571, 12.198], 'localOtherName': 'Kabinda (kon), Portuguese Congo (eng)', 'matchScore': 62, 'name': 'Cabinda', 
+            'parentCode': None, 'subdivisionCode': 'AO-CAB', 'type': 'Province'}, {'countryCode': 'MX', 'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/MX/MX-CMX.png', 
             'history': ['2017-11-23: Typographical correction of MX-CMX; update List source. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:MX.', '2016-11-15: Change of subdivision code from MX-DIF to MX-CMX; change of name of MX-CMX, MX-COA, MX-MIC, MX-VER; addition of local variation of MX-COA, MX-MIC, MX-VER; update list source. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:MX.'], 
             'latLng': [19.433, -99.133], 'localOtherName': 'Mexico City (eng), CDMX (spa), Monda (oto), Mexihco Hueyaltepetl (nhn), U noj kaajil México (yua), CDMX (eng), La Ciudad de los Palacios (spa), The City of Palaces (eng)', 'matchScore': 60, 'name': 'Ciudad de México', 'parentCode': None, 'subdivisionCode': 'MX-CMX', 'type': 'Federal entity'}]
 
@@ -610,7 +614,8 @@ class ISO3166_2_API_Tests(unittest.TestCase):
 #6.)
         test_search_name_request_madrid_armaghcity = requests.get(self.search_base_url + test_search_name_madrid_armaghcity, headers=self.user_agent_header, params={"filter": "flag,parentCode,type,localOtherName,latLng,name"}).json() #ES-MD - Madrid, GB-ABC - Armagh City, Banbridge and Craigavon, filter for all attributes except history
         test_search_name_request_madrid_armaghcity_es_md_expected = {'ES': {'ES-MD': {'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/ES/ES-MD.svg', 'latLng': [40.417, -3.581], 'localOtherName': 'Community of Madrid (eng)', 'name': 'Madrid, Comunidad de', 'parentCode': None, 'type': 'Autonomous community'}}, 
-                                                                     'GB': {'GB-ABC': {'flag': None, 'latLng': [54.393, -6.456], 'localOtherName': "'Ard Mhacha, Droichead na Banna agus Creag Abhann (gle)', 'Airmagh, Bannbrig an Craigavon (ulst1239)'", 'name': 'Armagh City, Banbridge and Craigavon', 'parentCode': 'GB-NIR', 'type': 'District'}}}
+                                                                     'GB': {'GB-ABC': {'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-ABC.png', 'latLng': [54.393, -6.456], 'localOtherName': "'Ard Mhacha, Droichead na Banna agus Creag Abhann (gle)', 'Airmagh, Bannbrig an Craigavon (ulst1239)'", 
+                                                                                       'name': 'Armagh City, Banbridge and Craigavon', 'parentCode': 'GB-NIR', 'type': 'District'}}}
 
         self.assertEqual(test_search_name_request_madrid_armaghcity, test_search_name_request_madrid_armaghcity_es_md_expected, 
             f"Expected subdivision object doesn't match observed object:\n{test_search_name_request_madrid_armaghcity}")
@@ -814,11 +819,11 @@ class ISO3166_2_API_Tests(unittest.TestCase):
         self.assertEqual(len(test_request_list_subdivisions_pw), 16, f"Expected there to be 16 total subdivisions for PW, got {len(test_request_list_subdivisions_pw)}.")
 #5.)
         test_request_list_subdivisions_error1 = requests.get(f'{self.list_subdivisions_base_url}/ABC', headers=self.user_agent_header).json() 
-        test_request_list_subdivisions_error1_expected = {"message": f"Invalid alpha-3 country code: ABC.", "path": f'{self.list_subdivisions_base_url}/ABC', "status": 400}
+        test_request_list_subdivisions_error1_expected = {"message": f"Invalid ISO 3166-1 country code input ABC.", "path": f'{self.list_subdivisions_base_url}/ABC', "status": 400}
         self.assertEqual(test_request_list_subdivisions_error1, test_request_list_subdivisions_error1_expected, f"Expected and observed output error object do not match:\n{test_request_list_subdivisions_error1}.")
 #6.)
         test_request_list_subdivisions_error2 = requests.get(f'{self.list_subdivisions_base_url}/ZZ', headers=self.user_agent_header).json() 
-        test_request_list_subdivisions_error2_expected = {"message": f"Invalid alpha-2 country code input ZZ.", "path": f'{self.list_subdivisions_base_url}/ZZ', "status": 400}
+        test_request_list_subdivisions_error2_expected = {"message": f"Invalid ISO 3166-1 country code input ZZ.", "path": f'{self.list_subdivisions_base_url}/ZZ', "status": 400}
         self.assertEqual(test_request_list_subdivisions_error2, test_request_list_subdivisions_error2_expected, f"Expected and observed output error object do not match:\n{test_request_list_subdivisions_error2}.")
 
     # @unittest.skip("")

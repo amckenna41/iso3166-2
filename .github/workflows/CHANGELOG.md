@@ -14,6 +14,7 @@
 - When exporting the individual data to JSON, CSV and XML, in the function you can now import an already exported JSON file to just export the CSV and XML files
 - Created function that allows you to combines multiple exports into one file, use case is for when alpha_codes_range was used to export a batch of export data and you need to combine into one master file
 - Added unit test that checks that each flag url is valid
+- When exporting the ISO 3166-2 data, setting rest_countries_keys=* will export all of them
 
 ### Changed
 
@@ -24,6 +25,7 @@
 - Updated all references of iso3166-flag-icons to iso3166-flags to reflect updated repository name - including for each individual flag url in object
 - Removed filter_attributes functionality from update_subdivisions function
 - Changed export script name from get_iso3166_2 to export_iso3166_2
+- Removed any additional flags from the iso3166-1-flags dataset that aren't strictly in the ISO 3166-1, including eu, arab league, UN and XX flags
 
 ### Fixed
 
@@ -31,6 +33,7 @@
 - Fixed column export for csv
 - Ensured all empty attributes "" are converted to null 
 - Several subdivision names and local/other names still contained * the † in them 
+- requests dependency missing in pyproject
 
 ## v1.7.0/1.7.1/1.7.2 - July 2025
 

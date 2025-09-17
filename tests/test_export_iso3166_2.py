@@ -319,6 +319,7 @@ class Export_ISO3166_2_Tests(unittest.TestCase):
         test_alpha_gt = "GT" #Guatemala - continents & subregion
         test_alpha_ir = "IRN" #Iran - language, startOfWeek & region
         test_alpha_mg_sa = "450,sau" #Madagascar, Saudi Arabia - idd, currencies & postalCode
+        test_alpha_tz = "TZ" #Tanzania - getting all keys via * wildcard
         test_rest_countries_keys_error1 = "ZZ"
         test_rest_countries_keys_error2 = "ABCDEF"
         test_rest_countries_keys_error3 = 1234    
@@ -420,6 +421,31 @@ class Export_ISO3166_2_Tests(unittest.TestCase):
             self.assertEqual(test_iso3166_2_mg_sa_json["SA"][subd]["postalCode"], "Format: #####, Regex: " + r'^(\d{5})$', 
                     f"Expected attribute value to be Format: #####, Regex: r'^(\d{5})$', got {test_iso3166_2_mg_sa_json['SA'][subd]['postalCode']}.")
 #4.)
+        export_iso3166_2(alpha_codes=test_alpha_tz, export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, export_csv=1,
+                         rest_countries_keys="*", history=False, extract_lat_lng=False) #Tanzania - getting all keys via * wildcard
+        expected_attribute_list = ['subdivisionCode','name','localOtherName','type','parentCode','flag','latLng', 'carSide','carSigns','continents',
+                                   'currencies','idd','languages','postalCode', 'region','startOfWeek','subregion','timezones','tld','unMember']
+
+        #open exported json & csv
+        with open(os.path.join(self.test_output_dir, self.test_output_filename + "_TZ.json")) as output_json:
+            test_iso3166_2_tz_json = json.load(output_json)
+        test_iso3166_2_tz_csv = pd.read_csv(os.path.join(self.test_output_dir, f'{self.test_output_filename}_{test_alpha_tz}.csv'))
+
+        self.assertEqual(len(test_iso3166_2_tz_json["TZ"]), 31, f"Expected 31 subdivisions in output dict, got {len(test_iso3166_2_tz_json['TZ'])}.")
+        self.assertEqual(list(test_iso3166_2_tz_json["TZ"].keys()),['TZ-01', 'TZ-02', 'TZ-03', 'TZ-04', 'TZ-05', 'TZ-06', 'TZ-07', 'TZ-08', 'TZ-09', 'TZ-10', 
+                                                                    'TZ-11', 'TZ-12', 'TZ-13', 'TZ-14', 'TZ-15', 'TZ-16', 'TZ-17', 'TZ-18', 'TZ-19', 'TZ-20', 
+                                                                    'TZ-21', 'TZ-22', 'TZ-23', 'TZ-24', 'TZ-25', 'TZ-26', 'TZ-27', 'TZ-28', 'TZ-29', 'TZ-30', 'TZ-31'],
+            f"Expected list of subdivision codes doesn't match output:\n{list(test_iso3166_2_tz_json['TZ'].keys())}.")   
+        self.assertTrue(os.path.isfile(os.path.join(self.test_output_dir, os.path.splitext(self.test_output_filename)[0] + "_TZ.csv")), 
+            f"Expected subdivision data to be exported to a CSV: {os.path.join(self.test_output_dir, os.path.splitext(self.test_output_filename)[0] + '-TZ.csv')}.")
+        self.assertEqual(list(test_iso3166_2_tz_csv.columns), expected_attribute_list, f"Expected column names don't match CSV columns:\n{list(test_iso3166_2_tz_csv.columns)}.")
+        self.assertEqual(len(test_iso3166_2_tz_csv), 31, "Expected there to be 31 rows in the exported subdivision CSV.")
+
+        for country in test_iso3166_2_tz_json:
+            for subd in test_iso3166_2_tz_json[country]:
+                for key in list(test_iso3166_2_tz_json[country][subd].keys()):
+                    self.assertIn(key, expected_attribute_list, f"Attribute {key} not found in list of correct attributes:\n{expected_attribute_list}.")
+#5.)
         with (self.assertRaises(ValueError)):
             export_iso3166_2(export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, rest_countries_keys=test_rest_countries_keys_error1, extract_lat_lng=False) #ZZ
             export_iso3166_2(export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, rest_countries_keys=test_rest_countries_keys_error2, extract_lat_lng=False) #ABCDEF
@@ -573,7 +599,7 @@ class Export_ISO3166_2_Tests(unittest.TestCase):
             export_iso3166_2(alpha_codes_range=10.05, export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, export_csv=1, extract_lat_lng=False) #10.4
             export_iso3166_2(alpha_codes_range=False, export_folder=self.test_output_dir, export_filename=self.test_output_filename, verbose=0, export_csv=1, extract_lat_lng=False) #False
 
-    @unittest.skip("")
+    # @unittest.skip("")
     def test_export_history(self):
         """ Testing correct ISO 3166-2 data with history attribute included are exported correctly. """
         test_alpha_ae = "AE" #UAE   

@@ -101,9 +101,10 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
         of codes are required. If only a single alpha code input then it will serve as the starting country.
     :rest_countries_keys: str (default="")
         str of one or more comma separated additional attributes from the RestCountries API that can be
-        appended to each of the subdivisions in the output object. Here is the full list of accepted
-        fields/attributes: "idd", "carSigns", "carSide", "continents", "currencies", "languages",
-                    "postalCode", "region", "startOfWeek", "subregion", "timezones", "tld".
+        appended to each of the subdivisions in the output object. If the wildcard '*' is input then 
+        all available keys will be exported. Here is the full list of accepted fields/attributes: 
+        "idd", "carSigns", "carSide", "continents", "currencies", "languages", "postalCode", "region", 
+        "startOfWeek", "subregion", "timezones", "tld".
     :filter_attributes: str (default="")
         str of one or more of the default keys/attributes that are exported for each country's subdivision by default,
         to be included in each country's subdivision object. These include: name, localOtherName, type, parentCode,
@@ -194,17 +195,21 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
 
     #parse input RestCountries attributes/fields, if applicable
     if (rest_countries_keys != ""):
-        #list of rest country attributes that can be appended to output object
-        rest_countries_keys_expected = ["idd", "carSigns", "carSide", "continents", "currencies", "languages",
-                                    "postalCode", "region", "startOfWeek", "subregion", "timezones", "tld"]
+        #list of rest country attributes that can be appended to output object - only relevant ones added
+        rest_countries_keys_expected = ["idd", "carSigns", "carSide", "continents", "currencies", "languages", "postalCode", 
+                                        "region", "startOfWeek", "subregion", "timezones", "tld", "unMember"]
+        
+        #if wildcard '*' input then set to all available keys
+        if (rest_countries_keys == "*"):
+            rest_countries_keys_converted_list = rest_countries_keys_expected
+        else:
+            #parse input attribute string into list, remove whitespace
+            rest_countries_keys_converted_list = rest_countries_keys.replace(' ', '').split(',')
 
-        #parse input attribute string into list, remove whitespace
-        rest_countries_keys_converted_list = rest_countries_keys.replace(' ', '').split(',')
-
-        #iterate over all input RestCountries keys, raise error if invalid key input
-        for key in rest_countries_keys_converted_list:
-            if not (key in rest_countries_keys_expected):
-                raise ValueError(f"Attribute/field ({key}) not available in RestCountries API, please refer to list of acceptable attributes below:\n{rest_countries_keys_expected}.")
+            #iterate over all input RestCountries keys, raise error if invalid key input
+            for key in rest_countries_keys_converted_list:
+                if not (key in rest_countries_keys_expected):
+                    raise ValueError(f"Attribute/field ({key}) not available in RestCountries API, please refer to list of acceptable attributes below:\n{rest_countries_keys_expected}.")
 
         #sort rest country key list alphabetically
         rest_countries_keys = sorted(rest_countries_keys_converted_list)
@@ -372,7 +377,7 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
                     #some rest country object data is in nested dict
                     if (key == "carSigns"):
                         all_country_data[alpha2][subd.code][key] = country_restcountries_data[0]["car"]["signs"]
-                    elif (key == "carSides"):
+                    elif (key == "carSide"):
                         all_country_data[alpha2][subd.code][key] = country_restcountries_data[0]["car"]["side"]
                     elif (key == "postalCode"):
                         all_country_data[alpha2][subd.code][key] = f"Format: {country_restcountries_data[0]['postalCode']['format']}, Regex: {country_restcountries_data[0]['postalCode']['regex']}"

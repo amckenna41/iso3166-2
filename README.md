@@ -384,7 +384,6 @@ having a lower value will return less exact but more total matches, e.g ``/api/s
 
 Please visit the [README](https://github.com/amckenna41/iso3166-2/blob/main/scripts) of the `scripts` folder for more in depth info about the usage and requirements of the above scripts that are <b>vital</b> to the `iso3166-2` software. -->
 
-## Directories
 * `/iso3166_2` - source code for `iso3166-2` software.
 * `/scripts` - scripts for the full export pipeline for the ISO 3166-2 subdivision data.  -->
 * `/iso3166_2_resources` - several resource/utility and dataset files required for the full export pipeline for the ISO 3166-2 subdivision data. 
