@@ -8,6 +8,7 @@ import re
 import shutil
 from pycountry import countries
 import unittest
+from numbers import Real
 unittest.TestLoader.sortTestMethodsUsing = None
 
 # @unittest.skip("Skipping update_subdivisions unit tests.")
@@ -320,7 +321,7 @@ class UpdateSubdivisionsTests(unittest.TestCase):
         for index, row in update_subdivisions_csv.iterrows():
             if (row["name"] != None):
                 self.assertIsInstance(row["name"], str, f"Expected row value for name column to be a str, got {type(row['name'])}.")
-            if (row["localOtherName"] != None):
+            if (row["localOtherName"] is not None and not pd.isna(row["localOtherName"])):
                 self.assertIsInstance(row["localOtherName"], str, f"Expected row value for localOtherName column to be a str, got {type(row['localOtherName'])}.")
             if (row["type"] != None):
                 self.assertIsInstance(row["type"], str, f"Expected row value for type column to be a str, got {type(row['type'])}.")
@@ -330,8 +331,8 @@ class UpdateSubdivisionsTests(unittest.TestCase):
                 self.assertIsInstance(row["flag"], str, f"Expected row value for flag column to be a str, got {type(row['flag'])}.")
             if (row["latLng"] != None):
                 self.assertIsInstance(row["latLng"], str, f"Expected row value for latLng column to be a str, got {type(row['latLng'])}.")
-            if (row["delete"] != None):
-                self.assertIsInstance(row["delete"], float, f"Expected row value for delete column to be a float, got {type(row['delete'])}.")
+            if (row["delete"] is not None and row["delete"] != ""):
+                self.assertIsInstance(row["delete"], Real, f"Expected row value for delete column to be numeric, got {type(row['delete'])}.")
             if (row["notes"] != None):
                 self.assertIsInstance(row["notes"], str, f"Expected row value for notes column to be a str, got {type(row['notes'])}.")
             if (row["dateIssued"] != None):

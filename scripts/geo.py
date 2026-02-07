@@ -309,6 +309,9 @@ class Geo:
                     # Update cache in memory
                     if self.geo_cache is None or self.geo_cache.empty:
                         self.geo_cache = pd.DataFrame(columns=['subdivisionCode', 'latLng', 'boundingBox', 'geojson', 'perimeter', 'neighbours'])
+                    else:
+                        if 'geojson' in self.geo_cache.columns and self.geo_cache['geojson'].dtype != object:
+                            self.geo_cache['geojson'] = self.geo_cache['geojson'].astype('object')
                     
                     # Update or append to cache DataFrame
                     if subdivision_code in self.geo_cache['subdivisionCode'].values:
@@ -322,7 +325,10 @@ class Geo:
                             'geojson': [None],
                             'perimeter': [None]
                         })
-                        self.geo_cache = pd.concat([self.geo_cache, new_row], ignore_index=True)
+                        if self.geo_cache is None or self.geo_cache.empty:
+                            self.geo_cache = new_row
+                        else:
+                            self.geo_cache = pd.concat([self.geo_cache, new_row], ignore_index=True)
             
             # Store result if latLng found
             if latLng:

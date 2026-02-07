@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 import unittest
 unittest.TestLoader.sortTestMethodsUsing = None
 
-@unittest.skip("")
+# @unittest.skip("")
 class ISO3166_2_API_Tests(unittest.TestCase):
     """
     Test suite for testing ISO 3166-2 api created to accompany the iso3166-2 Python software package. 
@@ -18,6 +18,7 @@ class ISO3166_2_API_Tests(unittest.TestCase):
     - /api/alpha
     - /api/subdivision
     - /api/search
+    - /api/search_geo
     - /api/country_name
     - /api/list_subdivisions
     
@@ -53,6 +54,12 @@ class ISO3166_2_API_Tests(unittest.TestCase):
     test_list_subdivisions:
         testing correct data and attributes are returned from the /list_subdivisions API endpoint, which returns all 
         the ISO 3166-2 subdivision codes for each country or subset of input countries.
+    test_coords_endpoint:
+        testing that the /coords endpoint returns correct subdivision data for input latitude and longitude coordinates.
+    test_random_endpoint:
+        testing that the /random endpoint returns a random subdivision from the dataset with valid structure and data.
+    test_openapi_spec_endpoint:
+        testing that the /openapi.yaml and /spec endpoints return the correct OpenAPI specification YAML file.
     test_version:
         testing the correct and up-to-date version of the iso3166-2 software is being used by the API.
     """
@@ -68,9 +75,12 @@ class ISO3166_2_API_Tests(unittest.TestCase):
         self.alpha_base_url = self.api_base_url + "alpha/"
         self.subdivision_base_url = self.api_base_url + "subdivision/"
         self.search_base_url = self.api_base_url + "search/"
+        self.search_geo_base_url = self.api_base_url + "search_geo/"
         self.country_name_base_url = self.api_base_url + "country_name/"
         self.all_base_url = self.api_base_url + "all"
         self.list_subdivisions_base_url = self.api_base_url + "list_subdivisions"
+        self.random_base_url = self.api_base_url + "random"
+        self.coords_base_url = self.api_base_url + "coords"
         self.version_base_url = self.api_base_url + "version"
 
         #list of keys that should be in subdivisions key of output object
@@ -99,11 +109,11 @@ class ISO3166_2_API_Tests(unittest.TestCase):
         author = soup.find(id='author').text.split(': ')[1]
 
         # self.assertEqual(version, "1.8.2", f"Expected API version to be 1.8.2, got {version}.") 
-        # self.assertEqual(last_updated, "February 2026", f"Expected last updated date to be February 2026, got {last_updated}.")
+        # self.assertEqual(last_updated, "September 2025", f"Expected last updated date to be September 2025, got {last_updated}.")
         self.assertEqual(author, "AJ", f"Expected author to be AJ, got {author}.")
 #2.)
         section_list_menu = soup.find(id='section-list-menu').find_all('li')
-        correct_section_menu = ["About", "Attributes", "Query String Parameters", "Endpoints", "All", "Alpha Code", "Subdivision", "Search", "Country Name", "List Subdivisions", "Contributing", "Credits"]
+        correct_section_menu = ["About", "Attributes", "Query String Parameters", "Endpoints", "All", "Alpha Code", "Subdivision", "Search", "Search Geo", "Country Name", "List Subdivisions", "Contributing", "Credits"]
         for li in section_list_menu:
             self.assertIn(li.text.strip(), correct_section_menu, f"Expected list element {li} to be in list.")
 
@@ -200,7 +210,7 @@ class ISO3166_2_API_Tests(unittest.TestCase):
             'CF': 17, 'CG': 12, 'CH': 26, 'CI': 14, 'CK': 0, 'CL': 16, 'CM': 10, 'CN': 34, 'CO': 33,
             'CR': 7, 'CU': 16, 'CV': 24, 'CW': 0, 'CX': 0, 'CY': 6, 'CZ': 90, 'DE': 16, 'DJ': 6, 'DK': 5,
             'DM': 10, 'DO': 42, 'DZ': 58, 'EC': 24, 'EE': 94, 'EG': 27, 'EH': 0, 'ER': 6, 'ES': 69, 'ET': 13,
-            'FI': 19, 'FJ': 19, 'FK': 0, 'FM': 4, 'FO': 0, 'FR': 124, 'GA': 9, 'GB': 224, 'GD': 7, 'GE': 12,
+            'FI': 19, 'FJ': 19, 'FK': 0, 'FM': 4, 'FO': 0, 'FR': 124, 'GA': 9, 'GB': 221, 'GD': 7, 'GE': 12,
             'GF': 0, 'GG': 0, 'GH': 16, 'GI': 0, 'GL': 5, 'GM': 6, 'GN': 41, 'GP': 0, 'GQ': 10, 'GR': 14,
             'GS': 0, 'GT': 22, 'GU': 0, 'GW': 12, 'GY': 10, 'HK': 0, 'HM': 0, 'HN': 18, 'HR': 21, 'HT': 10,
             'HU': 43, 'ID': 45, 'IE': 30, 'IL': 6, 'IM': 0, 'IN': 36, 'IO': 0, 'IQ': 19, 'IR': 31, 'IS': 72,
@@ -305,10 +315,9 @@ class ISO3166_2_API_Tests(unittest.TestCase):
                 self.assertIn(key, self.correct_subdivision_keys, f"Attribute {key} not found in list of correct attributes:\n{self.correct_subdivision_keys}.") 
 
         #LU-CA - Capellen
-        test_alpha_request_lux_ca_expected = {"name": "Capellen", "localOtherName": "Capellen (deu), Kapellen (ltz)", "parentCode": None, "type": "Canton", 
-                "latLng": [49.636, 5.9733], "flag": None,
-                "history": [{"Change": "Addition of cantons LU-CA, LU-CL, LU-DI, LU-EC, LU-ES, LU-GR, LU-LU, LU-ME, LU-RD, LU-RM, LU-VD, LU-WI; update List Source.", "Description of Change": None,
-                "Date Issued": "2015-11-27", "Source": "Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:LU."}]}
+        test_alpha_request_lux_ca_expected = {'flag': None, 'history': [{'Change': 'Addition of cantons LU-CA, LU-CL, LU-DI, LU-EC, LU-ES, LU-GR, LU-LU, LU-ME, LU-RD, LU-RM, LU-VD, LU-WI; update List Source.', 
+            'Date Issued': '2015-11-27', 'Description of Change': None, 'Source': 'Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:LU.'}], 'latLng': [49.635, 5.9733], 
+        'localOtherName': 'Capellen (deu), Kapellen (ltz)', 'name': 'Capellen', 'parentCode': None, 'type': 'Canton'}
         self.assertEqual(test_alpha_request_lux["LU-CA"], test_alpha_request_lux_ca_expected, 
                 f"Expected subdivision object doesn't match observed object:\n{test_alpha_request_lux['LU-CA']}.")
         
@@ -480,7 +489,7 @@ class ISO3166_2_API_Tests(unittest.TestCase):
 #2)
         test_subdivision_request_pa_3 = requests.get(self.subdivision_base_url + test_subdivision_pa_03, headers=self.user_agent_header).json() #PA-3 - Colón
         test_subdivision_request_pa_3_expected = {"PA": {"PA-3": {"name": "Colón", "localOtherName": "Colon (eng)", "parentCode": None, 
-            "type": "Province", "latLng": [9.2352, -80.2533], "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/PA/PA-3.svg", "history": None}}}
+            "type": "Province", "latLng": [9.2353, -80.2533], "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/PA/PA-3.svg", "history": None}}}
         
         self.assertEqual(test_subdivision_request_pa_3, test_subdivision_request_pa_3_expected, 
             f"Expected subdivision object doesn't match observed object:\n{test_subdivision_request_pa_3['PA']['PA-3']}")
@@ -592,33 +601,29 @@ class ISO3166_2_API_Tests(unittest.TestCase):
             f"Expected subdivision object doesn't match observed object:\n{test_search_name_request_azua}")
 #2.)
         test_search_name_request_cakaudrove = requests.get(self.search_base_url + test_search_name_cakaudrove, headers=self.user_agent_header).json() #FJ-03 - Cakaudrove
-        test_search_name_request_cakaudrove_expected = {"FJ": {"FJ-03": {"name": "Cakaudrove", "localOtherName": None, "parentCode": "FJ-N", 
-            "type": "Province", "latLng": [-16.5162, 179.394], "flag": None, "history": [
-                {
-                    "Change": "Assign parent subdivision to FJ-01, FJ-02, FJ-03, FJ-04, FJ-05, FJ-06, FJ-07, FJ-08, FJ-09, FJ-10, FJ-11, FJ-12, FJ-13, FJ-14.",
-                    "Description of Change": None,
-                    "Date Issued": "2016-11-15",
-                    "Source": "Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:FJ."
-                }
-            ]}}}
+        test_search_name_request_cakaudrove_expected = {'FJ': {'FJ-03': {'flag': None, 
+            'history': [{'Change': 'Assign parent subdivision to FJ-01, FJ-02, FJ-03, FJ-04, FJ-05, FJ-06, FJ-07, FJ-08, FJ-09, FJ-10, FJ-11, FJ-12, FJ-13, FJ-14.', 
+            'Date Issued': '2016-11-15', 'Description of Change': None, 'Source': 'Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:FJ.'}], 
+            'latLng': [-16.5162, -179.394], 'localOtherName': None, 'name': 'Cakaudrove', 'parentCode': 'FJ-N', 'type': 'Province'}}}
         self.assertEqual(test_search_name_request_cakaudrove, test_search_name_request_cakaudrove_expected, 
             f"Expected subdivision object doesn't match observed object:\n{test_search_name_request_cakaudrove}")
 #3.)
         test_search_name_request_gelderland_overijssel = requests.get(self.search_base_url + test_search_name_gelderland_overijssel, headers=self.user_agent_header).json() #NL-GE - Gelderland, NL-OV - Overijssel
-        test_search_name_request_gelderland_overijssel_expected = {'NL': {'NL-GE': {'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/NL/NL-GE.svg', 'history': None, 'latLng': [52.045, 5.872], 
+        test_search_name_request_gelderland_overijssel_expected = {'NL': {'NL-GE': {'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/NL/NL-GE.svg', 'history': None, 'latLng': [52.1014, 5.9516], 
             'localOtherName': 'Guelders (eng)', 'name': 'Gelderland', 'parentCode': None, 'type': 'Province'}, 'NL-OV': {'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/NL/NL-OV.svg', 
-            'history': None, 'latLng': [52.1014, 6.9516], 'localOtherName': 'Oberyssel (deu), Oaveriessel (nds), Across the IJssel (eng)', 'name': 'Overijssel', 'parentCode': None, 'type': 'Province'}}}
+            'history': None, 'latLng': [52.4254, 6.4611], 'localOtherName': 'Oberyssel (deu), Oaveriessel (nds), Across the IJssel (eng)', 'name': 'Overijssel', 'parentCode': None, 'type': 'Province'}}}
 
         self.assertEqual(test_search_name_request_gelderland_overijssel, test_search_name_request_gelderland_overijssel_expected, 
             f"Expected subdivision object doesn't match observed object:\n{test_search_name_request_gelderland_overijssel}")
 #4.)        
         test_search_name_request_ciudad_likeness = requests.get(self.search_base_url + test_search_name_ciudad, headers=self.user_agent_header, params={"likeness": "60", "excludeMatchScore": 0}).json() #Ciudad - likeness score of 60, include the Match Score attribute
-        test_search_name_request_ciudad_likeness_expected = [{'countryCode': 'ES', 'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/ES/ES-CR.svg', 'history': None, 'latLng': [38.9597, -3.8829], 'localOtherName': None, 'matchScore': 75, 
-            'name': 'Ciudad Real', 'parentCode': 'ES-CM', 'subdivisionCode': 'ES-CR', 'type': 'Province'}, {'countryCode': 'AO', 'flag': None, 'history': None, 'latLng': [-5.0564, 12.3212], 'localOtherName': 'Kabinda (kon), Portuguese Congo (eng)', 'matchScore': 62, 'name': 'Cabinda', 
-            'parentCode': None, 'subdivisionCode': 'AO-CAB', 'type': 'Province'}, {'countryCode': 'MX', 'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/MX/MX-CMX.png', 
-            'history': ['2017-11-23: Typographical correction of MX-CMX; update List source. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:MX.', '2016-11-15: Change of subdivision code from MX-DIF to MX-CMX; change of name of MX-CMX, MX-COA, MX-MIC, MX-VER; addition of local variation of MX-COA, MX-MIC, MX-VER; update list source. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:MX.'], 
-            'latLng': [19.3208, -99.1515], 'localOtherName': 'Mexico City (eng), CDMX (spa), Monda (oto), Mexihco Hueyaltepetl (nhn), U noj kaajil México (yua), CDMX (eng), La Ciudad de los Palacios (spa), The City of Palaces (eng)', 'matchScore': 60, 'name': 'Ciudad de México', 'parentCode': None, 'subdivisionCode': 'MX-CMX', 'type': 'Federal entity'}]
-
+        test_search_name_request_ciudad_likeness_expected = [{'countryCode': 'ES', 'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/ES/ES-CR.svg', 'history': None, 'latLng': [38.9597, -3.8829], 'localOtherName': None, 
+            'matchScore': 75, 'name': 'Ciudad Real', 'parentCode': 'ES-CM', 'subdivisionCode': 'ES-CR', 'type': 'Province'}, {'countryCode': 'AO', 'flag': None, 'history': None, 'latLng': [-5.0564, 12.3212], 'localOtherName': 'Kabinda (kon), Portuguese Congo (eng)', 
+            'matchScore': 62, 'name': 'Cabinda', 'parentCode': None, 'subdivisionCode': 'AO-CAB', 'type': 'Province'}, {'countryCode': 'MX', 'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/MX/MX-CMX.png', 
+            'history': [{'Change': 'Typographical correction of MX-CMX; update List source.', 'Date Issued': '2017-11-23', 'Description of Change': None, 'Source': 'Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:MX.'}, 
+            {'Change': 'Change of subdivision code from MX-DIF to MX-CMX; change of name of MX-CMX, MX-COA, MX-MIC, MX-VER; addition of local variation of MX-COA, MX-MIC, MX-VER; update list source.', 'Date Issued': '2016-11-15', 'Description of Change': None, 
+            'Source': 'Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:MX.'}], 'latLng': [19.3208, -99.1515], 'localOtherName': 'Mexico City (eng), CDMX (spa), Monda (oto), Mexihco Hueyaltepetl (nhn), U noj kaajil México (yua), CDMX (eng), La Ciudad de los Palacios (spa), The City of Palaces (eng)', 
+            'matchScore': 60, 'name': 'Ciudad de México', 'parentCode': None, 'subdivisionCode': 'MX-CMX', 'type': 'Federal entity'}]
         self.assertEqual(test_search_name_request_ciudad_likeness, test_search_name_request_ciudad_likeness_expected, 
             f"Expected subdivision object doesn't match observed object:\n{test_search_name_request_ciudad_likeness}")
 #5.)
@@ -678,6 +683,57 @@ class ISO3166_2_API_Tests(unittest.TestCase):
         # test_request_subdivision_name_invalid_attribute_expected = {'message': 'Invalid attribute name input to filter query string parameter: invalid_attribute. Refer to the following list of supported attributes: name, localOtherName, type, parentCode, flag, latLng, history, matchScore, countryCode, subdivisionCode, matchScore, countryCode, subdivisionCode.', 
         #                                                              'path': 'https://iso3166-2-api.vercel.app/api/all', 'status': 400}
         # self.assertEqual(test_request_subdivision_name_invalid_attribute, test_request_subdivision_name_invalid_attribute_expected, f"Expected and observed output error object do not match:\n{test_request_subdivision_name_invalid_attribute}.")
+
+    # @unittest.skip("")
+    def test_search_geo_endpoint(self):
+        """ Testing /search_geo endpoint, return subdivision data from approximate lat/lng input. """
+        test_search_geo_latlng = "39.4178,-2.6232"  # ES-CM - Castilla-La Mancha
+        test_search_geo_latlng_radius = "37.9567,-4.8477"  # ES-CO - Córdoba
+        test_search_geo_invalid_latlng = "39.4178"  # invalid format
+        test_search_geo_invalid_radius = "-5"
+        test_search_geo_empty = ""
+#1.)
+        test_search_geo_request = requests.get(self.search_geo_base_url + test_search_geo_latlng, headers=self.user_agent_header).json()
+
+        self.assertIsInstance(test_search_geo_request, dict, f"Expected output object of API to be of type dict, got {type(test_search_geo_request)}.")
+        # flatten keys to subdivision codes
+        observed_codes = []
+        for country_code in test_search_geo_request:
+            observed_codes.extend(list(test_search_geo_request[country_code].keys()))
+        self.assertIn("ES-CM", observed_codes, f"Expected ES-CM to be returned in search_geo results, got {observed_codes}.")
+
+        # validate attributes for returned subdivision(s)
+        for country_code in test_search_geo_request:
+            for subd in test_search_geo_request[country_code]:
+                for key in list(test_search_geo_request[country_code][subd].keys()):
+                    self.assertIn(key, self.correct_subdivision_keys, f"Attribute {key} not found in list of correct attributes:\n{self.correct_subdivision_keys}.")
+#2.)
+        test_search_geo_request_radius = requests.get(self.search_geo_base_url + test_search_geo_latlng_radius, headers=self.user_agent_header, params={"radius": "25"}).json()
+        observed_codes_radius = []
+        for country_code in test_search_geo_request_radius:
+            observed_codes_radius.extend(list(test_search_geo_request_radius[country_code].keys()))
+        self.assertIn("ES-CO", observed_codes_radius, f"Expected ES-CO to be returned in search_geo results, got {observed_codes_radius}.")
+#3.)
+        test_search_geo_request_filter = requests.get(self.search_geo_base_url + test_search_geo_latlng, headers=self.user_agent_header, params={"filter": "name,type"}).json()
+        for country_code in test_search_geo_request_filter:
+            for subd in test_search_geo_request_filter[country_code]:
+                self.assertEqual(sorted(list(test_search_geo_request_filter[country_code][subd].keys())), ["name", "type"],
+                    f"Expected filtered subdivision data to only contain name and type attributes, got {list(test_search_geo_request_filter[country_code][subd].keys())}.")
+#4.)
+        test_search_geo_request_invalid_latlng = requests.get(self.search_geo_base_url + test_search_geo_invalid_latlng, headers=self.user_agent_header).json()
+        test_search_geo_request_invalid_latlng_expected = {"message": "Input latlng must be a comma separated string of latitude and longitude, e.g. '39.4178,-2.6232'.", "path": self.search_geo_base_url + test_search_geo_invalid_latlng, "status": 400}
+        self.assertEqual(test_search_geo_request_invalid_latlng, test_search_geo_request_invalid_latlng_expected,
+            f"Expected and observed output error object do not match:\n{test_search_geo_request_invalid_latlng}.")
+#5.)
+        test_search_geo_request_invalid_radius = requests.get(self.search_geo_base_url + test_search_geo_latlng, headers=self.user_agent_header, params={"radius": test_search_geo_invalid_radius}).json()
+        test_search_geo_request_invalid_radius_expected = {"message": "Radius query string parameter must be greater than 0.", "path": self.search_geo_base_url + test_search_geo_latlng + f"?radius={test_search_geo_invalid_radius}", "status": 400}
+        self.assertEqual(test_search_geo_request_invalid_radius, test_search_geo_request_invalid_radius_expected,
+            f"Expected and observed output error object do not match:\n{test_search_geo_request_invalid_radius}.")
+#6.)
+        test_search_geo_request_empty = requests.get(self.search_geo_base_url + test_search_geo_empty, headers=self.user_agent_header).json()
+        test_search_geo_request_empty_expected = {"message": "The search_geo input parameter cannot be empty. Please pass in a comma separated lat,lng string.", "path": self.search_geo_base_url + test_search_geo_empty, "status": 400}
+        self.assertEqual(test_search_geo_request_empty, test_search_geo_request_empty_expected,
+            f"Expected and observed output error object do not match:\n{test_search_geo_request_empty}.")
 
     # @unittest.skip("Skipping /country_name endpoint tests.") 
     def test_country_name_endpoint(self):
@@ -816,8 +872,8 @@ class ISO3166_2_API_Tests(unittest.TestCase):
 #1.)
         test_request_list_subdivisions = requests.get(self.list_subdivisions_base_url, headers=self.user_agent_header).json()
 
-        self.assertEqual(len(test_request_list_subdivisions), 250, 
-            f"Expected output object of API to be of length 250, got {len(test_request_list_subdivisions)}.")
+        self.assertEqual(len(test_request_list_subdivisions), 249, 
+            f"Expected output object of API to be of length 249, got {len(test_request_list_subdivisions)}.")
         for alpha2 in list(test_request_list_subdivisions.keys()):
             self.assertIn(alpha2, iso3166.countries_by_alpha2, 
                 f"Alpha-2 code {alpha2} not found in list of available country codes.")
@@ -841,6 +897,242 @@ class ISO3166_2_API_Tests(unittest.TestCase):
         test_request_list_subdivisions_error2 = requests.get(f'{self.list_subdivisions_base_url}/ZZ', headers=self.user_agent_header).json() 
         test_request_list_subdivisions_error2_expected = {"message": f"Invalid ISO 3166-1 country code input ZZ.", "path": f'{self.list_subdivisions_base_url}/ZZ', "status": 400}
         self.assertEqual(test_request_list_subdivisions_error2, test_request_list_subdivisions_error2_expected, f"Expected and observed output error object do not match:\n{test_request_list_subdivisions_error2}.")
+
+#     # @unittest.skip("")
+#     def test_coords_endpoint(self):
+#         """ Testing the /api/coords endpoint returns correct subdivision data for input latitude and longitude coordinates. """
+# #1.)
+#         # Test valid coordinates - London, UK (approximate coordinates for Greater London)
+#         test_request_london = requests.get(self.coords_base_url, headers=self.user_agent_header, params={"lat": "51.5074", "lng": "-0.1278"})
+#         self.assertEqual(test_request_london.status_code, 200, f"Expected 200 status code from /api/coords with London coordinates, got {test_request_london.status_code}.")
+#         self.assertEqual(test_request_london.headers["content-type"], "application/json", f"Expected Content type to be application/json, got {test_request_london.headers['content-type']}.")
+# #2.)
+#         # Verify response structure
+#         london_response = test_request_london.json()
+#         self.assertIsInstance(london_response, dict, f"Expected response to be of type dict, got {type(london_response)}.")
+#         self.assertEqual(len(london_response), 1, f"Expected response to contain exactly 1 subdivision, got {len(london_response)}.")
+        
+#         # Get the subdivision code and validate format
+#         subdivision_code = list(london_response.keys())[0]
+#         self.assertRegex(subdivision_code, r"^[A-Z]{2}-[A-Z0-9]{1,3}$", f"Expected subdivision code to match format XX-Y/XX-YY/XX-YYY, got {subdivision_code}.")
+#         self.assertTrue(subdivision_code.startswith("GB-"), f"Expected London coordinates to return a GB subdivision, got {subdivision_code}.")
+# #3.)
+#         # Verify subdivision data structure
+#         subdivision_data = london_response[subdivision_code]
+#         self.assertIsInstance(subdivision_data, dict, f"Expected subdivision data to be of type dict, got {type(subdivision_data)}.")
+#         for key in self.correct_subdivision_keys:
+#             self.assertIn(key, subdivision_data, f"Expected subdivision data to contain '{key}' attribute.")
+# #4.)
+#         # Test valid coordinates - New York, USA (approximate coordinates for New York state)
+#         test_request_ny = requests.get(self.coords_base_url, headers=self.user_agent_header, params={"lat": "40.7128", "lng": "-74.0060"})
+#         self.assertEqual(test_request_ny.status_code, 200, f"Expected 200 status code from /api/coords with NY coordinates, got {test_request_ny.status_code}.")
+        
+#         ny_response = test_request_ny.json()
+#         ny_subdivision_code = list(ny_response.keys())[0]
+#         self.assertTrue(ny_subdivision_code.startswith("US-"), f"Expected New York coordinates to return a US subdivision, got {ny_subdivision_code}.")
+# #5.)
+#         # Test missing latitude parameter
+#         test_request_missing_lat = requests.get(self.coords_base_url, headers=self.user_agent_header, params={"lng": "-0.1278"})
+#         self.assertEqual(test_request_missing_lat.status_code, 400, f"Expected 400 status code when lat parameter is missing, got {test_request_missing_lat.status_code}.")
+        
+#         missing_lat_error = test_request_missing_lat.json()
+#         self.assertIn("message", missing_lat_error, "Expected error response to contain 'message' field.")
+#         self.assertIn("required", missing_lat_error["message"].lower(), "Expected error message to mention required parameters.")
+# #6.)
+#         # Test missing longitude parameter
+#         test_request_missing_lng = requests.get(self.coords_base_url, headers=self.user_agent_header, params={"lat": "51.5074"})
+#         self.assertEqual(test_request_missing_lng.status_code, 400, f"Expected 400 status code when lng parameter is missing, got {test_request_missing_lng.status_code}.")
+        
+#         missing_lng_error = test_request_missing_lng.json()
+#         self.assertIn("message", missing_lng_error, "Expected error response to contain 'message' field.")
+#         self.assertIn("required", missing_lng_error["message"].lower(), "Expected error message to mention required parameters.")
+# #7.)
+#         # Test invalid latitude value (non-numeric)
+#         test_request_invalid_lat = requests.get(self.coords_base_url, headers=self.user_agent_header, params={"lat": "invalid", "lng": "-0.1278"})
+#         self.assertEqual(test_request_invalid_lat.status_code, 400, f"Expected 400 status code for invalid latitude value, got {test_request_invalid_lat.status_code}.")
+        
+#         invalid_lat_error = test_request_invalid_lat.json()
+#         self.assertIn("message", invalid_lat_error, "Expected error response to contain 'message' field.")
+#         self.assertIn("invalid", invalid_lat_error["message"].lower(), "Expected error message to mention invalid latitude.")
+# #8.)
+#         # Test invalid longitude value (non-numeric)
+#         test_request_invalid_lng = requests.get(self.coords_base_url, headers=self.user_agent_header, params={"lat": "51.5074", "lng": "invalid"})
+#         self.assertEqual(test_request_invalid_lng.status_code, 400, f"Expected 400 status code for invalid longitude value, got {test_request_invalid_lng.status_code}.")
+        
+#         invalid_lng_error = test_request_invalid_lng.json()
+#         self.assertIn("message", invalid_lng_error, "Expected error response to contain 'message' field.")
+#         self.assertIn("invalid", invalid_lng_error["message"].lower(), "Expected error message to mention invalid longitude.")
+# #9.)
+#         # Test latitude out of range (> 90)
+#         test_request_lat_high = requests.get(self.coords_base_url, headers=self.user_agent_header, params={"lat": "95", "lng": "0"})
+#         self.assertEqual(test_request_lat_high.status_code, 400, f"Expected 400 status code for latitude > 90, got {test_request_lat_high.status_code}.")
+        
+#         lat_high_error = test_request_lat_high.json()
+#         self.assertIn("message", lat_high_error, "Expected error response to contain 'message' field.")
+#         self.assertIn("range", lat_high_error["message"].lower(), "Expected error message to mention range issue.")
+# #10.)
+#         # Test latitude out of range (< -90)
+#         test_request_lat_low = requests.get(self.coords_base_url, headers=self.user_agent_header, params={"lat": "-95", "lng": "0"})
+#         self.assertEqual(test_request_lat_low.status_code, 400, f"Expected 400 status code for latitude < -90, got {test_request_lat_low.status_code}.")
+        
+#         lat_low_error = test_request_lat_low.json()
+#         self.assertIn("message", lat_low_error, "Expected error response to contain 'message' field.")
+#         self.assertIn("range", lat_low_error["message"].lower(), "Expected error message to mention range issue.")
+# #11.)
+#         # Test longitude out of range (> 180)
+#         test_request_lng_high = requests.get(self.coords_base_url, headers=self.user_agent_header, params={"lat": "0", "lng": "185"})
+#         self.assertEqual(test_request_lng_high.status_code, 400, f"Expected 400 status code for longitude > 180, got {test_request_lng_high.status_code}.")
+        
+#         lng_high_error = test_request_lng_high.json()
+#         self.assertIn("message", lng_high_error, "Expected error response to contain 'message' field.")
+#         self.assertIn("range", lng_high_error["message"].lower(), "Expected error message to mention range issue.")
+# #12.)
+#         # Test longitude out of range (< -180)
+#         test_request_lng_low = requests.get(self.coords_base_url, headers=self.user_agent_header, params={"lat": "0", "lng": "-185"})
+#         self.assertEqual(test_request_lng_low.status_code, 400, f"Expected 400 status code for longitude < -180, got {test_request_lng_low.status_code}.")
+        
+#         lng_low_error = test_request_lng_low.json()
+#         self.assertIn("message", lng_low_error, "Expected error response to contain 'message' field.")
+#         self.assertIn("range", lng_low_error["message"].lower(), "Expected error message to mention range issue.")
+# #13.)
+#         # Test coordinates in ocean (should return 404)
+#         test_request_ocean = requests.get(self.coords_base_url, headers=self.user_agent_header, params={"lat": "0", "lng": "0"})
+#         # This should return 404 as coordinates (0, 0) are in the Atlantic Ocean
+#         self.assertIn(test_request_ocean.status_code, [404, 500], f"Expected 404 or 500 status code for ocean coordinates, got {test_request_ocean.status_code}.")
+# #14.)
+#         # Test filter parameter works
+#         test_request_filter = requests.get(self.coords_base_url, headers=self.user_agent_header, params={"lat": "51.5074", "lng": "-0.1278", "filter": "name,type"})
+#         self.assertEqual(test_request_filter.status_code, 200, f"Expected 200 status code with filter parameter, got {test_request_filter.status_code}.")
+        
+#         filter_response = test_request_filter.json()
+#         filter_subdivision_code = list(filter_response.keys())[0]
+#         filter_subdivision_data = filter_response[filter_subdivision_code]
+#         self.assertEqual(sorted(list(filter_subdivision_data.keys())), ["name", "type"], f"Expected filtered data to only contain name and type, got {list(filter_subdivision_data.keys())}.")
+# #15.)
+#         # Test invalid filter parameter
+#         test_request_invalid_filter = requests.get(self.coords_base_url, headers=self.user_agent_header, params={"lat": "51.5074", "lng": "-0.1278", "filter": "invalid_attr"})
+#         self.assertEqual(test_request_invalid_filter.status_code, 400, f"Expected 400 status code for invalid filter, got {test_request_invalid_filter.status_code}.")
+        
+#         invalid_filter_error = test_request_invalid_filter.json()
+#         self.assertIn("message", invalid_filter_error, "Expected error response to contain 'message' field.")
+#         self.assertIn("invalid", invalid_filter_error["message"].lower(), "Expected error message to mention invalid attribute.")
+# #16.)
+#         # Test the root /coords endpoint (without /api prefix)
+#         test_request_root = requests.get("https://iso3166-2-api.vercel.app/coords", headers=self.user_agent_header, params={"lat": "48.8566", "lng": "2.3522"})
+#         self.assertEqual(test_request_root.status_code, 200, f"Expected 200 status code from /coords (Paris coordinates), got {test_request_root.status_code}.")
+        
+#         root_response = test_request_root.json()
+#         root_subdivision_code = list(root_response.keys())[0]
+#         self.assertTrue(root_subdivision_code.startswith("FR-"), f"Expected Paris coordinates to return a FR subdivision, got {root_subdivision_code}.")
+
+    # @unittest.skip("")
+    def test_random_endpoint(self):
+        """ Testing the /api/random endpoint returns a random subdivision from the dataset. """
+#1.)
+        # Test the /api/random endpoint returns valid structure
+        test_request_random = requests.get(self.random_base_url, headers=self.user_agent_header)
+        self.assertEqual(test_request_random.status_code, 200, f"Expected 200 status code from /api/random, got {test_request_random.status_code}.")
+        self.assertEqual(test_request_random.headers["content-type"], "application/json", f"Expected Content type to be application/json, got {test_request_random.headers['content-type']}.")
+#2.)
+        # Verify the response structure - should have one subdivision code as key
+        random_response = test_request_random.json()
+        self.assertIsInstance(random_response, dict, f"Expected response to be of type dict, got {type(random_response)}.")
+        self.assertEqual(len(random_response), 1, f"Expected response to contain exactly 1 subdivision, got {len(random_response)}.")
+#3.)
+        # Get the subdivision code and data
+        subdivision_code = list(random_response.keys())[0]
+        subdivision_data = random_response[subdivision_code]
+        
+        # Verify subdivision code format
+        self.assertIsInstance(subdivision_code, str, f"Expected subdivision code to be of type str, got {type(subdivision_code)}.")
+        self.assertRegex(subdivision_code, r"^[A-Z]{2}-[A-Z0-9]{1,3}$", f"Expected subdivision code to match format XX-Y/XX-YY/XX-YYY, got {subdivision_code}.")
+#4.)
+        # Extract country code from subdivision code
+        country_code = subdivision_code.split('-')[0]
+        self.assertIn(country_code, iso3166.countries_by_alpha2, f"Country code {country_code} not found in list of available country codes.")
+#5.)
+        # Verify the subdivision code exists in the dataset
+        self.assertIn(subdivision_code, self.iso3166_2_data.subdivision_codes(country_code), f"Subdivision code {subdivision_code} not found in list of available subdivision codes for {country_code}.")
+#6.)
+        # Verify the subdivision data contains all expected attributes
+        self.assertIsInstance(subdivision_data, dict, f"Expected subdivision data to be of type dict, got {type(subdivision_data)}.")
+        for key in self.correct_subdivision_keys:
+            self.assertIn(key, subdivision_data, f"Expected subdivision data to contain '{key}' attribute.")
+#7.)
+        # Verify the subdivision data matches the actual data from the dataset
+        all_data = self.test_request_all.json()
+        expected_data = all_data[country_code][subdivision_code]
+        self.assertEqual(subdivision_data, expected_data, f"Expected subdivision data to match the dataset for {subdivision_code}.")
+#8.)
+        # Test multiple calls return different results (high probability with 5046 subdivisions)
+        random_codes = set()
+        for _ in range(15):
+            test_random_call = requests.get(self.random_base_url, headers=self.user_agent_header).json()
+            random_code = list(test_random_call.keys())[0]
+            random_codes.add(random_code)
+        self.assertGreater(len(random_codes), 1, "Expected multiple calls to /api/random to return different subdivisions (at least 2 unique out of 15 calls).")
+#9.)
+        # Test the filter parameter works with random endpoint
+        test_request_random_filter = requests.get(self.random_base_url, headers=self.user_agent_header, params={"filter": "name,type"})
+        self.assertEqual(test_request_random_filter.status_code, 200, f"Expected 200 status code from /api/random with filter, got {test_request_random_filter.status_code}.")
+        
+        random_filter_response = test_request_random_filter.json()
+        filtered_subdivision_code = list(random_filter_response.keys())[0]
+        filtered_subdivision_data = random_filter_response[filtered_subdivision_code]
+        self.assertEqual(sorted(list(filtered_subdivision_data.keys())), ["name", "type"], f"Expected filtered subdivision data to only contain name and type attributes, got {list(filtered_subdivision_data.keys())}.")
+#10.)
+        # Test invalid filter parameter returns error
+        test_request_random_invalid_filter = requests.get(self.random_base_url, headers=self.user_agent_header, params={"filter": "invalid_attribute"})
+        self.assertEqual(test_request_random_invalid_filter.status_code, 400, f"Expected 400 status code from /api/random with invalid filter, got {test_request_random_invalid_filter.status_code}.")
+        
+        error_response = test_request_random_invalid_filter.json()
+        self.assertIn("message", error_response, "Expected error response to contain 'message' field.")
+        self.assertIn("invalid_attribute", error_response["message"], "Expected error message to mention the invalid attribute.")
+#11.)
+        # Test the root /random endpoint (without /api prefix)
+        test_request_root_random = requests.get("https://iso3166-2-api.vercel.app/random", headers=self.user_agent_header)
+        self.assertEqual(test_request_root_random.status_code, 200, f"Expected 200 status code from /random, got {test_request_root_random.status_code}.")
+        root_random_response = test_request_root_random.json()
+        self.assertEqual(len(root_random_response), 1, f"Expected /random response to contain exactly 1 subdivision, got {len(root_random_response)}.")
+        
+        # Verify structure is correct
+        root_subdivision_code = list(root_random_response.keys())[0]
+        self.assertRegex(root_subdivision_code, r"^[A-Z]{2}-[A-Z0-9]{1,3}$", f"Expected subdivision code from /random to match format XX-Y/XX-YY/XX-YYY, got {root_subdivision_code}.")
+
+    # @unittest.skip("")
+    def test_openapi_spec_endpoint(self):
+        """ Testing the /openapi.yaml and /spec endpoints return the correct OpenAPI specification. """
+#1.)
+        # Test the /api/openapi.yaml endpoint
+        test_request_openapi_yaml = requests.get(self.api_base_url + "openapi.yaml", headers=self.user_agent_header)
+        self.assertEqual(test_request_openapi_yaml.status_code, 200, f"Expected 200 status code from /api/openapi.yaml, got {test_request_openapi_yaml.status_code}.")
+        self.assertIn("text/yaml", test_request_openapi_yaml.headers["content-type"], f"Expected Content type to contain text/yaml, got {test_request_openapi_yaml.headers['content-type']}.")
+#2.)
+        # Test the /api/spec endpoint
+        test_request_spec = requests.get(self.api_base_url + "spec", headers=self.user_agent_header)
+        self.assertEqual(test_request_spec.status_code, 200, f"Expected 200 status code from /api/spec, got {test_request_spec.status_code}.")
+        self.assertIn("text/yaml", test_request_spec.headers["content-type"], f"Expected Content type to contain text/yaml, got {test_request_spec.headers['content-type']}.")
+#3.)
+        # Verify the content is valid YAML and contains expected OpenAPI fields
+        openapi_content = test_request_openapi_yaml.text
+        self.assertIn("openapi:", openapi_content, "Expected OpenAPI specification to contain 'openapi:' field.")
+        self.assertIn("info:", openapi_content, "Expected OpenAPI specification to contain 'info:' field.")
+        self.assertIn("title: iso3166-2 API", openapi_content, "Expected OpenAPI specification to contain correct title.")
+        self.assertIn("servers:", openapi_content, "Expected OpenAPI specification to contain 'servers:' field.")
+        self.assertIn("paths:", openapi_content, "Expected OpenAPI specification to contain 'paths:' field.")
+#4.)
+        # Verify both endpoints return the same content
+        self.assertEqual(test_request_openapi_yaml.text, test_request_spec.text, "Expected /api/openapi.yaml and /api/spec to return identical content.")
+#5.)
+        # Test the root /openapi.yaml endpoint (without /api prefix)
+        test_request_root_openapi = requests.get("https://iso3166-2-api.vercel.app/openapi.yaml", headers=self.user_agent_header)
+        self.assertEqual(test_request_root_openapi.status_code, 200, f"Expected 200 status code from /openapi.yaml, got {test_request_root_openapi.status_code}.")
+        self.assertEqual(test_request_root_openapi.text, openapi_content, "Expected /openapi.yaml to return same content as /api/openapi.yaml.")
+#6.)
+        # Test the root /spec endpoint (without /api prefix)
+        test_request_root_spec = requests.get("https://iso3166-2-api.vercel.app/spec", headers=self.user_agent_header)
+        self.assertEqual(test_request_root_spec.status_code, 200, f"Expected 200 status code from /spec, got {test_request_root_spec.status_code}.")
+        self.assertEqual(test_request_root_spec.text, openapi_content, "Expected /spec to return same content as /api/openapi.yaml.")
 
     # @unittest.skip("")
     def test_version(self):

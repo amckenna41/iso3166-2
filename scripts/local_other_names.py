@@ -281,8 +281,11 @@ def validate_local_other_names(local_other_names_csv: str = os.path.join("iso316
     #raise error if invalid data type found in any row for any of the columns
     for index, row in local_other_names_df.iterrows():
         for column in local_other_names_df.columns:
-            if (not isinstance(row[column], str) and (not row[column] is None)):
-                return -1, f"Invalid data type found at row {index} for column {column}: {row[column]}. Each row value should be a string or null."
+            value = row[column]
+            if value is None or pd.isna(value):
+                continue
+            if not isinstance(value, str):
+                return -1, f"Invalid data type found at row {index} for column {column}: {value}. Each row value should be a string or null."
 
     #list of non-ISO 639 language codes
     language_code_exceptions = [
@@ -306,9 +309,9 @@ def validate_local_other_names(local_other_names_csv: str = os.path.join("iso316
 
     #iterate over local/other name column, ensuring each translation is valid
     for index, row in local_other_names_df["localOtherName"].items():
-        
+
         #skip current row if localOtherName attribute null
-        if (row is None):
+        if row is None or pd.isna(row):
             continue
 
         #split multiple local/other name translations into comma separated list, preserve single quoted elements
