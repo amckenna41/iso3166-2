@@ -6,13 +6,16 @@ from thefuzz import process, fuzz
 from fake_useragent import UserAgent
 from unidecode import unidecode
 from urllib.parse import unquote_plus
-import pycountry
+from pycountry import languages, language_families
 import requests
 from bs4 import BeautifulSoup
+
+#import utils from same package
 try:
+    from . import utils
+    from .utils import *
+except ImportError:
     from utils import *
-except:
-    from scripts.utils import *
 
 class LanguageLookup:
     """
@@ -294,8 +297,8 @@ class LanguageLookup:
         #lowercase language code
         code = code.lower()
 
-        #get language object for inputted code from pycountry package
-        language = pycountry.languages.get(alpha_2=code) or pycountry.languages.get(alpha_3=code)
+        #get language object for inputted code from languages module of pycountry package
+        language = languages.get(alpha_2=code) or languages.get(alpha_3=code)
 
         # get the language source for the language code
         # source = self.export_language_source(code) 
@@ -307,7 +310,7 @@ class LanguageLookup:
             return {"name": language.name, "scope": scope_conversion.get(scope_code, ""), "type": type_conversion.get(type_code, "")}
 
         #if language object not found, look for the same code within the language family part of the package 
-        language_family = pycountry.language_families.get(alpha_3=code)
+        language_family = language_families.get(alpha_3=code)
 
         #if language family object found, return its data
         if (language_family):

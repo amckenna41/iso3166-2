@@ -3,48 +3,48 @@ import time
 import json
 import argparse
 import requests
-import pycountry
+from pycountry import countries, subdivisions
 import flag
-import googlemaps
 from tqdm import tqdm
 from fp.fp import FreeProxy
 import warnings
 import pandas as pd
 import numpy as np
-#multiple import options for update_subdivisions, local_other_names and utils modules depending on if script is called directly or via test script
 try:
-    from update_subdivisions import *
-except:
-    from scripts.update_subdivisions import *
-try:
-    from local_other_names import *
-except:
-    from scripts.local_other_names import *
-try:
-    from utils import *
-except:
-    from scripts.utils import *
-
-#base URL for RestCountries API
-rest_countries_base_url = "https://restcountries.com/v3.1/"
-
-#base URL for Country State City API
-country_state_city_base_url = "https://api.countrystatecity.in/v1/countries/"
+    from update_subdivisions import update_subdivision
+    from local_other_names import add_local_other_names, validate_local_other_names
+    from utils import export_iso3166_2_data, get_alpha_codes_list, get_flag_repo_url
+    from geo import Geo
+    from restcountries_api import get_rest_countries_country_data, get_supported_fields
+    from city_data import get_cities_for_subdivision
+    from history import add_history
+except ImportError:
+    from scripts.update_subdivisions import update_subdivision
+    from scripts.local_other_names import add_local_other_names, validate_local_other_names
+    from scripts.utils import export_iso3166_2_data, get_alpha_codes_list, get_flag_repo_url
+    from scripts.geo import Geo
+    from scripts.restcountries_api import get_rest_countries_country_data, get_supported_fields
+    from scripts.city_data import get_cities_for_subdivision
+    from scripts.history import add_history
 
 #ignore resource warnings
 warnings.filterwarnings(action="ignore", message="unclosed", category=ResourceWarning)
 
+#user agent header for requests
+USER_AGENT_HEADER = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"}
+
 def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-output", export_filename: str="test-iso3166-2",
-                     resources_folder: str="iso3166_2_resources", verbose: bool=1, export_csv: bool=True, export_xml: bool=True, 
-                     alpha_codes_range: str="", rest_countries_keys: str="", filter_attributes: str="", state_city_data: bool=False, 
-                     history: bool=True, extract_lat_lng: bool=0, save_each_iteration: bool=False, use_proxy=False) -> None:
+                     resources_folder: str="iso3166_2_resources", verbose: bool=1, export: bool=False, export_csv: bool=True, 
+                     export_xml: bool=True, alpha_codes_range: str="", rest_countries_keys: str="", filter_attributes: str="", 
+                     state_city_data: bool=False, history: bool=True, save_each_iteration: bool=False, use_proxy=False, 
+                     geo_cache_path: str=os.path.join("iso3166_2_resources", "geo_cache_min.csv")) -> None:
     """
     Export all ISO 3166-2 subdivision related data to JSON, CSV and or XML files. The default attributes
     exported for each subdivision include: subdivision code, name, local name, type, parent code, flag
     URL, history and latitude/longitude. The flag URL attribute is taken from the custom-built
     iso3166-flags (https://github.com/amckenna41/iso3166-flags) repo, the history attribute
     is taken from the custom-built iso3166-updates (https://github.com/amckenna41/iso3166-updates) repo
-    and latitude/longitude is retrieved via the GoogleMaps API. By default all of the subdivision data
+    and latitude/longitude is retrieved via the OpenStreetMap API. By default all of the subdivision data
     for each ISO 3166 country will be exported but a string of 1 or more country alpha codes can
     be input, as well as a range of alpha codes e.g "AD-EG" etc.
 
@@ -89,6 +89,8 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
         updates csv.
     :verbose: bool (default=1)
         set to 1 to print out progress of export functionality, 0 will not print progress.
+    :export: bool (default=False)
+        set to 1 to export the ISO 3166-2 data object from the function.
     :export_csv: bool (default=True)
         set to 1 to export the ISO 3166-2 dataset to CSV.
     :export_xml: bool (default=True)
@@ -109,7 +111,7 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
         str of one or more of the default keys/attributes that are exported for each country's subdivision by default,
         to be included in each country's subdivision object. These include: name, localOtherName, type, parentCode,
         latLng, history and flag. Note the country and subdivision code keys are required for each subdivision
-        and will be included by default. Any keys will not included that are in the aforementioned list will be
+        and will be included by default. Any keys not included that are in the aforementioned list will be
         included.
     :state_city_data: bool (default=False)
         include the city-level data per subdivision via the Country State City API. By default these aren't
@@ -117,9 +119,6 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
     :history: bool (default=True)
         include any historical updates/changes per subdivision, published by the ISO, via the custom-built
         iso3166-updates software.
-    :extract_lat_lng: bool (default=False)
-        download the coordinates (latitude/longitude) for each subdivision via the Google Maps API. By default, the
-        lat/lng are not extracted due to the resource cost, the latLng attribute will be set to [].
     :save_each_iteration: bool (default=False)
         if this parameter is set then during each country code iteration, the exported data will be 
         saved to the export dir, rather than at the end all in one go. This was implemented as
@@ -130,10 +129,16 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
     :use_proxy: bool (default=False)
         if set to True then use a proxy IP when scraping the wiki data via the requests.get, not used for 
         any of the other APIs in extraction process.
+    :geo_cache_path: str (default="iso3166_2_resources/geo_cache_min.csv")
+        custom path to geo cache CSV file. If not provided or empty string, uses the default cache path
+        (iso3166_2_resources/geo_cache.csv). This parameter is passed to the Geo class instance for
+        fetching geographical data like latitude/longitude coordinates.
 
     Returns
     =======
-    None
+    :iso3166_2_data: dict|None
+        the ISO 3166-2 data object that contains all the country and subdivision data if the export
+        parameter is set to True otherwise return None.
 
     Raises
     ======
@@ -194,24 +199,15 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
     local_other_name_df = local_other_name_df.sort_values('alphaCode').reset_index(drop=True)
 
     #parse input RestCountries attributes/fields, if applicable
-    if (rest_countries_keys != ""):
-        #list of rest country attributes that can be appended to output object - only relevant ones added
-        rest_countries_keys_expected = ["idd", "carSigns", "carSide", "continents", "currencies", "languages", "postalCode", 
-                                        "region", "startOfWeek", "subregion", "timezones", "tld", "unMember"]
-        
-        #if wildcard '*' input then set to all available keys
-        if (rest_countries_keys == "*"):
+    if rest_countries_keys:
+        rest_countries_keys_expected = get_supported_fields()
+        if rest_countries_keys == "*":
             rest_countries_keys_converted_list = rest_countries_keys_expected
         else:
-            #parse input attribute string into list, remove whitespace
             rest_countries_keys_converted_list = rest_countries_keys.replace(' ', '').split(',')
-
-            #iterate over all input RestCountries keys, raise error if invalid key input
             for key in rest_countries_keys_converted_list:
-                if not (key in rest_countries_keys_expected):
+                if key not in rest_countries_keys_expected:
                     raise ValueError(f"Attribute/field ({key}) not available in RestCountries API, please refer to list of acceptable attributes below:\n{rest_countries_keys_expected}.")
-
-        #sort rest country key list alphabetically
         rest_countries_keys = sorted(rest_countries_keys_converted_list)
     
     #parse input default attributes to include/exclude from export
@@ -233,32 +229,36 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
 
         #extend history attribute if applicable, set history parameter to True if it is in filter_attributes input param
         if (history):
-            filter_attributes_expected.extend("history")
+            filter_attributes_expected.extend(["history"])
         else:
             if ("history" in filter_attributes_converted_list):
                 history = True
 
-            # #remove default key from list
-            # all_attributes.remove(key)
+        # #extend area and population attributes if applicable, set demographics parameter to True if it is in filter_attributes input param
+        # if (demographics):
+        #     filter_attributes_expected.extend(["area", "population"])
+        # else:
+        #     if ("area" in filter_attributes_converted_list or "population" in filter_attributes_converted_list):
+        #         demographics = True
 
-        #set filter_attributes var to filtered list
+        #     # #remove default key from list
+        #     # all_attributes.remove(key)
+
+        # #set filter_attributes var to filtered list
         filter_attributes = filter_attributes_converted_list
-        # all_attributes = [item for item in filter_attributes if item in all_attributes]
+        # # all_attributes = [item for item in filter_attributes if item in all_attributes]
     else:
         filter_attributes = all_attributes
 
     #appending the different extra attributes to preserve custom order, 1st original attributes then history then rest country keys then cities
+    # if (demographics):
+    #     filter_attributes.extend(["area", "population"])
     if (history and "history" not in filter_attributes):
         filter_attributes.append("history")
     if (rest_countries_keys):
         filter_attributes.extend(rest_countries_keys)
-    if (state_city_data):
+    if (state_city_data and "cities" not in filter_attributes):
         filter_attributes.append("cities")
-    # if not (extract_lat_lng):     #removing latLng attribute from default if not extracting
-    #     filter_attributes.remove('latLng')
-
-    print(f"Exporting {len(alpha_codes)} ISO 3166-2 country's data to folder {export_folder} with the following attributes:\n{', '.join(all_attributes)}.")
-    print('##################################################################################################\n')
 
     #by default, using no proxy when calling requests.get
     proxy = None
@@ -271,8 +271,12 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
         #create proxy addresses for http & https, set to None if not using proxies
         proxy = {"http": random_proxy, "https": random_proxy} if use_proxy else None
 
+    #create instance of Geo class, all of the required data should already be exported to the geo cache file
+    geo = Geo(proxy=proxy, verbose=False, use_cache=True, export_to_cache=True, geo_cache_path=geo_cache_path if geo_cache_path else None)
+
     #iterate over all country codes, getting country and subdivision info, append to json object
     for alpha2 in tqdm(alpha_codes, ncols=70, disable=tqdm_disable):
+        country_iter_start = time.time()
 
         #kosovo has no associated subdivisions, manually set params
         if (alpha2 == "XK"):
@@ -280,8 +284,8 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
             all_subdivisions = []
         else:
             #get country name and list of its subdivisions using pycountry library
-            country_name = pycountry.countries.get(alpha_2=alpha2).name
-            all_subdivisions = list(pycountry.subdivisions.get(country_code=alpha2))
+            country_name = countries.get(alpha_2=alpha2).name
+            all_subdivisions = list(subdivisions.get(country_code=alpha2))
 
         #print out progress if verbose
         if verbose:
@@ -300,59 +304,35 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
 
         #make call to RestCountries api if additional rest countries attributes input, raise error if invalid request
         if (rest_countries_keys != ""):
-            country_restcountries_response = requests.get(f'{rest_countries_base_url}alpha/{alpha2}', headers=USER_AGENT_HEADER, proxies=proxy, timeout=12)
-            country_restcountries_response.raise_for_status()
-            country_restcountries_data = country_restcountries_response.json()
+            rc_start = time.time()
+            print(f"  [{alpha2}] Fetching RestCountries data...")
+            country_restcountries_data = get_rest_countries_country_data(alpha2, proxy=proxy)
+            print(f"  [{alpha2}] RestCountries complete - {time.time() - rc_start:.2f}s")
         
         #validating that flag folder for current country exists on iso3166-flags repo, only check if flag in desired attributes
         flag_folder_exists = False
         if ("flag" in filter_attributes):
+            flag_start = time.time()
             if (requests.get("https://github.com/amckenna41/iso3166-flags/blob/main/iso3166-2-flags/" + alpha2, headers=USER_AGENT_HEADER, proxies=proxy, timeout=15).status_code != 404):
                 flag_folder_exists = True
+            print(f"  [{alpha2}] Flag check complete - {time.time() - flag_start:.2f}s")
 
         #iterate over all country's' subdivisions, assigning subdivision code, name, type, parent code and flag URL, where applicable for the json object
+        print(f"  [{alpha2}] Processing {len(all_subdivisions)} subdivisions...")
+                
         for subd in all_subdivisions:
 
             #removing whitespace at start/end of string, also removing "†" and "*" characters which appears in some official ISO subdivision names e.g MK & ES
             subdivision_name = subd.name
             subdivision_name = subdivision_name.replace('†', '').replace("*", '').strip()
 
-            #skip latLng getting functionality if bool parameter set
-            if (extract_lat_lng):
-                #get subdivision coordinates using googlemaps api python client, don't make API call if latLng attribute to be excluded from output
-                if ("latLng" not in filter_attributes):
-                    gmaps_latlng = []
-                else:
-                    #initialise google maps client with API key, use proxy if input proxy not None
-                    session = requests.Session()
-                    if (proxy):
-                        session.proxies = {
-                        "http": proxy,
-                        "https": proxy
-                    }
-                                
-                    gmaps = googlemaps.Client(key=os.environ["GOOGLE_MAPS_API_KEY"], requests_session=session)
-                    # gmaps.session.close()
-                    try:
-                        gmaps_latlng = gmaps.geocode(subd.name + ", " + country_name, region=alpha2, language="en")
-                        # gmaps_latlng.close()
-                        #close session
-                        session.close()
+            #raise error if subdivision code already in output object
+            if (subd.code in list(all_country_data[alpha2].keys())):
+                raise ValueError(f"Subdivision code already present in output object: {subd.code}.")
 
-                    except Exception as e:
-                        print(f"Error when searching for lat/lang of {subd.code} ({subd.name}) for {alpha2} using the GoogleMaps API:\n{e.args[0]}.")
-
-                #set coordinates to None if not found using maps api, round to 3 decimal places
-                if (gmaps_latlng != []):
-                    subdivision_coords = [round(gmaps_latlng[0]['geometry']['location']['lat'], 3), round(gmaps_latlng[0]['geometry']['location']['lng'], 3)]
-                else:
-                    subdivision_coords = None
-
-                #raise error if subdivision code already in output object
-                if (subd.code in list(all_country_data[alpha2].keys())):
-                    raise ValueError(f"Subdivision code already present in output object: {subd.code}.")
-            else:
-                subdivision_coords = None
+            #raise error if subdivision code already in output object
+            if (subd.code in list(all_country_data[alpha2].keys())):
+                raise ValueError(f"Subdivision code already present in output object: {subd.code}.")
 
             #initialise subdivision code object and its attributes
             all_country_data[alpha2][subd.code] = {}
@@ -360,7 +340,13 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
             all_country_data[alpha2][subd.code]["localOtherName"] = None
             all_country_data[alpha2][subd.code]["type"] = subd.type
             all_country_data[alpha2][subd.code]["parentCode"] = subd.parent_code
-            all_country_data[alpha2][subd.code]["latLng"] = subdivision_coords
+
+            #get subdivision coordinates (centroid) using OSM API and Geo class
+            if ("latLng" in filter_attributes):
+                # Use pre-fetched centroids instead of fetching per-subdivision
+                all_country_data[alpha2][subd.code]["latLng"] = [float(x.strip()) for x in geo.geo_cache.loc[geo.geo_cache['subdivisionCode'] == subd.code]['latLng'].values[0].split(',')]
+            else:
+                all_country_data[alpha2][subd.code]["latLng"] = None
 
             #don't request.get flag URL if not included in filter_attributes parameter
             if ("flag" in filter_attributes):
@@ -372,57 +358,38 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
                 all_country_data[alpha2][subd.code]["flag"] = None #temporary key for flag URL attribute
 
             #append rest country key data to country output object if inputted
-            if (rest_countries_keys != "" and rest_countries_keys is not None):
+            if rest_countries_keys != "" and rest_countries_keys is not None:
                 for key in rest_countries_keys:
-                    #some rest country object data is in nested dict
-                    if (key == "carSigns"):
-                        all_country_data[alpha2][subd.code][key] = country_restcountries_data[0]["car"]["signs"]
-                    elif (key == "carSide"):
-                        all_country_data[alpha2][subd.code][key] = country_restcountries_data[0]["car"]["side"]
-                    elif (key == "postalCode"):
-                        all_country_data[alpha2][subd.code][key] = f"Format: {country_restcountries_data[0]['postalCode']['format']}, Regex: {country_restcountries_data[0]['postalCode']['regex']}"
-                    else:
-                        all_country_data[alpha2][subd.code][key] = country_restcountries_data[0][key]
+                    value = country_restcountries_data.get(key) if country_restcountries_data else None
+                    all_country_data[alpha2][subd.code][key] = value
 
-                    #if attribute is list convert into str
-                    if (isinstance(all_country_data[alpha2][subd.code][key], list)):
-                        all_country_data[alpha2][subd.code][key] = ','.join(all_country_data[alpha2][subd.code][key])
+            #get list of cities per subdivision using city_data.py module
+            if state_city_data:
+                cities = get_cities_for_subdivision(alpha2, subd.code, proxy=proxy)
+                all_country_data[alpha2][subd.code]["cities"] = cities
 
-            #get list of cities per subdivision, via the Country State City API
-            if (state_city_data):
-                #initialise cities attribute in subdivision object
-                all_country_data[alpha2][subd.code]["cities"] = []
-
-                #API requires the subdivision code minus the country code
-                subd_code = subd.code.split('-')[1]
-
-                #pull city-level subdivision data using the API
-                subdivision_city_data_headers = USER_AGENT_HEADER
-                subdivision_city_data_headers["X-CSCAPI-KEY"] = os.environ["COUNTRY_STATE_CITY_API_KEY"]
-                subdivision_city_data = requests.get(f'{country_state_city_base_url}{alpha2}/states/{subd_code}/cities', headers=subdivision_city_data_headers, proxies=proxy, timeout=15).json()
-
-                #iterate over each city object in API output, append each city name to attribute
-                for city in subdivision_city_data:
-                    all_country_data[alpha2][subd.code]["cities"].append(city['name'])
-
-                #get lat/lang for each city, default False
-                state_city_data_lat_lng = False
-
-                #iterate over each city object in API output, append each city name and latLng to attribute - by default this is not executed
-                if (state_city_data_lat_lng):
-                    for city in subdivision_city_data:
-                        all_country_data[alpha2][subd.code]["cities"].append({"name": city['name'], "latLng": [city['latitude'], city['longitude']]})
-
-                #sort cities into alphabetical order
-                all_country_data[alpha2][subd.code]["cities"] = sorted(all_country_data[alpha2][subd.code]["cities"])
-
-            # #iterate over each default attribute to be excluded from subdivision object, delete key, if applicable
-            # if (filter_attributes != ""):
-            #     attributes_to_delete = list(set(filter_attributes).symmetric_difference(filter_attributes))
-            #     for key in attributes_to_delete:
-            #         # if (key != "latLng" and not extract_lat_lng):
-            #         del all_country_data[alpha2][subd.code][key]
+        # # print("demographics", demographics)
+        # if (demographics):
+        #     demo_start = time.time()
+        #     print(f"  [{alpha2}] Fetching demographics data (area/population)...")
+        #     #get area and population data for each subdivision via wikipedia
+        #     demographics_data = export_demographics(alpha2)
+        #     print(f"  [{alpha2}] Demographics complete - {time.time() - demo_start:.2f}s")
             
+        #     # print("demographics_data", demographics_data)
+        #     #iterate over each subdivision in country object, append area and population data where applicable
+        #     for subdivision_code in all_country_data[alpha2]:
+        #         if (subdivision_code in demographics_data):
+        #             all_country_data[alpha2][subdivision_code]["area"] = demographics_data[subdivision_code]["area"]
+        #             all_country_data[alpha2][subdivision_code]["population"] = demographics_data[subdivision_code]["population"]
+        #             # all_country_data[alpha2][subdivision_code]["population_rank"] = demographics_data[subdivision_code].get("population_rank")
+        #             # all_country_data[alpha2][subdivision_code]["population_density"] = demographics_data[subdivision_code].get("population_density")
+        #         else:
+        #             all_country_data[alpha2][subdivision_code]["area"] = None
+        #             all_country_data[alpha2][subdivision_code]["population"] = None
+        #             # all_country_data[alpha2][subdivision_code]["population_rank"] = None
+        #             # all_country_data[alpha2][subdivision_code]["population_density"] = None
+
         #save current exported country subdivision data at the current iteration - useful for saving exported process if one iteration fails 
         if (save_each_iteration):
 
@@ -468,9 +435,10 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
                 for country_code, subdivisions in sorted(all_country_data.items())
             }
 
-            #export the subdivision data object to the output files
-            export_iso3166_2_data(all_country_data=all_country_data, export_filepath=export_filepath, export_csv=export_csv, export_xml=export_xml)
+            #export the subdivision data object to the output files - only JSON when save_each_iteration is True
+            export_iso3166_2_data(all_country_data=all_country_data, export_filepath=export_filepath, export_csv=False, export_xml=False)
     
+        print(f"  [{alpha2}] Iteration complete - {time.time() - country_iter_start:.2f}s total\n")
         #sort subdivision codes in json objects in natural alphabetical/numerical order using natsort library
         # all_country_data[alpha2] = dict(OrderedDict(natsort.natsorted(all_country_data[alpha2].items())))
 
@@ -510,15 +478,18 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
         all_country_data = json.load(input_json)
     
     #append latest subdivision updates/changes from /iso3166_2_resources folder to the iso3166-2 object
+    update_start = time.time()
     all_country_data = update_subdivision(iso3166_2_filename=export_filepath, subdivision_csv=os.path.join(resources_folder, "subdivision_updates.csv"), export=0,
                                           rest_countries_keys=rest_countries_keys)
 
     #get local Name data for each subdivision, unless localOtherName or name attributes to be excluded from export
     if (filter_attributes == "" or ("localOtherName" in filter_attributes or "name" in filter_attributes)):
+        local_start = time.time()
         all_country_data = add_local_other_names(all_country_data, filepath=local_other_names_filepath)
 
     #add historical subdivision data updates from iso3166-updates software - needs to be done here after all attribute values such as local name added to all subdivision objects
     if (history or "history" in filter_attributes):
+        history_start = time.time()
         all_country_data = add_history(all_country_data)
 
     #sort subdivision objects into natural order and convert to regular dicts
@@ -532,6 +503,8 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
         }
         for country_code, subdivisions in sorted(all_country_data.items())
     }
+    #start export timer
+    export_start = time.time()
 
     #export the subdivision data object to the output files
     export_iso3166_2_data(all_country_data=all_country_data, export_filepath=export_filepath, export_csv=export_csv, export_xml=export_xml)
@@ -543,8 +516,14 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
     if (verbose):
         print('\n######################################################################\n')
         print(f"ISO 3166-2 data successfully exported to {export_filepath}.")
-        print(f"\nElapsed Time for exporting all ISO 3166-2 data: {(elapsed / 60):.2f} minutes.")
+        print(f"\n[FINAL] Elapsed Time: {(elapsed / 60):.2f} minutes ({elapsed:.1f}s)")
+        print(f"[FINAL] Completed at {time.strftime('%H:%M:%S')}")
+        print('######################################################################')
 
+    #return the ISO 3166-2 data object if applicable
+    if (export):
+        return all_country_data
+    
 if __name__ == '__main__':
 
     #parse input arguments using ArgParse 
@@ -558,12 +537,12 @@ if __name__ == '__main__':
         help='Filepath to the resources folder required for export, including the local/other names csv and updates subdivisions csv.')
     parser.add_argument('-export_folder', '--export_folder', type=str, required=False, default="test_iso3166-2", 
         help='Output folder to store output objects.')
+    parser.add_argument('-export', '--export', required=False, action=argparse.BooleanOptionalAction, default=0, 
+        help='Set to 1 to export ISO 3166-2 data object from the function.')
     parser.add_argument('-export_csv', '--export_csv', required=False, action=argparse.BooleanOptionalAction, default=1, 
         help='Set to 1 to export ISO 3166-2 dataset to CSV, JSON is only exported by default.')
     parser.add_argument('-export_xml', '--export_xml', required=False, action=argparse.BooleanOptionalAction, default=1, 
         help='Set to 1 to export ISO 3166-2 dataset to XML, JSON is only exported by default.')
-    parser.add_argument('-extract_lat_lng', '--extract_lat_lng', required=False, action=argparse.BooleanOptionalAction, default=0, 
-        help='Set to 1 to extract the lat/lng data for each subdivision via the Google Maps API, by default data not extracted due to resource cost.')
     parser.add_argument('-verbose', '--verbose', required=False, action=argparse.BooleanOptionalAction, default=1, 
         help='Set to 1 to print out progress of export function, 0 will not print progress.')
     parser.add_argument('-alpha_codes_range', '--alpha_codes_range', type=str, required=False, default="", 
@@ -580,6 +559,8 @@ if __name__ == '__main__':
         help='Set to 1 to save the exported subdivision data on each iteration rather than just at the end.')
     parser.add_argument('-use_proxy', '--use_proxy', required=False, action=argparse.BooleanOptionalAction, default=0, 
         help='Set to 1 to use a proxy IP when scraping the data from wiki.')
+    parser.add_argument('-geo_cache_path', '--geo_cache_path', type=str, required=False, default=os.path.join("iso3166_2_resources", "geo_cache_min.csv"), 
+        help='Custom path to geo cache CSV file. If not provided, uses the default cache path.')
     
     #parse input args
     args = parser.parse_args()

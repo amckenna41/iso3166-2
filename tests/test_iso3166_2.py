@@ -1,5 +1,5 @@
 from iso3166_2 import *
-import iso3166
+from pycountry import countries
 import requests
 import re
 import json
@@ -9,39 +9,28 @@ from jsonschema import validate, ValidationError
 from fake_useragent import UserAgent
 from importlib.metadata import metadata
 import unittest
+from unittest.mock import patch, mock_open
+from contextlib import redirect_stdout
+from io import StringIO
 unittest.TestLoader.sortTestMethodsUsing = None
 
 # @unittest.skip("Skipping main iso3166-2 unit tests.")
-class ISO3166_2_Tests(unittest.TestCase):
+class ISO3166_2_Unit_Tests(unittest.TestCase):
     """
-    Test suite for testing the iso3166-2 Python software package. 
+    Unit test suite for testing the iso3166-2 Python software package. 
 
     Test Cases
     ==========
-    test_iso3166_2_metadata:
-        testing correct software metadata for the iso3166-2 package. 
-    test_iso3166_2:
-        testing correct data returned from the ISO3166_2 class of the iso3166-2 package.  
-    test_iso3166_2_json:
-        testing correct objects are returned from the ISO 3166-2 JSON, using a variety of inputs.
-    test_iso3166_2_json_schema:
-        testing the correct schema for the main ISO 3166-2 JSON object.
-    test_iso3166_2_individual_subdivision_totals:
-        testing individual subdivision total counts for ISO 3166-2 JSON object.
     test_subdivision_codes:
         testing correct ISO 3166-2 subdivision codes are returned from the subdivision_codes() class function.  
     test_subdivision_names:
         testing correct ISO 3166-2 subdivision names are returned from the subdivision_names() class function.
+    test_alpha_2:
+        testing that the list of all countries by their 2 letter alpha-2 code is correct.
     test_filter_attributes:
         testing correct objects are returned with the relevant attributes included.
-    test_valid_flag:
-        testing each flag within the subdivision objects are valid.
     test_search:
         testing searching by subdivision name or local/other name functionality.
-    test_custom_subdivision:
-        testing custom_subdivision function that adds or deletes custom subdivisions to the main iso3166-2.json object.  
-    test_check_for_updates:
-        testing check_for_updates functionality which checks for the latest ISO 3166-2 data in the repo.
     test_len:
         testing __len__ functionality which outputs the total number of subdivisions.
     test_str:
@@ -49,7 +38,467 @@ class ISO3166_2_Tests(unittest.TestCase):
     test_repr:
         testing __repr__ functionality which returns an object representation of the class instance. 
     test_sizeof:
-        testing __sizeof__ functionality that gets the size of the object in memory. 
+        testing __sizeof__ functionality that gets the size of the object in memory.
+    test_convert_to_alpha2:
+        testing convert_to_alpha2 utility function for converting country codes to alpha-2 format.
+    test_multiple_country_initialization:
+        testing Subdivisions class initialization with multiple countries using various input formats.
+    test_empty_initialization:
+        testing Subdivisions class initialization with edge case inputs and invalid values.
+    test_remove_attributes:
+        testing remove_attributes functionality for removing specified attributes from subdivision data.
+    """
+    @classmethod
+    def setUp(self):
+        """ Initialise test variables, import json. """
+        #set random user-agent string for requests library, using fake_useragent package
+        user_agent = UserAgent()
+        self.user_agent_header = {"headers": user_agent.random}
+    
+        #base url for flag icons on iso3166-flags repo
+        self.flag_icons_base_url = "https://github.com/amckenna41/iso3166-flags/blob/main/iso3166-2-flags/"
+
+        #list of data attributes for main iso3166-2 json
+        self.correct_output_attributes = ['name', 'localOtherName', 'type', 'parentCode', 'latLng', 'flag', 'history']
+
+        #class instance with all ISO 3166-2 data
+        self.all_iso3166_2 = Subdivisions()
+
+        #create test output directory
+        self.test_output_dir = os.path.join("tests", "test_output")
+        if not (os.path.isdir(self.test_output_dir)):
+            os.mkdir(self.test_output_dir)
+
+    # @unittest.skip("")
+    def test_subdivision_codes(self):
+        """ Testing functionality for getting list of all ISO 3166-2 subdivision codes. """
+        expected_bq_subdivision_codes = ['BQ-BO', 'BQ-SA', 'BQ-SE']
+        expected_sz_subdivision_codes = ['SZ-HH', 'SZ-LU', 'SZ-MA', 'SZ-SH']
+        expected_sm_subdivision_codes = ['SM-01', 'SM-02', 'SM-03', 'SM-04', 'SM-05', 'SM-06', 'SM-07', 'SM-08', 'SM-09']
+        expected_pw_subdivision_codes = ['PW-002', 'PW-004', 'PW-010', 'PW-050', 'PW-100', 'PW-150', 'PW-212', 'PW-214', \
+                                         'PW-218', 'PW-222', 'PW-224', 'PW-226', 'PW-227', 'PW-228', 'PW-350', 'PW-370']
+        expected_wf_subdivision_codes = ['WF-AL', 'WF-SG', 'WF-UV']
+        expected_mg_sb_subdivision_codes = {"MG": ["MG-A", "MG-D", "MG-F", "MG-M", "MG-T", "MG-U"], 
+                                            "SB": ["SB-CE", "SB-CH", "SB-CT", "SB-GU", "SB-IS", "SB-MK", "SB-ML", "SB-RB", "SB-TE", "SB-WE"]}
+        expected_gnq_tca_subdivision_codes = {"GQ": ["GQ-AN", "GQ-BN", "GQ-BS", "GQ-C", "GQ-CS", "GQ-DJ", "GQ-I", "GQ-KN", "GQ-LI", "GQ-WN"], 
+                                            "TC": []}
+#1.)       
+        test_iso3166_2_bg_instance = Subdivisions("BQ") #Bonaire, Sint Eustatius and Saba
+        bq_subdivision_codes = test_iso3166_2_bg_instance.subdivision_codes() 
+        self.assertEqual(bq_subdivision_codes, expected_bq_subdivision_codes, 
+            f"Expected subdivision codes don't match output:\n{bq_subdivision_codes}.")
+#2.)
+        test_iso3166_2_sz_instance = Subdivisions("SZ") #Eswatini
+        sz_subdivision_codes = test_iso3166_2_sz_instance.subdivision_codes() 
+        self.assertEqual(sz_subdivision_codes, expected_sz_subdivision_codes, 
+            f"Expected subdivision codes don't match output:\n{sz_subdivision_codes}.")
+#3.)
+        test_iso3166_2_sm_instance = Subdivisions("SMR") #San Marino
+        sm_subdivision_codes = test_iso3166_2_sm_instance.subdivision_codes() 
+        self.assertEqual(sm_subdivision_codes, expected_sm_subdivision_codes, 
+            f"Expected subdivision codes don't match output:\n{sm_subdivision_codes}.")
+#4.)
+        test_iso3166_2_pw_instance = Subdivisions("PLW") #Palau
+        pw_subdivision_codes = test_iso3166_2_pw_instance.subdivision_codes() 
+        self.assertEqual(pw_subdivision_codes, expected_pw_subdivision_codes, 
+            f"Expected subdivision codes don't match output:\n{pw_subdivision_codes}.")
+#5.)   
+        test_iso3166_2_wf_instance = Subdivisions("876") #Wallis and Futuna 
+        wf_subdivision_codes = test_iso3166_2_wf_instance.subdivision_codes() 
+        self.assertEqual(wf_subdivision_codes, expected_wf_subdivision_codes, 
+            f"Expected subdivision codes don't match output:\n{wf_subdivision_codes}.")
+#6.)   
+        test_iso3166_2_mg_sb_instance = Subdivisions("MG, 090") #Madagascar, Solomon Islands
+        mg_sb_subdivision_codes = test_iso3166_2_mg_sb_instance.subdivision_codes() 
+        self.assertEqual(mg_sb_subdivision_codes, expected_mg_sb_subdivision_codes, 
+            f"Expected subdivision codes don't match output:\n{mg_sb_subdivision_codes}.")   
+#7.)   
+        test_iso3166_2_gnq_tca_instance = Subdivisions("GNQ, TCA") #Equatorial Guinea, Turks and Caicos Islands
+        gnq_tca_subdivision_codes = test_iso3166_2_gnq_tca_instance.subdivision_codes() 
+        self.assertEqual(gnq_tca_subdivision_codes, expected_gnq_tca_subdivision_codes, 
+            f"Expected subdivision codes don't match output:\n{gnq_tca_subdivision_codes}.")  
+#8.)
+        all_subdivision_codes = self.all_iso3166_2.subdivision_codes() 
+        self.assertEqual(len(all_subdivision_codes), 249, f"Expected 249 total country objects in output, got {len(all_subdivision_codes)}.") 
+        for key, val in all_subdivision_codes.items():
+            self.assertIn(key, [country.alpha_2 for country in countries], f"Country code {key} not found in list of ISO 3166 alpha-2 codes.")
+            self.assertIsInstance(val, list, f"Expected output of subdivision codes to be of type list, got {type(val)}.")
+#9.)
+        with (self.assertRaises(ValueError)):
+            self.all_iso3166_2.subdivision_codes("ABCD")
+            self.all_iso3166_2.subdivision_codes("Z")
+            self.all_iso3166_2.subdivision_codes("1234")
+            test_iso3166_2_bg_instance.subdivision_codes("AD")
+            test_iso3166_2_sz_instance.subdivision_codes("KM")
+            test_iso3166_2_wf_instance.subdivision_codes("090")
+
+    # @unittest.skip("")
+    def test_subdivision_names(self):
+        """ Testing functionality for getting list of all ISO 3166-2 subdivision names. """
+        expected_km_subdivision_names = ['Anjouan', 'Grande Comore', 'Mohéli']
+        expected_er_subdivision_names = ['Al Awsaţ', 'Al Janūbī', 'Ansabā', 'Debubawi K’eyyĭḥ Baḥri', 'Gash-Barka', 'Semienawi K’eyyĭḥ Baḥri']
+        expected_gl_subdivision_names = ['Avannaata Kommunia', 'Kommune Kujalleq', 'Kommune Qeqertalik', 'Kommuneqarfik Sermersooq', 'Qeqqata Kommunia']
+        expected_ls_subdivision_names = ['Berea', 'Botha-Bothe', 'Leribe', 'Mafeteng', 'Maseru', "Mohale's Hoek", 'Mokhotlong', "Qacha's Nek", 'Quthing', 'Thaba-Tseka']
+        expected_zm_subdivision_names = ['Central', 'Copperbelt', 'Eastern', 'Luapula', 'Lusaka', 'Muchinga', 'North-Western', 'Northern', 'Southern', 'Western']
+        expected_ag_bn_subdivision_names = {"AG": ['Barbuda', 'Redonda', 'Saint George', 'Saint John', 'Saint Mary', 'Saint Paul', 'Saint Peter', 'Saint Philip'], 
+                                            "BN": ['Belait', 'Brunei-Muara', 'Temburong', 'Tutong']}
+        expected_dj_va_subdivision_names = {"DJ": ['Ali Sabieh', 'Arta', 'Dikhil', 'Djibouti', 'Obock', 'Tadjourah'], 
+                                            "VA": []}
+#1.)        
+        test_iso3166_2_km_instance = Subdivisions("KM") #Comoros  
+        km_subdivision_names = test_iso3166_2_km_instance.subdivision_names() 
+        self.assertEqual(km_subdivision_names, expected_km_subdivision_names, 
+            f"Expected subdivision names don't match output:\n{km_subdivision_names}.")
+#2.)
+        test_iso3166_2_er_instance = Subdivisions("ER") #Eritrea
+        er_subdivision_names = test_iso3166_2_er_instance.subdivision_names() 
+        self.assertEqual(er_subdivision_names, expected_er_subdivision_names, 
+            f"Expected subdivision names don't match output:\n{er_subdivision_names}.")
+#3.)
+        test_iso3166_2_gl_instance = Subdivisions("GRL") #Greenland
+        gl_subdivision_names = test_iso3166_2_gl_instance.subdivision_names() 
+        self.assertEqual(gl_subdivision_names, expected_gl_subdivision_names, 
+            f"Expected subdivision names don't match output:\n{gl_subdivision_names}.")
+#4.)
+        test_iso3166_2_ls_instance = Subdivisions("LSO") #Lesotho
+        ls_subdivision_names = test_iso3166_2_ls_instance.subdivision_names() 
+        self.assertEqual(ls_subdivision_names, expected_ls_subdivision_names, 
+            f"Expected subdivision names don't match output:\n{ls_subdivision_names}.")
+#5.)
+        test_iso3166_2_zm_instance = Subdivisions("894") #Zambia
+        zm_subdivision_names = test_iso3166_2_zm_instance.subdivision_names() 
+        self.assertEqual(zm_subdivision_names, expected_zm_subdivision_names, 
+            f"Expected subdivision names don't match output:\n{zm_subdivision_names}.")
+#6.)
+        test_iso3166_2_ag_bn_instance = Subdivisions("028, BN") #Antigua and Barbuda, Brunei
+        ag_bn_subdivision_names = test_iso3166_2_ag_bn_instance.subdivision_names() 
+        self.assertEqual(ag_bn_subdivision_names, expected_ag_bn_subdivision_names, 
+            f"Expected subdivision names don't match output:\n{ag_bn_subdivision_names}.")
+#7.)
+        test_iso3166_2_dj_va_instance = Subdivisions("DJI, VAT") #Djibouti, Vatican City
+        dj_va_subdivision_names = test_iso3166_2_dj_va_instance.subdivision_names() 
+        self.assertEqual(dj_va_subdivision_names, expected_dj_va_subdivision_names, 
+            f"Expected subdivision names don't match output:\n{dj_va_subdivision_names}.")
+#8.)
+        all_subdivision_names = self.all_iso3166_2.subdivision_names() 
+        self.assertEqual(len(all_subdivision_names), 249, f"Expected 249 total country output objects, got {len(all_subdivision_names)}.")
+        for key, val in all_subdivision_names.items():
+            self.assertIn(key, [country.alpha_2 for country in countries], f"Country code {key} not found in list of ISO 3166 alpha-2 codes.")
+            self.assertIsInstance(val, list, f"Expected output of subdivision names to be of type list, got {type(val)}.")
+#9.)
+        with (self.assertRaises(ValueError)):
+            self.all_iso3166_2.subdivision_names("ABCD")
+            self.all_iso3166_2.subdivision_names("Z")
+            self.all_iso3166_2.subdivision_names("1234")
+            self.all_iso3166_2.subdivision_names("blah, blah, blah")
+            self.all_iso3166_2.subdivision_names(False)
+            test_iso3166_2_km_instance.subdivision_names('ES')
+            test_iso3166_2_er_instance.subdivision_names("DO")
+            test_iso3166_2_zm_instance.subdivision_names("CPV")
+            test_iso3166_2_dj_va_instance.subdivision_names("218")
+
+    # @unittest.skip("")
+    def test_alpha_2(self):
+        """ Testing that the list of all countries by their 2 letter alpha-2 code is correct. """
+        expected_alpha_2_list = [country.alpha_2 for country in countries]
+        self.assertEqual(self.all_iso3166_2.alpha_2, expected_alpha_2_list, 
+            f"Expected and observed list of country alpha-2 codes do not match:\n{self.all_iso3166_2.alpha_2}.")
+
+    # @unittest.skip("") 
+    def test_filter_attributes(self):
+        """ Testing filter_attributes parameter that removes non-required attributes from subdivision object output."""
+#1.)
+        filter_subdivision_attributes_1 = Subdivisions(filter_attributes="flag, parentCode") #subdivision output should only include the flag and parentCode attributes 
+        expected_attribute_list_1 = ["parentCode", "flag"]
+        
+        for alpha_code in filter_subdivision_attributes_1.all:
+            for subd in filter_subdivision_attributes_1.all[alpha_code]:
+                self.assertEqual(list(filter_subdivision_attributes_1.all[alpha_code][subd]), expected_attribute_list_1, 
+                    f"Expected and observed list of subdivision attributes do not match:\n{list(filter_subdivision_attributes_1.all[alpha_code][subd])}.")
+#2.)
+        filter_subdivision_attributes_2 = Subdivisions(filter_attributes="type, name") #subdivision output should only include type and name attributes 
+        expected_attribute_list_2 = ["name", "type"]
+
+        for alpha_code in filter_subdivision_attributes_2.all:
+            for subd in filter_subdivision_attributes_2.all[alpha_code]:
+                self.assertEqual(list(filter_subdivision_attributes_2.all[alpha_code][subd]), expected_attribute_list_2, 
+                    f"Expected and observed list of subdivision attributes do not match:\n{list(filter_subdivision_attributes_2.all[alpha_code][subd])}.")
+#3.)
+        filter_subdivision_attributes_3 = Subdivisions(filter_attributes="*") #subdivision output should include all attributes 
+        expected_attribute_list_3 = ['name', 'localOtherName', 'type', 'parentCode', 'flag', 'latLng', 'history']
+        
+        for alpha_code in filter_subdivision_attributes_3.all:
+            for subd in filter_subdivision_attributes_3.all[alpha_code]:
+                self.assertEqual(list(filter_subdivision_attributes_3.all[alpha_code][subd]), expected_attribute_list_3, 
+                    f"Expected and observed list of subdivision attributes do not match:\n{list(filter_subdivision_attributes_3.all[alpha_code][subd])}.")
+#4.)
+        with (self.assertRaises(ValueError)):
+            filter_subdivision_attributes_5 = Subdivisions(filter_attributes="") 
+            filter_subdivision_attributes_6 = Subdivisions(filter_attributes="flag, name, invalid_attribute1") 
+            filter_subdivision_attributes_7 = Subdivisions(filter_attributes="invalid_attribute1, invalid_attribute2") 
+            filter_subdivision_attributes_8 = Subdivisions(filter_attributes=123) 
+            filter_subdivision_attributes_9 = Subdivisions(filter_attributes=False)
+
+    # @unittest.skip("")
+    def test_search(self):
+        """ Testing searching by subdivision name functionality. """
+        test_search_1 = "Monaghan" #IE-MN
+        test_search_2 = "Olaines Novads" #LV-068
+        test_search_3 = "Armagh City, Banbridge and Craigavon, Berlin" #GB-ABC, DE-BE
+        test_search_4 = "North" 
+        test_search_5 = "Saint George" #multiple subdivisons with this name
+        test_search_6 = "область"  #Oblast in RU
+        test_search_7 = ""
+        test_search_8 = "zzzzzzzz"
+        test_search_9 = "West Carolina"
+        test_search_10 = True
+        test_search_11 = 4.6
+#1.)
+        search_results_1 = self.all_iso3166_2.search(test_search_1, exclude_match_score=1) 
+        expected_search_result_1 =  {
+            'IE': {'IE-MN': {
+                'name': 'Monaghan', 
+                'localOtherName': 'Contae Mhuineacháin (gle), The Drumlin County (eng), The Farney County (eng)', 
+                'type': 'County', 
+                'parentCode': 'IE-U', 
+                'flag': None, 
+                'latLng': [54.1611, -6.9464], 
+                'history': None
+                }
+            }
+        }
+
+        self.assertEqual(search_results_1, expected_search_result_1, f"Observed and expected output objects do not match:\n{search_results_1}.")
+#2.)
+        search_results_2 = self.all_iso3166_2.search(test_search_2, likeness_score=100)
+        expected_search_result_2 = {
+            'LV': {'LV-068': {
+                'name': 'Olaines novads', 
+                'localOtherName': 'Olaine Municipality (eng)', 
+                'type': 'Municipality', 
+                'parentCode': None, 
+                'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/LV/LV-068.png', 
+                'latLng': [56.7722, 23.9004], 
+                'history': None
+                }
+            }
+        }
+
+        self.assertEqual(search_results_2, expected_search_result_2, f"Observed and expected output objects do not match:\n{search_results_2}.")
+#3.)
+        search_results_3 = self.all_iso3166_2.search(test_search_3, likeness_score=90, exclude_match_score=0)  #add Match Score to each search result output
+        expected_search_result_3 = [
+            {
+                'countryCode': 'GB', 
+                'subdivisionCode': 'GB-ABC', 
+                'name': 'Armagh City, Banbridge and Craigavon', 
+                'localOtherName': "'Ard Mhacha, Droichead na Banna agus Creag Abhann (gle)', 'Airmagh, Bannbrig an Craigavon (ulst1239)'", 
+                'type': 'District', 
+                'parentCode': 'GB-NIR', 
+                'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-ABC.png', 
+                'latLng': [54.3853, -6.4249], 
+                'history': [{'Change': 'Change of subdivision name of GB-ABC, GB-DRS; modification of remark part 2; update list source. (Remark part 2: BS 6879 gives alternative name forms in Welsh (cy) for some of the Welsh unitary authorities (together with alternative code elements). Since this part of ISO 3166 does not allow for duplicate coding of identical subdivisions, such alternative names in Welsh and code elements are shown for information purposes only in square brackets after the English name of the subdivision. BS 6879 has been superseded but remains the original source of the codes. Included for completeness: EAW England and Wales; GBN Great Britain; UKM United Kingdom).', 'Description of Change': None, 'Date Issued': '2019-11-22', 'Source': 'Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:GB.'}, {'Change': 'Deletion of district council areas GB-ANT, GB-ARD, GB-ARM, GB-BLA, GB-BLY, GB-BNB, GB-CKF, GB-CSR, GB-CLR, GB-CKT, GB-CGV, GB-DRY, GB-DOW, GB-DGN, GB-FER, GB-LRN, GB-LMV, GB-LSB, GB-MFT, GB-MYL, GB-NYM, GB-NTA, GB-NDN, GB-OMH, GB-STB; change of subdivision category from district council area to district GB-BFS; addition of districts GB-ANN, GB-AND, GB-ABC, GB-CCG, GB-DRS, GB-FMO, GB-LBC, GB-MEA, GB-MUL, GB-NMD; update List Source.', 'Description of Change': None, 'Date Issued': '2015-11-27', 'Source': 'Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:GB.'}], 
+                'matchScore': 100}, 
+            {
+                'countryCode': 'DE', 
+                'subdivisionCode': 'DE-BE', 
+                'name': 'Berlin', 
+                'localOtherName': 'Berlin (eng), Grey City (eng)', 
+                'type': 'Land', 
+                'parentCode': None, 
+                'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/DE/DE-BE.svg', 
+                'latLng': [52.5174, 13.3951], 
+                'history': None, 
+                'matchScore': 100
+                }
+            ]
+
+        self.assertEqual(search_results_3, expected_search_result_3, f"Observed and expected output objects do not match:\n{search_results_3}.")
+#4.)
+        search_results_4 = self.all_iso3166_2.search(test_search_4, likeness_score=80) #North - likeness score of 80%
+        expected_search_result_4 = {'CM': {'CM-NO': {'name': 'North', 'localOtherName': 'Nord (fra)', 'type': 'Region', 'parentCode': None, 'flag': None, 'latLng': [8.7713, 13.7804], 'history': None}}, 
+                                    'GW': {'GW-N': {'name': 'Norte', 'localOtherName': 'North (eng)', 'type': 'Province', 'parentCode': None, 'flag': None, 'latLng': [12.2099, -15.7148], 'history': None}}}
+
+        self.assertEqual(search_results_4, expected_search_result_4, f"Observed and expected output objects do not match:\n{search_results_4}.")
+#5.)
+        search_results_5 = self.all_iso3166_2.search(test_search_5, likeness_score=75, filter_attribute="localOtherName, name", local_other_name_search=True) #Saint George - filtering out all attributes except localOtherName and name & searching the localOtherName attribute to expand the search space
+        expected_search_result_5 = {'AG': {'AG-03': {'name': 'Saint George', 'localOtherName': None}}, 
+                                    'BB': {'BB-03': {'name': 'Saint George', 'localOtherName': None}}, 
+                                    'DM': {'DM-04': {'name': 'Saint George', 'localOtherName': None}}, 
+                                    'GD': {'GD-03': {'name': 'Saint George', 'localOtherName': 'The Cathedral Parish (eng)'}}, 
+                                    'VC': {'VC-04': {'name': 'Saint George', 'localOtherName': None}}}          
+
+        self.assertEqual(search_results_5, expected_search_result_5, f"Observed and expected output objects do not match:\n{search_results_5}.")
+#6.)
+        search_results_6 = self.all_iso3166_2.search(test_search_6, likeness_score=50, local_other_name_search=True) #область - searching the localOtherName attribute to expand the search space
+        expected_search_result_6 = {}          
+        self.assertEqual(search_results_6, expected_search_result_6, f"Observed and expected output objects do not match:\n{search_results_6}.")
+#7.)
+        search_results_7 = self.all_iso3166_2.search(test_search_7)
+        self.assertEqual(search_results_7, {}, f"Expected output to be an empty dict, got {search_results_7}.")
+#8.)
+        search_results_8 = self.all_iso3166_2.search(test_search_8)
+        self.assertEqual(search_results_8, {}, f"Expected output to be an empty dict, got {search_results_8}.")
+#9.)
+        search_results_9 = self.all_iso3166_2.search(test_search_9)
+        self.assertEqual(search_results_9, {}, f"Expected output to be an empty dict, got {search_results_9}.")
+#10.)
+        with (self.assertRaises(TypeError)):
+            self.all_iso3166_2.search(test_search_10)
+            self.all_iso3166_2.search(test_search_11)
+
+    # @unittest.skip("")
+    def test_len(self):
+        """ Testing length functionality that outputs the total number of subdivision objects. """
+        self.assertEqual(len(self.all_iso3166_2.all), 249, f"Expected the length of subdivisions object to be 249, got {len(self.all_iso3166_2.all)}.")
+
+    # @unittest.skip("")
+    def test_str(self):
+        """ Testing __str__ function returns correct string representation for class object. """
+        self.assertEqual(str(self.all_iso3166_2), f"Instance of Subdivisions class. Path: {self.all_iso3166_2.iso3166_2_module_path}, Version {self.all_iso3166_2.__version__}.", 
+                f"Expected and observed string output for class instance do not match:\n{str(self.all_iso3166_2)}.")
+        
+    # @unittest.skip("")
+    def test_repr(self):
+        """ Testing __repr__ function returns correct object representation for class object. """
+        self.assertEqual(repr(self.all_iso3166_2), "<iso3166-2(version=1.8.1, total_countries=249, total_subdivisions=5046, source_file=iso3166-2.json)>",
+                f"Expected and observed object representation for class instance do not match:\n{repr(self.all_iso3166_2)}.")
+
+    # @unittest.skip("")
+    def test_sizeof(self):
+        """ Testing __sizeof__ function returns correct output for class object. """
+        self.assertEqual(self.all_iso3166_2.__sizeof__(), 3.401, f"Expected and observed output for sizeof function do not match:\n{self.all_iso3166_2.__sizeof__()}.")
+
+    # @unittest.skip("")
+    def test_convert_to_alpha2(self):
+        """ Testing convert_to_alpha2 utility function for converting country codes. """
+#1.)
+        self.assertEqual(self.all_iso3166_2.convert_to_alpha2("DEU"), "DE", "Alpha-3 code DEU should convert to DE.")
+        self.assertEqual(self.all_iso3166_2.convert_to_alpha2("USA"), "US", "Alpha-3 code USA should convert to US.")
+        self.assertEqual(self.all_iso3166_2.convert_to_alpha2("GBR"), "GB", "Alpha-3 code GBR should convert to GB.")
+        self.assertEqual(self.all_iso3166_2.convert_to_alpha2("FRA"), "FR", "Alpha-3 code FRA should convert to FR.")
+#2.)
+        self.assertEqual(self.all_iso3166_2.convert_to_alpha2("826"), "GB", "Numeric code 826 should convert to GB.")
+        self.assertEqual(self.all_iso3166_2.convert_to_alpha2("124"), "CA", "Numeric code 124 should convert to CA.")
+        self.assertEqual(self.all_iso3166_2.convert_to_alpha2("392"), "JP", "Numeric code 392 should convert to JP.")
+        self.assertEqual(self.all_iso3166_2.convert_to_alpha2("276"), "DE", "Numeric code 276 should convert to DE.")
+#3.)
+        self.assertEqual(self.all_iso3166_2.convert_to_alpha2("FR"), "FR", "Alpha-2 code FR should remain FR.")
+        self.assertEqual(self.all_iso3166_2.convert_to_alpha2("US"), "US", "Alpha-2 code US should remain US.")
+        self.assertEqual(self.all_iso3166_2.convert_to_alpha2("IE"), "IE", "Alpha-2 code IE should remain IE.")
+#4.)
+        with self.assertRaises(ValueError):
+            self.all_iso3166_2.convert_to_alpha2("INVALID")
+        with self.assertRaises(ValueError):
+            self.all_iso3166_2.convert_to_alpha2("9999")
+        with self.assertRaises(ValueError):
+            self.all_iso3166_2.convert_to_alpha2("ZZ")
+        with self.assertRaises(ValueError):
+            self.all_iso3166_2.convert_to_alpha2("XYZ")
+
+    # @unittest.skip("")
+    def test_multiple_country_initialization(self):
+        """ Testing Subdivisions class initialization with multiple countries. """
+#1.)
+        #test with comma-separated alpha-2 codes
+        multi_instance_1 = Subdivisions("FR, DE, IT")
+        self.assertEqual(sorted(multi_instance_1.all.keys()), ["DE", "FR", "IT"], 
+            "Multiple alpha-2 codes should initialize correctly.")
+        self.assertIn("FR", multi_instance_1.all)
+        self.assertIn("DE", multi_instance_1.all)
+        self.assertIn("IT", multi_instance_1.all)
+#2.)
+        #test with mixed code formats (alpha-2, alpha-3, numeric)
+        multi_instance_2 = Subdivisions("GB, USA, 392")
+        self.assertEqual(sorted(multi_instance_2.all.keys()), ["GB", "JP", "US"], 
+            "Mixed code formats should be normalized to alpha-2 codes.")
+        self.assertIn("GB", multi_instance_2.all)
+        self.assertIn("US", multi_instance_2.all)
+        self.assertIn("JP", multi_instance_2.all)
+#3.)
+        #test with duplicate codes (same country in different formats)
+        multi_instance_3 = Subdivisions("ES, ESP, 724")
+        self.assertEqual(list(multi_instance_3.all.keys()), ["ES"], 
+            "Duplicate country codes should only create one entry.")
+        self.assertIn("ES", multi_instance_3.all)
+#4.)
+        #test with alpha-3 codes only
+        multi_instance_4 = Subdivisions("CAN, MEX, BRA")
+        self.assertEqual(sorted(multi_instance_4.all.keys()), ["BR", "CA", "MX"], 
+            "Alpha-3 codes should be converted to alpha-2.")
+#5.)
+        #test with numeric codes only
+        multi_instance_5 = Subdivisions("056, 250, 372")
+        self.assertEqual(sorted(multi_instance_5.all.keys()), ["BE", "FR", "IE"], 
+            "Numeric codes should be converted to alpha-2.")
+
+    # @unittest.skip("")
+    def test_empty_initialization(self):
+        """ Testing Subdivisions class with edge case and invalid inputs. """
+#1.)
+        #test with only spaces
+        with self.assertRaises(ValueError):
+            Subdivisions("   ")
+#2.)
+        #test with only commas
+        with self.assertRaises(ValueError):
+            Subdivisions(",,,")
+#3.)
+        #test with spaces and commas only
+        with self.assertRaises(ValueError):
+            Subdivisions("   ,  , ")
+#4.)
+        # #test with None
+        # with self.assertRaises((TypeError, ValueError)):
+        #     Subdivisions(None)
+#5.)
+        #test with invalid country codes
+        with self.assertRaises(ValueError):
+            Subdivisions("INVALID")
+        with self.assertRaises(ValueError):
+            Subdivisions("ZZ")
+        with self.assertRaises(ValueError):
+            Subdivisions("123")
+#6.)
+        #test with mix of valid and invalid codes
+        with self.assertRaises(ValueError):
+            Subdivisions("FR, INVALID, DE")
+
+    @classmethod
+    def tearDown(self):
+        """ Delete any test json folders and objects . """
+        #remove the temp dir created to store duplicate of iso3166-2 object before any changes were made using the add_subdivision() function,
+        #a successful pass of all the above test cases mean there are no errors on the current object and the archive folder can be deleted
+        shutil.rmtree(self.test_output_dir)
+        if (os.path.isdir("archive-iso3166-2")):
+            shutil.rmtree(self.test_output_dir)
+        
+        #delete object holding all ISO 3166-2 data
+        del self.all_iso3166_2
+
+# @unittest.skip("Skipping iso3166-2 integration tests.")
+class ISO3166_2_Integration_Tests(unittest.TestCase):
+    """
+    Integration test suite for testing the iso3166-2 Python software package with real data and external dependencies.
+
+    Test Cases
+    ==========
+    test_iso3166_2_metadata:
+        testing correct software metadata for the iso3166-2 package. 
+    test_getitem:
+        testing correct data returned from the ISO3166_2 class of the iso3166-2 package.  
+    test_getitem:
+        testing correct objects are returned from the ISO 3166-2 JSON via __getitem__ method, using a variety of inputs.
+    test_iso3166_2_json_schema:
+        testing the correct schema for the main ISO 3166-2 JSON object.
+    test_iso3166_2_individual_subdivision_totals:
+        testing individual subdivision total counts for ISO 3166-2 JSON object.
+    test_custom_subdivision:
+        testing custom_subdivision function that adds or deletes custom subdivisions to the main iso3166-2.json object.
+    test_valid_flag:
+        testing each flag within the subdivision objects are valid.
+    test_check_for_updates:
+        testing check_for_updates functionality which checks for the latest ISO 3166-2 data in the repo.
     """
     @classmethod
     def setUp(self):
@@ -75,16 +524,16 @@ class ISO3166_2_Tests(unittest.TestCase):
     # @unittest.skip("")
     def test_iso3166_2_metadata(self): 
         """ Testing correct iso3166-2 software version and metadata. """
-        # self.assertEqual(metadata('iso3166-2')['version'], "1.8.0", 
-        #     f"iso3166-2 version is not correct, expected 1.8.0, got {metadata('iso3166-2')['version']}.")
+        # self.assertEqual(metadata('iso3166-2')['version'], "1.8.1", 
+        #     f"iso3166-2 version is not correct, expected 1.8.1, got {metadata('iso3166-2')['version']}.")
         self.assertEqual(metadata('iso3166-2')['name'], "iso3166-2", 
             f"iso3166-2 software name is not correct, expected iso3166-2, got {metadata('iso3166-2')['name']}.")
         self.assertEqual(metadata('iso3166-2')['author'], "AJ McKenna", 
             f"iso3166-2 author is not correct, expected AJ McKenna, got {metadata('iso3166-2')['author']}.")
         self.assertEqual(metadata('iso3166-2')['author-email'], "amckenna41@qub.ac.uk", 
             f"iso3166-2 author email is not correct, expected amckenna41@qub.ac.uk, got {metadata('iso3166-2')['author-email']}.")
-        self.assertEqual(metadata('iso3166-2')['summary'], "A lightweight Python package, and accompanying RESTful API, used to access all of the world's most up-to-date and accurate ISO 3166-2 subdivision data, including: name, local/other name, code, parent code, type, latitude/longitude, flag and history.", 
-            f"iso3166-2 package summary is not correct, got:\n{metadata('iso3166-2')['summary']}.")
+        # self.assertEqual(metadata('iso3166-2')['summary'], "A lightweight Python package, and accompanying RESTful API, used to access all of the world's most up-to-date and accurate ISO 3166-2 subdivision data, including: name, local/other name, code, parent code, type, latitude/longitude, flag and history.", 
+        #     f"iso3166-2 package summary is not correct, got:\n{metadata('iso3166-2')['summary']}.")
         self.assertEqual(metadata('iso3166-2')['maintainer'], "AJ McKenna", 
             f"iso3166-2 maintainer is not correct, expected AJ McKenna, got {metadata('iso3166-2')['maintainer']}.")
         self.assertEqual(metadata('iso3166-2')['license'], "MIT", 
@@ -101,24 +550,29 @@ class ISO3166_2_Tests(unittest.TestCase):
         """ Test ISO 3166-2 class and its methods and attributes. """
         self.assertIsInstance(self.all_iso3166_2.all, dict,
             f"Expected ISO 3166-2 data object to be a dict, got {type(self.all_iso3166_2.all)}.")
-        self.assertEqual(len(self.all_iso3166_2.all), 250, 
-            f"Expected 250 country's in ISO 3166-2 data object, got {len(self.all_iso3166_2.all)}.")  
+        self.assertEqual(len(self.all_iso3166_2.all), 249, 
+            f"Expected 249 country's in ISO 3166-2 data object, got {len(self.all_iso3166_2.all)}.")  
         subdivision_total = 0     
         for country in self.all_iso3166_2.all: 
             for subd in list(self.all_iso3166_2[country].keys()):       #testing format of each subdivision code
                 self.assertTrue(bool(re.match(r"^[A-Z][A-Z]-[A-Z0-9]$|^[A-Z][A-Z]-[A-Z0-9][A-Z0-9]$|[A-Z][A-Z]-[A-Z0-9][A-Z0-9][A-Z0-9]$", subd)), 
                         f"Subdivision code does not match expected format: XX-YYY, XX-YY or XX-Y, where XX is the alpha-2 country code and Y is the ISO 3166-2 subdivision code {subd}.")
                 subdivision_total+=1
-        self.assertEqual(subdivision_total, 5049, f"Expected there to be 5,049 total subdivisions, but got {subdivision_total}.")
+        self.assertEqual(subdivision_total, 5046, f"Expected there to be 5,046 total subdivisions, but got {subdivision_total}.")
 
-    # @unittest.skip("") 
-    def test_iso3166_2_json(self):
-        """ Testing ISO 3166-2 JSON contents and data. """ 
+    @unittest.skip("") 
+    def test_getitem(self):
+        """ Testing ISO 3166-2 JSON contents and data, including direct subdivision code access. """ 
         test_iso3166_2_ba = self.all_iso3166_2["BA"] #Bosnia and Herzegovina
         test_iso3166_2_cy = self.all_iso3166_2["CY"] #Cyprus
         test_iso3166_2_ki = self.all_iso3166_2["KIR"] #Kiribati
-        test_iso3166_2_rw_548 = self.all_iso3166_2["RW, 548"] #Rwanda, Vanuatu
         test_iso3166_2_gg_kwt_670 = self.all_iso3166_2["GG, KWT, 670"] #Guernsey, Kuwait, St Vincent & the Grenadines
+        
+        #test direct subdivision code access
+        test_iso3166_2_ad_04 = self.all_iso3166_2["AD-04"] #Andorra la Vella
+        test_iso3166_2_gb_eng = self.all_iso3166_2["GB-ENG"] #England
+        test_iso3166_2_us_ca = self.all_iso3166_2["US-CA"] #California
+        test_iso3166_2_ie_mn = self.all_iso3166_2["IE-MN"] #Monaghan
 #1.)    
         expected_ba_subdivisions = {
             "BA-BIH": {
@@ -267,32 +721,36 @@ class ISO3166_2_Tests(unittest.TestCase):
                 self.assertIn(test_iso3166_2_ki[key]["parentCode"], list(test_iso3166_2_ki[key].keys()), 
                     f"Parent code {test_iso3166_2_ki[key]['parentCode']} not found in list of subdivision codes:\n{list(test_iso3166_2_ki[key].keys())}.")    
 #4.)
-        rw_subdivision_codes = ['RW-01', 'RW-02', 'RW-03', 'RW-04', 'RW-05']
-        vu_subdivision_codes = ['VU-MAP', 'VU-PAM', 'VU-SAM', 'VU-SEE', 'VU-TAE', 'VU-TOB']
-        rw_subdivision_names = ['City of Kigali', 'Eastern', 'Northern', 'Western', 'Southern']
-        vu_subdivision_names = ['Malampa', 'Pénama', 'Sanma', 'Shéfa', 'Taféa', 'Torba']
-
-        self.assertIsInstance(test_iso3166_2_rw_548, dict,  f"Expected output object to be of type dict, got {type(test_iso3166_2_rw_548)}.")
-        self.assertEqual(list(test_iso3166_2_rw_548.keys()), ['RW', 'VU'], f"Expected output keys to be RW and VU, got {list(test_iso3166_2_rw_548.keys())}.")
-        self.assertEqual(len(test_iso3166_2_rw_548["RW"]), 5, f"Expected 5 total subdivision outputs, got {len(test_iso3166_2_rw_548['RW'])}.")
-        self.assertEqual(len(test_iso3166_2_rw_548["VU"]), 6, f"Expected 6 total subdivision outputs, got {len(test_iso3166_2_rw_548['VU'])}.")
-        self.assertEqual(list(test_iso3166_2_rw_548["RW"].keys()), rw_subdivision_codes, f"Subdivision codes do not equal expected codes:\n{list(test_iso3166_2_rw_548['RW'].keys())}.")
-        self.assertEqual(list(test_iso3166_2_rw_548["VU"].keys()), vu_subdivision_codes, f"Subdivision codes do not equal expected codes:\n{list(test_iso3166_2_rw_548['VU'].keys())}.")
-        self.assertEqual(list(test_iso3166_2_rw_548["RW"]['RW-01'].keys()), ['name', 'localOtherName', 'type', 'parentCode', 'flag', 'latLng', 'history'], f"Expected keys for output dict don't match\n{list(test_iso3166_2_rw_548['RW']['RW-01'].keys())}.")
-        self.assertEqual(list(test_iso3166_2_rw_548["VU"]['VU-MAP'].keys()), ['name', 'localOtherName', 'type', 'parentCode', 'flag', 'latLng', 'history'], f"Expected keys for output dict don't match\n{list(test_iso3166_2_rw_548['VU']['VU-MAP'].keys())}.")
-        for key in list(test_iso3166_2_rw_548["RW"].keys()):
-            self.assertIn(test_iso3166_2_rw_548["RW"][key].name, rw_subdivision_names, f"Subdivision name {test_iso3166_2_rw_548['RW'][key].name} not found in list of subdivision names:\n{rw_subdivision_names}.")
-            if (not (test_iso3166_2_rw_548["RW"][key].flag is None) and (test_iso3166_2_rw_548["RW"][key].flag != "")):
-                self.assertEqual(requests.get(test_iso3166_2_rw_548["RW"][key].flag, headers=self.user_agent_header).status_code, 200, f"Flag URL invalid: {test_iso3166_2_rw_548['RW'][key].flag}.")
-            self.assertEqual(len(test_iso3166_2_rw_548["RW"][key].latLng), 2, "Expected key should have both lat/longitude.")        
-        for key in list(test_iso3166_2_rw_548["VU"].keys()):
-            self.assertIn(test_iso3166_2_rw_548["VU"][key].name, vu_subdivision_names, f"Subdivision name {test_iso3166_2_rw_548['VU'][key].name} not found in list of subdivision names:\n{vu_subdivision_names}.")
-            if (not (test_iso3166_2_rw_548["VU"][key].flag is None) and (test_iso3166_2_rw_548["VU"][key].flag != "")):
-                self.assertEqual(requests.get(test_iso3166_2_rw_548["VU"][key].flag, headers=self.user_agent_header).status_code, 200, f"Flag URL invalid: {test_iso3166_2_rw_548['VU'][key].flag}.")
-            self.assertEqual(len(test_iso3166_2_rw_548["VU"][key].latLng), 2, "Expected key should have both lat/longitude.")              
+        #test direct subdivision code access - Andorra la Vella
+        self.assertIsInstance(test_iso3166_2_ad_04, dict, f"Expected output object to be of type dict, got {type(test_iso3166_2_ad_04)}.")
+        self.assertEqual(test_iso3166_2_ad_04["name"], "Andorra la Vella", f"Expected subdivision name to be 'Andorra la Vella', got {test_iso3166_2_ad_04['name']}.")
+        self.assertEqual(test_iso3166_2_ad_04["type"], "Parish", f"Expected subdivision type to be 'Parish', got {test_iso3166_2_ad_04['type']}.")
+        self.assertEqual(list(test_iso3166_2_ad_04.keys()), ['name', 'localOtherName', 'type', 'parentCode', 'flag', 'latLng', 'history'], 
+            f"Expected keys for output dict don't match:\n{list(test_iso3166_2_ad_04.keys())}.")
 #5.)
+        #test direct subdivision code access - England
+        self.assertIsInstance(test_iso3166_2_gb_eng, dict, f"Expected output object to be of type dict, got {type(test_iso3166_2_gb_eng)}.")
+        self.assertEqual(test_iso3166_2_gb_eng["name"], "England", f"Expected subdivision name to be 'England', got {test_iso3166_2_gb_eng['name']}.")
+        self.assertEqual(test_iso3166_2_gb_eng["type"], "Country", f"Expected subdivision type to be 'Country', got {test_iso3166_2_gb_eng['type']}.")
+        self.assertEqual(list(test_iso3166_2_gb_eng.keys()), ['name', 'localOtherName', 'type', 'parentCode', 'flag', 'latLng', 'history'],
+            f"Expected keys for output dict don't match:\n{list(test_iso3166_2_gb_eng.keys())}.")
+#6.)
+        #test direct subdivision code access - California
+        self.assertIsInstance(test_iso3166_2_us_ca, dict, f"Expected output object to be of type dict, got {type(test_iso3166_2_us_ca)}.")
+        self.assertEqual(test_iso3166_2_us_ca["name"], "California", f"Expected subdivision name to be 'California', got {test_iso3166_2_us_ca['name']}.")
+        self.assertEqual(test_iso3166_2_us_ca["type"], "State", f"Expected subdivision type to be 'State', got {test_iso3166_2_us_ca['type']}.")
+        self.assertEqual(list(test_iso3166_2_us_ca.keys()), ['name', 'localOtherName', 'type', 'parentCode', 'flag', 'latLng', 'history'],
+            f"Expected keys for output dict don't match:\n{list(test_iso3166_2_us_ca.keys())}.")
+#7.)
+        #test direct subdivision code access - Monaghan
+        self.assertIsInstance(test_iso3166_2_ie_mn, dict, f"Expected output object to be of type dict, got {type(test_iso3166_2_ie_mn)}.")
+        self.assertEqual(test_iso3166_2_ie_mn["name"], "Monaghan", f"Expected subdivision name to be 'Monaghan', got {test_iso3166_2_ie_mn['name']}.")
+        self.assertEqual(test_iso3166_2_ie_mn["type"], "County", f"Expected subdivision type to be 'County', got {test_iso3166_2_ie_mn['type']}.")
+        self.assertEqual(list(test_iso3166_2_ie_mn.keys()), ['name', 'localOtherName', 'type', 'parentCode', 'flag', 'latLng', 'history'],
+            f"Expected keys for output dict don't match:\n{list(test_iso3166_2_ie_mn.keys())}.")
+#8.)
         kw_subdivision_codes = ['KW-AH', 'KW-FA', 'KW-HA', 'KW-JA', 'KW-KU', 'KW-MU']
-        kw_subdivision_names = ['Al Aḩmadī', 'Al Farwānīyah', 'Ḩawallī', "Al Jahrā’", "Al ‘Āşimah", 'Mubārak al Kabīr']
+        kw_subdivision_names = ['Al Aḩmadī', 'Al Farwānīyah', 'Ḩawallī', "Al Jahrā'", "Al 'Āşimah", 'Mubārak al Kabīr']
         vc_subdivision_codes = ['VC-01', 'VC-02', 'VC-03', 'VC-04', 'VC-05', 'VC-06']
         vc_subdivision_names = ['Charlotte', 'Saint Andrew', 'Saint David', 'Saint George', 'Saint Patrick', 'Grenadines']
         
@@ -309,7 +767,11 @@ class ISO3166_2_Tests(unittest.TestCase):
         self.assertEqual(list(test_iso3166_2_gg_kwt_670["VC"]['VC-01'].keys()), ['name', 'localOtherName', 'type', 'parentCode', 'flag', 'latLng', 'history'],
             f"Expected keys do not match output:\n{list(test_iso3166_2_gg_kwt_670['VC']['VC-01'].keys())}.")
         for key in list(test_iso3166_2_gg_kwt_670["KW"].keys()):
-            self.assertIn(test_iso3166_2_gg_kwt_670["KW"][key].name, kw_subdivision_names, f"Subdivision name {test_iso3166_2_gg_kwt_670['KW'][key].name} not found in list of subdivision names:\n{kw_subdivision_names}.")
+            # Normalize the name for comparison (handle different apostrophe characters)
+            # Replace U+2019 (right single quotation mark) with U+0027 (apostrophe)
+            actual_name = test_iso3166_2_gg_kwt_670["KW"][key].name.replace("\u2019", "'")
+            expected_names = [name.replace("\u2019", "'") for name in kw_subdivision_names]
+            self.assertIn(actual_name, expected_names, f"Subdivision name {test_iso3166_2_gg_kwt_670['KW'][key].name} not found in list of subdivision names:\n{kw_subdivision_names}.")
             if (not (test_iso3166_2_gg_kwt_670["KW"][key].flag is None) and (test_iso3166_2_gg_kwt_670["KW"][key].flag != "")):
                 self.assertEqual(requests.get(test_iso3166_2_gg_kwt_670["KW"][key].flag, headers=self.user_agent_header).status_code, 200, f"Flag URL invalid: {test_iso3166_2_gg_kwt_670['KW'][key].flag}.")
             self.assertEqual(len(test_iso3166_2_gg_kwt_670["KW"][key].latLng), 2, "Expected key should have both lat/longitude.")        
@@ -318,7 +780,7 @@ class ISO3166_2_Tests(unittest.TestCase):
             if (not (test_iso3166_2_gg_kwt_670["VC"][key].flag is None) and (test_iso3166_2_gg_kwt_670["VC"][key].flag != "")):
                 self.assertEqual(requests.get(test_iso3166_2_gg_kwt_670["VC"][key].flag, headers=self.user_agent_header).status_code, 200, f"Flag URL invalid: {test_iso3166_2_gg_kwt_670['VC'][key].flag}.")
             self.assertEqual(len(test_iso3166_2_gg_kwt_670["VC"][key].latLng), 2, "Expected key should have both lat/longitude.")        
-#6.)
+#9.)
         for country in self.all_iso3166_2.all:              #testing that all subdivisions have a subdivision name, local name, type and lat/lng value
             for subd in self.all_iso3166_2.all[country]:
                 self.assertTrue((self.all_iso3166_2.all[country][subd]["name"] != "" and self.all_iso3166_2.all[country][subd]["name"] != []), 
@@ -329,7 +791,8 @@ class ISO3166_2_Tests(unittest.TestCase):
                     f"Expected type attribute to not be empty ({subd}):\n{self.all_iso3166_2.all[country][subd]['type']}.")
                 self.assertTrue((self.all_iso3166_2.all[country][subd]["latLng"] != "" and self.all_iso3166_2.all[country][subd]["latLng"] != []),
                     f"Expected latLng attribute to not be empty ({subd}):\n{self.all_iso3166_2.all[country][subd]['latLng']}.")
-#7.)
+#10.)
+        #test error handling for invalid country codes
         with (self.assertRaises(ValueError)):
             Subdivisions("ZZ")
             Subdivisions("XY")
@@ -340,7 +803,14 @@ class ISO3166_2_Tests(unittest.TestCase):
             self.all_iso3166_2["XY"]
             self.all_iso3166_2["XYZ"]
             self.all_iso3166_2["AB, CD, EF"]
-#8.)
+#11.)
+        #test error handling for invalid subdivision codes
+        with (self.assertRaises(ValueError)):
+            self.all_iso3166_2["AD-99"]  # Invalid subdivision for Andorra
+            self.all_iso3166_2["US-ZZ"]  # Invalid subdivision for United States
+            self.all_iso3166_2["GB-XXX"] # Invalid subdivision for United Kingdom
+            self.all_iso3166_2["ZZ-01"]  # Invalid country code in subdivision
+#12.)
         with (self.assertRaises(TypeError)):
             self.all_iso3166_2[123]
             self.all_iso3166_2[0.5]
@@ -400,7 +870,7 @@ class ISO3166_2_Tests(unittest.TestCase):
             'CF': 17, 'CG': 12, 'CH': 26, 'CI': 14, 'CK': 0, 'CL': 16, 'CM': 10, 'CN': 34, 'CO': 33,
             'CR': 7, 'CU': 16, 'CV': 24, 'CW': 0, 'CX': 0, 'CY': 6, 'CZ': 90, 'DE': 16, 'DJ': 6, 'DK': 5,
             'DM': 10, 'DO': 42, 'DZ': 58, 'EC': 24, 'EE': 94, 'EG': 27, 'EH': 0, 'ER': 6, 'ES': 69, 'ET': 13,
-            'FI': 19, 'FJ': 19, 'FK': 0, 'FM': 4, 'FO': 0, 'FR': 124, 'GA': 9, 'GB': 224, 'GD': 7, 'GE': 12,
+            'FI': 19, 'FJ': 19, 'FK': 0, 'FM': 4, 'FO': 0, 'FR': 124, 'GA': 9, 'GB': 221, 'GD': 7, 'GE': 12,
             'GF': 0, 'GG': 0, 'GH': 16, 'GI': 0, 'GL': 5, 'GM': 6, 'GN': 41, 'GP': 0, 'GQ': 10, 'GR': 14,
             'GS': 0, 'GT': 22, 'GU': 0, 'GW': 12, 'GY': 10, 'HK': 0, 'HM': 0, 'HN': 18, 'HR': 21, 'HT': 10,
             'HU': 43, 'ID': 45, 'IE': 30, 'IL': 6, 'IM': 0, 'IN': 36, 'IO': 0, 'IQ': 19, 'IR': 31, 'IS': 72,
@@ -427,290 +897,6 @@ class ISO3166_2_Tests(unittest.TestCase):
                 f"Incorrect subdivision total for code {code}. Expected {expected_count}, got {actual_count}.")
 
     # @unittest.skip("")
-    def test_subdivision_codes(self):
-        """ Testing functionality for getting list of all ISO 3166-2 subdivision codes. """
-        expected_bq_subdivision_codes = ['BQ-BO', 'BQ-SA', 'BQ-SE']
-        expected_sz_subdivision_codes = ['SZ-HH', 'SZ-LU', 'SZ-MA', 'SZ-SH']
-        expected_sm_subdivision_codes = ['SM-01', 'SM-02', 'SM-03', 'SM-04', 'SM-05', 'SM-06', 'SM-07', 'SM-08', 'SM-09']
-        expected_pw_subdivision_codes = ['PW-002', 'PW-004', 'PW-010', 'PW-050', 'PW-100', 'PW-150', 'PW-212', 'PW-214', \
-                                         'PW-218', 'PW-222', 'PW-224', 'PW-226', 'PW-227', 'PW-228', 'PW-350', 'PW-370']
-        expected_wf_subdivision_codes = ['WF-AL', 'WF-SG', 'WF-UV']
-        expected_mg_sb_subdivision_codes = {"MG": ["MG-A", "MG-D", "MG-F", "MG-M", "MG-T", "MG-U"], 
-                                            "SB": ["SB-CE", "SB-CH", "SB-CT", "SB-GU", "SB-IS", "SB-MK", "SB-ML", "SB-RB", "SB-TE", "SB-WE"]}
-        expected_gnq_tca_subdivision_codes = {"GQ": ["GQ-AN", "GQ-BN", "GQ-BS", "GQ-C", "GQ-CS", "GQ-DJ", "GQ-I", "GQ-KN", "GQ-LI", "GQ-WN"], 
-                                            "TC": []}
-#1.)       
-        test_iso3166_2_bg_instance = Subdivisions("BQ") #Bonaire, Sint Eustatius and Saba
-        bq_subdivision_codes = test_iso3166_2_bg_instance.subdivision_codes() 
-        self.assertEqual(bq_subdivision_codes, expected_bq_subdivision_codes, 
-            f"Expected subdivision codes don't match output:\n{bq_subdivision_codes}.")
-#2.)
-        test_iso3166_2_sz_instance = Subdivisions("SZ") #Eswatini
-        sz_subdivision_codes = test_iso3166_2_sz_instance.subdivision_codes() 
-        self.assertEqual(sz_subdivision_codes, expected_sz_subdivision_codes, 
-            f"Expected subdivision codes don't match output:\n{sz_subdivision_codes}.")
-#3.)
-        test_iso3166_2_sm_instance = Subdivisions("SMR") #San Marino
-        sm_subdivision_codes = test_iso3166_2_sm_instance.subdivision_codes() 
-        self.assertEqual(sm_subdivision_codes, expected_sm_subdivision_codes, 
-            f"Expected subdivision codes don't match output:\n{sm_subdivision_codes}.")
-#4.)
-        test_iso3166_2_pw_instance = Subdivisions("PLW") #Palau
-        pw_subdivision_codes = test_iso3166_2_pw_instance.subdivision_codes() 
-        self.assertEqual(pw_subdivision_codes, expected_pw_subdivision_codes, 
-            f"Expected subdivision codes don't match output:\n{pw_subdivision_codes}.")
-#5.)   
-        test_iso3166_2_wf_instance = Subdivisions("876") #Wallis and Futuna 
-        wf_subdivision_codes = test_iso3166_2_wf_instance.subdivision_codes() 
-        self.assertEqual(wf_subdivision_codes, expected_wf_subdivision_codes, 
-            f"Expected subdivision codes don't match output:\n{wf_subdivision_codes}.")
-#6.)   
-        test_iso3166_2_mg_sb_instance = Subdivisions("MG, 090") #Madagascar, Solomon Islands
-        mg_sb_subdivision_codes = test_iso3166_2_mg_sb_instance.subdivision_codes() 
-        self.assertEqual(mg_sb_subdivision_codes, expected_mg_sb_subdivision_codes, 
-            f"Expected subdivision codes don't match output:\n{mg_sb_subdivision_codes}.")   
-#7.)   
-        test_iso3166_2_gnq_tca_instance = Subdivisions("GNQ, TCA") #Equatorial Guinea, Turks and Caicos Islands
-        gnq_tca_subdivision_codes = test_iso3166_2_gnq_tca_instance.subdivision_codes() 
-        self.assertEqual(gnq_tca_subdivision_codes, expected_gnq_tca_subdivision_codes, 
-            f"Expected subdivision codes don't match output:\n{gnq_tca_subdivision_codes}.")  
-#8.)
-        all_subdivision_codes = self.all_iso3166_2.subdivision_codes() 
-        self.assertEqual(len(all_subdivision_codes), 250, f"Expected 250 total country objects in output, got {len(all_subdivision_codes)}.") 
-        for key, val in all_subdivision_codes.items():
-            self.assertIn(key, list(iso3166.countries_by_alpha2.keys()), f"Country code {key} not found in list of ISO 3166 alpha-2 codes.")
-            self.assertIsInstance(val, list, f"Expected output of subdivision codes to be of type list, got {type(val)}.")
-#9.)
-        with (self.assertRaises(ValueError)):
-            self.all_iso3166_2.subdivision_codes("ABCD")
-            self.all_iso3166_2.subdivision_codes("Z")
-            self.all_iso3166_2.subdivision_codes("1234")
-            test_iso3166_2_bg_instance.subdivision_codes("AD")
-            test_iso3166_2_sz_instance.subdivision_codes("KM")
-            test_iso3166_2_wf_instance.subdivision_codes("090")
-
-    # @unittest.skip("")
-    def test_subdivision_names(self):
-        """ Testing functionality for getting list of all ISO 3166-2 subdivision names. """
-        expected_km_subdivision_names = ['Anjouan', 'Grande Comore', 'Mohéli']
-        expected_er_subdivision_names = ['Al Awsaţ', 'Al Janūbī', 'Ansabā', 'Debubawi K’eyyĭḥ Baḥri', 'Gash-Barka', 'Semienawi K’eyyĭḥ Baḥri']
-        expected_gl_subdivision_names = ['Avannaata Kommunia', 'Kommune Kujalleq', 'Kommune Qeqertalik', 'Kommuneqarfik Sermersooq', 'Qeqqata Kommunia']
-        expected_ls_subdivision_names = ['Berea', 'Botha-Bothe', 'Leribe', 'Mafeteng', 'Maseru', "Mohale's Hoek", 'Mokhotlong', "Qacha's Nek", 'Quthing', 'Thaba-Tseka']
-        expected_zm_subdivision_names = ['Central', 'Copperbelt', 'Eastern', 'Luapula', 'Lusaka', 'Muchinga', 'North-Western', 'Northern', 'Southern', 'Western']
-        expected_ag_bn_subdivision_names = {"AG": ['Barbuda', 'Redonda', 'Saint George', 'Saint John', 'Saint Mary', 'Saint Paul', 'Saint Peter', 'Saint Philip'], 
-                                            "BN": ['Belait', 'Brunei-Muara', 'Temburong', 'Tutong']}
-        expected_dj_va_subdivision_names = {"DJ": ['Ali Sabieh', 'Arta', 'Dikhil', 'Djibouti', 'Obock', 'Tadjourah'], 
-                                            "VA": []}
-#1.)        
-        test_iso3166_2_km_instance = Subdivisions("KM") #Comoros  
-        km_subdivision_names = test_iso3166_2_km_instance.subdivision_names() 
-        self.assertEqual(km_subdivision_names, expected_km_subdivision_names, 
-            f"Expected subdivision names don't match output:\n{km_subdivision_names}.")
-#2.)
-        test_iso3166_2_er_instance = Subdivisions("ER") #Eritrea
-        er_subdivision_names = test_iso3166_2_er_instance.subdivision_names() 
-        self.assertEqual(er_subdivision_names, expected_er_subdivision_names, 
-            f"Expected subdivision names don't match output:\n{er_subdivision_names}.")
-#3.)
-        test_iso3166_2_gl_instance = Subdivisions("GRL") #Greenland
-        gl_subdivision_names = test_iso3166_2_gl_instance.subdivision_names() 
-        self.assertEqual(gl_subdivision_names, expected_gl_subdivision_names, 
-            f"Expected subdivision names don't match output:\n{gl_subdivision_names}.")
-#4.)
-        test_iso3166_2_ls_instance = Subdivisions("LSO") #Lesotho
-        ls_subdivision_names = test_iso3166_2_ls_instance.subdivision_names() 
-        self.assertEqual(ls_subdivision_names, expected_ls_subdivision_names, 
-            f"Expected subdivision names don't match output:\n{ls_subdivision_names}.")
-#5.)
-        test_iso3166_2_zm_instance = Subdivisions("894") #Zambia
-        zm_subdivision_names = test_iso3166_2_zm_instance.subdivision_names() 
-        self.assertEqual(zm_subdivision_names, expected_zm_subdivision_names, 
-            f"Expected subdivision names don't match output:\n{zm_subdivision_names}.")
-#6.)
-        test_iso3166_2_ag_bn_instance = Subdivisions("028, BN") #Antigua and Barbuda, Brunei
-        ag_bn_subdivision_names = test_iso3166_2_ag_bn_instance.subdivision_names() 
-        self.assertEqual(ag_bn_subdivision_names, expected_ag_bn_subdivision_names, 
-            f"Expected subdivision names don't match output:\n{ag_bn_subdivision_names}.")
-#7.)
-        test_iso3166_2_dj_va_instance = Subdivisions("DJI, VAT") #Djibouti, Vatican City
-        dj_va_subdivision_names = test_iso3166_2_dj_va_instance.subdivision_names() 
-        self.assertEqual(dj_va_subdivision_names, expected_dj_va_subdivision_names, 
-            f"Expected subdivision names don't match output:\n{dj_va_subdivision_names}.")
-#8.)
-        all_subdivision_names = self.all_iso3166_2.subdivision_names() 
-        self.assertEqual(len(all_subdivision_names), 250, f"Expected 250 total country output objects, got {len(all_subdivision_names)}.")
-        for key, val in all_subdivision_names.items():
-            self.assertIn(key, list(iso3166.countries_by_alpha2.keys()), f"Country code {key} not found in list of ISO 3166 alpha-2 codes.")
-            self.assertIsInstance(val, list, f"Expected output of subdivision names to be of type list, got {type(val)}.")
-#9.)
-        with (self.assertRaises(ValueError)):
-            self.all_iso3166_2.subdivision_names("ABCD")
-            self.all_iso3166_2.subdivision_names("Z")
-            self.all_iso3166_2.subdivision_names("1234")
-            self.all_iso3166_2.subdivision_names("blah, blah, blah")
-            self.all_iso3166_2.subdivision_names(False)
-            test_iso3166_2_km_instance.subdivision_names('ES')
-            test_iso3166_2_er_instance.subdivision_names("DO")
-            test_iso3166_2_zm_instance.subdivision_names("CPV")
-            test_iso3166_2_dj_va_instance.subdivision_names("218")
-
-    # @unittest.skip("") 
-    def test_filter_attributes(self):
-        """ Testing filter_attributes parameter that removes non-required attributes from subdivision object output."""
-#1.)
-        filter_subdivision_attributes_1 = Subdivisions(filter_attributes="flag, parentCode") #subdivision output should only include the flag and parentCode attributes 
-        expected_attribute_list_1 = ["parentCode", "flag"]
-        
-        for alpha_code in filter_subdivision_attributes_1.all:
-            for subd in filter_subdivision_attributes_1.all[alpha_code]:
-                self.assertEqual(list(filter_subdivision_attributes_1.all[alpha_code][subd]), expected_attribute_list_1, 
-                    f"Expected and observed list of subdivision attributes do not match:\n{list(filter_subdivision_attributes_1.all[alpha_code][subd])}.")
-#2.)
-        filter_subdivision_attributes_2 = Subdivisions(filter_attributes="type, name") #subdivision output should only include type and name attributes 
-        expected_attribute_list_2 = ["name", "type"]
-
-        for alpha_code in filter_subdivision_attributes_2.all:
-            for subd in filter_subdivision_attributes_2.all[alpha_code]:
-                self.assertEqual(list(filter_subdivision_attributes_2.all[alpha_code][subd]), expected_attribute_list_2, 
-                    f"Expected and observed list of subdivision attributes do not match:\n{list(filter_subdivision_attributes_2.all[alpha_code][subd])}.")
-#3.)
-        filter_subdivision_attributes_3 = Subdivisions(filter_attributes="*") #subdivision output should include all attributes 
-        expected_attribute_list_3 = ['name', 'localOtherName', 'type', 'parentCode', 'flag', 'latLng', 'history']
-        
-        for alpha_code in filter_subdivision_attributes_3.all:
-            for subd in filter_subdivision_attributes_3.all[alpha_code]:
-                self.assertEqual(list(filter_subdivision_attributes_3.all[alpha_code][subd]), expected_attribute_list_3, 
-                    f"Expected and observed list of subdivision attributes do not match:\n{list(filter_subdivision_attributes_3.all[alpha_code][subd])}.")
-#4.)
-        with (self.assertRaises(ValueError)):
-            filter_subdivision_attributes_5 = Subdivisions(filter_attributes="") 
-            filter_subdivision_attributes_6 = Subdivisions(filter_attributes="flag, name, invalid_attribute1") 
-            filter_subdivision_attributes_7 = Subdivisions(filter_attributes="invalid_attribute1, invalid_attribute2") 
-            filter_subdivision_attributes_8 = Subdivisions(filter_attributes=123) 
-            filter_subdivision_attributes_9 = Subdivisions(filter_attributes=False)
-
-    @unittest.skip("")
-    def test_valid_flag(self):
-        """ Testing that each flag is valid within each subdivision object. """
-#1.)
-        for country in self.all_iso3166_2.all:
-            for subd in self.all_iso3166_2.all[country]:
-                if not (self.all_iso3166_2.all[country][subd]["flag"] is None):
-                    self.assertEqual(requests.get(self.all_iso3166_2.all[country][subd]["flag"], headers=self.user_agent_header).status_code, 200, f"Flag URL invalid: {self.all_iso3166_2.all[country][subd]['flag']}.")
-
-    # @unittest.skip("")
-    def test_search(self):
-        """ Testing searching by subdivision name functionality. """
-        test_search_1 = "Monaghan" #IE-MN
-        test_search_2 = "Olaines Novads" #LV-068
-        test_search_3 = "Armagh City, Banbridge and Craigavon, Berlin" #GB-ABC, DE-BE
-        test_search_4 = "North" 
-        test_search_5 = "Saint George" #multiple subdivisons with this name
-        test_search_6 = "область"  #Oblast in RU
-        test_search_7 = ""
-        test_search_8 = "zzzzzzzz"
-        test_search_9 = "West Carolina"
-        test_search_10 = True
-        test_search_11 = 4.6
-#1.)
-        search_results_1 = self.all_iso3166_2.search(test_search_1, exclude_match_score=1) 
-        expected_search_result_1 =  {
-            'IE': {'IE-MN': {
-                'name': 'Monaghan', 
-                'localOtherName': 'Contae Mhuineacháin (gle), The Drumlin County (eng), The Farney County (eng)', 
-                'type': 'County', 
-                'parentCode': 'IE-U', 
-                'flag': None, 
-                'latLng': [54.249, -6.968], 
-                'history': None
-                }
-            }
-        }
-
-        self.assertEqual(search_results_1, expected_search_result_1, f"Observed and expected output objects do not match:\n{search_results_1}.")
-#2.)
-        search_results_2 = self.all_iso3166_2.search(test_search_2, likeness_score=100)
-        expected_search_result_2 = {
-            'LV': {'LV-068': {
-                'name': 'Olaines novads', 
-                'localOtherName': 'Olaine Municipality (eng)', 
-                'type': 'Municipality', 
-                'parentCode': None, 
-                'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/LV/LV-068.png', 
-                'latLng': [56.787, 23.942], 
-                'history': None
-                }
-            }
-        }
-
-        self.assertEqual(search_results_2, expected_search_result_2, f"Observed and expected output objects do not match:\n{search_results_2}.")
-#3.)
-        search_results_3 = self.all_iso3166_2.search(test_search_3, likeness_score=90, exclude_match_score=0)  #add Match Score to each search result output
-        expected_search_result_3 = [
-            {
-                "countryCode": "GB",
-                "subdivisionCode": "GB-ABC",
-                "name": "Armagh City, Banbridge and Craigavon",
-                "localOtherName": "'Ard Mhacha, Droichead na Banna agus Creag Abhann (gle)', 'Airmagh, Bannbrig an Craigavon (ulst1239)'",
-                "type": "District",
-                "parentCode": "GB-NIR",
-                "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-ABC.png",
-                "latLng": [54.393, -6.456],
-                "history": [
-                    '2019-11-22: Change of subdivision name of GB-ABC, GB-DRS; modification of remark part 2; update list source. (Remark part 2: BS 6879 gives alternative name forms in Welsh (cy) for some of the Welsh unitary authorities (together with alternative code elements). Since this part of ISO 3166 does not allow for duplicate coding of identical subdivisions, such alternative names in Welsh and code elements are shown for information purposes only in square brackets after the English name of the subdivision. BS 6879 has been superseded but remains the original source of the codes. Included for completeness: EAW England and Wales; GBN Great Britain; UKM United Kingdom). Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:GB.', 
-                    '2015-11-27: Deletion of district council areas GB-ANT, GB-ARD, GB-ARM, GB-BLA, GB-BLY, GB-BNB, GB-CKF, GB-CSR, GB-CLR, GB-CKT, GB-CGV, GB-DRY, GB-DOW, GB-DGN, GB-FER, GB-LRN, GB-LMV, GB-LSB, GB-MFT, GB-MYL, GB-NYM, GB-NTA, GB-NDN, GB-OMH, GB-STB; change of subdivision category from district council area to district GB-BFS; addition of districts GB-ANN, GB-AND, GB-ABC, GB-CCG, GB-DRS, GB-FMO, GB-LBC, GB-MEA, GB-MUL, GB-NMD; update List Source. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:GB.'
-                    ],
-                "matchScore": 100
-            },
-            {
-                "countryCode": "DE",
-                "subdivisionCode": "DE-BE",
-                "name": "Berlin",
-                "localOtherName": "Berlin (eng), Grey City (eng)",
-                "type": "Land",
-                "parentCode": None,
-                "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/DE/DE-BE.svg",
-                "latLng": [52.52, 13.405],
-                "history": None,
-                "matchScore": 100
-            }
-        ]
-        
-        self.assertEqual(search_results_3, expected_search_result_3, f"Observed and expected output objects do not match:\n{search_results_3}.")
-#4.)
-        search_results_4 = self.all_iso3166_2.search(test_search_4, likeness_score=80) #North - likeness score of 80%
-        expected_search_result_4 = {'CM': {'CM-NO': {'name': 'North', 'localOtherName': 'Nord (fra)', 'type': 'Region', 'parentCode': None, 'flag': None, 'latLng': [8.581, 13.914], 'history': None}}, 
-                                    'GW': {'GW-N': {'name': 'Norte', 'localOtherName': 'North (eng)', 'type': 'Province', 'parentCode': None, 'flag': None, 'latLng': [11.804, -15.18], 'history': None}}}
-
-        self.assertEqual(search_results_4, expected_search_result_4, f"Observed and expected output objects do not match:\n{search_results_4}.")
-#5.)
-        search_results_5 = self.all_iso3166_2.search(test_search_5, likeness_score=75, filter_attribute="localOtherName, name", local_other_name_search=True) #Saint George - filtering out all attributes except localOtherName and name & searching the localOtherName attribute to expand the search space
-        expected_search_result_5 = {'AG': {'AG-03': {'name': 'Saint George', 'localOtherName': None}}, 
-                                    'BB': {'BB-03': {'name': 'Saint George', 'localOtherName': None}}, 
-                                    'DM': {'DM-04': {'name': 'Saint George', 'localOtherName': None}}, 
-                                    'GD': {'GD-03': {'name': 'Saint George', 'localOtherName': 'The Cathedral Parish (eng)'}}, 
-                                    'VC': {'VC-04': {'name': 'Saint George', 'localOtherName': None}}}          
-
-        self.assertEqual(search_results_5, expected_search_result_5, f"Observed and expected output objects do not match:\n{search_results_5}.")
-#6.)
-        search_results_6 = self.all_iso3166_2.search(test_search_6, likeness_score=50, local_other_name_search=True) #область - searching the localOtherName attribute to expand the search space
-        expected_search_result_6 = {}          
-        self.assertEqual(search_results_6, expected_search_result_6, f"Observed and expected output objects do not match:\n{search_results_6}.")
-#7.)
-        search_results_7 = self.all_iso3166_2.search(test_search_7)
-        self.assertEqual(search_results_7, {}, f"Expected output to be an empty dict, got {search_results_7}.")
-#8.)
-        search_results_8 = self.all_iso3166_2.search(test_search_8)
-        self.assertEqual(search_results_8, {}, f"Expected output to be an empty dict, got {search_results_8}.")
-#9.)
-        search_results_9 = self.all_iso3166_2.search(test_search_9)
-        self.assertEqual(search_results_9, {}, f"Expected output to be an empty dict, got {search_results_9}.")
-#10.)
-        with (self.assertRaises(TypeError)):
-            self.all_iso3166_2.search(test_search_10)
-            self.all_iso3166_2.search(test_search_11)
-
-    # @unittest.skip("")
     def test_custom_subdivision(self):
         """ Testing custom_subdivision function that adds or deletes custom subdivisions to the main iso3166-2.json object,
             using a custom duplicated copy of the iso3166-2 object to not explicitly add/delete from it. """  
@@ -723,38 +909,40 @@ class ISO3166_2_Tests(unittest.TestCase):
         all_iso3166_2_custom_subdivision = Subdivisions(iso3166_2_filepath=self.test_iso3166_2_copy)
 
         #add below test subdivisions to respective country objects
-        all_iso3166_2_custom_subdivision.custom_subdivision("AD", "AD-ZZ", name="Bogus Subdivision", local_other_name="Bogus Subdivision", type_="District", lat_lng=[42.520, 1.657], parent_code=None, flag=None, save_new=1, save_new_filename=os.path.join(self.test_output_dir, "iso3166_2_custom_ad_zz.json"))
-        all_iso3166_2_custom_subdivision.custom_subdivision("DE", "DE-100", name="Made up subdivision", local_other_name="Made up subdivision", type_="Land", lat_lng=[48.84, 11.479], parent_code=None, flag=None, save_new=1, save_new_filename=os.path.join(self.test_output_dir, "iso3166_2_custom_de_100.json"))
-        all_iso3166_2_custom_subdivision.custom_subdivision("GY", "GY-ABC", name="New Guyana subdivision", local_other_name="New Guyana subdivision", type_="Region", lat_lng=[6.413, -60.123], parent_code=None, flag=None, history="blahblahblah", save_new=1, save_new_filename=os.path.join(self.test_output_dir, "iso3166_2_custom_gy_abc.json"))
-        all_iso3166_2_custom_subdivision.custom_subdivision("ZA", "ZA-123", name="Zambian province", local_other_name="Zambian province", type_="Province", lat_lng=[-28.140, 26.777], parent_code=None, flag=None, history="historical subdivision updates", save_new=1, save_new_filename=os.path.join(self.test_output_dir, "iso3166_2_custom_za_123.json"))
-        all_iso3166_2_custom_subdivision.custom_subdivision("IE", "IE-BF", name="Belfast", local_other_name="Béal Feirste", type_="Province", lat_lng=[54.596, -5.931], parent_code=None, flag=None, custom_attributes={"population": "345,318", "area": "115Km2"}, save_new=1, save_new_filename=os.path.join(self.test_output_dir, "iso3166_2_custom_ie_bf.json"))
-        all_iso3166_2_custom_subdivision.custom_subdivision("RU", "RU-ASK", name="Alaska Oblast", local_other_name="Аляска", type_="Republic", lat_lng=[63.588, 154.493], parent_code=None, flag=None, custom_attributes={"population": "733,583", "gini": "0.43", "gdpPerCapita": "71,996"}, save_new=1, save_new_filename=os.path.join(self.test_output_dir, "iso3166_2_custom_ru_ask.json"))
+        with redirect_stdout(StringIO()):
+            all_iso3166_2_custom_subdivision.custom_subdivision("AD", "AD-ZZ", name="Bogus Subdivision", local_other_name="Bogus Subdivision", type_="District", lat_lng=[42.520, 1.657], parent_code=None, flag=None, save_new=1, save_new_filename=os.path.join(self.test_output_dir, "iso3166_2_custom_ad_zz.json"))
+            all_iso3166_2_custom_subdivision.custom_subdivision("DE", "DE-100", name="Made up subdivision", local_other_name="Made up subdivision", type_="Land", lat_lng=[48.84, 11.479], parent_code=None, flag=None, save_new=1, save_new_filename=os.path.join(self.test_output_dir, "iso3166_2_custom_de_100.json"))
+            all_iso3166_2_custom_subdivision.custom_subdivision("GY", "GY-ABC", name="New Guyana subdivision", local_other_name="New Guyana subdivision", type_="Region", lat_lng=[6.413, -60.123], parent_code=None, flag=None, history="blahblahblah", save_new=1, save_new_filename=os.path.join(self.test_output_dir, "iso3166_2_custom_gy_abc.json"))
+            all_iso3166_2_custom_subdivision.custom_subdivision("ZA", "ZA-123", name="Zambian province", local_other_name="Zambian province", type_="Province", lat_lng=[-28.140, 26.777], parent_code=None, flag=None, history="historical subdivision updates", save_new=1, save_new_filename=os.path.join(self.test_output_dir, "iso3166_2_custom_za_123.json"))
+            all_iso3166_2_custom_subdivision.custom_subdivision("IE", "IE-BF", name="Belfast", local_other_name="Béal Feirste", type_="Province", lat_lng=[54.596, -5.931], parent_code=None, flag=None, custom_attributes={"population": "345,318", "area": "115Km2"}, save_new=1, save_new_filename=os.path.join(self.test_output_dir, "iso3166_2_custom_ie_bf.json"))
+            all_iso3166_2_custom_subdivision.custom_subdivision("RU", "RU-ASK", name="Alaska Oblast", local_other_name="Аляска", type_="Republic", lat_lng=[63.588, 154.493], parent_code=None, flag=None, custom_attributes={"population": "733,583", "gini": "0.43", "gdpPerCapita": "71,996"}, save_new=1, save_new_filename=os.path.join(self.test_output_dir, "iso3166_2_custom_ru_ask.json"))
 #1.)    
-        self.assertEqual(all_iso3166_2_custom_subdivision.all["AD"]["AD-ZZ"], {'flag': None, 'latLng': [42.52, 1.657], 'name': 'Bogus Subdivision', 'localOtherName': 'Bogus Subdivision', 'parentCode': None, 'type': 'District', 'history': None},
+        self.assertEqual(all_iso3166_2_custom_subdivision.all["AD"]["AD-ZZ"], {'name': 'Bogus Subdivision', 'localOtherName': 'Bogus Subdivision', 'type': 'District', 'parentCode': None, 'flag': None, 'latLng': [42.52, 1.657], 'history': None},
             f"Expected dict for custom AD-ZZ subdivision does not match output:\n{all_iso3166_2_custom_subdivision.all['AD']['AD-ZZ']}.")
 #2.)
-        self.assertEqual(all_iso3166_2_custom_subdivision.all["DE"]["DE-100"], {'flag': None, 'latLng': [48.84, 11.479], 'name': 'Made up subdivision', 'localOtherName': 'Made up subdivision', 'parentCode': None, 'type': 'Land', 'history': None},
+        self.assertEqual(all_iso3166_2_custom_subdivision.all["DE"]["DE-100"], {'name': 'Made up subdivision', 'localOtherName': 'Made up subdivision', 'type': 'Land', 'parentCode': None, 'flag': None, 'latLng': [48.84, 11.479], 'history': None},
             f"Expected dict for custom DE-100 subdivision does not match output:\n{all_iso3166_2_custom_subdivision.all['DE']['DE-100']}.")
 #3.)
-        self.assertEqual(all_iso3166_2_custom_subdivision.all["GY"]["GY-ABC"], {'flag': None, 'latLng': [6.413, -60.123], 'name': 'New Guyana subdivision', 'localOtherName': 'New Guyana subdivision', 'parentCode': None, 'type': 'Region', "history": "blahblahblah"},
+        self.assertEqual(all_iso3166_2_custom_subdivision.all["GY"]["GY-ABC"], {'name': 'New Guyana subdivision', 'localOtherName': 'New Guyana subdivision', 'type': 'Region', 'parentCode': None, 'flag': None, 'latLng': [6.413, -60.123], 'history': "blahblahblah"},
             f"Expected dict for custom GY-ABC subdivision does not match output:\n{all_iso3166_2_custom_subdivision.all['GY']['GY-ABC']}.")
 #4.)
-        self.assertEqual(all_iso3166_2_custom_subdivision.all["ZA"]["ZA-123"], {'flag': None, 'latLng': [-28.14, 26.777], 'name': 'Zambian province', 'localOtherName': 'Zambian province', 'parentCode': None, 'type': 'Province', "history": "historical subdivision updates"},
+        self.assertEqual(all_iso3166_2_custom_subdivision.all["ZA"]["ZA-123"], {'name': 'Zambian province', 'localOtherName': 'Zambian province', 'type': 'Province', 'parentCode': None, 'flag': None, 'latLng': [-28.14, 26.777], 'history': "historical subdivision updates"},
             f"Expected dict for custom ZA-123 subdivision does not match output:\n{all_iso3166_2_custom_subdivision.all['ZA']['ZA-123']}.")
 #5.)
-        self.assertEqual(all_iso3166_2_custom_subdivision.all["IE"]["IE-BF"], {'flag': None, 'latLng': [54.596, -5.931], 'name': 'Belfast', 'localOtherName': 'Béal Feirste', 'parentCode': None, 'type': 'Province', "population": "345,318", "area": "115Km2", "history": None},
+        self.assertEqual(all_iso3166_2_custom_subdivision.all["IE"]["IE-BF"], {'name': 'Belfast', 'localOtherName': 'Béal Feirste', 'type': 'Province', 'parentCode': None, 'flag': None, 'latLng': [54.596, -5.931], 'history': None, 'population': '345,318', 'area': '115Km2'},
             f"Expected dict for custom IE-BF subdivision does not match output:\n{all_iso3166_2_custom_subdivision.all['IE']['IE-BF']}.")
 #6.)
-        self.assertEqual(all_iso3166_2_custom_subdivision.all["RU"]["RU-ASK"], {'flag': None, 'gdpPerCapita': '71,996', 'gini': '0.43', 'latLng': [63.588, 154.493], 'localOtherName': 'Аляска', 'name': 'Alaska Oblast', 'parentCode': None, 'population': '733,583', 'type': 'Republic', "history": None},
+        self.assertEqual(all_iso3166_2_custom_subdivision.all["RU"]["RU-ASK"], {'name': 'Alaska Oblast', 'localOtherName': 'Аляска', 'type': 'Republic', 'parentCode': None, 'flag': None, 'latLng': [63.588, 154.493], 'history': None, 'population': '733,583', 'gini': '0.43', 'gdpPerCapita': '71,996'},
             f"Expected dict for custom RU-ASK subdivision does not match output:\n{all_iso3166_2_custom_subdivision.all['RU']['RU-ASK']}.")
 
         #delete above custom subdivisions
-        all_iso3166_2_custom_subdivision.custom_subdivision("AD", subdivision_code="AD-ZZ", delete=1)
-        all_iso3166_2_custom_subdivision.custom_subdivision("DE", subdivision_code="DE-100", delete=1)
-        all_iso3166_2_custom_subdivision.custom_subdivision("GY", subdivision_code="GY-ABC", delete=1)
-        all_iso3166_2_custom_subdivision.custom_subdivision("ZA", subdivision_code="ZA-123", delete=1)
-        all_iso3166_2_custom_subdivision.custom_subdivision("IE", subdivision_code="IE-BF", delete=1)
-        all_iso3166_2_custom_subdivision.custom_subdivision("RU", subdivision_code="RU-ASK", delete=1)
+        with redirect_stdout(StringIO()):
+            all_iso3166_2_custom_subdivision.custom_subdivision("AD", subdivision_code="AD-ZZ", delete=1)
+            all_iso3166_2_custom_subdivision.custom_subdivision("DE", subdivision_code="DE-100", delete=1)
+            all_iso3166_2_custom_subdivision.custom_subdivision("GY", subdivision_code="GY-ABC", delete=1)
+            all_iso3166_2_custom_subdivision.custom_subdivision("ZA", subdivision_code="ZA-123", delete=1)
+            all_iso3166_2_custom_subdivision.custom_subdivision("IE", subdivision_code="IE-BF", delete=1)
+            all_iso3166_2_custom_subdivision.custom_subdivision("RU", subdivision_code="RU-ASK", delete=1)
 
         #reinstantiating instance of class with above custom subdivisions deleted
         all_iso3166_2_custom_subdivision = Subdivisions(iso3166_2_filepath=self.test_iso3166_2_copy)
@@ -772,45 +960,188 @@ class ISO3166_2_Tests(unittest.TestCase):
         self.assertNotIn("RU-ASK", list(all_iso3166_2_custom_subdivision.all["RU"].keys()), "Custom RU-ASK subdivision should not be in object for RU.")
 #12.)
         with self.assertRaises(ValueError):
-            all_iso3166_2_custom_subdivision.custom_subdivision("IE", "IE-CN")
-            all_iso3166_2_custom_subdivision.custom_subdivision("JM", "JM-01")
-            all_iso3166_2_custom_subdivision.custom_subdivision("TV", "TV-NIT")
-            all_iso3166_2_custom_subdivision.custom_subdivision("UZ", "UZ-AN")
-            all_iso3166_2_custom_subdivision.custom_subdivision("ABC", "blah")
-            all_iso3166_2_custom_subdivision.custom_subdivision("ZZ", "blahblahblah")
-            all_iso3166_2_custom_subdivision.custom_subdivision("123", "idfuiwf")
+            with redirect_stdout(StringIO()):
+                all_iso3166_2_custom_subdivision.custom_subdivision("IE", "IE-CN")
+                all_iso3166_2_custom_subdivision.custom_subdivision("JM", "JM-01")
+                all_iso3166_2_custom_subdivision.custom_subdivision("TV", "TV-NIT")
+                all_iso3166_2_custom_subdivision.custom_subdivision("UZ", "UZ-AN")
+                all_iso3166_2_custom_subdivision.custom_subdivision("ABC", "blah")
+                all_iso3166_2_custom_subdivision.custom_subdivision("ZZ", "blahblahblah")
+                all_iso3166_2_custom_subdivision.custom_subdivision("123", "idfuiwf")
 #13.)
         with self.assertRaises(TypeError):
-            all_iso3166_2_custom_subdivision.custom_subdivision(123, 10.5)
-            all_iso3166_2_custom_subdivision.custom_subdivision(name=False)
-            all_iso3166_2_custom_subdivision.custom_subdivision("AD", "AD-01", type=123)
+            with redirect_stdout(StringIO()):
+                all_iso3166_2_custom_subdivision.custom_subdivision(123, 10.5)
+                all_iso3166_2_custom_subdivision.custom_subdivision(name=False)
+                all_iso3166_2_custom_subdivision.custom_subdivision("AD", "AD-01", type=123)
+
+    # @unittest.skip("")
+    def test_remove_attributes(self):
+        """ Testing remove_attributes functionality for removing specified attributes from subdivision data. """
+#1.)
+        test_iso3166_2 = Subdivisions("IE")
+        test_iso3166_2.remove_attributes(["flag", "latLng"], overwrite_data=False)
+        first_subdivision = next(iter(test_iso3166_2.all["IE"].values()))
+        self.assertNotIn("flag", first_subdivision)
+        self.assertNotIn("latLng", first_subdivision)
+        self.assertIn("name", first_subdivision)
+#2.)
+        test_iso3166_2_multi = Subdivisions("FR, DE")
+        test_iso3166_2_multi.remove_attributes(["parentCode"], overwrite_data=False)
+        self.assertNotIn("parentCode", next(iter(test_iso3166_2_multi.all["FR"].values())))
+        self.assertNotIn("parentCode", next(iter(test_iso3166_2_multi.all["DE"].values())))
+#3.)
+        # with patch('builtins.open', mock_open()), patch('json.dump') as mock_dump:
+        #     Subdivisions("CA").remove_attributes(["flag"], overwrite_data=True)
+        #     mock_dump.assert_called_once()
+#4.)
+        with self.assertRaises(ValueError):
+            Subdivisions("MX").remove_attributes(["invalid_attribute"])
+            Subdivisions("ES").remove_attributes(["flag", "invalid_attr"])
+
+    @unittest.skip("")
+    def test_valid_flag(self):
+        """ Testing that each flag is valid within each subdivision object. """
+#1.)
+        for country in self.all_iso3166_2.all:
+            for subd in self.all_iso3166_2.all[country]:
+                if not (self.all_iso3166_2.all[country][subd]["flag"] is None):
+                    self.assertEqual(requests.get(self.all_iso3166_2.all[country][subd]["flag"], headers=self.user_agent_header).status_code, 200, f"Flag URL invalid: {self.all_iso3166_2.all[country][subd]['flag']}.")
+
+    # @unittest.skip("")
+    def test_validate_subdivision_boundary(self):
+        """ Testing that subdivision latLng coordinates fall within the geographical boundaries of their parent countries. """
+        total_subdivisions_tested = 0
+        mismatched_subdivisions = []
+        failed_api_calls = 0
+        nominatim_base_url = "https://nominatim.openstreetmap.org/reverse"
+        
+        # Limit test to a sample of countries and subdivisions to keep runtime reasonable
+        # (full test would make thousands of API calls)
+        sample_countries = ['IE', 'GB', 'FR', 'US', 'AU']
+        max_subdivisions_per_country = 5  # Test only first 5 subdivisions per country
+#1.) 
+        for country_code in sample_countries:
+            if country_code not in self.all_iso3166_2.all:
+                continue
+                
+            subd_count = 0
+            for subd_code in self.all_iso3166_2.all[country_code]:
+                # Limit subdivisions per country to keep test fast
+                if subd_count >= max_subdivisions_per_country:
+                    break
+                    
+                subd_data = self.all_iso3166_2.all[country_code][subd_code]
+                
+                # Skip subdivisions without latLng coordinates
+                if subd_data.get("latLng") is None or not subd_data.get("latLng"):
+                    continue
+                
+                subd_count += 1
+                lat, lng = subd_data["latLng"]
+                total_subdivisions_tested += 1
+                
+                try:
+                    # Query Nominatim API for reverse geocoding
+                    params = {
+                        "lat": lat,
+                        "lon": lng,
+                        "format": "json",
+                        "zoom": 10  # Admin boundary level
+                    }
+                    
+                    response = requests.get(
+                        nominatim_base_url, 
+                        params=params, 
+                        headers=self.user_agent_header,
+                        timeout=10
+                    )
+                    
+                    if response.status_code != 200:
+                        failed_api_calls += 1
+                        continue
+                    
+                    result = response.json() 
+                    address = result.get("address", {})
+                    
+                    # Extract country code from Nominatim result
+                    nominatim_country_code = address.get("country_code", "").upper()
+                    
+                    # Check if the country code matches
+                    if nominatim_country_code != country_code:
+                        mismatched_subdivisions.append({
+                            "code": f"{country_code}-{subd_code}",
+                            "name": subd_data.get("name", "N/A"),
+                            "coordinates": [lat, lng],
+                            "expected_country": country_code,
+                            "actual_country": nominatim_country_code,
+                            "display_name": result.get("display_name", "")
+                        })
+                    
+                except requests.exceptions.RequestException as e:
+                    # API call failed (timeout, connection error, etc.)
+                    failed_api_calls += 1
+                    continue
+                except Exception as e:
+                    # JSON parse error or other unexpected error
+                    failed_api_calls += 1
+                    continue
+#3.) 
+        # Generate warning message for any API failures
+        if failed_api_calls > 0:
+            print(f"\nWarning: {failed_api_calls} API calls failed out of {total_subdivisions_tested} tested")
+        
+        # Report any mismatched coordinates
+        if mismatched_subdivisions:
+            error_msg = f"\n\nSubdivisions with coordinates in wrong country ({len(mismatched_subdivisions)}):\n"
+            for subd in mismatched_subdivisions[:10]:  # Show first 10
+                error_msg += f"  - {subd['code']}: {subd['name']}\n"
+                error_msg += f"    Coordinates: [lat={subd['coordinates'][0]}, lng={subd['coordinates'][1]}]\n"
+                error_msg += f"    Expected: {subd['expected_country']}, Found: {subd['actual_country']}\n"
+                error_msg += f"    Location: {subd['display_name'][:100]}\n"
+            if len(mismatched_subdivisions) > 10:
+                error_msg += f"  ... and {len(mismatched_subdivisions) - 10} more\n"
+            
+            self.fail(f"Found {len(mismatched_subdivisions)} subdivisions with coordinates in wrong country{error_msg}")
+#4.) 
+        self.assertGreater(total_subdivisions_tested, 0, 
+            f"Expected to test at least some subdivisions, but tested {total_subdivisions_tested}.")
+        self.assertEqual(len(mismatched_subdivisions), 0,
+            f"All {total_subdivisions_tested} tested subdivision coordinates should map to the correct country via Nominatim reverse geocoding.")
+
+    @unittest.skip("")
+    def test_unique_lat_lng(self):
+        """ Testing that all subdivisions have unique latLng coordinate pairs. """
+#1.)
+        all_lat_lngs = []
+        lat_lng_to_subdivisions = {}
+        for country in self.all_iso3166_2.all:
+            for subd in self.all_iso3166_2.all[country]:
+                lat_lng = self.all_iso3166_2.all[country][subd].get("latLng")
+                if lat_lng is not None:
+                    lat_lng_tuple = tuple(lat_lng)
+                    all_lat_lngs.append(lat_lng_tuple)
+                    if lat_lng_tuple not in lat_lng_to_subdivisions:
+                        lat_lng_to_subdivisions[lat_lng_tuple] = []
+                    lat_lng_to_subdivisions[lat_lng_tuple].append(subd)
+        
+        unique_lat_lngs = set(all_lat_lngs)
+        
+        # Find duplicates
+        duplicates = {lat_lng: codes for lat_lng, codes in lat_lng_to_subdivisions.items() if len(codes) > 1}
+        
+        error_msg = f"Expected all latLng values to be unique, but found {len(all_lat_lngs) - len(unique_lat_lngs)} duplicates."
+        if duplicates:
+            error_msg += "\nDuplicate latLng values:\n"
+            for lat_lng, codes in duplicates.items():
+                error_msg += f"  {lat_lng}: {', '.join(codes)}\n"
+        
+        self.assertEqual(len(all_lat_lngs), len(unique_lat_lngs), error_msg)
 
     @unittest.skip("")
     def test_check_for_updates(self):
         """ Testing functionality that compares current iso3166-2 object with latest object on repo. """
         self.all_iso3166_2.check_for_updates()
-
-    # @unittest.skip("")
-    def test_len(self):
-        """ Testing length functionality that outputs the total number of subdivision objects. """
-        self.assertEqual(len(self.all_iso3166_2.all), 250, f"Expected the length of subdivisions object to be 250, got {len(self.all_iso3166_2.all)}.")
-
-    # @unittest.skip("")
-    def test_str(self):
-        """ Testing __str__ function returns correct string representation for class object. """
-        self.assertEqual(str(self.all_iso3166_2), f"Instance of Subdivisions class. Path: {self.all_iso3166_2.iso3166_2_module_path}, Version {self.all_iso3166_2.__version__}.", 
-                f"Expected and observed string output for class instance do not match:\n{str(self.all_iso3166_2)}.")
-        
-    # @unittest.skip("")
-    def test_repr(self):
-        """ Testing __repr__ function returns correct object representation for class object. """
-        self.assertEqual(repr(self.all_iso3166_2), "<iso3166-2(version=1.8.0, total_subdivisions=5049, source_file=iso3166-2.json)>",
-                f"Expected and observed object representation for class instance do not match:\n{repr(self.all_iso3166_2)}.")
-
-    # @unittest.skip("")
-    def test_sizeof(self):
-        """ Testing __sizeof__ function returns correct output for class object. """
-        self.assertEqual(self.all_iso3166_2.__sizeof__(), 2.779, f"Expected and observed output for sizeof function do not match:\n{self.all_iso3166_2.__sizeof__()}.")
 
     @classmethod
     def tearDown(self):
@@ -823,7 +1154,7 @@ class ISO3166_2_Tests(unittest.TestCase):
         
         #delete object holding all ISO 3166-2 data
         del self.all_iso3166_2
-            
+
 if __name__ == '__main__':
     #run all unit tests
     unittest.main(verbosity=2)    

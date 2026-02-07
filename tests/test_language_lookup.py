@@ -2,7 +2,9 @@ from scripts.language_lookup import *
 import shutil
 import requests
 import os
+from pycountry import languages, countries
 import unittest
+from unittest.mock import patch
 unittest.TestLoader.sortTestMethodsUsing = None
 
 # @unittest.skip("Skipping language lookup module tests.")
@@ -19,9 +21,9 @@ class Language_Lookup_Tests(unittest.TestCase):
     test_get_language_data:
         testing function that gets individual language data per input language code.
     test_filter_by_scope:
-        testing function that filters the langauge data by scope.
+        testing function that filters the language data by scope.
     test_filter_by_type:
-        testing function that filters the langauge data by type.
+        testing function that filters the language data by type.
     test_export_language_data: 
         testing exporting the name, scope/category and type of languages from their code.
     test_export_language_lookup:
@@ -265,13 +267,13 @@ class Language_Lookup_Tests(unittest.TestCase):
         """ Testing each language code/key of the lookup table is valid. """ 
         #iterate over all language codes, append to list of valid codes
         all_languages = []
-        for lang in pycountry.languages:
+        for lang in languages:
             if (hasattr(lang, "alpha_2")):
                 all_languages.append(lang.alpha_2)
             all_languages.append(lang.alpha_3)
 #1.)
         language_exceptions = self.language_code_exceptions
-        language_exceptions.extend(["ber", "kar", "nah", "oto", "79-aaa-gap", "de-AT"]) #append language excpetions
+        language_exceptions.extend(["ber", "kar", "nah", "oto", "79-aaa-gap", "de-AT"]) #append language exceptions
         for lang in self.language_obj.all_language_codes:
             #skip language code exceptions including language families and glottolog
             if (lang in language_exceptions):
@@ -502,7 +504,7 @@ class Language_Lookup_Tests(unittest.TestCase):
             self.assertIn(row["type"], valid_types, f"Unexpected type in row {i}: {row['type']}")
 #7.)
         #testing all country codes are valid in countries column
-        valid_country_codes = list(iso3166.countries_by_alpha2.keys())
+        valid_country_codes = [country.alpha_2 for country in countries]
         for i, row in enumerate(rows, start=1):
             countries_field = row["countries"].strip()
             if not countries_field:
@@ -559,11 +561,11 @@ class Language_Lookup_Tests(unittest.TestCase):
         self.assertTrue(language_lookup_csv["type"].isin(valid_types).all(), "Invalid type values found in CSV.")
 #5.)
         #testing all country codes are valid in countries column
-        valid_codes = set(iso3166.countries_by_alpha2.keys())
-        for i, countries in enumerate(language_lookup_csv["countries"]):
-            if pd.isna(countries) or countries.strip() == "":
+        valid_codes = [country.alpha_2 for country in list(countries)]
+        for i, country in enumerate(language_lookup_csv["countries"]):
+            if pd.isna(country) or country.strip() == "":
                 continue
-            codes = [code.strip() for code in countries.split(",")]
+            codes = [code.strip() for code in country.split(",")]
             for code in codes:
                 self.assertIn(code, valid_codes,  f"Invalid country code '{code}' in row {i}:\n{language_lookup_csv.iloc[i].to_dict()}")
 #6.)
@@ -598,7 +600,8 @@ class Language_Lookup_Tests(unittest.TestCase):
         self.assertEqual(test_row_5, expected_test_row_5, f"Expected and observed language code data do not match:\n{test_row_5}.")
 
 #     @unittest.skip("")
-    def test_add_language_code(self):
+    @patch('builtins.print')
+    def test_add_language_code(self, mock_print):
         """ Testing adding a new language to the language lookup. """
         language_lookup_clingon = {"code": "CLI", "name": "Clingon", "scope": "Individual", "type": "Artificial", "countries": "GB, IE", "total": 0, "source": ""}
         language_lookup_elvish = {"code": "ELV", "name": "Elvish", "scope": "Individual", "type": "Artificial", "source": ""}
@@ -643,7 +646,8 @@ class Language_Lookup_Tests(unittest.TestCase):
             self.language_obj.add_language_code(name=False)
 
 #     @unittest.skip("")
-    def test_delete_language_code(self):
+    @patch('builtins.print')
+    def test_delete_language_code(self, mock_print):
         """ Testing deletion of language code from the language lookup. """
 #1.)
         self.language_obj.delete_language_code("deu", export=False)
@@ -693,3 +697,6 @@ class Language_Lookup_Tests(unittest.TestCase):
     def tearDown(self):
         """ Remove any temporary test folders/files. """
         shutil.rmtree(self.test_output_directory) 
+
+if __name__ == '__main__':
+    unittest.main()

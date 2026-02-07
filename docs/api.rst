@@ -20,6 +20,8 @@ The other endpoints available in the API are:
 * https://iso3166-2-api.vercel.app/api/subdivision/<input_subdivision>
 * https://iso3166-2-api.vercel.app/api/country_name/<input_country_name>
 * https://iso3166-2-api.vercel.app/api/search/<input_search>
+* https://iso3166-2-api.vercel.app/api/search_geo/<input_search>
+* https://iso3166-2-api.vercel.app/api/search_latlng/<input_latlng>
 * https://iso3166-2-api.vercel.app/api/list_subdivisions/<input_alpha>
 
 .. Six paths/endpoints are available in the API - `/api/all`, `/api/alpha`, `/api/country_name`, `/api/subdivision`, `/api/search` and `/api/list_subdivisions`.
@@ -34,6 +36,10 @@ The other endpoints available in the API are:
 
 .. * `/api/search/`: get all of the ISO 3166 subdivision data for 1 or more ISO 3166-2 subdivision names or input search terms, e.g `/api/search/Derry`. You can also input a comma separated list of subdivision name from the same or different countries and the data for each will be returned e.g `/api/search/Paris,Frankfurt,Rimini`. A closeness function is utilised to find the matching subdivision name, if no exact name match found then the most approximate subdivisions will be returned. Some subdivisions may have the same name, in this case each subdivision and its data will be returned e.g `/api/search/Saint George` (this example returns 5 subdivisions). This endpoint also has the likeness score (`?likeness=`) query string parameter that can be appended to the URL. This can be set between 1 - 100, representing a % of likeness to the input name the return subdivisions should be, e.g: a likeness score of 90 will return fewer potential matches whose name only match to a high degree compared to a score of 10 which will create a larger search space, thus returning more potential subdivision matches. A default likeness of 100 (exact match) is used, if no matching subdivision is found then this is reduced to 90. If an invalid subdivision name that doesn't match any is input then an error will be raised.
 
+.. * `/api/search_geo/`: search for subdivisions and return only geographic attributes (e.g. latLng, bounding box, geojson, neighbours, perimeter) for 1 or more input search terms. Accepts comma separated subdivision names or ISO 3166-2 subdivision codes, e.g `/api/search_geo/Saarland,US-CA`. Supports the `likeness` query string parameter to control match tolerance.
+
+.. * `/api/search_latlng/`: search for subdivisions via their latLng values. Accepts a comma separated string of latitude and longitude (e.g. `/api/search_latlng/39.4178,-2.6232`). Matches are approximate (not necessarily exact) based on closeness to the input coordinates.
+
 .. * `/api/list_subdivisions`: get list of all the subdivision codes for all countries. 
 
 .. * `/api`: main homepage and API documentation.
@@ -46,6 +52,7 @@ There are 3 main query string parameters available throughout the API that can b
 * **likeness** - this is a parameter between 1 and 100 that increases or reduces the % of similarity/likeness that the inputted search terms have to match to the subdivision name/local other names. This can be used with the `/api/search`  and `/api/country_name` endpoints. Having a higher value should return more exact and less matches and having a lower value will return less exact but more matches, e.g `/api/search/Paris?likeness=50`, `/api/search/Louisianna?likeness=90` (**default=100**).
 * **filterAttributes** - this parameter allows you to only include a subset of desired attributes per subdivision in the output. This can be used in any of the API endpoints, e.g `/api/alpha/AL,BA,CD?filterAttributes=name,type,parentCode`, `/api/subdivision/LV-112?filterAttributes=localOtherName,flag,history` etc.
 * **excludeMatchScore** - this parameter allows you to exclude the *matchScore* attribute from the search results when using the `/api/search` endpoint. The match score is the % of a match each returned subdivision data data object is to the search terms, with 100% being an exact match. By default the match score is returned for each object, but setting this parameter to True will exclude the attribute and sort the results by country code, e.g `/api/search/Bernardo O'higgins?excludeMatchScore=1`, `/api/search/New York?excludeMatchScore=1` (**default=0**).
+* **limit** - this parameter allows you to limit the total number of countries returned from the API call. This is only available in the `/api/all` endpoint. By default, when calling the `/api/all` endpoint, all of the available data is called so this param allows you to get a faster small subset of the data. The endpoint accepts an integer value representing the total number of countries to return, e.g `/api/all?limit=10`, `/api/all?limit=50` etc. (**default=None**).
 
 
 Get subdivision data for ALL countries
@@ -271,7 +278,35 @@ Python Requests:
 curl::
 
     $ curl -i https://iso3166-2-api.vercel.app/api/search/Northern?likeness=80
-    
+
+
+Search for a subdivision by lat/lon 
+-----------------------------------
+This endpoint allows you to search for a specific ISO 3166-2 subdivision via its lat/lon values in the latLng
+attribute of the returned objects. Input should be a comma separated latitude/longitude string. The search is
+approximate, not necessarily an exact match.
+
+Python Requests:
+
+.. code-block:: python
+
+    import requests
+
+    base_url = "https://iso3166-2-api.vercel.app/api/"
+    input_latlng = "39.4178,-2.6232"
+    data = requests.get(f'{base_url}/search_latlng/{input_latlng}').json()
+
+    data["ES-CM"]  # Castilla-La Mancha
+
+    input_latlng = "-12.5,-72.5"
+    data = requests.get(f'{base_url}/search_latlng/{input_latlng}').json()
+
+    data["PE-CUS"]  # Cusco
+
+curl::
+
+    $ curl -i https://iso3166-2-api.vercel.app/api/search_latlng/39.4178,-2.6232
+    $ curl -i https://iso3166-2-api.vercel.app/api/search_latlng/-12.5,-72.5
 
 
 Get list of all subdivision codes per country
@@ -316,3 +351,5 @@ curl::
 .. |demo_link| raw:: html
 
    <a href="https://colab.research.google.com/drive/1btfEx23bgWdkUPiwdwlDqKkmUp1S-_7U?usp=sharing" target="_blank">here</a>
+
+`Back to top ↑ <#api>`_

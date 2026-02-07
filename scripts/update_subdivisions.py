@@ -7,14 +7,16 @@ import pandas as pd
 import requests
 import numpy as np
 from datetime import datetime
-#multiple import options for utils module depending on if script is called directly or via test script
+
+#import utils from same package
 try:
+    from . import utils
+    from .utils import *
+except ImportError:
     from utils import *
-except:
-    from scripts.utils import *
 
 #base url for RestCountries URL
-rest_countries_base_url = "https://restcountries.com/v3.1/"
+REST_COUNTRIES_BASE_URL = "https://restcountries.com/v3.1/"
 
 def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="", local_other_name: str="", type_: str="", lat_lng: list|str=[],
                        parent_code: str="", flag: str="", history: str="", delete: bool=0, iso3166_2_filename: str=os.path.join("iso3166_2", "iso3166-2.json"),
@@ -480,7 +482,11 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
                         if ((row['flag'] not in (None, ""))):
                             all_subdivision_data[alpha_code][subdivision_code]['flag'] = row['flag']
                         if ((row['latLng'] not in (None, ""))):
-                            all_subdivision_data[alpha_code][subdivision_code]['latLng'] = json.loads(row["latLng"]) #convert string of array into array
+                            try:
+                                all_subdivision_data[alpha_code][subdivision_code]['latLng'] = json.loads(row["latLng"]) #convert string of array into array
+                            except (json.JSONDecodeError, TypeError, ValueError) as e:
+                                print(f"Warning: Error parsing latLng for {subdivision_code}: {row['latLng']}. Error: {e}. Setting to empty list.")
+                                all_subdivision_data[alpha_code][subdivision_code]['latLng'] = []
                         if ((row['localOtherName'] not in (None, ""))):
                             all_subdivision_data[alpha_code][subdivision_code]['localOtherName'] = row['localOtherName']
                         if ("history" in subdivision_df.columns.to_list()):
@@ -501,7 +507,11 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
                         all_subdivision_data[alpha_code][subdivision_code]["type"] = row["type"]
 
                         #add latLng attribute to object
-                        all_subdivision_data[alpha_code][subdivision_code]["latLng"] = json.loads(row["latLng"]) #convert string of array into array
+                        try:
+                            all_subdivision_data[alpha_code][subdivision_code]["latLng"] = json.loads(row["latLng"]) #convert string of array into array
+                        except (json.JSONDecodeError, TypeError, ValueError) as e:
+                            print(f"Warning: Error parsing latLng for new subdivision {subdivision_code}: {row['latLng']}. Error: {e}. Setting to empty list.")
+                            all_subdivision_data[alpha_code][subdivision_code]["latLng"] = []
 
                         #add localOtherName attribute to object
                         all_subdivision_data[alpha_code][subdivision_code]["localOtherName"] = row["localOtherName"]
@@ -563,7 +573,7 @@ def parse_rest_countries(alpha_code: str, rest_countries_keys: list, new_subdivi
         appended to it.
     """
     #use the RestCountries API to get the attribute values for country/subdivision
-    country_restcountries_response = requests.get(rest_countries_base_url + "alpha/" + alpha_code, headers=USER_AGENT_HEADER, timeout=15)
+    country_restcountries_response = requests.get(REST_COUNTRIES_BASE_URL + "alpha/" + alpha_code, headers=USER_AGENT_HEADER, timeout=15)
     country_restcountries_response.raise_for_status()
     country_restcountries_data = country_restcountries_response.json()
 
@@ -581,7 +591,8 @@ def parse_rest_countries(alpha_code: str, rest_countries_keys: list, new_subdivi
             new_subdivision_data[key] = country_restcountries_data[0][key]
 
     return new_subdivision_data
-    
+
+
 if __name__ == '__main__':
 
     #parse input arguments using ArgParse 

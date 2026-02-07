@@ -1,14 +1,17 @@
-from scripts.export_iso3166_2 import *
+from datetime import datetime
+from scripts.main import *
 from scripts.utils import *
 from iso3166_2 import *
 import json
 import os
+import re
 import shutil
+from pycountry import countries
 import unittest
 unittest.TestLoader.sortTestMethodsUsing = None
 
 # @unittest.skip("Skipping update_subdivisions unit tests.")
-class Update_Subdivisions_Tests(unittest.TestCase):
+class UpdateSubdivisionsTests(unittest.TestCase):
     """
     Test suite for testing update_subdivisions.py script that that is used for the 
     streamlining of subdivision additions, changes or deletions to the ISO 3166-2 data object.
@@ -168,7 +171,7 @@ class Update_Subdivisions_Tests(unittest.TestCase):
 #1.)
         test_subdivision_jo_ka_update_subdivisions_output = update_subdivision(alpha_code=test_subdivision_jo_ka["alpha_code"], subdivision_code=test_subdivision_jo_ka["subdivision_code"], name=test_subdivision_jo_ka["name"], 
                                                                                local_other_name=test_subdivision_jo_ka["local_other_name"], iso3166_2_filename=self.test_iso3166_2_copy, export=True)  #Jordan (JO-KA)
-        expected_test_subdivision_jo_ka_output = {"flag": None, "history": None, "latLng": [31.185, 35.705], "localOtherName": "Al Karak 2.5", "name": "Al Karak 2", "parentCode": None, "type": "Governorate"}
+        expected_test_subdivision_jo_ka_output = {"flag": None, "history": None, "latLng": [31.1257, 35.8247], "localOtherName": "Al Karak 2.5", "name": "Al Karak 2", "parentCode": None, "type": "Governorate"}
 
         #import json with newly amended subdivision
         with open(self.test_iso3166_2_copy, "r") as subdivision_update_json:
@@ -181,7 +184,7 @@ class Update_Subdivisions_Tests(unittest.TestCase):
 #2.)
         test_subdivision_rs_00_update_subdivisions_output = update_subdivision(alpha_code=test_subdivision_rs_00["alpha_code"], subdivision_code=test_subdivision_rs_00["subdivision_code"], type_=test_subdivision_rs_00["type"], 
                                                                                parent_code=test_subdivision_rs_00["parent_code"], iso3166_2_filename=self.test_iso3166_2_copy, export=True)  #Serbia (RS)
-        expected_test_subdivision_rs_00_output = {'flag': "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/RS/RS-00.svg", 'history': None, 'latLng': [44.813, 20.461], 'localOtherName': 'Београд (srp), Belgrade (eng)', 'name': 'Beograd', 'parentCode': 'RS-10', 'type': 'Region'}
+        expected_test_subdivision_rs_00_output = {'flag': "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/RS/RS-00.svg", 'history': None, 'latLng': [44.6802, 20.3818], 'localOtherName': 'Београд (srp), Belgrade (eng)', 'name': 'Beograd', 'parentCode': 'RS-10', 'type': 'Region'}
         
         #import json with newly amended subdivision
         with open(self.test_iso3166_2_copy, "r") as subdivision_update_json:
@@ -194,7 +197,7 @@ class Update_Subdivisions_Tests(unittest.TestCase):
 #3.)
         test_subdivision_tz_03_update_subdivisions_output = update_subdivision(alpha_code=test_subdivision_tz_03["alpha_code"], subdivision_code=test_subdivision_tz_03["subdivision_code"], local_other_name=test_subdivision_tz_03["local_other_name"], 
                                                                                type_=test_subdivision_tz_03["type"], flag=test_subdivision_tz_03["flag"], iso3166_2_filename=self.test_iso3166_2_copy, export=True)  #Tanzania (TZ)
-        expected_test_subdivision_tz_03_output = {'flag': 'flag.jpeg', 'history': None, 'latLng': [-6.181, 35.747], 'localOtherName': 'Jiji Kuu la Dodoma', 'name': 'Dodoma', 'parentCode': None, 'type': 'Capital'}
+        expected_test_subdivision_tz_03_output = {'flag': 'flag.jpeg', 'history': None, 'latLng': [-6.0103, 35.8245], 'localOtherName': 'Jiji Kuu la Dodoma', 'name': 'Dodoma', 'parentCode': None, 'type': 'Capital'}
         
         #import json with newly added subdivision
         with open(self.test_iso3166_2_copy, "r") as subdivision_update_json:
@@ -207,8 +210,10 @@ class Update_Subdivisions_Tests(unittest.TestCase):
 #4.)
         test_subdivision_wf_sg_update_subdivisions_output = update_subdivision(alpha_code=test_subdivision_wf_sg["alpha_code"], subdivision_code=test_subdivision_wf_sg["subdivision_code"], 
                                                                          iso3166_2_filename=self.test_iso3166_2_copy, export=True)  #Wallis and Futuna (WF)
-        expected_test_subdivision_wf_sg_output = {'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/WF/WF-SG.svg', 'history': ['2015-11-27: Addition of administrative precinct WF-AL, WF-SG, WF-UV; update List Source code source and categories. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:WF.'], 'latLng': [-14.297, -178.158], 'localOtherName': 'Singave (eng), Sigavé (wls)', 'name': 'Sigave', 'parentCode': None, 'type': 'Administrative precinct'}
-
+        expected_test_subdivision_wf_sg_output = {'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/WF/WF-SG.svg', 
+                                                  'history': [{'Change': 'Addition of administrative precinct WF-AL, WF-SG, WF-UV; update List Source code source and categories.', 
+                                                               'Description of Change': None, 'Date Issued': '2015-11-27', 'Source': 'Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:WF.'}], 
+                                                               'latLng': [-14.2667, -178.1667], 'localOtherName': 'Singave (eng), Sigavé (wls)', 'name': 'Sigave', 'parentCode': None, 'type': 'Administrative precinct'}
         #import json with newly added subdivision
         with open(self.test_iso3166_2_copy, "r") as subdivision_update_json:
             test_subdivision_wf_sg_subdivisions_json = json.load(subdivision_update_json)
@@ -295,10 +300,10 @@ class Update_Subdivisions_Tests(unittest.TestCase):
         self.assertEqual(list(update_subdivisions_csv.columns), ["alphaCode", "subdivisionCode", "name", "localOtherName", "type", "parentCode", "flag", "latLng", "customAttributes", "delete", "notes", "dateIssued"],
             f"Expected column names don't match CSV columns:\n{update_subdivisions_csv.columns}.")
 #2.)
-        self.assertEqual(len(self.subdivision_updates_df), 504, f"Expected 504 rows in the subdivision updates dataframe dataframe, got {len(self.subdivision_updates_df)}.")
+        self.assertEqual(len(update_subdivisions_csv), 501, f"Expected 501 rows in the subdivision updates dataframe dataframe, got {len(update_subdivisions_csv)}.")
 #3.)
         for index, row in update_subdivisions_csv.iterrows():
-            self.assertIn(row["alphaCode"], list(iso3166.countries_by_alpha2.keys()), f"Expected row's 2 letter alpha code to be valid, got {row['alphaCode']}.")
+            self.assertIn(row["alphaCode"], [country.alpha_2 for country in countries], f"Expected row's 2 letter alpha code to be valid, got {row['alphaCode']}.")
 #4.)
         for index, row in update_subdivisions_csv.iterrows():
             self.assertTrue(re.match(r'^[A-Z]{2}-[A-Za-z0-9]{1,3}( \([A-Z]{2}-[A-Za-z0-9]{1,3}\))?$', row["subdivisionCode"]), 
@@ -349,7 +354,7 @@ class Update_Subdivisions_Tests(unittest.TestCase):
         """ Testing valid country and subdivision codes for each row. """
 #1.)
         country_codes_to_check = self.subdivision_updates_df["alphaCode"]
-        invalid_country_codes = country_codes_to_check[~country_codes_to_check.isin(list(iso3166.countries_by_alpha2.keys()))]
+        invalid_country_codes = country_codes_to_check[~country_codes_to_check.isin([country.alpha_2 for country in countries])]
         self.assertTrue(invalid_country_codes.empty, f"Expected all country codes to be valid ISO 3166-1 alpha-2 codes:\n{invalid_country_codes}.")
 #2.)    
         #create instance of Subdivisions class from iso3166-2 software
@@ -371,6 +376,7 @@ class Update_Subdivisions_Tests(unittest.TestCase):
         """ Delete any temp export folder. """
         shutil.rmtree(self.test_output_dir)
 
+# Run the unit tests
 if __name__ == '__main__':
     #run all unit tests
     unittest.main(verbosity=2)    

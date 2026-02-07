@@ -1,5 +1,43 @@
 # Change Log 🔄
 
+## v1.8.1 - February 2026
+
+### Added
+- Updated accuracy of all latLng attributes for all subdivisions, using the centroid of the subdivision as the new value
+- Added logo to the main readme
+- Added /spec & /openapi.yml endpoints on API, added unit tests
+- Added /random endpoint on API that returns a random subdivision from the >5000 available, added unit tests
+- Added additional unit and integration tests for each module
+- Added a output message in the custom_subdivision when adding one to ensure the user keeps track of the new subdivision accurately
+- Created new history module, separating the iso3166-updates history functionalities into separate module - added unit tests
+- Added remove_attribute function within main iso3166-2.py module, it allows for you to remove from memory and from the dataset any unneeded attributes, saving a load of memory
+- For some of the modules in /scripts that require an API key, this key can also be put into a .env file that the module can look for
+- Added additional and more informative type hints to some of the functions
+- Added anomaly detection function that uses openai api to generate a CSV that outputs any anomalies or errors found in the iso3166-2.json object 
+- Added integration tests that validate that each latLng value for each subdivision falls within the boundary of the country
+- Added Geo module used for getting everything latLng related per subdivision including centroid, bounding box and the relevant API calls
+- For the Geo module, created a cache file (iso3166_2_resources/geo_cache.csv) that stores all of the exported geographical related data per subdivision that is imported during execution, rather than having to make API calls each time
+- Added additional info to the __repr__ and __str__ functions in iso3166_2
+- Added wikidata package to /scripts dependencies 
+- Added individual Subdivision data class to iso3166_2 package 
+- Added self.alpha2 attribute in iso3166-2 package that lists the ISO 3166-1 country codes
+
+### Changed
+- Implemented more accurate method of getting lat/long via openstreetmap instead of Google Maps API
+- Split several of the export functionalities in /scripts into their own modules for readability and extensibility
+- In many of the test modules, split up the test class functions into integration and unit tests
+- Updated history attribute within each subdivision such that it displays the history object as is in the iso3166-updates software 
+- Removed the extract_lat_lng parameter - since we're using the OSM to get the 
+- When exporting the data via the export pipeline. If save_each_iteration is set to True, only the JSON of the data will be exported, not the XML and CSV as well
+- Updated github workflow, including adding concurrency and caching
+- Changed any references to the python-iso3166 software to pycountry, as pycountry is more updated and maintained
+- Removed GB-EAW GB-GBN and GB-UKM from dataset, these were previously included as they were in the remark section of GB's ISO page but not included in other ISO 3166 lists
+- In main export function, removed skip latLng functionality that skips the exporting of the latLng attribute - the attribute data is now cached in a separate file so no need to be skipped
+
+### Fixed
+- Fixed accuracy of some of the latLng attribute values for some subdivisions, using the OSM as a data source rather than the previous Google Maps API 
+
+
 ## v1.8.0 - September 2025
 
 ### Added
@@ -26,6 +64,8 @@
 - Removed filter_attributes functionality from update_subdivisions function
 - Changed export script name from get_iso3166_2 to export_iso3166_2
 - Removed any additional flags from the iso3166-1-flags dataset that aren't strictly in the ISO 3166-1, including eu, arab league, UN and XX flags
+- Updated the workflow such that unit tests for specific modules are only run when changes are made to those modules rather than all tests being run. If workflow dispatch is set then all tests will be run
+- Switched from using unittest framework to pytest as the tests were being run twice
 
 ### Fixed
 
@@ -34,8 +74,10 @@
 - Ensured all empty attributes "" are converted to null 
 - Several subdivision names and local/other names still contained * the † in them 
 - requests dependency missing in pyproject
+- Fixed small vulnerability with try/except in metadata export module
+- Fixed the bandit & package calls in workflow, passing in specific directories 
 
-## v1.7.0/1.7.1/1.7.2 - July 2025
+## v1.7.0 - 1.7.2 - July 2025
 
 ### Added
 - Add list of cities for each subdivision using the country-states-city API

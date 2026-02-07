@@ -16,27 +16,34 @@
 <!-- [![codecov](https://codecov.io/gh/amckenna41/iso3166-2/branch/main/graph/badge.svg)](https://codecov.io/gh/amckenna41/iso3166-2) -->
 <!-- [![status](https://img.shields.io/badge/status-stable-green)](https://github.com/amckenna41/iso3166-2) -->
 
-<div alt="images" style="justify-content: center; display:flex; margin-left=10px;">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/Flag-map_of_the_world_%282017%29.png" alt="globe" height="300" width="600"/>
-  <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/ISO_Logo_%28Red_square%29.svg" alt="iso" height="300" width="400"/> -->
+<div style="display:flex; align-items:center; justify-content:center; gap:12px; max-width:100%;">
+  <!-- both images: same fixed row height + constrained width so they fit -->
+  <img
+    src="https://upload.wikimedia.org/wikipedia/commons/3/3d/Flag-map_of_the_world_%282017%29.png"
+    alt="globe"
+    style="height:220px; width:auto; max-width:calc(50% - 6px); object-fit:contain;" />
+  <img
+    src="https://raw.githubusercontent.com/amckenna41/iso3166-2/master/main/iso3166-2-logo.png"
+    alt="icon"
+    style="height:220px; width:auto; max-width:calc(50% - 6px); object-fit:contain;" />
 </div>
 
-> `iso3166-2` is a structured lightweight custom-built Python package and dataset, and accompanying RESTful API, that can be used to access all of the world's ISO 3166-2 subdivision data. A plethora of data attributes are available per country and subdivision including: name, local/other name, code, parent code, type, lat/longitude, flag & history. Currently, the package and API supports data from 250 countries/territories and >5000 subdivisions, according to the ISO 3166-1 & ISO 3166-2 standards, respectively. The software uses another custom-built Python package called [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates/tree/main) to ensure all the subdivision data is accurate, reliable and up-to-date.
+> `iso3166-2` is a structured lightweight custom-built Python package and dataset, and accompanying RESTful API, that can be used to access all of the world's ISO 3166-2 subdivision data. A plethora of data attributes are available per country and subdivision including: name, local/other name, code, parent code, type, lat/longitude, flag and history. Currently, the package and API supports data from 250 countries/territories and >5000 subdivisions, according to the ISO 3166-1 & ISO 3166-2 standards, respectively. The software uses another custom-built Python package called [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates/tree/main) to ensure all the subdivision data is accurate, reliable and up-to-date.
 
 
 iso3166-2 Stats 🔢
 ------------------ 
 | Total Subdivisions | Total Countries | Dataset Size (MB) | Total Attributes | Average Subdivisions per Country | No Subdivisions Total | Max Subdivisions Country | Local/Other Names Total | Flag Total |
 |-------------------:|----------------:|------------------:|-----------------:|---------------------------------:|----------------------:|:-------------------------|------------------------:|----------:|
-| 5,049              | 250             | 2.779            | 35,343           | 20                               | 50                    | GB, 224                  | 8,275                  |     2,205      |
+| 5,046              | 250             | 3.401            | 35322           | 20                               | 49                    | GB, 221                  | 8,275                  |     2,205      |
 
 
 Quick Start 🏃
 -------------
-* A <b>demo</b> of the software and API is available [here][demo].
-* The front-end <b>API</b> is available [here][api].
-* The **documentation** for the software & API is available [here](https://iso3166-2.readthedocs.io/en/latest/).
-* A <b>Medium</b> article that dives deeper into `iso3166-2` is available [here][medium].
+* 🚀 A <b>demo</b> of the software and API is available [here][demo].
+* 💻 The front-end <b>API</b> is available [here][api].
+* 📚 The **documentation** for the software & API is available [here](https://iso3166-2.readthedocs.io/en/latest/).
+* 📄 A <b>Medium</b> article that dives deeper into `iso3166-2` is available [here][medium].
 <!-- * A <b>demo</b> of the script used to pull and export all the latest ISO 3166-2 data is available [here][demo_export_iso3166_2]. -->
 
 Table of Contents
@@ -59,20 +66,21 @@ Table of Contents
 ## Introduction
 The International Organisation for Standards defines codes for the names of countries, dependent territories, special areas of geographical interest, and their principal subdivisions [[1]](#references). The ISO 3166-2 defines codes for identifying the principal subdivisions (e.g. provinces, states, municipalities etc) of all countries coded in the ISO 3166-1. The official name of the standard is <i>"Codes for the representation of names of countries and their subdivisions – Part 2: Country subdivision code."</i> For some countries, codes are defined for more than one level of subdivisions. 
 
-Currently, this package and accompanying API support subdivision data from **250** officially assigned code elements within the ISO 3166-1, with **200** of these countries having recognised subdivisions (50 entires have 0 subdivisions), totalling **5,049** subdivisions across the whole dataset. Transitional reservations are not included and only 4 of the exceptional reservations, that have now been officially assigned, are included: AX (Aland Islands), GG (Guernsey), IM (Isle of Man) and JE (Jersey) [[3]](#references). The ISO 3166-2 was first published in 1998 and as of **November 2024** there are **5,049** codes defined in it [[2]](#references).
+Currently, this package and accompanying API support subdivision data from **250** officially assigned code elements within the ISO 3166-1, with **200** of these countries having recognised subdivisions (50 entires have 0 subdivisions), totalling **5,046** subdivisions across the whole dataset. Transitional reservations are not included and only 4 of the exceptional reservations, that have now been officially assigned, are included: AX (Aland Islands), GG (Guernsey), IM (Isle of Man) and JE (Jersey) [[3]](#references). The ISO 3166-2 was first published in 1998 and as of **November 2024** there are **5,046** codes defined in it [[2]](#references).
 
 The full list of subdivision data attributes supported are:
 
 * **Code** - ISO 3166-2 subdivision code
 * **Name** - subdivision name
 * **Local/other name** - subdivision name in local language or any alternative name/nickname it is commonly known by
-* **Parent Code** - subdivision parent code
-* **Type** - subdivision type, e.g. region, state, canton, parish etc
 * **Latitude/Longitude** - subdivision coordinates
 * **Flag** - subdivision flag from [`iso3166-flags`](https://github.com/amckenna41/iso3166-flags) repo; this is another ISO 3166 related custom-built dataset of over **3500** regional/subdivision flags
+* **Parent Code** - subdivision parent code
+* **Type** - subdivision type, e.g. region, state, canton, parish etc
 * **History** - historical updates/changes to the subdivision code and naming conventions, as per the custom-built [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates) repo.
 
-<!-- The above 8 attributes were chosen as they are the most relevant and useful pieces of data for each subdivision. Other attributes are available in scattered data sources such as area, population, regional name translations, geonames ID, FIPS code etc, but these were deemed less relevant than the ones included... unless someone really desires the population of the Bhutan region of Bumthang (17,820 btw). It was an aim during development to make the package as lightweight as possible, therefore for example if the 5 aforementioned attributes were included for the existing **5,049** codes, this would significantly increase the size of the dataset from **~3MB to ~4MB**.  -->
+
+<!-- The above 8 attributes were chosen as they are the most relevant and useful pieces of data for each subdivision. Other attributes are available in scattered data sources such as area, population, regional name translations, geonames ID, FIPS code etc, but these were deemed less relevant than the ones included... unless someone really desires the population of the Bhutan region of Bumthang (17,820 btw). It was an aim during development to make the package as lightweight as possible, therefore for example if the 5 aforementioned attributes were included for the existing **5,046** codes, this would significantly increase the size of the dataset from **~3MB to ~4MB**.  -->
 
 ### Motivation
 The primary motivation for building this software was for use in my [`iso3166-flags`](https://github.com/amckenna41/iso3166-flags) project. When building the dataset of flags, I found that some existing projects/softwares were **inaccurate**, **outdated** and or **not maintained**. As mentioned, the ISO 3166-2 is a dynamic and ever-changing standard therefore it can be difficult to maintain and keep up-to-date; although in the case for this software, that problem is largely alleviated thanks to the custom-built [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates) package (see below sections).
@@ -112,6 +120,10 @@ The flags repo uses the `iso3166-2` software to get the full list of ISO 3166-2 
 The `history` attribute has any applicable historical updates/changes to the individual subdivisions, if applicable. The data source for this is another custom-built software package previously mentioned [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates). This package keeps track of all the published changes that the ISO make to the ISO 3166 standard which include addition of new subdivisions, deletion of existing subdivisions or amendments to existing subdivisions. Thus [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates) helps ensure that the data in the `iso3166-2` package is also kept up-to-date and accurate. If any updates are found for the subdivision a short description of the change, it's publication date as well as its source will be included.
 
    <div align="center">❤️ iso3166-2 🤝 iso3166-updates ❤️</div>
+
+
+<!-- ### Demographics
+Two additional bespoke attributes that have been recently added to the software are the ``area`` and ``population`` attributes. These attributes provide the latest key demographic information about each subdivision. The data for these attributes is sourced via the (https://query.wikidata.org/) SPARQL endpoint and is regularly updated to ensure accuracy.  -->
 
 
 ## Requirements
@@ -181,7 +193,9 @@ iso["604"]['PE-AMA'].parentCode #Amarumayu subdivision
 If only a subset of the available default attributes are required per
 subdivision, include them via the 'filter_attributes' input parameter
 when creating an instance of the class. All attributes not included
-in this list will be excluded.
+in this list will be excluded. Default attributes are: name, localOtherName,
+type, parentCode, latLng, flag, history. Use filter_attributes="*" to include
+all default attributes.
 '''
 from iso3166_2 import *
 
@@ -294,6 +308,18 @@ they will be output.
 iso.check_for_updates()
 ```
 
+**Remove unneeded attributes from iso3166-2 dataset:**
+```python
+'''
+Remove any attributes that you don't need, removing them for all 
+subdivisions from the actual iso3166-2.json dataset. This is useful 
+for when you only need a subset of attributes and will save tons of
+memory. For example removing all of the "parentCode" and "type" 
+data from the dataset, overwriting the iso3166-2.json.
+'''
+iso.remove_attributes("parentCode, type", overwrite_data=True)
+```
+
 **Get total number of subdivisions in object:**
 ```python
 len(iso)
@@ -356,6 +382,8 @@ There are 8 main default attributes supported for all subdivision objects that w
 * **Type** - subdivision type, e.g. region, state, canton, parish etc
 * **Latitude/Longitude** - subdivision coordinates, from GoogleMaps API
 * **Flag** - subdivision flag from the custom-built [`iso3166-flags`](https://github.com/amckenna41/iso3166-flags) repo; this is another ISO 3166 related custom-built dataset of over **3500** regional/subdivision flags
+* **Area** - subdivision area (km^2)
+* **Population** - subdivision population
 * **History** - historical updates/changes to the subdivision code and naming conventions, as per the custom-built [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates) repo -->
 
 ### Query String Parameters
@@ -375,7 +403,7 @@ having a lower value will return less exact but more total matches, e.g ``/api/s
 
 
 <!-- ## ISO 3166-2 Scripts
-* [`scripts/export_iso3166_2.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts) - used for pulling and exporting the latest ISO 3166-2 data from the various data sources. In this script you can also export additional attributes for each country/subdivision via the RestCountries and CountryStateCity APIs.
+* [`scripts/main.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts) - used for pulling and exporting the latest ISO 3166-2 data from the various data sources. In this script you can also export additional attributes for each country/subdivision via the RestCountries and CountryStateCity APIs.
 * [`scripts/update_subdivisions.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts) - used for adding, amending and or deleting subdivisions to the `iso3166-2` software and object.
 * [`scripts/local_other_names.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/local_other_names.py) - used for adding the data from the local_other_names.csv dataset, including any validation checks on the data.
 * [`scripts/utils.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/utils.py) - a series of utility functions used throughout the `iso3166-2` project.
@@ -391,7 +419,7 @@ Please visit the [README](https://github.com/amckenna41/iso3166-2/blob/main/scri
 * `/tests` - unit and integration tests for `iso3166-2`
 * `UPDATES.md` - markdown file listing all of the additions, amendments and deletions to the ISO 3166-2 dataset (dating from 2022), exported via the [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates) software.
 
-<!-- * `/scripts` - scripts for pulling all the ISO 3166 data (*export_iso3166_2.py*), for adding/amending/deleting subdivisions to the dataset (*update_subdivisions.py*), for adding/validating all the local/other name data in the local_other_names.csv (*local_other_names.py*) and for the various utility functions used throughout the project (*utils.py*).   -->
+<!-- * `/scripts` - scripts for pulling all the ISO 3166 data (*main.py*), for adding/amending/deleting subdivisions to the dataset (*update_subdivisions.py*), for adding/validating all the local/other name data in the local_other_names.csv (*local_other_names.py*) and for the various utility functions used throughout the project (*utils.py*).   -->
 <!-- contains CSV file for listing any changes/updates to be made to the dataset (*subdivision_updates.csv*) via functionality in the /scripts dir, a CSV of all subdivisions and their respective local/other names (local_other_names.csv) and a language lookup file for all the language codes mentioned for any of the local/other names (language_lookup.md). -->
 <!-- * `API.md` - info and useful commands/examples for this software's accompanying API - **iso3166-2-api** -->
 

@@ -1,2 +1,3 @@
-from .update_subdivisions import *
-from .export_iso3166_2 import *
+# Lazy imports - let main.py handle the dynamic import chain
+# from .update_subdivisions import *
+# from .main import *

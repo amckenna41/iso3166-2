@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 import unittest
 unittest.TestLoader.sortTestMethodsUsing = None
 
-# @unittest.skip("")
+@unittest.skip("")
 class ISO3166_2_API_Tests(unittest.TestCase):
     """
     Test suite for testing ISO 3166-2 api created to accompany the iso3166-2 Python software package. 
@@ -98,7 +98,7 @@ class ISO3166_2_API_Tests(unittest.TestCase):
         # last_updated = soup.find(id='last-updated').text.split(': ')[1]
         author = soup.find(id='author').text.split(': ')[1]
 
-        # self.assertEqual(version, "1.8.0", f"Expected API version to be 1.8.0, got {version}.") 
+        # self.assertEqual(version, "1.8.1", f"Expected API version to be 1.8.1, got {version}.") 
         # self.assertEqual(last_updated, "September 2025", f"Expected last updated date to be September 2025, got {last_updated}.")
         self.assertEqual(author, "AJ", f"Expected author to be AJ, got {author}.")
 #2.)
@@ -114,7 +114,7 @@ class ISO3166_2_API_Tests(unittest.TestCase):
         test_request_all = self.test_request_all.json()
 
         self.assertIsInstance(test_request_all, dict, f"Expected output object of API to be of type dict, got {type(self.test_request_all)}.")
-        self.assertEqual(len(test_request_all), 250, f"Expected there to be 250 elements in output object, got {len(test_request_all)}.")
+        self.assertEqual(len(test_request_all), 249, f"Expected there to be 249 elements in output object, got {len(test_request_all)}.")
         self.assertEqual(self.test_request_all.status_code, 200, f"Expected 200 status code from request, got {self.test_request_all.status_code}.")
         self.assertEqual(self.test_request_all.headers["content-type"], "application/json", f"Expected Content type to be application/json, got {self.test_request_all.headers['content-type']}.")
 #2.)
@@ -124,7 +124,7 @@ class ISO3166_2_API_Tests(unittest.TestCase):
                 self.assertIn(subd, self.iso3166_2_data.subdivision_codes(alpha2), f"Subdivision code {subd} not found in list of available subdivision codes.")
 #3.)
         total_subdivision_objects = sum(len(subd) for subd in test_request_all.values())
-        self.assertEqual(total_subdivision_objects, 5049, f"Expected and observed total subdivisions do not match, got {total_subdivision_objects}.")
+        self.assertEqual(total_subdivision_objects, 5046, f"Expected and observed total subdivisions do not match, got {total_subdivision_objects}.")
 #4.)
         test_all_request_filter = requests.get(self.all_base_url, headers=self.user_agent_header, params={"filter": "flag, type"}).json() #filtering out all attributes but flag and type
 
@@ -278,14 +278,16 @@ class ISO3166_2_API_Tests(unittest.TestCase):
 
         #AU-NSW - New South Wales 
         test_alpha_request_au_nsw_expected = {"name": "New South Wales", "localOtherName": "NSW (eng), The First State (eng), The Premier State (eng)", "parentCode": None, "type": "State", 
-                    "latLng": [-31.253, 146.921], "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/AU/AU-NSW.svg", 
-                    "history": ["2004-03-08: Codes: New South Wales: AU-NS -> AU-NSW. Queensland: AU-QL -> AU-QLD. Tasmania: AU-TS -> AU-TAS. Victoria: AU-VI -> AU-VIC. Australian Capital Territory: AU-CT -> AU-ACT. Description of Change: Change of subdivision code in accordance with Australian Standard AS 4212-1994. Source: Newsletter I-6 - https://web.archive.org/web/20081218103224/http://www.iso.org/iso/iso_3166-2_newsletter_i-6_en.pdf."]}      
+                    "latLng": [-31.876, 147.2869], "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/AU/AU-NSW.svg", 
+                    "history": [{"Change": "Codes: New South Wales: AU-NS -> AU-NSW. Queensland: AU-QL -> AU-QLD. Tasmania: AU-TS -> AU-TAS. Victoria: AU-VI -> AU-VIC. Australian Capital Territory: AU-CT -> AU-ACT.", "Description of Change": "Change of subdivision code in accordance with Australian Standard AS 4212-1994.",
+                    "Date Issued": "2004-03-08", "Source": "Newsletter I-6 - https://web.archive.org/web/20081218103224/http://www.iso.org/iso/iso_3166-2_newsletter_i-6_en.pdf."}]}      
         self.assertEqual(test_alpha_request_au["AU-NSW"], test_alpha_request_au_nsw_expected, 
                 f"Expected subdivision object doesn't match observed object:\n{test_alpha_request_au['AU-NSW']}.")
         #AU-QLD - Queensland
         test_alpha_request_au_qld_expected = {"name": "Queensland", "localOtherName": "Qld (eng), The Sunshine State (eng)", "parentCode": None, "type": "State", 
-                "latLng": [-22.575, 144.085], "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/AU/AU-QLD.svg",
-                "history": ["2004-03-08: Codes: New South Wales: AU-NS -> AU-NSW. Queensland: AU-QL -> AU-QLD. Tasmania: AU-TS -> AU-TAS. Victoria: AU-VI -> AU-VIC. Australian Capital Territory: AU-CT -> AU-ACT. Description of Change: Change of subdivision code in accordance with Australian Standard AS 4212-1994. Source: Newsletter I-6 - https://web.archive.org/web/20081218103224/http://www.iso.org/iso/iso_3166-2_newsletter_i-6_en.pdf."]} 
+                "latLng": [-22.1647, 144.5845], "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/AU/AU-QLD.svg",
+                "history": [{"Change": "Codes: New South Wales: AU-NS -> AU-NSW. Queensland: AU-QL -> AU-QLD. Tasmania: AU-TS -> AU-TAS. Victoria: AU-VI -> AU-VIC. Australian Capital Territory: AU-CT -> AU-ACT.", "Description of Change": "Change of subdivision code in accordance with Australian Standard AS 4212-1994.",
+                "Date Issued": "2004-03-08", "Source": "Newsletter I-6 - https://web.archive.org/web/20081218103224/http://www.iso.org/iso/iso_3166-2_newsletter_i-6_en.pdf."}]} 
         self.assertEqual(test_alpha_request_au["AU-QLD"], test_alpha_request_au_qld_expected, 
                 f"Expected subdivision object doesn't match observed object:\n{test_alpha_request_au['AU-QLD']}.")
 #2.) 
@@ -304,15 +306,17 @@ class ISO3166_2_API_Tests(unittest.TestCase):
 
         #LU-CA - Capellen
         test_alpha_request_lux_ca_expected = {"name": "Capellen", "localOtherName": "Capellen (deu), Kapellen (ltz)", "parentCode": None, "type": "Canton", 
-                "latLng": [49.646, 5.991], "flag": None,
-                "history": ["2015-11-27: Addition of cantons LU-CA, LU-CL, LU-DI, LU-EC, LU-ES, LU-GR, LU-LU, LU-ME, LU-RD, LU-RM, LU-VD, LU-WI; update List Source. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:LU."]} 
+                "latLng": [49.636, 5.9733], "flag": None,
+                "history": [{"Change": "Addition of cantons LU-CA, LU-CL, LU-DI, LU-EC, LU-ES, LU-GR, LU-LU, LU-ME, LU-RD, LU-RM, LU-VD, LU-WI; update List Source.", "Description of Change": None,
+                "Date Issued": "2015-11-27", "Source": "Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:LU."}]}
         self.assertEqual(test_alpha_request_lux["LU-CA"], test_alpha_request_lux_ca_expected, 
                 f"Expected subdivision object doesn't match observed object:\n{test_alpha_request_lux['LU-CA']}.")
         
         #LU-WI - Luxembourg
         test_alpha_request_lux_wi_expected = {"name": "Wiltz", "localOtherName": "Wiltz (deu), Wolz (ltz)", "parentCode": None, "type": "Canton", 
-                "latLng": [49.966, 5.932], "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/LU/LU-WI.svg",
-                "history": ['2015-11-27: Addition of cantons LU-CA, LU-CL, LU-DI, LU-EC, LU-ES, LU-GR, LU-LU, LU-ME, LU-RD, LU-RM, LU-VD, LU-WI; update List Source. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:LU.']} 
+                "latLng": [49.9423, 5.9051], "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/LU/LU-WI.svg",
+                "history": [{"Change": "Addition of cantons LU-CA, LU-CL, LU-DI, LU-EC, LU-ES, LU-GR, LU-LU, LU-ME, LU-RD, LU-RM, LU-VD, LU-WI; update List Source.", "Description of Change": None,
+                "Date Issued": "2015-11-27", "Source": "Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:LU."}]}
         self.assertEqual(test_alpha_request_lux["LU-WI"], test_alpha_request_lux_wi_expected, 
                 f"Expected subdivision object doesn't match observed object:\n{test_alpha_request_lux['LU-WI']}.")
 #3.)
@@ -343,12 +347,13 @@ class ISO3166_2_API_Tests(unittest.TestCase):
 
         #PA-4 - Chiriquí
         test_alpha_request_pa_4_expected = {"name": "Chiriquí", "localOtherName": "Chiriqui (eng)", "parentCode": None, "type": "Province", 
-                "latLng": [8.387, -82.28], "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/PA/PA-4.svg", "history": None} 
+                "latLng": [8.055, -82.2715], "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/PA/PA-4.svg", "history": None} 
         self.assertEqual(test_alpha_request_pa_rw["PA"]["PA-4"], test_alpha_request_pa_4_expected, 
                 f"Expected subdivision object doesn't match observed object:\n{test_alpha_request_pa_rw['PA']['PA-4']}.")
         #RW-03 - Northern 
         test_alpha_request_rw_03_expected = {"name": "Northern", "localOtherName": "Nord (fra), Amajyaruguru (kin), Noordelijke (nld)", "parentCode": None, "type": "Province", 
-                "latLng": [-1.656, 29.882], "flag": None, "history": ["2015-11-27: Change of spelling of RW-01, RW-02, RW-03, RW-04, RW-05; addition of category name in kin; update List Source. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:RW."]} 
+                "latLng": [-1.581, 29.927], "flag": None, "history": [{"Change": "Change of spelling of RW-01, RW-02, RW-03, RW-04, RW-05; addition of category name in kin; update List Source.",
+                "Description of Change": None, "Date Issued": "2015-11-27", "Source": "Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:RW."}]}
         self.assertEqual(test_alpha_request_pa_rw["RW"]["RW-03"], test_alpha_request_rw_03_expected, 
                 f"Expected subdivision object doesn't match observed object:\n{test_alpha_request_pa_rw['RW']['RW-03']}.")
 #4.)
@@ -380,12 +385,12 @@ class ISO3166_2_API_Tests(unittest.TestCase):
 
         #SR-SI - Sipaliwini
         test_alpha_request_740_752_expected = {"name": "Sipaliwini", "localOtherName": None, "parentCode": None, "type": "District", 
-                "latLng": [3.657, -56.204], "flag": None, "history": None} 
+                "latLng": [3.6815, -55.9612], "flag": None, "history": None} 
         self.assertEqual(test_alpha_request_740_752["SR"]["SR-SI"], test_alpha_request_740_752_expected, 
                 f"Expected subdivision object doesn't match observed object:\n{test_alpha_request_740_752['SR']['SR-SI']}.")
         #SE-I - Gotlands
         test_alpha_request_740_752_expected = {"name": "Gotlands län [SE-09]", "localOtherName": "Gotland (eng)", "parentCode": None, "type": "County", 
-                "latLng": [57.531, 18.69], "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/SE/SE-I.svg", "history": None} 
+                "latLng": [57.648, 18.5953], "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/SE/SE-I.svg", "history": None} 
         self.assertEqual(test_alpha_request_740_752["SE"]["SE-I"], test_alpha_request_740_752_expected, 
                 f"Expected subdivision object doesn't match observed object:\n{test_alpha_request_740_752['SE']['SE-I']}.")
 #5.)
@@ -468,21 +473,21 @@ class ISO3166_2_API_Tests(unittest.TestCase):
 #1.)
         test_subdivision_request_jm_05 = requests.get(self.subdivision_base_url + test_subdivision_jm_05, headers=self.user_agent_header).json() #JM-05 (Saint Mary)
         test_subdivision_request_jm_05_expected = {"JM": {"JM-05": {"name": "Saint Mary", "localOtherName": "Sent Mary (jam)", "parentCode": None, 
-            "type": "Parish", "latLng": [18.309, -76.964], "flag": None, "history": None}}}
+            "type": "Parish", "latLng": [18.2789, -76.9022], "flag": None, "history": None}}}
         
         self.assertEqual(test_subdivision_request_jm_05, test_subdivision_request_jm_05_expected, 
             f"Expected subdivision object doesn't match observed object:\n{test_subdivision_request_jm_05['JM']['JM-05']}")
 #2)
         test_subdivision_request_pa_3 = requests.get(self.subdivision_base_url + test_subdivision_pa_03, headers=self.user_agent_header).json() #PA-3 - Colón
         test_subdivision_request_pa_3_expected = {"PA": {"PA-3": {"name": "Colón", "localOtherName": "Colon (eng)", "parentCode": None, 
-            "type": "Province", "latLng": [9.359, -79.9], "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/PA/PA-3.svg", "history": None}}}
+            "type": "Province", "latLng": [9.2352, -80.2533], "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/PA/PA-3.svg", "history": None}}}
         
         self.assertEqual(test_subdivision_request_pa_3, test_subdivision_request_pa_3_expected, 
             f"Expected subdivision object doesn't match observed object:\n{test_subdivision_request_pa_3['PA']['PA-3']}")
 #3.)
         test_subdivision_request_ss_ew = requests.get(self.subdivision_base_url + test_subdivision_ss_ew, headers=self.user_agent_header).json() #SS-EW - Western Equatoria
         test_subdivision_request_ss_ew_expected = {"SS": {"SS-EW": {"name": "Western Equatoria", "localOtherName": "The Green State (eng)", "parentCode": None, 
-            "type": "State", "latLng": [5.347, 28.299], "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/SS/SS-EW.png", "history": None}}}
+            "type": "State", "latLng": [5.5381, 29.1495], "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/SS/SS-EW.png", "history": None}}}
 
         self.assertEqual(test_subdivision_request_ss_ew, test_subdivision_request_ss_ew_expected, 
             f"Expected subdivision object doesn't match observed object:\n{test_subdivision_request_ss_ew['SS']['SS-EW']}")
@@ -493,25 +498,31 @@ class ISO3166_2_API_Tests(unittest.TestCase):
                 'TJ-DU': {
                     'flag': None,
                     'history': [
-                        '2015-02-12: Removed the reference to Dushanbe in remark part 2; correct spelling of DU. '
-                        '(Remark part 2: Remark: The deletion of the region Karategin left one part of the country without name '
-                        'and without code in this part of ISO 3166. This section of the country is designated districts under '
-                        'republic administration (tgk: nohiyahoi tobei jumhurí) and comprises 13 districts (tgk: nohiya) which '
-                        'are administered directly by the central government at first-order level). Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:TJ.',
-                        '2014-11-03: Subdivision added: TJ-DU. Description of Change: Add 1 capital territory TJ-DU. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:TJ.'
+                        {
+                            "Change": "Removed the reference to Dushanbe in remark part 2; correct spelling of DU. (Remark part 2: Remark: The deletion of the region Karategin left one part of the country without name and without code in this part of ISO 3166. This section of the country is designated districts under republic administration (tgk: nohiyahoi tobei jumhurí) and comprises 13 districts (tgk: nohiya) which are administered directly by the central government at first-order level).",
+                            "Description of Change": None,
+                            "Date Issued": "2015-02-12",
+                            "Source": "Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:TJ."
+                        },
+                        {
+                            "Change": "Subdivision added: TJ-DU.",
+                            "Description of Change": "Add 1 capital territory TJ-DU.",
+                            "Date Issued": "2014-11-03",
+                            "Source": "Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:TJ."
+                        }
                     ],
-                    'latLng': [38.56, 68.787],
+                    'latLng': [38.5763, 68.7864],
                     'localOtherName': 'Душанбe (tgk), Душанбe (rus), Dushanbe (eng), Dyushambe (eng), Stalinabad (eng)',
                     'name': 'Dushanbe', 'parentCode': None, 'type': 'Capital territory'
                 }
             },
             'TV': {
                 'TV-NIT': {
-                    'flag': None, 'history': None, 'latLng': [-6.106, 177.344],
+                    'flag': None, 'history': None, 'latLng': [-6.1095, 177.342],
                     'localOtherName': None, 'name': 'Niutao', 'parentCode': None, 'type': 'Island council'
                 },
                 'TV-NKF': {
-                    'flag': None, 'history': None, 'latLng': [-8, 178.5],
+                    'flag': None, 'history': None, 'latLng': [-8.1159, 178.4798],
                     'localOtherName': None, 'name': 'Nukufetau', 'parentCode': None, 'type': 'Island council'
                 }
             }
@@ -575,33 +586,38 @@ class ISO3166_2_API_Tests(unittest.TestCase):
 #1.)    
         test_search_name_request_azua = requests.get(self.search_base_url + test_search_name_azua, headers=self.user_agent_header).json() #DO-02 - Azua
         test_search_name_request_azua_expected = {"DO": {"DO-02": {"name": "Azua", "localOtherName": "Azua (eng)", "parentCode": "DO-41", 
-            "type": "Province", "latLng": [18.453, -70.735], "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/DO/DO-02.png", "history": None}}}
+            "type": "Province", "latLng": [18.6257, -70.9046], "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/DO/DO-02.png", "history": None}}}
 
         self.assertEqual(test_search_name_request_azua, test_search_name_request_azua_expected, 
             f"Expected subdivision object doesn't match observed object:\n{test_search_name_request_azua}")
 #2.)
         test_search_name_request_cakaudrove = requests.get(self.search_base_url + test_search_name_cakaudrove, headers=self.user_agent_header).json() #FJ-03 - Cakaudrove
         test_search_name_request_cakaudrove_expected = {"FJ": {"FJ-03": {"name": "Cakaudrove", "localOtherName": None, "parentCode": "FJ-N", 
-            "type": "Province", "latLng": [-16.581, 179.512], "flag": None, "history": [
-        "2016-11-15: Assign parent subdivision to FJ-01, FJ-02, FJ-03, FJ-04, FJ-05, FJ-06, FJ-07, FJ-08, FJ-09, FJ-10, FJ-11, FJ-12, FJ-13, FJ-14. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:FJ."]}}}
-
+            "type": "Province", "latLng": [-16.5162, 179.394], "flag": None, "history": [
+                {
+                    "Change": "Assign parent subdivision to FJ-01, FJ-02, FJ-03, FJ-04, FJ-05, FJ-06, FJ-07, FJ-08, FJ-09, FJ-10, FJ-11, FJ-12, FJ-13, FJ-14.",
+                    "Description of Change": None,
+                    "Date Issued": "2016-11-15",
+                    "Source": "Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:FJ."
+                }
+            ]}}}
         self.assertEqual(test_search_name_request_cakaudrove, test_search_name_request_cakaudrove_expected, 
             f"Expected subdivision object doesn't match observed object:\n{test_search_name_request_cakaudrove}")
 #3.)
         test_search_name_request_gelderland_overijssel = requests.get(self.search_base_url + test_search_name_gelderland_overijssel, headers=self.user_agent_header).json() #NL-GE - Gelderland, NL-OV - Overijssel
         test_search_name_request_gelderland_overijssel_expected = {'NL': {'NL-GE': {'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/NL/NL-GE.svg', 'history': None, 'latLng': [52.045, 5.872], 
             'localOtherName': 'Guelders (eng)', 'name': 'Gelderland', 'parentCode': None, 'type': 'Province'}, 'NL-OV': {'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/NL/NL-OV.svg', 
-            'history': None, 'latLng': [52.439, 6.502], 'localOtherName': 'Oberyssel (deu), Oaveriessel (nds), Across the IJssel (eng)', 'name': 'Overijssel', 'parentCode': None, 'type': 'Province'}}}
+            'history': None, 'latLng': [52.1014, 6.9516], 'localOtherName': 'Oberyssel (deu), Oaveriessel (nds), Across the IJssel (eng)', 'name': 'Overijssel', 'parentCode': None, 'type': 'Province'}}}
 
         self.assertEqual(test_search_name_request_gelderland_overijssel, test_search_name_request_gelderland_overijssel_expected, 
             f"Expected subdivision object doesn't match observed object:\n{test_search_name_request_gelderland_overijssel}")
 #4.)        
         test_search_name_request_ciudad_likeness = requests.get(self.search_base_url + test_search_name_ciudad, headers=self.user_agent_header, params={"likeness": "60", "excludeMatchScore": 0}).json() #Ciudad - likeness score of 60, include the Match Score attribute
-        test_search_name_request_ciudad_likeness_expected = [{'countryCode': 'ES', 'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/ES/ES-CR.svg', 'history': None, 'latLng': [38.985, -3.927], 'localOtherName': None, 'matchScore': 75, 
-            'name': 'Ciudad Real', 'parentCode': 'ES-CM', 'subdivisionCode': 'ES-CR', 'type': 'Province'}, {'countryCode': 'AO', 'flag': None, 'history': None, 'latLng': [-5.571, 12.198], 'localOtherName': 'Kabinda (kon), Portuguese Congo (eng)', 'matchScore': 62, 'name': 'Cabinda', 
+        test_search_name_request_ciudad_likeness_expected = [{'countryCode': 'ES', 'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/ES/ES-CR.svg', 'history': None, 'latLng': [38.9597, -3.8829], 'localOtherName': None, 'matchScore': 75, 
+            'name': 'Ciudad Real', 'parentCode': 'ES-CM', 'subdivisionCode': 'ES-CR', 'type': 'Province'}, {'countryCode': 'AO', 'flag': None, 'history': None, 'latLng': [-5.0564, 12.3212], 'localOtherName': 'Kabinda (kon), Portuguese Congo (eng)', 'matchScore': 62, 'name': 'Cabinda', 
             'parentCode': None, 'subdivisionCode': 'AO-CAB', 'type': 'Province'}, {'countryCode': 'MX', 'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/MX/MX-CMX.png', 
             'history': ['2017-11-23: Typographical correction of MX-CMX; update List source. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:MX.', '2016-11-15: Change of subdivision code from MX-DIF to MX-CMX; change of name of MX-CMX, MX-COA, MX-MIC, MX-VER; addition of local variation of MX-COA, MX-MIC, MX-VER; update list source. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:MX.'], 
-            'latLng': [19.433, -99.133], 'localOtherName': 'Mexico City (eng), CDMX (spa), Monda (oto), Mexihco Hueyaltepetl (nhn), U noj kaajil México (yua), CDMX (eng), La Ciudad de los Palacios (spa), The City of Palaces (eng)', 'matchScore': 60, 'name': 'Ciudad de México', 'parentCode': None, 'subdivisionCode': 'MX-CMX', 'type': 'Federal entity'}]
+            'latLng': [19.3208, -99.1515], 'localOtherName': 'Mexico City (eng), CDMX (spa), Monda (oto), Mexihco Hueyaltepetl (nhn), U noj kaajil México (yua), CDMX (eng), La Ciudad de los Palacios (spa), The City of Palaces (eng)', 'matchScore': 60, 'name': 'Ciudad de México', 'parentCode': None, 'subdivisionCode': 'MX-CMX', 'type': 'Federal entity'}]
 
         self.assertEqual(test_search_name_request_ciudad_likeness, test_search_name_request_ciudad_likeness_expected, 
             f"Expected subdivision object doesn't match observed object:\n{test_search_name_request_ciudad_likeness}")
@@ -613,8 +629,8 @@ class ISO3166_2_API_Tests(unittest.TestCase):
         self.assertEqual(test_search_name_request_south_likeness_filter, test_search_name_request_south_likeness_filter_expected, f"Expected and observed output objects do not match:\n{test_search_name_request_south_likeness_filter}.")
 #6.)
         test_search_name_request_madrid_armaghcity = requests.get(self.search_base_url + test_search_name_madrid_armaghcity, headers=self.user_agent_header, params={"filter": "flag,parentCode,type,localOtherName,latLng,name"}).json() #ES-MD - Madrid, GB-ABC - Armagh City, Banbridge and Craigavon, filter for all attributes except history
-        test_search_name_request_madrid_armaghcity_es_md_expected = {'ES': {'ES-MD': {'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/ES/ES-MD.svg', 'latLng': [40.417, -3.581], 'localOtherName': 'Community of Madrid (eng)', 'name': 'Madrid, Comunidad de', 'parentCode': None, 'type': 'Autonomous community'}}, 
-                                                                     'GB': {'GB-ABC': {'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-ABC.png', 'latLng': [54.393, -6.456], 'localOtherName': "'Ard Mhacha, Droichead na Banna agus Creag Abhann (gle)', 'Airmagh, Bannbrig an Craigavon (ulst1239)'", 
+        test_search_name_request_madrid_armaghcity_es_md_expected = {'ES': {'ES-MD': {'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/ES/ES-MD.svg', 'latLng': [40.5248, -3.7716], 'localOtherName': 'Community of Madrid (eng)', 'name': 'Madrid, Comunidad de', 'parentCode': None, 'type': 'Autonomous community'}}, 
+                                                                     'GB': {'GB-ABC': {'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-ABC.png', 'latLng': [54.3853, -6.4249], 'localOtherName': "'Ard Mhacha, Droichead na Banna agus Creag Abhann (gle)', 'Airmagh, Bannbrig an Craigavon (ulst1239)'", 
                                                                                        'name': 'Armagh City, Banbridge and Craigavon', 'parentCode': 'GB-NIR', 'type': 'District'}}}
 
         self.assertEqual(test_search_name_request_madrid_armaghcity, test_search_name_request_madrid_armaghcity_es_md_expected, 

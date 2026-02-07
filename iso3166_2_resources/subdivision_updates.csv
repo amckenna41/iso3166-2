@@ -77,7 +77,6 @@ GB,GB-DRS,,,,GB-NIR,,,,,Updating subdivision parent code,2021-11-25
 GB,GB-DUD,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
 GB,GB-DUR,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
 GB,GB-EAL,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
-GB,GB-EAW,England and Wales,,Collecting of England and Wales,,,"[52.355, 1.174]",,,Adding GB-EAW subdivision for completeness according to remark 2 on ISO page,2021-11-25
 GB,GB-EAY,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
 GB,GB-EDH,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
 GB,GB-EDU,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
@@ -93,7 +92,6 @@ GB,GB-FIF,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
 GB,GB-FLN,,,,GB-WLS,,,,,Updating subdivision parent code,2021-11-25
 GB,GB-FMO,,,,GB-NIR,,,,,Updating subdivision parent code,2021-11-25
 GB,GB-GAT,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
-GB,GB-GBN,Great Britain,,Collection of countries,,,"[55.378, 3.436]",,,Adding GB-GBN subdivision for completeness according to remark 2 on ISO page,2021-11-25
 GB,GB-GLG,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25
 GB,GB-GLS,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
 GB,GB-GRE,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
@@ -211,7 +209,6 @@ GB,GB-TOF,,,,GB-WLS,,,,,Updating subdivision parent code,2021-11-25
 GB,GB-TRF,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
 GB,GB-TWH,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
 GB,GB-VGL,,,,GB-WLS,,,,,Updating subdivision parent code,2021-11-25
-GB,GB-UKM,United Kingdom,,Country,,https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-UKM.svg,"[55.378, 3.436]",,,Adding GB-UKM subdivision for completeness according to remark 2 on ISO page,2021-11-25
 GB,GB-WAR,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
 GB,GB-WBK,,,,GB-ENG,,,,,Updating subdivision parent code,2021-11-25
 GB,GB-WDU,,,,GB-SCT,,,,,Updating subdivision parent code,2021-11-25

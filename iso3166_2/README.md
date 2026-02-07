@@ -70,7 +70,9 @@ iso["604"]['PE-AMA'].parentCode #Amarumayu subdivision parent code
 If only a subset of the available default attributes are required per
 subdivision, include them via the 'filter_attributes' input parameter
 when creating an instance of the class. All attributes not included
-in this list will be excluded.
+in this list will be excluded. Default attributes are: name, localOtherName,
+type, parentCode, latLng, flag, history. Use filter_attributes="*" to include
+all default attributes.
 '''
 from iso3166_2 import *
 
@@ -109,7 +111,7 @@ iso.search("Texas, Meuse", filter_attributes="name,type")
 
 **Get list of all subdivision codes for one or more countries using alpha code:**
 ```python
-#get list of all subdivision codes - returns a key value pair of country code and subdivision codess: {"AD": [...], "AE": [...], "AF": [...]}
+#get list of all subdivision codes - returns a key value pair of country code and subdivision codes: {"AD": [...], "AE": [...], "AF": [...]}
 iso.subdivision_codes()
 
 #get list of all subdivision codes for HU, MY & NP
@@ -148,8 +150,7 @@ area, gdp etc, via the custom_attribute parameter.
 iso.custom_subdivision("IE", "IE-BF", name="Belfast", local_other_name="Béal Feirste", type_="province", lat_lng=[54.596, -5.931], parent_code=None, flag=None)
 
 #adding custom Alaska province to Russia with additional population and area attribute values
-iso.custom_subdivision("RU", "RU-ASK", name="Alaska Oblast", local_other_name="Аляска", type_="Republic", lat_lng=[63.588, 154.493], parent_code=None, flag=None, 
-      custom_attributes={"population": "733,583", "gini": "0.43", "gdpPerCapita": "71,996"})
+iso.custom_subdivision("RU", "RU-ASK", name="Alaska Oblast", local_other_name="Аляска", type_="Republic", lat_lng=[63.588, 154.493], parent_code=None, flag=None, custom_attributes={"area": 100000, "population": 20000})
 
 #adding custom Republic of Molossia state to United States, save to new output file
 iso.custom_subdivision("US", "US-ML", name="Republic of Molossia", local_other_name="", type_="State", lat_lng=[39.236, -119.588], parent_code=None, flag="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_the_Republic_of_Molossia.svg", save_new=1, save_new_filename="us-ml-custom-output.json")
@@ -169,6 +170,18 @@ the repository. If there are any difference between these objects,
 they will be output.
 '''
 iso.check_for_updates()
+```
+
+**Remove unneeded attributes from iso3166-2 dataset:**
+```python
+'''
+Remove any attributes that you don't need, removing them for all 
+subdivisions from the actual iso3166-2.json dataset. This is useful 
+for when you only need a subset of attributes and will save tons of
+memory. For example removing all of the "parentCode" and "type" 
+data from the dataset, overwriting the iso3166-2.json.
+'''
+iso.remove_attributes("parentCode, type", overwrite_data=True)
 ```
 
 **Get total number of subdivisions in object:**

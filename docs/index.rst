@@ -1,6 +1,22 @@
 Welcome to ISO 3166-2's documentation 🌎!
 =========================================
 
+.. image:: https://img.shields.io/pypi/v/iso3166-2
+   :target: https://pypi.org/project/iso3166-2/
+   :alt: iso3166_2
+
+.. image:: https://github.com/amckenna41/iso3166-2/workflows/Building%20and%20Testing/badge.svg
+   :target: https://github.com/amckenna41/iso3166-2/actions?query=workflow:Building%20and%20Testing
+   :alt: pytest
+
+.. image:: https://img.shields.io/github/license/amckenna41/iso3166-2
+   :target: https://opensource.org/licenses/MIT
+   :alt: License: MIT
+
+.. image:: https://codecov.io/gh/amckenna41/iso3166-2/branch/main/graph/badge.svg
+   :target: https://codecov.io/gh/amckenna41/iso3166-2
+   :alt: codecov
+
 .. image:: https://upload.wikimedia.org/wikipedia/commons/3/3d/Flag-map_of_the_world_%282017%29.png
 
 Introduction
@@ -11,7 +27,7 @@ interchangeably with regions/states/provinces etc. Currently, the package and AP
 data from **250** countries/territories, according to the ISO 3166-1 standard. The software uses 
 another custom-built Python package called |iso3166_updates_repo_link| to ensure all the subdivision 
 data is **accurate, reliable and up-to-date**. The ISO 3166-2 was first published in 1998 and as of 
-June 2025 there are *5,049** codes defined in it.
+December 2025 there are **5,046** codes defined in it.
 
 The ISO 3166-2 standard is part of the broader ISO 3166 family, maintained by the International Organization 
 for Standardization (ISO). It provides codes for the names of the principal subdivisions (e.g., provinces or states) 
@@ -22,10 +38,10 @@ There are 7 main data attributes available for each subdivision/subdivision code
 
 * **Name** - subdivision name, as it is commonly known in English
 * **Local/other name** - subdivision name in local language or any alternative names its known by
-* **Parent Code** - subdivision's parent code
-* **Type** - subdivision type, e.g. region, state, canton, parish etc
 * **Latitude/Longitude** - subdivision coordinates
 * **Flag** - subdivision flag from the custom-built |iso3166_flag_icons_repo_link| repo
+* **Parent Code** - subdivision's parent code
+* **Type** - subdivision type, e.g. region, state, canton, parish etc
 * **History** - historical updates/changes to the subdivision and its data, from the custom-built |iso3166_updates_repo_link| repo
 
 Bespoke Features
@@ -54,7 +70,7 @@ Flags
 ~~~~~
 The other equally important and bespoke/unique attribute that the software package supports is the ``flag`` attribute, which is a link to the subdivision's 
 flag on the |iso3166_flag_icons_repo_link| repo. This is another **custom-built** repository, (alongside |iso3166_2_repo_link| and |iso3166_updates_repo_link|) 
-that stores a rich and comprehensive dataset of over **2800** official individual subdivision flags. 
+that stores a rich and comprehensive dataset of over **2800** official individual subdivision flags, alongside ~250 ISO 3166-1 country/territory flags.
 
 The flags repo uses the |iso3166_2_repo_link| software to get the full list of ISO 3166-2 subdivision codes which is kept up-to-date and accurate via the |iso3166_updates_repo_link| software.
 
@@ -75,6 +91,17 @@ a short description of the change, it's publication date as well as its source w
 
    <div align="center">❤️ iso3166-2 🤝 iso3166-updates ❤️</div>
 
+.. Demographics
+.. ~~~~~~~~~~~
+.. Two additional bespoke attributes that have been recently added to the software are the ``area`` and ``population`` attributes. These attributes
+.. provide the latest key demographic information about each subdivision. The data for these attributes is sourced via the |wikidata_link| SPARQL 
+.. endpoint and is regularly updated to ensure accuracy. 
+
+Upcoming Features
+=================
+There are several new features and attributes that are currently being worked on and will be added to the software package in the near future. These include:
+* **Demographics** - addition of key demographic data attributes such as area, population, population density etc for each subdivision
+* **Enhanced Geo Data** - addition of more detailed geo data attributes such as bounding box and geojson (these attributes are exportable via the custom scripts but yet to be implemented into the dataset)
 
 Version
 =======
@@ -138,7 +165,7 @@ The Python software and accompanying API are solely developed and maintained by 
 
 .. |version_link| raw:: html
 
-   <a href="https://pypi.org/project/iso3166-2/" target="_blank">v1.8.0</a>
+   <a href="https://pypi.org/project/iso3166-2/" target="_blank">v1.8.1</a>
 
 .. |updates_md_link| raw:: html
 
@@ -172,10 +199,18 @@ The Python software and accompanying API are solely developed and maintained by 
 
    <a href="https://github.com/amckenna41" target="_blank">me</a>
 
+.. |wikidata_link| raw:: html
+
+   <a href="https://query.wikidata.org/" target="_blank">Wikidata</a>
+
 
 Contents
 ========
 .. toctree::
+   :maxdepth: 2
+
    usage
    api
-   contributing
+   changelog
+
+`Back to top ↑ <#welcome-to-iso-3166-2-s-documentation>`_

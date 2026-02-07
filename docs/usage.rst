@@ -39,7 +39,7 @@ Get all subdivision data for a country using its ISO 3166-1 alpha codes
 -----------------------------------------------------------------------
 Get all subdivision data for a given country by creating an instance of the ``Subdivisions`` class. This instance is subscriptable such that you can get 
 the sought country subdivision data via its **ISO 3166-1 2 letter alpha-2, 3 letter alpha-3 or numeric country codes**. You can then get the individual
-subdivision attributes via dot notation.
+subdivision attributes via dot notation. You can also now directly input just the subdivision code to get its data.
 
 For example, accessing all Canadian (CA, CAN, 124) subdivision data:
 
@@ -54,22 +54,23 @@ For example, accessing all Canadian (CA, CAN, 124) subdivision data:
    #{'CA-AB': {'name': 'Alberta', 'localOtherName': 'Alberta', 'type': 'Province', 'parentCode': None,...}
 
    #CA-AB Alberta
-   ca_alberta = iso["CA"]["CA-AB"]
+   ca_alberta = iso["CA"]["CA-AB"] #or iso["CA-AB"]
    ca_alberta.name #Alberta
    ca_alberta.type #Province
    ca_alberta.flag #https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-icons/CA/CA-AB.svg
 
    #CA-MB Manitoba
-   ca_manitoba = iso["CA"]["CA-MB"]
+   ca_manitoba = iso["CA"]["CA-MB"] #or iso["CA-MB"]
    ca_manitoba.name #Manitoba
    ca_manitoba.parentCode #null
    ca_manitoba.localOtherName #Manitoba
 
    #CA-NS Nova Scotia
-   ca_nova_scotia = iso["CA"]["CA-NS"]
+   ca_nova_scotia = iso["CA"]["CA-NS"] #or iso["CA-NS"]
    ca_nova_scotia.name #Nova Scotia
    ca_nova_scotia.flag #https://github.com/amckenna41/iso3166-flags/blob/main/iso3166-2-icons/CA/CA-NS.svg
    ca_nova_scotia.history #None
+
 
 Accessing all Danish (DK, DNK, 208) subdivision data:
 
@@ -79,19 +80,19 @@ Accessing all Danish (DK, DNK, 208) subdivision data:
    #{'DK-81': {'name': 'Nordjylland', 'localOtherName': 'Nordjylland', 'type': 'Region', 'parentCode': None,...}
 
    #DK-81 Nordjylland
-   dk_nordjylland = iso["DNK"]["DK-81"]
+   dk_nordjylland = iso["DNK"]["DK-81"] #or iso["DK-81"]
    dk_nordjylland.name #Nordjylland
    dk_nordjylland.latLng #[56.831, 9.493]
    dk_nordjylland.type #Region
 
    #DK-84 Hovedstaden
-   dk_hovedstaden = iso["DNK"]["DK-84"]
+   dk_hovedstaden = iso["DNK"]["DK-84"] #or iso["DK-84"]
    dk_hovedstaden.name #Hovedstaden
    dk_hovedstaden.flag #https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-icons/DK/DK-84.svg
    dk_hovedstaden.parentCode #null
 
    #DK-85 Sjælland
-   dk_sjalland = iso["DK"]["DNK-85"]
+   dk_sjalland = iso["DK"]["DNK-85"] #or iso["DK-85"]
    dk_sjalland.name #Sjælland
    dk_sjalland.type #Region
    dk_sjalland.flag #https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-icons/DK/DK-85.svg
@@ -104,19 +105,19 @@ Accessing all Estonian (EE, EST, 233) subdivision data:
    #{'EE-37': {'name': 'Harjumaa', 'localOtherName': 'Harjumaa', 'type': 'County', 'parentCode': None,...}
 
    #EE-39 Hiiumaa
-   ee_hiiumaa = iso["233"]["EE-39"]
+   ee_hiiumaa = iso["233"]["EE-39"] #or iso["EE-39"]
    ee_hiiumaa.name #Hiiumaa
    ee_hiiumaa.localOtherName #Hiiumaa
    ee_hiiumaa.latLng #[58.924, 22.592]
 
    #EE-130 Alutaguse
-   ee_alutaguse = iso["233"]["EE-130"]
+   ee_alutaguse = iso["233"]["EE-130"] #or iso["EE-130"]
    ee_alutaguse.name #Alutaguse
    ee_alutaguse.parentCode #EE-45
    ee_alutaguse.flag #https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-icons/EE/EE-130.svg
 
    #EE-338 Kose
-   ee_kose = iso["233"]["EE-338"]
+   ee_kose = iso["233"]["EE-338"] #or iso["EE-338"]
    ee_kose.name #Kose
    ee_kose.type #Rural municipality
    ee_kose.parentCode #EE-37
@@ -276,7 +277,7 @@ You can also add custom attributes to the subdivision via the ``custom_attribute
 
    #adding custom Alaska province to Russia with additional population and area attribute values
    iso.custom_subdivision("RU", "RU-ASK", name="Alaska Oblast", local_other_name="Аляска", type_="Republic", lat_lng=[63.588, 154.493], parent_code=None, flag=None, 
-      custom_attributes={"population": "733,583", "gini": "0.43", "gdpPerCapita": "71,996"})
+      custom_attributes={"gini": "0.43", "gdpPerCapita": "71,996"})
 
    #deleting above custom subdivisions from object
    iso.custom_subdivision("IE", "IE-BF", delete=1)
@@ -302,11 +303,11 @@ passing in a comma separated list of attributes to include in the output via the
    #crete instance of Subdivisions class, filtering out all attributes but flag and type from subdivisions
    iso = Subdivisions(filter_attributes="flag,type")
 
-   #crete instance of Subdivisions class, filtering out all attributes but name from subdivisions
-   iso = Subdivisions(filter_attributes="name")
+   #crete instance of Subdivisions class, filtering out all attributes but name and flag from subdivisions
+   iso = Subdivisions(filter_attributes="name,flag")
 
-   #crete instance of Subdivisions class, filtering out all attributes but name,localOtherName,parentCode,type,flag,latLng from subdivisions
-   iso = Subdivisions(filter_attributes="name,localOtherName,parentCode,type,flag,latLng")
+   #crete instance of Subdivisions class, filtering out all attributes but name,localOtherName,parentCode,type,flag from subdivisions
+   iso = Subdivisions(filter_attributes="name,localOtherName,parentCode,type,flag")
 
 
 Get the total number of subdivision objects
@@ -320,12 +321,36 @@ Get the total number of individual ISO 3166-2 subdivision objects within the mai
    #create instance of Subdivisions class
    iso = Subdivisions()
 
-   #get total number of subdivision objects via len()
+   #get total number of subdivision objects via len() - 5,046
    len(iso)
 
 
+Remove attributes from subdivision data
+---------------------------------------
+Remove one or more attributes from all subdivision objects in the dataset. This is useful when you want to exclude specific attributes 
+from the subdivision data, such as flags or history. By default, the changes are made to the in-memory object only, 
+but you can optionally overwrite the original JSON file by setting the ``overwrite_data`` parameter to True.
+
+.. code-block:: python
+
+   from iso3166_2 import *
+
+   #create instance of Subdivisions class
+   iso = Subdivisions()
+
+   #remove the flag attribute from all subdivisions
+   iso.remove_attributes(["flag"])
+
+   #remove the history attribute and overwrite the original JSON file
+   iso.remove_attributes(["history"], overwrite_data=True)
+
+
+.. warning::
+   When setting ``overwrite_data=True``, the original **iso3166-2.json** file will be permanently modified. It is recommended to create a backup before using this option. To restore the original data, you can reinstall the software package.
+
+
 Check for the latest Subdivision data
-------------------------------------
+-------------------------------------
 Pull the latest subdivision data object from the `iso3166-2` GitHub repo and compare data with that of the object currently installed. If
 any changes are found then they will be output & it is advised that you upgrade or reinstall the software package to keep your data in sync
 with that of the latest version. 
@@ -342,8 +367,12 @@ with that of the latest version.
 
 
 .. note::
-    A demo of the software and API is available |demo_link|.
+   A demo of the software and API is available |demo_link|.
+
 
 .. |demo_link| raw:: html
 
    <a href="https://colab.research.google.com/drive/1btfEx23bgWdkUPiwdwlDqKkmUp1S-_7U?usp=sharing" target="_blank">here</a>
+
+
+`Back to top ↑ <#usage>`_

@@ -2,15 +2,18 @@ import pandas as pd
 import re
 import os 
 import numpy as np
-import pycountry
-#multiple import options for utils module depending on if script is called directly or via test script
-try:
-    from utils import *
-except:
-    from scripts.utils import *
+from pycountry import languages, language_families
+from typing import Optional, Dict, Tuple
 
-def add_local_other_names(all_subdivision_data: dict, remove_duplicate_translations: bool=False, max_local_other_names: int=None, 
-    filepath: str=os.path.join("iso3166_2_resources", "local_other_names.csv")) -> dict:
+#import utils from same package
+try:
+    from . import utils
+    from .utils import *
+except ImportError:
+    from utils import *
+
+def add_local_other_names(all_subdivision_data: Dict[str, Dict[str, Dict[str, any]]], remove_duplicate_translations: bool = False, max_local_other_names: Optional[int] = None, 
+    filepath: str = os.path.join("iso3166_2_resources", "local_other_names.csv")) -> Dict[str, Dict[str, Dict[str, any]]]:
     """
     Adding subdivision's local or other names taken from iso3166_2_resources/local_other_names.csv. 
     These values are mostly translations of the subdivision name into one or more local language 
@@ -164,7 +167,7 @@ def add_local_other_names(all_subdivision_data: dict, remove_duplicate_translati
 
     return all_subdivision_data
 
-def sort_local_other_names(filepath: str=os.path.join("iso3166_2_resources", "local_other_names.csv"), export_filepath: str="sorted_local_other_names.csv") -> None:
+def sort_local_other_names(filepath: str = os.path.join("iso3166_2_resources", "local_other_names.csv"), export_filepath: str = "sorted_local_other_names.csv") -> None:
     """
     Auxiliary function for sorting the order of local/other names within the csv file. For each 
     row, non-latin name translations (e.g arabic, russian) take precedence over latin variations
@@ -239,7 +242,7 @@ def sort_local_other_names(filepath: str=os.path.join("iso3166_2_resources", "lo
         #export new dataframe to export filepath name
         local_other_names_df_copy.to_csv(export_filepath)
 
-def validate_local_other_names(local_other_names_csv: str=os.path.join("iso3166_2_resources", "local_other_names.csv")) -> tuple[int, str]:
+def validate_local_other_names(local_other_names_csv: str = os.path.join("iso3166_2_resources", "local_other_names.csv")) -> Tuple[int, Optional[str]]:
     """ 
     Auxiliary function that iterates through all of the rows in the local/other names
     csv which stores the data for the localOtherNames attribute for each subdivision.
@@ -293,11 +296,11 @@ def validate_local_other_names(local_other_names_csv: str=os.path.join("iso3166_
 
     #get list of alpha-2 and alpha-3 language codes from the ISO 639, append to the same list
     all_language_codes = []
-    for lang in list(pycountry.languages):
+    for lang in list(languages):
         if ('alpha_2' in dir(lang)):
             all_language_codes.append(lang.alpha_2)
         all_language_codes.append(lang.alpha_3)
-    for lang in list(pycountry.language_families):
+    for lang in list(language_families):
         if ('alpha_3' in dir(lang)):
             all_language_codes.append(lang.alpha_3)
 
@@ -342,7 +345,7 @@ def validate_local_other_names(local_other_names_csv: str=os.path.join("iso3166_
 
     return 0, None
 
-def convert_iso_639_language_codes(filepath: str=os.path.join("iso3166_2_resources", "local_other_names.csv"), export_filepath: str="local_other_names_sorted.csv") -> None:
+def convert_iso_639_language_codes(filepath: str = os.path.join("iso3166_2_resources", "local_other_names.csv"), export_filepath: str = "local_other_names_sorted.csv") -> None:
     """
     Converts any ISO 639-1 (2 letter) language codes to their ISO 639-2/ISO 639-3 (3 letter) counterparts to 
     cover all languages/language families, if applicable. If there is no matching 3 letter language code then 
@@ -407,8 +410,8 @@ def convert_iso_639_language_codes(filepath: str=os.path.join("iso3166_2_resourc
                 local_other_name_row.append(capitalize_first_letter(name))
                 continue
             
-            #get language object for inputted code from pycountry package, using alpha-2 or alpha-3
-            language = pycountry.languages.get(alpha_2=language_code)
+            #get language object for inputted code from languages module of pycountry package, using alpha-2 or alpha-3
+            language = languages.get(alpha_2=language_code)
 
             #if converted language not found, append its original name and code to the list
             if (language is None):

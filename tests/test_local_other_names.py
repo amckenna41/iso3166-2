@@ -9,7 +9,7 @@ import unittest
 unittest.TestLoader.sortTestMethodsUsing = None
 
 # @unittest.skip("Skipping local/other name unit tests.")
-class Local_Other_Name_Tests(unittest.TestCase):
+class LocalOtherNameTests(unittest.TestCase):
     """
     Test suite for testing the database of local/other names for each subdivision in the 
     respective files and the auxiliary script used for generating the files and various
@@ -49,7 +49,13 @@ class Local_Other_Name_Tests(unittest.TestCase):
     # @unittest.skip("")
     def test_local_other_names_total(self):
         """ Testing correct number of rows in local/other names CSV. """
-        self.assertEqual(len(self.local_other_names_df), 5049, f"Expected 5049 rows in the local/other names dataframe, got {len(self.local_other_names_df)}.")
+        self.assertEqual(len(self.local_other_names_df), 5046, f"Expected 5046 rows in the local/other names dataframe, got {len(self.local_other_names_df)}.")
+
+    # @unittest.skip("")
+    def test_local_other_names_individual_total(self):
+        """ Testing correct number of individual entries in rows of local/other names CSV. """
+        self.assertEqual(int(self.local_other_names_df['localOtherName'].notna().sum()), 5046, 
+            f"Expected 5046 individual local/other names in the dataframe, got {int(self.local_other_names_df['localOtherName'].notna().sum())}.")
 
     # @unittest.skip("")
     def test_local_other_names_csv_columns(self):
@@ -217,3 +223,7 @@ class Local_Other_Name_Tests(unittest.TestCase):
 
             duplicates = [name for name in local_other_names_split if local_other_names_split.count(name) > 1]
             self.assertEqual(len(duplicates), 0, f"Expected there to be no duplicate values for the current row for the local/other name attribute:\n{local_other_names_split}.")
+    
+# Run the tests
+if __name__ == '__main__':
+    unittest.main()

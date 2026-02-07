@@ -1,24 +1,62 @@
 {
-    "total_countries": 250,
-    "total_subdivisions": 5049,
-    "dataset_kb": 2845.956,
-    "dataset_mb": 2.779,
-    "total_attributes": 35343,
+    "total_countries": 249,
+    "total_subdivisions": 5046,
+    "dataset_kb": 3482.215,
+    "dataset_mb": 3.401,
+    "total_attributes": 35322,
     "num_unique_attributes": 7,
-    "unique_subdivision_types": 112,
-    "average_subdivision_per_country": 20,
-    "zero_subdivisions_total": 50,
-    "max_subdivisions_country": "GB:224",
-    "null_attributes_total": 10741,
-    "null_local_other_name_total": 1312,
-    "null_flag_total": 2205,
-    "null_type_total": 0,
-    "null_latlng_total": 0,
-    "null_parentcode_total": 3593,
-    "null_history_total": 3631,
-    "total_local_other_entries": 8275,
-    "hemisphere_north_total": 4381,
-    "hemisphere_south_total": 668,
-    "hemisphere_east_total": 3646,
-    "hemisphere_west_total": 1403
+    "unique_subdivision_types": 110,
+    "average_subdivision_per_country": 20.265,
+    "zero_subdivisions_total": 49,
+    "max_subdivisions_country": "GB:221",
+    "min_subdivisions_country": "AI,AQ,AS,AW,AX,BL,BM,BV,CC,CK,CW,CX,EH,FK,FO,GF,GG,GI,GP,GS,GU,HK,HM,IM,IO,JE,KY,MF,MO,MP,MQ,MS,NC,NF,NU,PF,PM,PN,PR,RE,SJ,SX,TC,TF,TK,VA,VG,VI,YT:0",
+    "null_attributes_total": 10735,
+    "hemisphere_north_total": 4371,
+    "hemisphere_south_total": 675,
+    "hemisphere_east_total": 3632,
+    "hemisphere_west_total": 1414,
+    "attribute_stats": {
+        "name": {
+            "total_count": 5046,
+            "null_count": 0,
+            "populated_count": 5046,
+            "completeness_percent": 100.0
+        },
+        "localOtherName": {
+            "total_count": 5046,
+            "null_count": 1312,
+            "populated_count": 3734,
+            "completeness_percent": 74.0
+        },
+        "flag": {
+            "total_count": 5046,
+            "null_count": 2203,
+            "populated_count": 2843,
+            "completeness_percent": 56.34
+        },
+        "type": {
+            "total_count": 5046,
+            "null_count": 0,
+            "populated_count": 5046,
+            "completeness_percent": 100.0
+        },
+        "latLng": {
+            "total_count": 5046,
+            "null_count": 0,
+            "populated_count": 5046,
+            "completeness_percent": 100.0
+        },
+        "parentCode": {
+            "total_count": 5046,
+            "null_count": 3590,
+            "populated_count": 1456,
+            "completeness_percent": 28.85
+        },
+        "history": {
+            "total_count": 5046,
+            "null_count": 3630,
+            "populated_count": 1416,
+            "completeness_percent": 28.06
+        }
+    }
 }

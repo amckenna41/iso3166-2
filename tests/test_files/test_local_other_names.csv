@@ -1507,7 +1507,6 @@ GB,GB-DRS,Derry and Strabane,"Doire agus An Srath Bán (gle), Derry Cittie an St
 GB,GB-DUD,Dudley,
 GB,GB-DUR,"Durham, County",
 GB,GB-EAL,Ealing,
-GB,GB-EAW,England and Wales,Cymru a Lloegr (cym)
 GB,GB-EAY,East Ayrshire,"Aest Ayrshire (sco), Siorrachd Àir an Ear (gla)"
 GB,GB-EDH,"Edinburgh, City of",Comhairle Baile Dhùn Èideann (gla)
 GB,GB-EDU,East Dunbartonshire,"Aest Dunbartanshire (sco), Siorrachd Dhùn Bhreatann an Ear (gla)"
@@ -1524,7 +1523,6 @@ GB,GB-FIF,Fife,"Fife (sco), Fìobha (gla), Kingdom of Fife (eng)"
 GB,GB-FLN,Flintshire [Sir y Fflint GB-FFL],Sir y Fflint (cym)
 GB,GB-FMO,Fermanagh and Omagh,"Comhairle Ceantair Fhear Manach agus na hÓmaí (gle), Fermanay an Omey (ulst1239)"
 GB,GB-GAT,Gateshead,
-GB,GB-GBN,Great Britain,"Britain (eng), Blighty (eng)"
 GB,GB-GLG,Glasgow City,"Glaschu (gla), Glesga (sco), The Dear Green Place (eng), Baile Mòr nan Gàidheal (gle)"
 GB,GB-GLS,Gloucestershire,Glos (eng)
 GB,GB-GRE,Greenwich,
@@ -1646,7 +1644,6 @@ GB,GB-TOB,Torbay,The English Riviera (eng)
 GB,GB-TOF,Torfaen [Tor-faen],
 GB,GB-TRF,Trafford,
 GB,GB-TWH,Tower Hamlets,
-GB,GB-UKM,United Kingdom,"UK (eng), Britain (eng)"
 GB,GB-VGL,"Vale of Glamorgan, The [Bro Morgannwg GB-BMG]","Bro Morgannwg (cym), The Vale (eng)"
 GB,GB-WAR,Warwickshire,Warks (eng)
 GB,GB-WBK,West Berkshire,

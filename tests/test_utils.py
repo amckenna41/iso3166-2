@@ -2,49 +2,40 @@ from scripts.utils import *
 import shutil
 import os
 import unittest
+from unittest.mock import patch
 unittest.TestLoader.sortTestMethodsUsing = None
 
 # @unittest.skip("Skipping utils unit tests.")
-class Utils_Tests(unittest.TestCase):
+class UtilsUnitTests(unittest.TestCase):
     """
-    Test suite for testing the utilities module that consists of various functions
-    used throughout the software.
+    Test suite for testing pure logic functions in the utilities module.
 
+    Test Cases
+    ==========
     test_convert_to_alpha2:
         testing functionality that converts any ISO 3166 alpha code into its alpha-2
         counterpart.
+    test_get_alpha_codes_list:
+        testing functionality that validates and converts alpha codes and ranges
+        into a list of alpha-2 codes.
     test_split_preserving_quotes:
         testing function that splits a list of elements, ensuring any single quotes
         are preserved.
     test_get_flag_repo_url:
-        testing functionality that gets the subdivision's flag from the 
-        iso3166-flags repo. 
-    test_attributes_memory_usage:
-        testing functionality that extracts the memory usage per attribute
-        and country object within the JSON.
+        testing function that gets the URL for each subdivision flag.
     test_is_latin:
         testing function that checks if an individual character is a latin
         or non-latin character.
     test_only_roman_chars:
         testing function that checks if a string contains just roman chars.
-    test_get_flag_icons_url:
-        testing auxiliary function used for getting the flag URL of a subdivision from the 
-        iso3166-flags repo.
-    test_add_history:
-        testing utilities function that adds the subdivision's historical data to the output.
-    test_export_iso3166_2_data:
-        testing utilities function that exports the subdivision data to the output files/folder.
-    """ 
+    """
     @classmethod
     def setUp(self):
-        """ Initialise variables and create test directories. """
+        """ Setup test environment. """
         #test output folder for utils function
         self.test_utils_folder = os.path.join("tests", "test_iso3166_2_utils")
         if not (os.path.isdir(self.test_utils_folder)):
             os.makedirs(self.test_utils_folder)
-
-        #path to test ISO 3166-2 json file
-        self.test_iso3166_2_json = os.path.join("tests", "test_files", "test_iso3166-2.json")
 
     # @unittest.skip("")
     def test_convert_to_alpha2(self):
@@ -78,6 +69,27 @@ class Utils_Tests(unittest.TestCase):
             convert_to_alpha2(123)
             convert_to_alpha2(9.02)
             convert_to_alpha2(False)
+
+    # @unittest.skip("")
+    def test_get_alpha_codes_list(self):
+        """ Testing function that validates and converts alpha codes and ranges. """
+#1.)
+        self.assertEqual(get_alpha_codes_list("IE"), (["IE"], ""))
+        self.assertEqual(get_alpha_codes_list("FRA"), (["FR"], ""))
+        self.assertEqual(get_alpha_codes_list("372"), (["IE"], ""))
+#2.)
+        self.assertEqual(get_alpha_codes_list("IE, FR, DE"), (["DE", "FR", "IE"], ""))        
+        self.assertEqual(get_alpha_codes_list("", alpha_codes_range="AD-AL"), (['AD', 'AE', 'AF', 'AG', 'AI', 'AL'], "AD-AL"))
+#3.)
+        self.assertEqual(get_alpha_codes_list("", alpha_codes_range="ZW"), (["ZW"], "ZW-ZW"))
+        self.assertEqual(get_alpha_codes_list("", alpha_codes_range="AL-AD"), (['AD', 'AE', 'AF', 'AG', 'AI', 'AL'], "AD-AL"))
+#4.)
+        self.assertEqual(len(get_alpha_codes_list()[0]), 249)
+#5.)
+        with self.assertRaises(ValueError):
+            get_alpha_codes_list("ZZ")
+        with self.assertRaises(TypeError):
+            get_alpha_codes_list(123)
 
     # @unittest.skip("")
     def test_split_preserving_quotes(self):
@@ -172,6 +184,142 @@ class Utils_Tests(unittest.TestCase):
             get_flag_repo_url(123.456)
 
     # @unittest.skip("")
+    def test_is_latin(self):
+        """ Testing function that checks if an individual character is a latin or non-latin character."""
+        test_latin_char1 = "A"
+        test_latin_char2 = "Z"
+        test_latin_char3 = "É"
+        test_latin_char4 = "ñ"
+        test_latin_char5 = "x"
+        test_not_latin_char1 = "λ"
+        test_not_latin_char2 = "あ"
+        test_not_latin_char3 = "中"
+        test_not_latin_char4 = "😊"
+        test_not_latin_char5 = "র"
+#1.)
+        self.assertTrue(is_latin(test_latin_char1), "Expected result for Latin character to be true.")
+        self.assertTrue(is_latin(test_latin_char2), "Expected result for Latin character to be true.")
+        self.assertTrue(is_latin(test_latin_char3), "Expected result for Latin character to be true.")
+        self.assertTrue(is_latin(test_latin_char4), "Expected result for Latin character to be true.")
+        self.assertTrue(is_latin(test_latin_char5), "Expected result for Latin character to be true.")
+#2.)
+        self.assertFalse(is_latin(test_not_latin_char1), "Expected result for Latin character to be false.")
+        self.assertFalse(is_latin(test_not_latin_char2), "Expected result for Latin character to be false.")
+        self.assertFalse(is_latin(test_not_latin_char3), "Expected result for Latin character to be false.")
+        self.assertFalse(is_latin(test_not_latin_char4), "Expected result for Latin character to be false.")
+        self.assertFalse(is_latin(test_not_latin_char5), "Expected result for Latin character to be false.")
+
+    # @unittest.skip("")
+    def test_only_roman_chars(self):
+        """ Testing function that checks if a string contains just roman chars. """
+        test_only_roman_chars1 = "Hello"
+        test_only_roman_chars2 = "Ábaco"
+        test_only_roman_chars3 = "blaħblaħblaħ"
+        test_only_roman_chars4 = "Praha, Hlavní město"
+        test_only_roman_chars5 = "w"
+        test_not_only_roman_chars1 = "عجمان"
+        test_not_only_roman_chars2 = "こんにちは"
+        test_not_only_roman_chars3 = "ⵙⴰⴱⵜⴰ"
+        test_not_only_roman_chars4 = "Hello, عجمان"
+        test_not_only_roman_chars5 = "!!..北京市"
+#1.)
+        self.assertTrue(only_roman_chars(test_only_roman_chars1), "Expected result for Latin character to be true.")
+        self.assertTrue(only_roman_chars(test_only_roman_chars2), "Expected result for Latin character to be true.")
+        self.assertTrue(only_roman_chars(test_only_roman_chars3), "Expected result for Latin character to be true.")
+        self.assertTrue(only_roman_chars(test_only_roman_chars4), "Expected result for Latin character to be true.")
+        self.assertTrue(only_roman_chars(test_only_roman_chars5), "Expected result for Latin character to be true.")
+#2.)
+        self.assertFalse(only_roman_chars(test_not_only_roman_chars1), "Expected result for Latin character to be false.")
+        self.assertFalse(only_roman_chars(test_not_only_roman_chars2), "Expected result for Latin character to be false.")
+        self.assertFalse(only_roman_chars(test_not_only_roman_chars3), "Expected result for Latin character to be false.")
+        self.assertFalse(only_roman_chars(test_not_only_roman_chars4), "Expected result for Latin character to be false.")
+        self.assertFalse(only_roman_chars(test_not_only_roman_chars5), "Expected result for Latin character to be false.")
+
+    @classmethod
+    def tearDown(self):
+        """ Delete any temp export folder. """
+        shutil.rmtree(self.test_utils_folder)
+
+# @unittest.skip("Skipping utils integration tests.")
+class UtilsIntegrationTests(unittest.TestCase):
+    """
+    Test suite for testing utilities functions that involve I/O operations,
+    external dependencies, or file system interactions.
+
+    Test Cases
+    ==========
+    test_get_flag_repo_url:
+        testing functionality that gets the subdivision's flag from the 
+        iso3166-flags repo (makes HTTP requests).
+    test_attributes_memory_usage:
+        testing functionality that extracts the memory usage per attribute
+        and country object within the JSON (file I/O).
+    test_get_nulls:
+        testing functionality for detecting null/None values in attributes 
+        across subdivisions (file I/O).
+    test_export_iso3166_2_data:
+        testing utilities function that exports the subdivision data to the 
+        output files/folder (file I/O).
+    """
+    @classmethod
+    def setUp(self):
+        """ Initialise variables and create test directories. """
+        #test output folder for utils function
+        self.test_utils_folder = os.path.join("tests", "test_iso3166_2_utils")
+        if not (os.path.isdir(self.test_utils_folder)):
+            os.makedirs(self.test_utils_folder)
+
+        #path to test ISO 3166-2 json file
+        self.test_iso3166_2_json = os.path.join("tests", "test_files", "test_iso3166-2.json")
+
+    # @unittest.skip("")
+    def test_get_flag_repo_url(self):
+        """ Testing function that gets the URL for each subdivision flag. """
+        test_alpha_subdivision_1 = "GB-EDH" #Edinburgh
+        test_alpha_subdivision_2 = "IT-BO" #Bologna
+        test_alpha_subdivision_3 = "NL-AW" #Aruba
+        test_alpha_subdivision_4 = "PL-18" #Podkarpackie
+        test_alpha_subdivision_5 = "SH" #Shabeellaha Hoose (just using RHS of subdivision code)
+        test_alpha_subdivision_6 = "AB-ABC" #None
+        test_alpha_subdivision_7 = "123" #None
+#1.)    
+        test_alpha_subdivision_1_flag_url = get_flag_repo_url("GB", test_alpha_subdivision_1)
+        expected_flag_url = "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-EDH.svg"
+        self.assertEqual(test_alpha_subdivision_1_flag_url, expected_flag_url, f"Expected and observed flag for GB-ENF do not match:\n{test_alpha_subdivision_1_flag_url}.")
+#2.)
+        test_alpha_subdivision_2_flag_url = get_flag_repo_url("IT", test_alpha_subdivision_2)
+        expected_flag_url = "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/IT/IT-BO.svg"
+        self.assertEqual(test_alpha_subdivision_2_flag_url, expected_flag_url, f"Expected and observed flag for IT-BO do not match:\n{test_alpha_subdivision_2_flag_url}.")
+#3.)
+        test_alpha_subdivision_3_flag_url = get_flag_repo_url("NL", test_alpha_subdivision_3)
+        expected_flag_url = "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/NL/NL-AW.svg"
+        self.assertEqual(test_alpha_subdivision_3_flag_url, expected_flag_url, f"Expected and observed flag for NL-AW do not match:\n{test_alpha_subdivision_3_flag_url}.")
+#4.)
+        test_alpha_subdivision_4_flag_url = get_flag_repo_url(alpha2_code="PL", subdivision_code=test_alpha_subdivision_4)
+        expected_flag_url = "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/PL/PL-18.svg"
+        self.assertEqual(test_alpha_subdivision_4_flag_url, expected_flag_url, f"Expected and observed flag for PL-18 do not match:\n{test_alpha_subdivision_4_flag_url}.")
+#5.)
+        test_alpha_subdivision_5_flag_url = get_flag_repo_url(alpha2_code="SO", subdivision_code=test_alpha_subdivision_5)
+        expected_flag_url = "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/SO/SO-SH.svg"
+        self.assertEqual(test_alpha_subdivision_5_flag_url, expected_flag_url, f"Expected and observed flag for SO-SH do not match:\n{test_alpha_subdivision_5_flag_url}.")
+#6.)
+        test_alpha_subdivision_6_flag_url = get_flag_repo_url(alpha2_code="AB", subdivision_code=test_alpha_subdivision_6)
+        self.assertIsNone(test_alpha_subdivision_6_flag_url, f"Expected flag url output for AB-ABC to be None:\n{test_alpha_subdivision_6_flag_url}.")
+#7.)
+        test_alpha_subdivision_7_flag_url = get_flag_repo_url(alpha2_code="DE", subdivision_code=test_alpha_subdivision_7)
+        self.assertIsNone(test_alpha_subdivision_7_flag_url, f"Expected flag url output for DE-123 to be None:\n{test_alpha_subdivision_7_flag_url}.")
+#8.)
+        with self.assertRaises(ValueError):
+            get_flag_repo_url(alpha2_code="AA", subdivision_code="01")
+            get_flag_repo_url(alpha2_code="BB", subdivision_code="BA")
+            get_flag_repo_url(alpha2_code="", subdivision_code="ZZZ")
+#9.)
+        with self.assertRaises(TypeError):
+            get_flag_repo_url(False)
+            get_flag_repo_url(123)
+            get_flag_repo_url(123.456)
+
+    # @unittest.skip("")
     def test_attributes_memory_usage(self):
         """ Testing function that calculates the attribute/country object memory usage. 
         """
@@ -188,7 +336,7 @@ class Utils_Tests(unittest.TestCase):
         self.assertEqual(list(attribute_memory_usage_df.columns), ["Attribute", "Size (KB)", "Percentage (%)"], f"Expected and observed columns of dataframe do not match:\n{attribute_memory_usage_df.columns}.")
         self.assertEqual(list(country_object_memory_usage_df.columns), ["Country Code", "Size (KB)", "Percentage (%)"], f"Expected and observed columns of dataframe do not match:\n{attribute_memory_usage_df.columns}.")
         self.assertEqual(len(attribute_memory_usage_df), 7, f"Expected there to be 7 rows in the output dataframe, got {len(attribute_memory_usage_df)}.")
-        self.assertEqual(len(country_object_memory_usage_df), 250, f"Expected there to be 250 rows in the output dataframe, got {len(country_object_memory_usage_df)}.")
+        self.assertEqual(len(country_object_memory_usage_df), 249, f"Expected there to be 249 rows in the output dataframe, got {len(country_object_memory_usage_df)}.")
 #3.)
         expected_types_attribute_memory_usage = {"Attribute": str, "Size (KB)": float, "Percentage (%)": float}
         expected_types_country_object_memory_usage = {"Country Code": str, "Size (KB)": float, "Percentage (%)": float}
@@ -258,107 +406,76 @@ class Utils_Tests(unittest.TestCase):
                 export_folder=self.test_utils_folder, country_level_usage=True)
 
     # @unittest.skip("")
-    def test_is_latin(self):
-        """ Testing function that checks if an individual character is a latin or non-latin character."""
-        test_latin_char1 = "A"
-        test_latin_char2 = "Z"
-        test_latin_char3 = "É"
-        test_latin_char4 = "ñ"
-        test_latin_char5 = "x"
-        test_not_latin_char1 = "λ"
-        test_not_latin_char2 = "あ"
-        test_not_latin_char3 = "中"
-        test_not_latin_char4 = "😊"
-        test_not_latin_char5 = "র"
+    def test_get_nulls(self):
+        """ Testing functionality for detecting null/None values in attributes across subdivisions. """
 #1.)
-        self.assertTrue(is_latin(test_latin_char1), "Expected result for Latin character to be true.")
-        self.assertTrue(is_latin(test_latin_char2), "Expected result for Latin character to be true.")
-        self.assertTrue(is_latin(test_latin_char3), "Expected result for Latin character to be true.")
-        self.assertTrue(is_latin(test_latin_char4), "Expected result for Latin character to be true.")
-        self.assertTrue(is_latin(test_latin_char5), "Expected result for Latin character to be true.")
-#2.)
-        self.assertFalse(is_latin(test_not_latin_char1), "Expected result for Latin character to be false.")
-        self.assertFalse(is_latin(test_not_latin_char2), "Expected result for Latin character to be false.")
-        self.assertFalse(is_latin(test_not_latin_char3), "Expected result for Latin character to be false.")
-        self.assertFalse(is_latin(test_not_latin_char4), "Expected result for Latin character to be false.")
-        self.assertFalse(is_latin(test_not_latin_char5), "Expected result for Latin character to be false.")
-
-    # @unittest.skip("")
-    def test_only_roman_chars(self):
-        """ Testing function that checks if a string contains just roman chars. """
-        test_only_roman_chars1 = "Hello"
-        test_only_roman_chars2 = "Ábaco"
-        test_only_roman_chars3 = "blaħblaħblaħ"
-        test_only_roman_chars4 = "Praha, Hlavní město"
-        test_only_roman_chars5 = "w"
-        test_not_only_roman_chars1 = "عجمان"
-        test_not_only_roman_chars2 = "こんにちは"
-        test_not_only_roman_chars3 = "ⵙⴰⴱⵜⴰ"
-        test_not_only_roman_chars4 = "Hello, عجمان"
-        test_not_only_roman_chars5 = "!!..北京市"
-#1.)
-        self.assertTrue(only_roman_chars(test_only_roman_chars1), "Expected result for Latin character to be true.")
-        self.assertTrue(only_roman_chars(test_only_roman_chars2), "Expected result for Latin character to be true.")
-        self.assertTrue(only_roman_chars(test_only_roman_chars3), "Expected result for Latin character to be true.")
-        self.assertTrue(only_roman_chars(test_only_roman_chars4), "Expected result for Latin character to be true.")
-        self.assertTrue(only_roman_chars(test_only_roman_chars5), "Expected result for Latin character to be true.")
-#2.)
-        self.assertFalse(only_roman_chars(test_not_only_roman_chars1), "Expected result for Latin character to be false.")
-        self.assertFalse(only_roman_chars(test_not_only_roman_chars2), "Expected result for Latin character to be false.")
-        self.assertFalse(only_roman_chars(test_not_only_roman_chars3), "Expected result for Latin character to be false.")
-        self.assertFalse(only_roman_chars(test_not_only_roman_chars4), "Expected result for Latin character to be false.")
-        self.assertFalse(only_roman_chars(test_not_only_roman_chars5), "Expected result for Latin character to be false.")
-
-    # @unittest.skip("")    
-    def test_add_history(self):
-        """ Testing adding the historical subdivision data to the output. """
-        # test_history_bd_24 = "BD-24" #BD-24: Joypurhat
-        test_history_ht = "HT" #HT: Haiti
-        test_history_praha = "Praha" #CZ-10: Praha
-        test_history_avannaata_kommunia  = "Avannaata Kommunia" #GL-AV
-        test_history_ke_47 = "KE-47" #KE-47: West Pokot
-        test_history_karas = "NA-KA" #NA-KA: !Karas
-
-        #load in test-iso3166-2.json object
-        with open(self.test_iso3166_2_json) as output_json:
-            test_iso3166_2_json = json.load(output_json)
-
-        #remove any history attributes if applicable, get historical data using function
-        for country_code, subdivisions in test_iso3166_2_json.items():
-            for subdivision_code, attributes in subdivisions.items():
-                if isinstance(attributes, dict) and "history" in attributes:
-                    del attributes["history"]
+        #test with single attribute as string
+        result = get_nulls(iso3166_2_json_filepath=self.test_iso3166_2_json, attributes="flag", export=False)
         
-        #getting history for all subdivision objects
-        test_all_history = add_history(test_iso3166_2_json)
-#1.)
-        test_all_history_id = test_all_history["ID"]
-        test_history_id_pd_expected = ['2023-11-23: Addition of province ID-PD; Update List Source. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:ID.']
-        test_history_id_pe_expected = ['2022-11-29: Addition of provinces ID-PE, ID-PS and ID-PT; Update List Source. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:ID.']
-        test_history_id_ma_expected = ['2011-12-13 (corrected 2011-12-15): Codes: Maluku (geographical unit) ID-MA -> ID-ML. Description of Change: Removal of duplicate code. Source: Newsletter II-3 - https://www.iso.org/files/live/sites/isoorg/files/archive/pdf/en/iso_3166-2_newsletter_ii-3_2011-12-13.pdf.', 
-                                       '2002-05-21: Subdivisions added: ID-BB Bangka Belitung. ID-BT Banten. ID-GO Gorontalo. ID-MU Maluku Utara. Subdivisions deleted: ID-TT Timor Timur (see ISO 3166-2:TL). Codes: (to correct duplicate use). ID-IJ Irian Jaya (province) -> ID-PA Papua. Description of Change: Addition of four new provinces and deletion of one (ID-TT). Inclusion of one alternative name form and one changed province name (ID-PA, formerly ID-IJ). Source: Newsletter I-2 - https://web.archive.org/web/20120131102127/http://www.iso.org/iso/iso_3166-2_newsletter_i-2_en.pdf.']
-
-        self.assertEqual(test_all_history_id["ID-PD"]["history"], test_history_id_pd_expected, f"Expected and observed history attribute output for ID-PD do not match:\n{test_all_history_id['ID-PD']['history']}")
-        self.assertEqual(test_all_history_id["ID-PE"]["history"], test_history_id_pe_expected, f"Expected and observed history attribute output for ID-PE do not match:\n{test_all_history_id['ID-PE']['history']}")
-        self.assertEqual(test_all_history_id["ID-MA"]["history"], test_history_id_ma_expected, f"Expected and observed history attribute output for ID-MA do not match:\n{test_all_history_id['ID-MA']['history']}")
+        self.assertIsInstance(result, dict, "Expected result to be a dictionary.")
+        self.assertIn("flag", result, "Expected 'flag' attribute in result dictionary.")
+        self.assertIsInstance(result["flag"], list, "Expected attribute value to be a list.")
 #2.)
-        test_all_history_kp = test_all_history["KP"]
-        test_history_kp_10_expected = ['2017-11-23: Change of spelling of KP-10, KP-13 (McCune-Reischauer, 1939); addition of metropolitan city KP-14; update List Source. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:KP.']
-        test_history_kp_14_expected = ['2017-11-23: Change of spelling of KP-10, KP-13 (McCune-Reischauer, 1939); addition of metropolitan city KP-14; update List Source. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:KP.', '2010-02-03 (corrected 2010-02-19): Subdivisions deleted: KP-KAE Kaesong-si. KP-NAM Nampo-si. Codes: format changed . Description of Change: Administrative update, replacement of alphabetical characters with numeric characters in second code element. Source: Newsletter II-1 - https://www.iso.org/files/live/sites/isoorg/files/archive/pdf/en/iso_3166-2_newsletter_ii-1_corrected_2010-02-19.pdf.']
-        test_history_kp_15_expected = ['2022-11-29: Addition of metropolitan city KP-15; Update List Source. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:KP.', '2010-02-03 (corrected 2010-02-19): Subdivisions deleted: KP-KAE Kaesong-si. KP-NAM Nampo-si. Codes: format changed . Description of Change: Administrative update, replacement of alphabetical characters with numeric characters in second code element. Source: Newsletter II-1 - https://www.iso.org/files/live/sites/isoorg/files/archive/pdf/en/iso_3166-2_newsletter_ii-1_corrected_2010-02-19.pdf.']
-
-        self.assertEqual(test_all_history_kp["KP-10"]["history"], test_history_kp_10_expected, f"Expected and observed history attribute output for KP-10 do not match:\n{test_all_history_kp['KP-10']['history']}")
-        # self.assertEqual(test_all_history_kp["KP-14"]["history"], test_history_kp_14_expected, f"Expected and observed history attribute output for KP-13 do not match:\n{test_all_history_kp['KP-14']['history']}")
-        # self.assertEqual(test_all_history_kp["KP-15"]["history"], test_history_kp_15_expected, f"Expected and observed history attribute output for KP-15 do not match:\n{test_all_history_kp['KP-15']['history']}")
+        #test with multiple attributes as list
+        result = get_nulls(iso3166_2_json_filepath=self.test_iso3166_2_json, attributes=["name", "type"], export=False)
+        
+        self.assertIsInstance(result, dict, "Expected result to be a dictionary.")
+        self.assertIn("name", result, "Expected 'name' attribute in result dictionary.")
+        self.assertIn("type", result, "Expected 'type' attribute in result dictionary.")
+        self.assertIsInstance(result["name"], list, "Expected attribute value to be a list.")
+        self.assertIsInstance(result["type"], list, "Expected attribute value to be a list.")
 #3.)
-        test_all_history_me = test_all_history["ME"]
-        test_history_me_22_expected = ['2014-11-03: Add two municipalities ME-22 and ME-23. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:ME.']
-        test_history_me_23_expected = ['2014-11-03: Add two municipalities ME-22 and ME-23. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:ME.']
-        test_history_me_24_expected = ['2019-11-22: Addition of municipality ME-24; Update List Source. Source: Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:ME.']
-
-        self.assertEqual(test_all_history_me["ME-22"]["history"], test_history_me_22_expected, f"Expected and observed history attribute output for ME-22 do not match:\n{test_all_history_me['ME-22']['history']}")
-        self.assertEqual(test_all_history_me["ME-23"]["history"], test_history_me_23_expected, f"Expected and observed history attribute output for ME-23 do not match:\n{test_all_history_me['ME-23']['history']}")
-        self.assertEqual(test_all_history_me["ME-24"]["history"], test_history_me_24_expected, f"Expected and observed history attribute output for ME-24 do not match:\n{test_all_history_me['ME-24']['history']}")
+        #test with wildcard to get all attributes
+        result = get_nulls(iso3166_2_json_filepath=self.test_iso3166_2_json, attributes="*", export=False)
+        
+        self.assertIsInstance(result, dict, "Expected result to be a dictionary.")
+        expected_attributes = ['flag', 'latLng', 'localName', 'name', 'parentCode', 'type', 'history']
+        for attr in expected_attributes:
+            self.assertIn(attr, result, f"Expected '{attr}' attribute in result dictionary.")
+#4.)
+        #test with export=True
+        with patch('builtins.print'):
+            result = get_nulls(iso3166_2_json_filepath=self.test_iso3166_2_json, attributes="localName", 
+                              export=True, export_filename=os.path.join(self.test_utils_folder, "test_nulls.csv"))
+        
+        self.assertTrue(os.path.isfile(os.path.join(self.test_utils_folder, "test_nulls.csv")), 
+                       "Expected null attributes CSV to be exported.")
+        
+        #validate exported CSV structure
+        nulls_df = pd.read_csv(os.path.join(self.test_utils_folder, "test_nulls.csv"))
+        self.assertEqual(list(nulls_df.columns), ['attribute', 'subdivision_code'], 
+                        f"Expected columns ['attribute', 'subdivision_code'], got {list(nulls_df.columns)}.")
+#5.)
+        #test with comma-separated string of attributes
+        result = get_nulls(iso3166_2_json_filepath=self.test_iso3166_2_json, attributes="flag, latLng, name", export=False)
+        
+        self.assertIn("flag", result, "Expected 'flag' in result.")
+        self.assertIn("latLng", result, "Expected 'latLng' in result.")
+        self.assertIn("name", result, "Expected 'name' in result.")
+        self.assertEqual(len(result), 3, "Expected result to contain exactly 3 attributes.")
+#6.)
+        #test error handling - invalid file path
+        with self.assertRaises(OSError):
+            get_nulls(iso3166_2_json_filepath=os.path.join(self.test_utils_folder, "nonexistent.json"), 
+                     attributes="flag", export=False)
+#7.)
+        #test error handling - invalid type for attributes
+        with self.assertRaises(TypeError):
+            get_nulls(iso3166_2_json_filepath=self.test_iso3166_2_json, attributes=123, export=False)
+        with self.assertRaises(TypeError):
+            get_nulls(iso3166_2_json_filepath=self.test_iso3166_2_json, attributes=45.67, export=False)
+#8.)
+        #test error handling - empty attributes
+        with self.assertRaises(ValueError):
+            get_nulls(iso3166_2_json_filepath=self.test_iso3166_2_json, attributes="", export=False)
+        with self.assertRaises(ValueError):
+            get_nulls(iso3166_2_json_filepath=self.test_iso3166_2_json, attributes=[], export=False)
+#9.)
+        #test error handling - invalid attribute names
+        with self.assertRaises(ValueError):
+            get_nulls(iso3166_2_json_filepath=self.test_iso3166_2_json, attributes="invalid_attr", export=False)
+        with self.assertRaises(ValueError):
+            get_nulls(iso3166_2_json_filepath=self.test_iso3166_2_json, attributes=["flag", "invalid_attr"], export=False)
 
     # @unittest.skip("")
     def test_export_iso3166_2_data(self):
@@ -420,3 +537,7 @@ class Utils_Tests(unittest.TestCase):
     def tearDown(self):
         """ Delete any temp export folder. """
         shutil.rmtree(self.test_utils_folder)
+
+if __name__ == '__main__':
+    #run all unit tests
+    unittest.main(verbosity=2)   

@@ -4,12 +4,15 @@ permissions:
   contents: read
   pull-requests: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches: [ main ]
     paths-ignore:
       - '**/*.md'
-      - '**/*.yml'
       - 'docs/**/*'
       - LICENSE
       - .gitignore
@@ -19,7 +22,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  # --- Detect which areas changed (drives which test jobs run) ---
+  # --- Detect which areas changed ---
   detect-changes:
     name: Detect file changes
     runs-on: ubuntu-latest
@@ -38,176 +41,214 @@ jobs:
             scripts:
               - 'scripts/**'
 
-  # --- Unit tests: iso3166_2-related tests only ---
+  # --- Unit tests: iso3166_2 subset ---
   test-iso3166_2:
-    name: Building and testing (iso3166_2-related tests)
+    name: Tests (iso3166_2 subset)
     needs: detect-changes
-    if: needs.detect-changes.outputs.iso3166_2 == 'true'
+    if: github.event_name != 'workflow_dispatch' && needs.detect-changes.outputs.iso3166_2 == 'true'
     timeout-minutes: 15
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        python-version: ["3.11"]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          if [ -f tests/requirements.txt ]; then pip install -r tests/requirements.txt; fi
-      - name: Run iso3166_2-specific tests
-        run: |
-          echo "Running iso3166_2-related tests..."
-          python -m unittest -v \
-            tests.test_iso3166_2 \
-            tests.test_iso3166_2_api \
-            tests.test_iso3166_2_metadata
-
-  # --- Unit tests: scripts-related tests (the rest) ---
-  test-scripts:
-    name: Building and testing (scripts-related tests)
-    needs: detect-changes
-    if: needs.detect-changes.outputs.scripts == 'true'
-    timeout-minutes: 15
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        python-version: ["3.11"]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          if [ -f tests/requirements.txt ]; then pip install -r tests/requirements.txt; fi
-      - name: Run scripts-related tests
-        run: |
-          echo "Running scripts-related tests..."
-          python -m unittest -v \
-            tests.test_export_iso3166_2 \
-            tests.test_language_lookup \
-            tests.test_local_other_names \
-            tests.test_update_subdivisions \
-            tests.test_utils
-
-  # --- Fallback: run full suite if neither iso3166_2 nor scripts changed ---
-  test-all:
-    name: Building and testing (full suite)
-    needs: detect-changes
-    if: needs.detect-changes.outputs.iso3166_2 != 'true' && needs.detect-changes.outputs.scripts != 'true'
-    timeout-minutes: 15
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        python-version: ["3.11"]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          if [ -f tests/requirements.txt ]; then pip install -r tests/requirements.txt; fi
-      - name: Run full suite
-        run: |
-          echo "Running full test suite..."
-          python -m unittest discover tests -v
-
-  # --- Security checks ---
-  security_check:
-    name: Bandit and package safety check 
-    timeout-minutes: 15
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        python-version: ["3.10"]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Artifacts mkdir
-        run: mkdir artifacts
-      - name: Package safety check
-        run: |
-          echo "Running package safety check"
-          python -m safety check > artifacts/package_safety_output.txt
-          cat artifacts/package_safety_output.txt
-        continue-on-error: true
-      - name: Bandit
-        run: |
-          echo "Running Bandit"
-          python -m bandit -r iso3166-2 > artifacts/bandit_output.txt
-          cat artifacts/bandit_output.txt
-        continue-on-error: true
-      - name: Upload Test Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: test_artifacts
-          path: |
-            artifacts/package_safety_output.txt
-            artifacts/bandit_output.txt
-
-  # --- Linter ---
-  linter:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.10"]
+        python-version: ["3.11"]
+    permissions:
+      contents: read
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-      - name: Install dependencies
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-${{ matrix.python-version }}-
+
+      - name: Install test deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e . || true
+          pip install pytest
+          if [ -f tests/requirements.txt ]; then pip install -r tests/requirements.txt; fi
+
+      - name: Run iso3166_2-specific tests
+        run: |
+          pytest -v \
+            tests/test_iso3166_2.py \
+            tests/test_iso3166_2_api.py \
+            tests/test_iso3166_2_metadata.py
+
+  # --- Unit tests: scripts subset ---
+  test-scripts:
+    name: Tests (scripts subset)
+    needs: detect-changes
+    if: github.event_name != 'workflow_dispatch' && needs.detect-changes.outputs.scripts == 'true'
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-${{ matrix.python-version }}-
+
+      - name: Install test deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e . || true
+          pip install pytest
+          if [ -f tests/requirements.txt ]; then pip install -r tests/requirements.txt; fi
+
+      - name: Run scripts-related tests
+        run: |
+          pytest -v \
+            tests/test_language_lookup.py \
+            tests/test_local_other_names.py \
+            tests/test_update_subdivisions.py \
+            tests/test_utils.py \
+            tests/test_main.py \
+            tests/test_demographics.py \
+            tests/test_geo.py \
+            tests/test_history.py \
+            tests/restcountries_api.py \
+            tests/test_city_data.py
+
+  # --- Full suite with coverage ---
+  test-full-suite:
+    name: Tests (full suite with coverage)
+    needs: detect-changes
+    if: github.event_name == 'workflow_dispatch' || (needs.detect-changes.outputs.iso3166_2 != 'true' && needs.detect-changes.outputs.scripts != 'true')
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-${{ matrix.python-version }}-
+
+      - name: Install test deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e . || true
+          pip install pytest pytest-cov codecov
+          if [ -f tests/requirements.txt ]; then pip install -r tests/requirements.txt; fi
+
+      - name: Run full test suite with coverage
+        run: |
+          pytest -v --cov=. --cov-report=xml
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-xml
+          path: coverage.xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+
+  # --- Security Scan ---
+  security-scan:
+    name: Security Scan
+    needs: [test-iso3166_2, test-scripts, test-full-suite]
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install security tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install pip-audit bandit
+
+      - name: Create artifacts folder
+        run: mkdir artifacts
+
+      - name: Run pip-audit
+        run: |
+          pip-audit > artifacts/pip_audit_output.txt
+          cat artifacts/pip_audit_output.txt
+        continue-on-error: true
+
+      - name: Run Bandit
+        run: |
+          bandit -r iso3166_2 tests scripts > artifacts/bandit_output.txt
+          cat artifacts/bandit_output.txt
+        continue-on-error: true
+
+      - name: Upload security artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-artifacts
+          path: artifacts/
+
+  # --- Flake8 Linter ---
+  flake8-lint:
+    name: Flake8 Lint
+    needs: [test-iso3166_2, test-scripts, test-full-suite]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install flake8
         run: |
           python -m pip install --upgrade pip
           pip install flake8 pytest
-      - name: Artifacts mkdir
+
+      - name: Create artifacts directory
         run: mkdir flake8_artifacts
-      - name: Lint with flake8
+
+      - name: Run flake8
         run: |
-          echo "Testing using flake8..."
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics > flake8_artifacts/flake8_output.txt
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics >> flake8_artifacts/flake8_output.txt
         continue-on-error: true
-      - name: Upload flake8 Artifact
+
+      - name: Upload flake8 artifact
         uses: actions/upload-artifact@v4
         with:
-          name: flake8_artifact
+          name: flake8-artifact
           path: flake8_artifacts/flake8_output.txt
-          if-no-files-found: error
-
-  # --- Code coverage ---
-  code_coverage:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.10"]
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          if [ -f tests/requirements.txt ]; then pip install -r tests/requirements.txt; fi
-          pip3 install pytest pytest-cov codecov
-      - name: Generate Coverage report
-        run: pytest --cov=. --cov-report=xml
-      - name: Upload Coverage Report to Codecov
-        uses: codecov/codecov-action@v3
-        env: 
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        with:
-          flags: iso3166_2_workflow
