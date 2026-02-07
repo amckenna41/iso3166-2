@@ -80,7 +80,7 @@ jobs:
           pytest -v \
             tests/test_iso3166_2.py \
             tests/test_iso3166_2_api.py \
-            tests/test_iso3166_2_metadata.py
+            tests/test_metadata.py
 
   # --- Unit tests: scripts subset ---
   test-scripts:
@@ -127,7 +127,7 @@ jobs:
             tests/test_demographics.py \
             tests/test_geo.py \
             tests/test_history.py \
-            tests/restcountries_api.py \
+            tests/test_restcountries_api.py \
             tests/test_city_data.py
 
   # --- Full suite with coverage ---
