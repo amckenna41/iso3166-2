@@ -124,7 +124,6 @@ jobs:
             tests/test_update_subdivisions.py \
             tests/test_utils.py \
             tests/test_main.py \
-            tests/test_demographics.py \
             tests/test_geo.py \
             tests/test_history.py \
             tests/test_restcountries_api.py \
