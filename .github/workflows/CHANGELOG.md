@@ -1,6 +1,6 @@
 # Change Log 🔄
 
-## v1.8.1 - February 2026
+## v1.8.1/v1.8.2 - February 2026
 
 ### Added
 - Updated accuracy of all latLng attributes for all subdivisions, using the centroid of the subdivision as the new value

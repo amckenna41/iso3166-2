@@ -361,7 +361,7 @@ class ISO3166_2_Unit_Tests(unittest.TestCase):
     # @unittest.skip("")
     def test_repr(self):
         """ Testing __repr__ function returns correct object representation for class object. """
-        self.assertEqual(repr(self.all_iso3166_2), "<iso3166-2(version=1.8.1, total_countries=249, total_subdivisions=5046, source_file=iso3166-2.json)>",
+        self.assertEqual(repr(self.all_iso3166_2), "<iso3166-2(version=1.8.2, total_countries=249, total_subdivisions=5046, source_file=iso3166-2.json)>",
                 f"Expected and observed object representation for class instance do not match:\n{repr(self.all_iso3166_2)}.")
 
     # @unittest.skip("")
@@ -524,8 +524,8 @@ class ISO3166_2_Integration_Tests(unittest.TestCase):
     # @unittest.skip("")
     def test_iso3166_2_metadata(self): 
         """ Testing correct iso3166-2 software version and metadata. """
-        # self.assertEqual(metadata('iso3166-2')['version'], "1.8.1", 
-        #     f"iso3166-2 version is not correct, expected 1.8.1, got {metadata('iso3166-2')['version']}.")
+        # self.assertEqual(metadata('iso3166-2')['version'], "1.8.2", 
+        #     f"iso3166-2 version is not correct, expected 1.8.2, got {metadata('iso3166-2')['version']}.")
         self.assertEqual(metadata('iso3166-2')['name'], "iso3166-2", 
             f"iso3166-2 software name is not correct, expected iso3166-2, got {metadata('iso3166-2')['name']}.")
         self.assertEqual(metadata('iso3166-2')['author'], "AJ McKenna", 

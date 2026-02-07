@@ -170,7 +170,7 @@ class Subdivisions():
         self.iso3166_2_filepath = iso3166_2_filepath
         self.iso3166_json_filename= "iso3166-2.json"
         self.filter_attributes = filter_attributes
-        self.__version__ = "1.8.1"
+        self.__version__ = "1.8.2"
 
         #get full path to default object
         self.iso3166_2_module_path = os.path.join(os.path.dirname(os.path.abspath(sys.modules[self.__module__].__file__)), self.iso3166_json_filename)
