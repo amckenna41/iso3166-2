@@ -44,10 +44,10 @@ def add_history(input_country_data: dict) -> dict:
             matching_attributes.add(unquote_plus(input_country_data[alpha2][subd]["name"].lower().replace(' ', '')))
 
             #if local/other name attribute not empty, append each of its names to the search list
-            if not (input_country_data[alpha2][subd]["localOtherName"] is None):
-
+            local_other_name = input_country_data[alpha2][subd].get("localOtherName")
+            if isinstance(local_other_name, str) and local_other_name.strip():
                 #normalize local/other name & remove language codes from localOtherName attribute
-                local_other_cleaned = re.sub(r'\s*\(.*?\)', '', input_country_data[alpha2][subd]["localOtherName"])
+                local_other_cleaned = re.sub(r'\s*\(.*?\)', '', local_other_name)
                 local_names = re.split(r',\s*', local_other_cleaned)
                 for name in local_names:
                     matching_attributes.add(unquote_plus(name.lower().strip()))

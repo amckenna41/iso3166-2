@@ -21,7 +21,6 @@ The other endpoints available in the API are:
 * https://iso3166-2-api.vercel.app/api/country_name/<input_country_name>
 * https://iso3166-2-api.vercel.app/api/search/<input_search>
 * https://iso3166-2-api.vercel.app/api/search_geo/<input_search>
-* https://iso3166-2-api.vercel.app/api/search_latlng/<input_latlng>
 * https://iso3166-2-api.vercel.app/api/list_subdivisions/<input_alpha>
 
 .. Six paths/endpoints are available in the API - `/api/all`, `/api/alpha`, `/api/country_name`, `/api/subdivision`, `/api/search` and `/api/list_subdivisions`.
@@ -37,8 +36,6 @@ The other endpoints available in the API are:
 .. * `/api/search/`: get all of the ISO 3166 subdivision data for 1 or more ISO 3166-2 subdivision names or input search terms, e.g `/api/search/Derry`. You can also input a comma separated list of subdivision name from the same or different countries and the data for each will be returned e.g `/api/search/Paris,Frankfurt,Rimini`. A closeness function is utilised to find the matching subdivision name, if no exact name match found then the most approximate subdivisions will be returned. Some subdivisions may have the same name, in this case each subdivision and its data will be returned e.g `/api/search/Saint George` (this example returns 5 subdivisions). This endpoint also has the likeness score (`?likeness=`) query string parameter that can be appended to the URL. This can be set between 1 - 100, representing a % of likeness to the input name the return subdivisions should be, e.g: a likeness score of 90 will return fewer potential matches whose name only match to a high degree compared to a score of 10 which will create a larger search space, thus returning more potential subdivision matches. A default likeness of 100 (exact match) is used, if no matching subdivision is found then this is reduced to 90. If an invalid subdivision name that doesn't match any is input then an error will be raised.
 
 .. * `/api/search_geo/`: search for subdivisions and return only geographic attributes (e.g. latLng, bounding box, geojson, neighbours, perimeter) for 1 or more input search terms. Accepts comma separated subdivision names or ISO 3166-2 subdivision codes, e.g `/api/search_geo/Saarland,US-CA`. Supports the `likeness` query string parameter to control match tolerance.
-
-.. * `/api/search_latlng/`: search for subdivisions via their latLng values. Accepts a comma separated string of latitude and longitude (e.g. `/api/search_latlng/39.4178,-2.6232`). Matches are approximate (not necessarily exact) based on closeness to the input coordinates.
 
 .. * `/api/list_subdivisions`: get list of all the subdivision codes for all countries. 
 
@@ -280,11 +277,11 @@ curl::
     $ curl -i https://iso3166-2-api.vercel.app/api/search/Northern?likeness=80
 
 
-Search for a subdivision by lat/lon 
------------------------------------
-This endpoint allows you to search for a specific ISO 3166-2 subdivision via its lat/lon values in the latLng
-attribute of the returned objects. Input should be a comma separated latitude/longitude string. The search is
-approximate, not necessarily an exact match.
+Search for subdivision geography
+--------------------------------
+This endpoint allows you to search for a specific ISO 3166-2 subdivision and return only geographic attributes
+(latLng, boundingBox, geojson, neighbours, perimeter). Input can be a comma separated list of subdivision
+names or ISO 3166-2 subdivision codes. The search is approximate based on the likeness score.
 
 Python Requests:
 
@@ -293,20 +290,15 @@ Python Requests:
     import requests
 
     base_url = "https://iso3166-2-api.vercel.app/api/"
-    input_latlng = "39.4178,-2.6232"
-    data = requests.get(f'{base_url}/search_latlng/{input_latlng}').json()
+    input_search = "Saarland,US-CA"
+    data = requests.get(f'{base_url}/search_geo/{input_search}').json()
 
-    data["ES-CM"]  # Castilla-La Mancha
-
-    input_latlng = "-12.5,-72.5"
-    data = requests.get(f'{base_url}/search_latlng/{input_latlng}').json()
-
-    data["PE-CUS"]  # Cusco
+    data["DE-SL"]  # Saarland
+    data["US-CA"]  # California
 
 curl::
 
-    $ curl -i https://iso3166-2-api.vercel.app/api/search_latlng/39.4178,-2.6232
-    $ curl -i https://iso3166-2-api.vercel.app/api/search_latlng/-12.5,-72.5
+    $ curl -i https://iso3166-2-api.vercel.app/api/search_geo/Saarland,US-CA
 
 
 Get list of all subdivision codes per country

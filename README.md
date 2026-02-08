@@ -23,7 +23,7 @@
     alt="globe"
     style="height:220px; width:auto; max-width:calc(50% - 6px); object-fit:contain;" />
   <img
-    src="https://raw.githubusercontent.com/amckenna41/iso3166-2/master/main/iso3166-2-logo.png"
+    src="https://raw.githubusercontent.com/amckenna41/iso3166-2/refs/heads/main/iso3166-2-logo.png"
     alt="icon"
     style="height:220px; width:auto; max-width:calc(50% - 6px); object-fit:contain;" />
 </div>
@@ -105,10 +105,10 @@ For each local/other name, the ISO 639 3 letter language code is used to identif
 * **Bobonaro (East Timor TL-BO)**: "Bobonaru (tet), Buburnaru (tet), Tall eucalypt (eng)"
 * **Wyoming (USA US-WY)** - "Equality State (eng), Cowboy State (eng), Big Wyoming (eng)"
 
-The full dataset of local/other names is available in the repo here [`local_other_names.csv`](https://github.com/amckenna41/iso3166-2/iso3166_2_resources/local_other_names.csv)
+The full dataset of local/other names is available in the repo here [`local_other_names.csv`](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_resources/local_other_names.csv)
 
 
-### Flags
+### Flags
 The other equally important and bespoke/unique attribute that the software package supports is the ``flag`` attribute, which is a link to the subdivision's flag on the [`iso3166-flags`](https://github.com/amckenna41/iso3166-flags) repo. This is another **custom-built** repository, (alongside [`iso3166-2`](https://github.com/amckenna41/iso3166-2) and [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates)) that stores a rich and comprehensive dataset of over **3500** individual subdivision flags. 
 
 The flags repo uses the `iso3166-2` software to get the full list of ISO 3166-2 subdivision codes which is kept up-to-date and accurate via the `iso3166-updates` software. 
@@ -132,6 +132,8 @@ Two additional bespoke attributes that have been recently added to the software 
 * [natsort][natsort] >= 8.4.0
 * [thefuzz][thefuzz] >= 0.22.1
 * [requests][requests] >= 2.28.1
+* [pycountry][pycountry] >= 24.6.1
+
 <!-- * [unidecode][unidecode] >= 1.3.8 -->
 
 ## Installation
@@ -199,10 +201,11 @@ all default attributes.
 '''
 from iso3166_2 import *
 
-#create instance of Subdivisions class
+#create instance of Subdivisions class - only getting flag, parent code and type attributes
 iso = Subdivisions(filter_attributes="flag,parentCode,type")
 ```
 
+********
 **Get list of subdivision codes for all or a subset of countries:**
 ```python
 '''
@@ -340,7 +343,7 @@ An important thing to note about the ISO 3166-2 and its subdivision codes/names 
 
 The [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates) repo is another open-source software package and accompanying RESTful API that pulls the latest updates and changes for any and all countries in the ISO 3166 from a variety of data sources including the ISO website itself. A script is called periodically to check for any updates/changes to the subdivisions, which are communicated via the ISO's Online Browsing Platform [[4]](#references), and will then be manually incorporated into this repo. Please visit the repository home page for more info about the purpose and process of the software and API - [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates).
 
-The list of ISO 3166 updates was last updated on <strong>November 2024</strong> (the last published ISO subdivision change). A log of the latest ISO 3166 updates can be seen in the [UPDATES.md][updates_md] file.
+The list of ISO 3166 updates was last updated on <strong>July 2025</strong> (the last published ISO subdivision change). A log of the latest ISO 3166 updates can be seen in the [UPDATES.md][updates_md] file.
 
 ## API
 The main API endpoint is:
@@ -405,7 +408,7 @@ having a lower value will return less exact but more total matches, e.g ``/api/s
 <!-- ## ISO 3166-2 Scripts
 * [`scripts/main.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts) - used for pulling and exporting the latest ISO 3166-2 data from the various data sources. In this script you can also export additional attributes for each country/subdivision via the RestCountries and CountryStateCity APIs.
 * [`scripts/update_subdivisions.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts) - used for adding, amending and or deleting subdivisions to the `iso3166-2` software and object.
-* [`scripts/local_other_names.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/local_other_names.py) - used for adding the data from the local_other_names.csv dataset, including any validation checks on the data.
+* [`scripts/local_other_names.py`](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_resources/local_other_names.csv) - used for adding the data from the local_other_names.csv dataset, including any validation checks on the data.
 * [`scripts/utils.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/utils.py) - a series of utility functions used throughout the `iso3166-2` project.
 * [`scripts/language_lookup.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/language_lookup.py) - uses the `local_other_names.csv` dataset to encapsulate and validate the hundreds of language code used throughout the dataset and project.
 

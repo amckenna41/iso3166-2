@@ -76,7 +76,7 @@ all default attributes.
 '''
 from iso3166_2 import *
 
-#create instance of Subdivisions class
+#create instance of Subdivisions class - only getting flag, parent code and type attributes
 iso = Subdivisions(filter_attributes="flag,parentCode,type")
 ```
 

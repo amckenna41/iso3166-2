@@ -323,7 +323,7 @@ class UpdateSubdivisionsTests(unittest.TestCase):
                 self.assertIsInstance(row["name"], str, f"Expected row value for name column to be a str, got {type(row['name'])}.")
             if (row["localOtherName"] is not None and not pd.isna(row["localOtherName"])):
                 self.assertIsInstance(row["localOtherName"], str, f"Expected row value for localOtherName column to be a str, got {type(row['localOtherName'])}.")
-            if (row["type"] != None):
+            if (row["type"] is not None and not pd.isna(row["type"])):
                 self.assertIsInstance(row["type"], str, f"Expected row value for type column to be a str, got {type(row['type'])}.")
             if (row["parentCode"] != None):
                 self.assertIsInstance(row["parentCode"], str, f"Expected row value for parentCode column to be a str, got {type(row['parentCode'])}.")

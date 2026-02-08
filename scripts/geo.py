@@ -310,6 +310,8 @@ class Geo:
                     if self.geo_cache is None or self.geo_cache.empty:
                         self.geo_cache = pd.DataFrame(columns=['subdivisionCode', 'latLng', 'boundingBox', 'geojson', 'perimeter', 'neighbours'])
                     else:
+                        if 'neighbours' not in self.geo_cache.columns:
+                            self.geo_cache['neighbours'] = None
                         if 'geojson' in self.geo_cache.columns and self.geo_cache['geojson'].dtype != object:
                             self.geo_cache['geojson'] = self.geo_cache['geojson'].astype('object')
                     
@@ -323,7 +325,8 @@ class Geo:
                             'latLng': [latLng],
                             'boundingBox': [None],
                             'geojson': [None],
-                            'perimeter': [None]
+                            'perimeter': [None],
+                            'neighbours': [None]
                         })
                         if self.geo_cache is None or self.geo_cache.empty:
                             self.geo_cache = new_row
@@ -632,6 +635,11 @@ class Geo:
                     # Update cache in memory
                     if self.geo_cache is None or self.geo_cache.empty:
                         self.geo_cache = pd.DataFrame(columns=['subdivisionCode', 'latLng', 'boundingBox', 'geojson', 'perimeter', 'neighbours'])
+                    else:
+                        if 'neighbours' not in self.geo_cache.columns:
+                            self.geo_cache['neighbours'] = None
+                        if 'geojson' in self.geo_cache.columns and self.geo_cache['geojson'].dtype != object:
+                            self.geo_cache['geojson'] = self.geo_cache['geojson'].astype('object')
                     
                     # Serialize geojson to JSON string for storage
                     geojson_json = json.dumps(geojson_data)
@@ -1501,6 +1509,17 @@ class Geo:
         try:
             # Read CSV with subdivisionCode as string to preserve leading zeros
             cache = pd.read_csv(self.geo_cache_path, dtype={'subdivisionCode': str})
+
+            # Ensure expected columns exist and use object dtype for JSON/string columns
+            expected_columns = ['subdivisionCode', 'latLng', 'boundingBox', 'geojson', 'perimeter', 'neighbours']
+            for column in expected_columns:
+                if column not in cache.columns:
+                    cache[column] = None
+
+            for column in ['latLng', 'boundingBox', 'geojson', 'neighbours']:
+                if column in cache.columns and cache[column].dtype != object:
+                    cache[column] = cache[column].astype('object')
+
             return cache
         except Exception as e:
             print(f"Error reading geo_cache CSV from {self.geo_cache_path}: {e}. Geo cache set to None.")

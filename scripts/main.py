@@ -18,6 +18,7 @@ try:
     from restcountries_api import get_rest_countries_country_data, get_supported_fields
     from city_data import get_cities_for_subdivision
     from history import add_history
+    from iso3166_2 import Subdivisions
 except ImportError:
     from scripts.update_subdivisions import update_subdivision
     from scripts.local_other_names import add_local_other_names, validate_local_other_names
@@ -26,6 +27,7 @@ except ImportError:
     from scripts.restcountries_api import get_rest_countries_country_data, get_supported_fields
     from scripts.city_data import get_cities_for_subdivision
     from scripts.history import add_history
+    from iso3166_2 import Subdivisions
 
 #ignore resource warnings
 warnings.filterwarnings(action="ignore", message="unclosed", category=ResourceWarning)
@@ -274,6 +276,19 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
     #create instance of Geo class, all of the required data should already be exported to the geo cache file
     geo = Geo(proxy=proxy, verbose=False, use_cache=True, export_to_cache=True, geo_cache_path=geo_cache_path if geo_cache_path else None)
 
+    def _get_cached_latlng(subdivision_code: str):
+        if geo.geo_cache is None or geo.geo_cache.empty or 'latLng' not in geo.geo_cache.columns:
+            return None
+        cached_latlng = geo.geo_cache.loc[geo.geo_cache['subdivisionCode'] == subdivision_code, 'latLng']
+        if cached_latlng.empty:
+            return None
+        cached_val = cached_latlng.values[0]
+        if cached_val is None or pd.isna(cached_val):
+            return None
+        if isinstance(cached_val, str) and cached_val.strip():
+            return [float(x.strip()) for x in cached_val.split(',')]
+        return None
+
     #iterate over all country codes, getting country and subdivision info, append to json object
     for alpha2 in tqdm(alpha_codes, ncols=70, disable=tqdm_disable):
         country_iter_start = time.time()
@@ -344,7 +359,8 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
             #get subdivision coordinates (centroid) using OSM API and Geo class
             if ("latLng" in filter_attributes):
                 # Use pre-fetched centroids instead of fetching per-subdivision
-                all_country_data[alpha2][subd.code]["latLng"] = [float(x.strip()) for x in geo.geo_cache.loc[geo.geo_cache['subdivisionCode'] == subd.code]['latLng'].values[0].split(',')]
+                cached_latlng = _get_cached_latlng(subd.code)
+                all_country_data[alpha2][subd.code]["latLng"] = cached_latlng
             else:
                 all_country_data[alpha2][subd.code]["latLng"] = None
 
@@ -389,6 +405,39 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
         #             all_country_data[alpha2][subdivision_code]["population"] = None
         #             # all_country_data[alpha2][subdivision_code]["population_rank"] = None
         #             # all_country_data[alpha2][subdivision_code]["population_density"] = None
+
+        #add any subdivisions missing from pycountry using iso3166_2 dataset
+        if (alpha2 != "XK"):
+            try:
+                iso_subdivisions = Subdivisions(alpha2)
+                iso_subdivision_data = iso_subdivisions.all.get(alpha2, {})
+            except Exception:
+                iso_subdivision_data = {}
+
+            if iso_subdivision_data:
+                for subdivision_code, subdivision_data in iso_subdivision_data.items():
+                    if subdivision_code in all_country_data[alpha2]:
+                        continue
+
+                    all_country_data[alpha2][subdivision_code] = {}
+                    all_country_data[alpha2][subdivision_code]["name"] = subdivision_data.get("name")
+                    all_country_data[alpha2][subdivision_code]["localOtherName"] = None
+                    all_country_data[alpha2][subdivision_code]["type"] = subdivision_data.get("type")
+                    all_country_data[alpha2][subdivision_code]["parentCode"] = subdivision_data.get("parentCode")
+
+                    if ("latLng" in filter_attributes):
+                        cached_latlng = _get_cached_latlng(subdivision_code)
+                        all_country_data[alpha2][subdivision_code]["latLng"] = cached_latlng if cached_latlng is not None else subdivision_data.get("latLng")
+                    else:
+                        all_country_data[alpha2][subdivision_code]["latLng"] = None
+
+                    if ("flag" in filter_attributes):
+                        if (flag_folder_exists):
+                            all_country_data[alpha2][subdivision_code]["flag"] = get_flag_repo_url(subdivision_code=subdivision_code, alpha2_code=alpha2)
+                        else:
+                            all_country_data[alpha2][subdivision_code]["flag"] = None
+                    else:
+                        all_country_data[alpha2][subdivision_code]["flag"] = None
 
         #save current exported country subdivision data at the current iteration - useful for saving exported process if one iteration fails 
         if (save_each_iteration):
