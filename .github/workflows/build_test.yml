@@ -115,6 +115,7 @@ jobs:
           pip install -e . || true
           pip install pytest
           if [ -f tests/requirements.txt ]; then pip install -r tests/requirements.txt; fi
+          if [ -f scripts/requirements.txt ]; then pip install -r scripts/requirements.txt; fi
 
       - name: Run scripts-related tests
         run: |
@@ -163,6 +164,7 @@ jobs:
           pip install -e . || true
           pip install pytest pytest-cov codecov
           if [ -f tests/requirements.txt ]; then pip install -r tests/requirements.txt; fi
+          if [ -f scripts/requirements.txt ]; then pip install -r scripts/requirements.txt; fi
 
       - name: Run full test suite with coverage
         run: |
