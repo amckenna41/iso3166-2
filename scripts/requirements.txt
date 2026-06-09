@@ -1,4 +1,4 @@
-iso3166-2>=1.7.0
+iso3166-2>=1.8.2
 requests>=2.28.1
 # pycountry>=22.3.5
 pycountry>=24.6.1
