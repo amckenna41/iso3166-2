@@ -296,7 +296,7 @@ class UpdateSubdivisionsTests(unittest.TestCase):
         """ Testing current csv used for updating subdivisions when exporting the ISO 3166-2 data (tests/test_files/test_subdivision_updates.csv). """
         #import csv, replace any Nan values with None
         update_subdivisions_csv = pd.read_csv(os.path.join("tests", "test_files", "test_subdivision_updates.csv"), header=0)
-        update_subdivisions_csv = update_subdivisions_csv.replace(np.nan, None)
+        update_subdivisions_csv = update_subdivisions_csv.where(pd.notna(update_subdivisions_csv), None)
 #1.)
         self.assertEqual(list(update_subdivisions_csv.columns), ["alphaCode", "subdivisionCode", "name", "localOtherName", "type", "parentCode", "flag", "latLng", "customAttributes", "delete", "notes", "dateIssued"],
             f"Expected column names don't match CSV columns:\n{update_subdivisions_csv.columns}.")
@@ -325,11 +325,11 @@ class UpdateSubdivisionsTests(unittest.TestCase):
                 self.assertIsInstance(row["localOtherName"], str, f"Expected row value for localOtherName column to be a str, got {type(row['localOtherName'])}.")
             if (row["type"] is not None and not pd.isna(row["type"])):
                 self.assertIsInstance(row["type"], str, f"Expected row value for type column to be a str, got {type(row['type'])}.")
-            if (row["parentCode"] != None):
+            if (row["parentCode"] is not None and not pd.isna(row["parentCode"])):
                 self.assertIsInstance(row["parentCode"], str, f"Expected row value for parentCode column to be a str, got {type(row['parentCode'])}.")
-            if (row["flag"] != None):
+            if (row["flag"] is not None and not pd.isna(row["flag"])):
                 self.assertIsInstance(row["flag"], str, f"Expected row value for flag column to be a str, got {type(row['flag'])}.")
-            if (row["latLng"] != None):
+            if (row["latLng"] is not None and not pd.isna(row["latLng"])):
                 self.assertIsInstance(row["latLng"], str, f"Expected row value for latLng column to be a str, got {type(row['latLng'])}.")
             if (row["delete"] is not None and row["delete"] != ""):
                 self.assertIsInstance(row["delete"], Real, f"Expected row value for delete column to be numeric, got {type(row['delete'])}.")

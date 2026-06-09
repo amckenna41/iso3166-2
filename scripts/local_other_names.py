@@ -158,10 +158,11 @@ def add_local_other_names(all_subdivision_data: Dict[str, Dict[str, Dict[str, An
             #most subdivision's do not have this attribute populated as their local translation is the same as their official ISO name
             #but many subdivision's, especially those not in the latin script, have their name in the local translated language(s)
             if not (local_other_names_df.loc[local_other_names_df['subdivisionCode'] == subd]['localOtherName'].empty):
-                if ((local_other_names_df.loc[local_other_names_df['subdivisionCode'] == subd]['localOtherName'].values[0] == None) or (local_other_names_df.loc[local_other_names_df['subdivisionCode'] == subd]['localOtherName'].values[0] == "")):
+                local_name_value = local_other_names_df.loc[local_other_names_df['subdivisionCode'] == subd]['localOtherName'].values[0]
+                if pd.isna(local_name_value) or local_name_value in (None, ""):
                     all_subdivision_data[alpha2][subd]["localOtherName"] = None
                 else:
-                    all_subdivision_data[alpha2][subd]["localOtherName"] = local_other_names_df.loc[local_other_names_df['subdivisionCode'] == subd]['localOtherName'].values[0]
+                    all_subdivision_data[alpha2][subd]["localOtherName"] = local_name_value
             else:
                 all_subdivision_data[alpha2][subd]["localOtherName"] = None
 

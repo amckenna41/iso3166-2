@@ -8,7 +8,7 @@ import json
 import argparse
 import requests
 from typing import Optional, Dict, Any
-from pycountry import countries, subdivisions
+from pycountry import countries, subdivisions as py_subdivisions
 import flag
 from tqdm import tqdm
 from fp.fp import FreeProxy
@@ -180,8 +180,7 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
     all_attributes = ["name", "localOtherName", "type", "parentCode", "flag", "latLng"]
 
     #create output dir if doesn't exist
-    if not (os.path.isdir(export_folder)):
-        os.mkdir(export_folder)
+    os.makedirs(export_folder, exist_ok=True)
 
     #start timer
     start = time.time()
@@ -305,7 +304,7 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
         else:
             #get country name and list of its subdivisions using pycountry library
             country_name = countries.get(alpha_2=alpha2).name
-            all_subdivisions = list(subdivisions.get(country_code=alpha2))
+            all_subdivisions = list(py_subdivisions.get(country_code=alpha2))
 
         #print out progress if verbose
         if verbose:
@@ -457,6 +456,9 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
             if (os.path.splitext(export_filepath) != ".json"):
                 export_filepath = export_filepath + ".json"
 
+            #ensure output directory still exists before writing
+            os.makedirs(os.path.dirname(export_filepath) or ".", exist_ok=True)
+
             #write json data with all country info to json output file
             with open(export_filepath, 'w', encoding='utf-8') as f:
                 json.dump(all_country_data, f, ensure_ascii=False, indent=4)
@@ -523,6 +525,9 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
     if (os.path.splitext(export_filepath) != ".json"):
         export_filepath = export_filepath + ".json"
 
+    #ensure output directory still exists before writing
+    os.makedirs(os.path.dirname(export_filepath) or ".", exist_ok=True)
+
     #write json data with all country info to json output file
     with open(export_filepath, 'w', encoding='utf-8') as f:
         json.dump(all_country_data, f, ensure_ascii=False, indent=4)
@@ -557,6 +562,16 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
         }
         for country_code, subdivisions in sorted(all_country_data.items())
     }
+
+    #normalize any pandas NaN/NA values that may have propagated from intermediate dataframes
+    for country_code, subdivision_map in all_country_data.items():
+        for subdivision_code, subdivision_data in subdivision_map.items():
+            for key, value in list(subdivision_data.items()):
+                if not pd.api.types.is_scalar(value):
+                    continue
+                if pd.isna(value):
+                    all_country_data[country_code][subdivision_code][key] = None
+
     #start export timer
     export_start = time.time()
 
