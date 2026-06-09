@@ -169,7 +169,7 @@ jobs:
           pytest -v --cov=. --cov-report=xml
 
       - name: Upload coverage artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-xml
           path: coverage.xml
@@ -213,7 +213,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload security artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: security-artifacts
           path: artifacts/
@@ -247,7 +247,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload flake8 artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: flake8-artifact
           path: flake8_artifacts/flake8_output.txt
