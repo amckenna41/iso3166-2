@@ -4,13 +4,11 @@ import requests
 import os
 import json
 import time
+from typing import Tuple, List, Dict, Any, Optional, Union
 from pycountry import countries 
 from fake_useragent import UserAgent
 from dicttoxml import dicttoxml
-try:
-    import openai
-except ImportError:
-    pass  # openai is optional
+# import openai
 from dotenv import load_dotenv 
 import xml.etree.ElementTree as ET
 
@@ -72,7 +70,7 @@ def convert_to_alpha2(alpha_code: str) -> str:
     #return error by default if input country code invalid and can't be converted into alpha-2
     raise ValueError(f"Invalid ISO 3166-1 country code input {alpha_code}.")
 
-def get_alpha_codes_list(alpha_codes: str="", alpha_codes_range: str="") -> tuple[list, str]:
+def get_alpha_codes_list(alpha_codes: Union[str, List[str]]="", alpha_codes_range: str="") -> Tuple[List[str], str]:
     """
     Get the full list of ISO 3166 alpha-2 country codes to export the ISO 3166-2 data
     for. The function validates and converts the list/str of alpha codes input, if 
@@ -196,7 +194,7 @@ def only_roman_chars(unistr: str) -> str:
         for uchr in unistr
                 if uchr.isalpha()) 
 
-def split_preserving_quotes(text: str) -> list:
+def split_preserving_quotes(text: str) -> List[str]:
     """ 
     Static class method that splits multiple comma-separated strings into list elements but ensures elements 
     wrapped in single quotes are preserved. 

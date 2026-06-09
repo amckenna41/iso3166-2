@@ -1,6 +1,25 @@
 Changelog
 =========
 
+v1.8.3 - April 2026
+--------------------
+
+**Added**
+
+* Added CLI entry point ``iso3166-2`` (commands: ``get``, ``search``, ``codes``, ``names``) registered via ``[tool.poetry.scripts]`` in ``pyproject.toml``
+* Added ``[tool.coverage]`` configuration to ``pyproject.toml`` (source, omit patterns, show_missing)
+* Added ``--cov`` and ``--cov-report=term-missing`` flags to ``test-iso3166_2`` and ``test-scripts`` CI jobs for inline coverage output
+
+**Changed**
+
+* ``__version__`` is now sourced from ``importlib.metadata`` in both ``__init__.py`` and ``Subdivisions.__init__``, eliminating the three separate hardcoded copies; ``pyproject.toml`` remains the single authoritative version source
+* Added ``timeout=10`` to the ``requests.get()`` call in ``Subdivisions.check_for_updates()`` to prevent indefinite hangs on network issues
+* Added ``timeout=10`` to the ``requests.get()`` call in ``scripts/language_lookup.py``
+* Improved OpenAI API key guard in ``scripts/geo_anomalies_check.py`` to also reject empty strings and provide a clearer error message naming the ``OPENAI_API_KEY`` environment variable
+* Removed stale ``"beautifulsoup"`` keyword from ``pyproject.toml`` and ``__init__.py`` (BeautifulSoup is not a runtime dependency)
+* Added ``remove_attributes()`` to the ``Subdivisions`` class docstring Methods table and Usage examples section
+* Updated ``**/.DS_Store`` glob in ``.gitignore`` to catch nested macOS metadata files in all subdirectories; confirmed ``**/.pytest_cache/`` is correctly ignored
+
 v1.8.1/v.1.8.2 - February 2026
 ----------------------
 
@@ -147,7 +166,6 @@ v1.7.0 - 1.7.2 - July 2025
 
 
 v1.6.1 - June 2024
-------------------
 
 **Added**
 

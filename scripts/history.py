@@ -1,8 +1,10 @@
 from urllib.parse import unquote_plus
 import re
+import pandas as pd
+from typing import Dict, Any
 from iso3166_updates import *
 
-def add_history(input_country_data: dict) -> dict:
+def add_history(input_country_data: Dict[str, Any]) -> Dict[str, Any]:
     """
     Extract the historical updates data for all of the inputted subdivisions and 
     append to subdivision object. The historical updates data is pulled from the
@@ -45,7 +47,7 @@ def add_history(input_country_data: dict) -> dict:
 
             #if local/other name attribute not empty, append each of its names to the search list
             local_other_name = input_country_data[alpha2][subd].get("localOtherName")
-            if isinstance(local_other_name, str) and local_other_name.strip():
+            if isinstance(local_other_name, str) and local_other_name.strip() and not pd.isna(local_other_name):
                 #normalize local/other name & remove language codes from localOtherName attribute
                 local_other_cleaned = re.sub(r'\s*\(.*?\)', '', local_other_name)
                 local_names = re.split(r',\s*', local_other_cleaned)

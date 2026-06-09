@@ -4,7 +4,6 @@
 
 [![iso3166_2](https://img.shields.io/pypi/v/iso3166-2)](https://pypi.org/project/iso3166-2/)
 [![pytest](https://github.com/amckenna41/iso3166-2/workflows/Building%20and%20Testing/badge.svg)](https://github.com/amckenna41/iso3166-2/actions?query=workflowBuilding%20and%20Testing)
-<!-- [![CircleCI](https://dl.circleci.com/status-badge/img/gh/amckenna41/iso3166-2/tree/main.svg?style=svg&circle-token=b9d41c530558587fb44ade899c532158d885b193)](https://dl.circleci.com/status-badge/redirect/gh/amckenna41/iso3166-2/tree/main) -->
 [![PythonV](https://img.shields.io/pypi/pyversions/iso3166-2?logo=2)](https://pypi.org/project/iso3166-2/)
 [![Platforms](https://img.shields.io/badge/platforms-linux%2C%20macOS%2C%20Windows-green)](https://pypi.org/project/iso3166-2/)
 [![Documentation Status](https://readthedocs.org/projects/iso3166-2/badge/?version=latest)](https://iso3166-2.readthedocs.io/en/latest/?badge=latest)
@@ -13,18 +12,17 @@
 [![Issues](https://img.shields.io/github/issues/amckenna41/iso3166-2)](https://github.com/amckenna41/iso3166-2/issues)
 <!-- [![Size](https://img.shields.io/github/repo-size/amckenna41/iso3166-2)](https://github.com/amckenna41/iso3166-2) -->
 <!-- [![Commits](https://img.shields.io/github/commit-activity/w/amckenna41/iso3166-2)](https://github.com/iso3166-2) -->
-<!-- [![codecov](https://codecov.io/gh/amckenna41/iso3166-2/branch/main/graph/badge.svg)](https://codecov.io/gh/amckenna41/iso3166-2) -->
 <!-- [![status](https://img.shields.io/badge/status-stable-green)](https://github.com/amckenna41/iso3166-2) -->
 
 <div style="display:flex; align-items:center; justify-content:center; gap:12px; max-width:100%;">
   <!-- both images: same fixed row height + constrained width so they fit -->
   <img
-    src="https://upload.wikimedia.org/wikipedia/commons/3/3d/Flag-map_of_the_world_%282017%29.png"
-    alt="globe"
-    style="height:220px; width:auto; max-width:calc(50% - 6px); object-fit:contain;" />
-  <img
     src="https://raw.githubusercontent.com/amckenna41/iso3166-2/refs/heads/main/iso3166-2-logo.png"
     alt="icon"
+    style="height:220px; width:auto; max-width:calc(50% - 6px); object-fit:contain;" />
+  <img
+    src="https://upload.wikimedia.org/wikipedia/commons/3/3d/Flag-map_of_the_world_%282017%29.png"
+    alt="globe"
     style="height:220px; width:auto; max-width:calc(50% - 6px); object-fit:contain;" />
 </div>
 
@@ -40,6 +38,7 @@ iso3166-2 Stats 🔢
 
 Quick Start 🏃
 -------------
+* 🗺️ Front-end map app for the ISO 3166 suite of software is available [here][https://iso3166-flags.vercel.app/].
 * 🚀 A <b>demo</b> of the software and API is available [here][demo].
 * 💻 The front-end <b>API</b> is available [here][api].
 * 📚 The **documentation** for the software & API is available [here](https://iso3166-2.readthedocs.io/en/latest/).
@@ -50,6 +49,7 @@ Table of Contents
 -----------------
 - [Introduction](#introduction)
 - [Bespoke Features](#bespoke-features)
+- [Enhanced Search & Reverse Lookup](#enhanced-search--reverse-lookup)
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
@@ -88,6 +88,44 @@ The primary motivation for building this software was for use in my [`iso3166-fl
 Furthermore, there are existing toolkits and datasets that offer a rich collection of regional attributes data, [geonames](https://www.geonames.org/) for example. Although, many of these datasets are very large in size and difficult to parse, with an abundance of unessential data attributes. 
 
 Thus the aim during development was to build a **structured, lightweight and up-to-date ISO 3166-2 dataset with the most sought data attributes that can be easily packaged into a Python package.**  
+
+## Enhanced Search & Reverse Lookup
+
+The `search()` API supports richer ranking and filtering:
+
+```python
+from iso3166_2 import Subdivisions
+
+iso = Subdivisions()
+
+iso.search(
+  "Berlin",
+  likeness_score=90,
+  subdivision_type="Land",
+  region="DE",
+  exclude_match_score=False,
+)
+```
+
+Search filters:
+- `subdivision_type`: limit by subdivision type
+- `parent_code`: limit by parent subdivision code
+- `region`: limit by country code or country name
+
+Reverse lookup by coordinates:
+
+```python
+iso.reverse_lookup(
+  latitude=52.5174,
+  longitude=13.3951,
+  radius_km=25,
+  max_results=5,
+  region="DE",
+)
+```
+
+For common errors and fixes, see the troubleshooting guide:
+- https://iso3166-2.readthedocs.io/en/latest/troubleshooting.html
 
 <!-- ### Intended Audience
 This package is particularly useful for developers and researchers building geographic information systems (GIS), global mapping tools, localization platforms, or projects involving geopolitical datasets. It’s designed to be easily integrated into Python applications with minimal overhead. -->
@@ -205,7 +243,6 @@ from iso3166_2 import *
 iso = Subdivisions(filter_attributes="flag,parentCode,type")
 ```
 
-********
 **Get list of subdivision codes for all or a subset of countries:**
 ```python
 '''
@@ -256,8 +293,8 @@ parameter to 1.
 #searching for the Monaghan county in Ireland (IE-MN) - returning exact matching subdivision (likeness=100)
 iso.search("Monaghan")
 
-#searching for Castelo Branco district in Portugal (PT-05) - returning exact matching subdivision (likeness=100)
-iso.search("Castelo Branco", likeness=100)
+#searching for Castelo Branco district in Portugal (PT-05) - returning exact matching subdivision (likeness_score=100)
+iso.search("Castelo Branco", likeness_score=100)
 
 #searching for the Roche Caiman district in Seychelles (SC-25) - returning exact matching subdivision (likeness=100)
 iso.search("Roche Caiman")
@@ -266,7 +303,7 @@ iso.search("Roche Caiman")
 iso.search("Southern", likeness_score=80, exclude_match_score=1)
 
 #searching for any subdivisions that have "City" in their name or localOtherName attributes, using a likeness score of 40%
-iso.search("City", likeness=40, local_other_name_search=True)
+iso.search("City", likeness_score=40, local_other_name_search=True)
 
 #searching for state of Texas and French Department Meuse - both subdivision objects will be returned, only including the subdivision type and name attributes
 iso.search("Texas, Meuse", filter_attributes="name,type") 
@@ -280,24 +317,29 @@ code elements of the ISO 3166-1 standard. Custom subdivisions and subdivision
 codes can be used for in-house/bespoke applications that are using the 
 iso3166-2 software but require additional custom subdivisions to be represented.
 You can also add custom attributes for the custom subdivision, e.g population,
-area, gdp etc, via the custom_attribute parameter. You can save the custom
-object with the new subdivision data added to a custom file via the save_new
-and save_new_filename parameters.
+area, gdp etc, via the custom_attributes parameter.
+
+By default all changes are in-memory only and do not survive the current Python
+session. To write changes to disk use one of two options:
+  - persist=True  : overwrites the installed iso3166-2.json file in-place.
+  - save_new=True : writes the updated dataset to a separate file instead.
 '''
-#adding custom Belfast province to Ireland
+#adding custom Belfast province to Ireland - in-memory only (default)
 iso.custom_subdivision("IE", "IE-BF", name="Belfast", local_other_name="Béal Feirste", type_="province", lat_lng=[54.596, -5.931], parent_code=None, flag=None)
 
-#adding custom Alaska province to Russia with additional population and area attribute values, save object to new file
+#adding custom Alaska province to Russia, persisting the change to the installed data file
 iso.custom_subdivision("RU", "RU-ASK", name="Alaska Oblast", local_other_name="Аляска", type_="Republic", lat_lng=[63.588, 154.493], parent_code=None, flag=None, 
-      custom_attributes={"population": "733,583", "gini": "0.43", "gdpPerCapita": "71,996"}, save_new=1, save_new_filename="ru-ask-custom.json")
+      custom_attributes={"population": "733,583", "gini": "0.43", "gdpPerCapita": "71,996"}, persist=True)
 
-#adding custom Republic of Molossia state to United States 
-iso.custom_subdivision("US", "US-ML", name="Republic of Molossia", local_other_name="", type_="State", lat_lng=[39.236, -119.588], parent_code=None, flag="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_the_Republic_of_Molossia.svg")
+#adding custom Republic of Molossia state to United States, saving to a separate file
+iso.custom_subdivision("US", "US-ML", name="Republic of Molossia", local_other_name="", type_="State", lat_lng=[39.236, -119.588], parent_code=None, flag="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_the_Republic_of_Molossia.svg",
+      save_new=True, save_new_filename="us-ml-custom.json")
 
-#deleting above custom subdivisions from object
+#deleting above custom subdivisions from object (in-memory)
 iso.custom_subdivision("IE", "IE-BF", delete=1)
 iso.custom_subdivision("US", "US-ML", delete=1)
-iso.custom_subdivision("RU", "RU-ASK", delete=1)
+#deleting the persisted subdivision and writing the removal back to the installed file
+iso.custom_subdivision("RU", "RU-ASK", delete=1, persist=True)
 
 ```
 **Check for the latest updates data from the repository:**
@@ -383,7 +425,7 @@ There are 8 main default attributes supported for all subdivision objects that w
 * **Local/other name** - subdivision name in local language or any alternative name/nickname it is commonly known by
 * **Parent Code** - subdivision parent code
 * **Type** - subdivision type, e.g. region, state, canton, parish etc
-* **Latitude/Longitude** - subdivision coordinates, from GoogleMaps API
+* **Latitude/Longitude** - subdivision coordinates (geographic centroid of the subdivision polygon, derived from OpenStreetMap; not the capital or administrative centre), from GoogleMaps API
 * **Flag** - subdivision flag from the custom-built [`iso3166-flags`](https://github.com/amckenna41/iso3166-flags) repo; this is another ISO 3166 related custom-built dataset of over **3500** regional/subdivision flags
 * **Area** - subdivision area (km^2)
 * **Population** - subdivision population
@@ -396,7 +438,7 @@ There are three main query string parameters that can be passed through several 
 inputted search terms have to match to the subdivision data in the subdivision code, name and local/other name attributes. This can be used with the `/api/search` and `/api_country_name` endpoints. Having a higher value should return more exact and less total matches and 
 having a lower value will return less exact but more total matches, e.g ``/api/search/Paris?likeness=50``, 
 ``/api/country_name/Tajikist?likeness=90`` (default=100).
-* **filterAttributes** - this is a list of the default supported attributes that you want to include in the output. By default all attributes will be returned but this parameter is useful if you only require a subset of attributes, e.g `api/alpha/DEU?filterAttributes=latLng,flag`, `api/subdivision/PL-02?filterAttributes=localOtherName`.
+* **filter** - this is a list of the default supported attributes that you want to include in the output. By default all attributes will be returned but this parameter is useful if you only require a subset of attributes, e.g `api/alpha/DEU?filter=latLng,flag`, `api/subdivision/PL-02?filter=localOtherName`. This parameter works on all endpoints including `/api/all`.
 * **excludeMatchScore** - this allows you to exclude the matchScore attribute from the search results when using the `/api/search endpoint`. The match score is the % of a match each returned subdivision data object is to the search terms, with 100% being an exact match. By default the match score is returned for each object, e.g `/api/search/Bucharest?excludeMatchScore=1`, ``/api/search/Oregon?excludeMatchScore=1`` (default=0).
 
 

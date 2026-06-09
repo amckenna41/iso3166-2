@@ -1,8 +1,13 @@
+import sys
 import os
+# Ensure repo root is in sys.path so `from scripts.X import Y` works when
+# this file is run directly (e.g. python3 scripts/main.py from repo root)
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import time
 import json
 import argparse
 import requests
+from typing import Optional, Dict, Any
 from pycountry import countries, subdivisions
 import flag
 from tqdm import tqdm
@@ -36,10 +41,10 @@ warnings.filterwarnings(action="ignore", message="unclosed", category=ResourceWa
 USER_AGENT_HEADER = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"}
 
 def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-output", export_filename: str="test-iso3166-2",
-                     resources_folder: str="iso3166_2_resources", verbose: bool=1, export: bool=False, export_csv: bool=True, 
+                     resources_folder: str="iso3166_2_resources", verbose: bool=True, export: bool=False, export_csv: bool=True, 
                      export_xml: bool=True, alpha_codes_range: str="", rest_countries_keys: str="", filter_attributes: str="", 
-                     state_city_data: bool=False, history: bool=True, save_each_iteration: bool=False, use_proxy=False, 
-                     geo_cache_path: str=os.path.join("iso3166_2_resources", "geo_cache_min.csv")) -> None:
+                     state_city_data: bool=False, history: bool=True, save_each_iteration: bool=False, use_proxy: bool=False, 
+                     geo_cache_path: str=os.path.join("iso3166_2_resources", "geo_cache_min.csv")) -> Optional[Dict[str, Any]]:
     """
     Export all ISO 3166-2 subdivision related data to JSON, CSV and or XML files. The default attributes
     exported for each subdivision include: subdivision code, name, local name, type, parent code, flag
@@ -602,7 +607,7 @@ if __name__ == '__main__':
         help="Subset of default fields/attributes to include in each country's subdivision object.")
     parser.add_argument('-state_city_data', '--state_city_data', required=False, action=argparse.BooleanOptionalAction, default=0, 
         help='Set to 1 to include city level data for each subdivision, by default this is not gotten.')
-    parser.add_argument('-history', '--history', required=False, action=argparse.BooleanOptionalAction, default=0, 
+    parser.add_argument('-history', '--history', required=False, action=argparse.BooleanOptionalAction, default=1, 
         help='Set to 1 to get the historical data updates to the subdivision.')
     parser.add_argument('-save_each_iteration', '--save_each_iteration', required=False, action=argparse.BooleanOptionalAction, default=0, 
         help='Set to 1 to save the exported subdivision data on each iteration rather than just at the end.')

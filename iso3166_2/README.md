@@ -93,8 +93,8 @@ value will thus increase the search space and return more like results.
 #searching for the Monaghan county in Ireland (IE-MN) - returning exact matching subdivision (likeness=100)
 iso.search("Monaghan")
 
-#searching for Castelo Branco district in Portugal (PT-05) - returning exact matching subdivision (likeness=100)
-iso.search("Castelo Branco", likeness=100)
+#searching for Castelo Branco district in Portugal (PT-05) - returning exact matching subdivision (likeness_score=100)
+iso.search("Castelo Branco", likeness_score=100)
 
 #searching for the Roche Caiman district in Seychelles (SC-25) - returning exact matching subdivision (likeness=100)
 iso.search("Roche Caiman")
@@ -103,7 +103,7 @@ iso.search("Roche Caiman")
 iso.search("Southern", likeness_score=80, exclude_match_score=0)
 
 #searching for any subdivisions that have "City" in their name or localOtherName attributes, using a likeness score of 40%
-iso.search("City", likeness=40, local_other_name_search=True)
+iso.search("City", likeness_score=40, local_other_name_search=True)
 
 #searching for state of Texas and French Department Meuse - both subdivision objects will be returned, only including the subdivision type and name attributes
 iso.search("Texas, Meuse", filter_attributes="name,type") 
@@ -144,21 +144,27 @@ code elements of the ISO 3166-1 standard. Custom subdivisions and subdivision
 codes can be used for in-house/bespoke applications that are using the 
 iso3166-2 software but require additional custom subdivisions to be represented.
 You can also add custom attributes for the custom subdivision, e.g population,
-area, gdp etc, via the custom_attribute parameter.
+area, gdp etc, via the custom_attributes parameter.
+
+By default all changes are in-memory only and do not survive the current Python
+session. To write changes to disk use one of two options:
+  - persist=True  : overwrites the installed iso3166-2.json file in-place.
+  - save_new=True : writes the updated dataset to a separate file instead.
 '''
-#adding custom Belfast province to Ireland
+#adding custom Belfast province to Ireland - in-memory only (default)
 iso.custom_subdivision("IE", "IE-BF", name="Belfast", local_other_name="Béal Feirste", type_="province", lat_lng=[54.596, -5.931], parent_code=None, flag=None)
 
-#adding custom Alaska province to Russia with additional population and area attribute values
-iso.custom_subdivision("RU", "RU-ASK", name="Alaska Oblast", local_other_name="Аляска", type_="Republic", lat_lng=[63.588, 154.493], parent_code=None, flag=None, custom_attributes={"area": 100000, "population": 20000})
+#adding custom Alaska province to Russia with additional attributes, persisting to the installed data file
+iso.custom_subdivision("RU", "RU-ASK", name="Alaska Oblast", local_other_name="Аляска", type_="Republic", lat_lng=[63.588, 154.493], parent_code=None, flag=None, custom_attributes={"area": 100000, "population": 20000}, persist=True)
 
-#adding custom Republic of Molossia state to United States, save to new output file
-iso.custom_subdivision("US", "US-ML", name="Republic of Molossia", local_other_name="", type_="State", lat_lng=[39.236, -119.588], parent_code=None, flag="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_the_Republic_of_Molossia.svg", save_new=1, save_new_filename="us-ml-custom-output.json")
+#adding custom Republic of Molossia state to United States, saving to a separate output file
+iso.custom_subdivision("US", "US-ML", name="Republic of Molossia", local_other_name="", type_="State", lat_lng=[39.236, -119.588], parent_code=None, flag="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_the_Republic_of_Molossia.svg", save_new=True, save_new_filename="us-ml-custom-output.json")
 
-#deleting above custom subdivisions from object
+#deleting above custom subdivisions from object (in-memory)
 iso.custom_subdivision("IE", "IE-BF", delete=1)
 iso.custom_subdivision("US", "US-ML", delete=1)
-iso.custom_subdivision("RU", "RU-ASK", delete=1)
+#deleting the persisted subdivision and writing the removal back to the installed file
+iso.custom_subdivision("RU", "RU-ASK", delete=1, persist=True)
 
 ```
 **Check for the latest updates data from the repository:**

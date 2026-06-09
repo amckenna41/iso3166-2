@@ -159,6 +159,26 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
     #passing in a csv with rows of subdivision additions/updates/deletions
     update_subdivision(subdivision_csv="new_subdivisions.csv")
     """
+    def _is_missing(value) -> bool:
+        if value is None:
+            return True
+        if isinstance(value, str):
+            return value.strip() == ""
+        if isinstance(value, float) and pd.isna(value):
+            return True
+        return False
+
+    def _is_delete_flag(value) -> bool:
+        if _is_missing(value):
+            return False
+        if isinstance(value, str):
+            normalized = value.strip().lower()
+            if normalized in ("0", "false", "no", "n"):
+                return False
+            if normalized in ("1", "true", "yes", "y"):
+                return True
+        return bool(value)
+
     #read json data with all current subdivision data
     with open(iso3166_2_filename, 'r', encoding='utf-8') as input_json:
         all_subdivision_data = json.load(input_json)
@@ -463,61 +483,64 @@ def update_subdivision(alpha_code: str="", subdivision_code: str="", name: str="
                     continue
             else:
                 #if delete column is set then delete respective subdivision from object according to its subdivision code, skip to next iteration
-                if (row['delete']):
+                if (_is_delete_flag(row.get('delete'))):
                     if (subdivision_code in list(all_subdivision_data[alpha_code].keys())):
                         del all_subdivision_data[alpha_code][subdivision_code]
                     continue
                 else:
                     #if subdivision already in object, make changes to its attributes according to its values in row of csv
                     if (subdivision_code in list(all_subdivision_data[alpha_code].keys())):
-                        if (row['name'] not in (None, "")):
+                        if (not _is_missing(row.get('name'))):
                             all_subdivision_data[alpha_code][subdivision_code]['name'] = row['name']
-                        if ((row['type'] not in (None, ""))):
+                        if (not _is_missing(row.get('type'))):
                             all_subdivision_data[alpha_code][subdivision_code]['type'] = row['type']
-                        if ((row['parentCode'] not in (None, ""))):
+                        if (not _is_missing(row.get('parentCode'))):
                             if not ((row['parentCode'] in list(all_subdivision_data[alpha_code].keys())) and (row['parentCode'] != subdivision_code)): #validate parent code
                                 raise ValueError(f"Parent code {row['parentCode']} for row not found in list of subdivision codes::\n{row}\n{list(all_subdivision_data[alpha_code].keys())}.")
                             else:
                                 all_subdivision_data[alpha_code][subdivision_code]['parentCode'] = row['parentCode']
-                        if ((row['flag'] not in (None, ""))):
+                        if (not _is_missing(row.get('flag'))):
                             all_subdivision_data[alpha_code][subdivision_code]['flag'] = row['flag']
-                        if ((row['latLng'] not in (None, ""))):
+                        if (not _is_missing(row.get('latLng'))):
                             try:
                                 all_subdivision_data[alpha_code][subdivision_code]['latLng'] = json.loads(row["latLng"]) #convert string of array into array
                             except (json.JSONDecodeError, TypeError, ValueError) as e:
                                 print(f"Warning: Error parsing latLng for {subdivision_code}: {row['latLng']}. Error: {e}. Setting to empty list.")
                                 all_subdivision_data[alpha_code][subdivision_code]['latLng'] = []
-                        if ((row['localOtherName'] not in (None, ""))):
+                        if (not _is_missing(row.get('localOtherName'))):
                             all_subdivision_data[alpha_code][subdivision_code]['localOtherName'] = row['localOtherName']
                         if ("history" in subdivision_df.columns.to_list()):
-                            if ((row['history'] not in (None, ""))):
+                            if (not _is_missing(row.get('history'))):
                                 all_subdivision_data[alpha_code][subdivision_code]['history'] = row['history']
                     else:
                         #adding new subdivision
                         all_subdivision_data[alpha_code][subdivision_code] = {}
 
                         #raise error if subdivision name not present in row when adding a new subdivision
-                        if (row['name'] in (None, "")):
+                        if (_is_missing(row.get('name'))):
                             raise ValueError(f"Adding a new subdivision: Subdivision name cannot be missing or null. Country code: {alpha_code}, Subdivision code: {subdivision_code}:\n{row}.")
                         all_subdivision_data[alpha_code][subdivision_code]["name"] = row["name"]
 
                         #raise error if subdivision type not present in row when adding a new subdivision
-                        if (row['type'] in (None, "")):
+                        if (_is_missing(row.get('type'))):
                             raise ValueError(f"Adding a new subdivision: Subdivision type cannot be missing or null. Country code: {alpha_code}, Subdivision code: {subdivision_code}:\n{row}.")
                         all_subdivision_data[alpha_code][subdivision_code]["type"] = row["type"]
 
                         #add latLng attribute to object
-                        try:
-                            all_subdivision_data[alpha_code][subdivision_code]["latLng"] = json.loads(row["latLng"]) #convert string of array into array
-                        except (json.JSONDecodeError, TypeError, ValueError) as e:
-                            print(f"Warning: Error parsing latLng for new subdivision {subdivision_code}: {row['latLng']}. Error: {e}. Setting to empty list.")
+                        if (not _is_missing(row.get('latLng'))):
+                            try:
+                                all_subdivision_data[alpha_code][subdivision_code]["latLng"] = json.loads(row["latLng"]) #convert string of array into array
+                            except (json.JSONDecodeError, TypeError, ValueError) as e:
+                                print(f"Warning: Error parsing latLng for new subdivision {subdivision_code}: {row['latLng']}. Error: {e}. Setting to empty list.")
+                                all_subdivision_data[alpha_code][subdivision_code]["latLng"] = []
+                        else:
                             all_subdivision_data[alpha_code][subdivision_code]["latLng"] = []
 
                         #add localOtherName attribute to object
-                        all_subdivision_data[alpha_code][subdivision_code]["localOtherName"] = row["localOtherName"]
+                        all_subdivision_data[alpha_code][subdivision_code]["localOtherName"] = None if _is_missing(row.get("localOtherName")) else row["localOtherName"]
 
                         #add parentCode attribute to object
-                        all_subdivision_data[alpha_code][subdivision_code]["parentCode"] = row["parentCode"]
+                        all_subdivision_data[alpha_code][subdivision_code]["parentCode"] = None if _is_missing(row.get("parentCode")) else row["parentCode"]
 
                         #add flag attribute to object
                         all_subdivision_data[alpha_code][subdivision_code]["flag"] = row["flag"]
@@ -591,7 +614,6 @@ def parse_rest_countries(alpha_code: str, rest_countries_keys: list, new_subdivi
             new_subdivision_data[key] = country_restcountries_data[0][key]
 
     return new_subdivision_data
-
 
 if __name__ == '__main__':
 

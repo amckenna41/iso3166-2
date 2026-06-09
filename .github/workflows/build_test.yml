@@ -77,7 +77,7 @@ jobs:
 
       - name: Run iso3166_2-specific tests
         run: |
-          pytest -v \
+          pytest -v --cov=iso3166_2 --cov-report=term-missing \
             tests/test_iso3166_2.py \
             tests/test_iso3166_2_api.py \
             tests/test_metadata.py
@@ -118,7 +118,7 @@ jobs:
 
       - name: Run scripts-related tests
         run: |
-          pytest -v \
+          pytest -v --cov=scripts --cov-report=term-missing \
             tests/test_language_lookup.py \
             tests/test_local_other_names.py \
             tests/test_update_subdivisions.py \

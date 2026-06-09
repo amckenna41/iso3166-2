@@ -2,7 +2,7 @@ from scripts.local_other_names import *
 from scripts.language_lookup import *
 from scripts.utils import *
 from iso3166_2 import *
-import iso3166
+from pycountry import countries as pycountries
 import pandas as pd
 import os
 import unittest
@@ -74,7 +74,8 @@ class LocalOtherNameTests(unittest.TestCase):
         """ Testing valid country and subdivision codes as well as subdivision names for each row. """
 #1.)
         country_codes_to_check = self.local_other_names_df["alphaCode"]
-        invalid_country_codes = country_codes_to_check[~country_codes_to_check.isin(list(iso3166.countries_by_alpha2.keys()))]
+        valid_alpha2_codes = {c.alpha_2 for c in pycountries}
+        invalid_country_codes = country_codes_to_check[~country_codes_to_check.isin(valid_alpha2_codes)]
         self.assertTrue(invalid_country_codes.empty, f"Expected all country codes to be valid ISO 3166-1 alpha-2 codes:\n{invalid_country_codes}.")
 #2.)    
         all_subdivision_codes = [code for codes in self.iso3166_2_obj.subdivision_codes().values() for code in codes]

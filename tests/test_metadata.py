@@ -48,7 +48,7 @@ class ISO3166_2_Metadata_Tests(unittest.TestCase):
         #check metadata values
         self.assertEqual(test_metadata["total_countries"], 249)
         self.assertEqual(test_metadata["total_subdivisions"], 5046)
-        self.assertEqual(test_metadata["dataset_kb"], 3482.215)
+        self.assertEqual(test_metadata["dataset_kb"], 3482.27)
         self.assertEqual(test_metadata["dataset_mb"], 3.401)
         self.assertEqual(test_metadata["total_attributes"], 35322)
         self.assertEqual(test_metadata["num_unique_attributes"], 7)

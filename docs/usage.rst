@@ -246,43 +246,82 @@ results via the *filter_attributes* parameter.
    #searching for state of Texas and French Department Meuse - both subdivision objects will be returned, only including the subdivision type and name attributes
    iso.search("Texas, Meuse", filter_attributes="name,type") 
 
+Advanced search filters
+-----------------------
+The search API supports additional filters for more targeted queries, plus ranked output.
+
+.. code-block:: python
+
+   from iso3166_2 import *
+
+   iso = Subdivisions()
+
+   #ranked search constrained to one region and type
+   iso.search(
+      "Berlin",
+      likeness_score=90,
+      subdivision_type="Land",
+      region="DE",
+      exclude_match_score=False,
+   )
+
+   #filter by parent code
+   iso.search("Armagh", parent_code="GB-NIR", region="GB")
+
+Reverse lookup by coordinates
+-----------------------------
+The reverse lookup API returns nearby subdivisions based on latitude/longitude.
+
+.. code-block:: python
+
+   from iso3166_2 import *
+
+   iso = Subdivisions()
+
+   #find subdivisions near Berlin within 25 km
+   iso.reverse_lookup(52.5174, 13.3951, radius_km=25, max_results=5, region="DE")
+
+   #return only selected attributes
+   iso.reverse_lookup(52.5174, 13.3951, filter_attribute="name,type,latLng")
+
 Adding custom subdivisions
 --------------------------
 Add or delete a custom subdivision to an existing country on the main **iso3166-2.json** object. The purpose of this functionality is similar to 
 that of the user-assigned code elements of the ISO 3166-1 standard. Custom subdivisions and subdivision codes can be used for in-house/bespoke 
 applications that are using the **iso3166-2** software but require additional custom subdivisions to be represented. If the input custom subdivision 
-code already exists then an error will be raised, otherwise it will be appended to the object. If the input subdivision code already exists then
-any differing attribute values you input will be used to amend the existing subdivision data.
+code already exists then an error will be raised, otherwise it will be appended to the object.
 
-If the added subdivision is required to be deleted from the object, then you can call the same function with the alpha-2 and subdivision codes' 
-parameters but also setting the ``delete`` parameter to 1/True. This functionality works on the object that the software uses but you can create a copy 
-of the object prior to adding/deleting a subdivision via the ``copy`` parameter, setting it to 1/True. Furthermore, you can also save the updated 
-subdivision object to a new object via the ``save_new`` and ``save_new_filename`` parameters. 
+By default all changes are **in-memory only** and do not survive the current Python session. There are two ways to persist changes to disk:
 
+* ``persist=True`` — overwrites the installed package's ``iso3166-2.json`` file in-place.
+* ``save_new=True`` + ``save_new_filename`` — writes the updated dataset to a separate file, leaving the installed data untouched.
+
+If the added subdivision is required to be deleted from the object, call the same function with the ``delete`` parameter set to ``True``. 
 You can also add custom attributes to the subdivision via the ``custom_attributes`` parameter, e.g the population, area, gdp per capita etc.
 
 .. code-block:: python
 
    from iso3166_2 import *
 
-   #crete instance of Subdivisions class
+   #create instance of Subdivisions class
    iso = Subdivisions()
-   
-   #adding custom Belfast province to Ireland (IE)
-   iso.custom_subdivision("IE", "IE-BF", name="Belfast", local_other_name="Béal Feirste", type_="province", lat_lng=[54.596, -5.931], parent_code=None, flag=None, history=None, copy=1)
 
-   #adding custom Mariehamn province to Aland Islands (AX), export to new file
-   iso.custom_subdivision("AX", "AX-M", name="Mariehamn", local_other_name="Maarianhamina", type_="province", lat_lng=[60.0969, 19.934], parent_code=None, flag=None, history=None, copy=1,
-      save_new=1, save_new_filename="iso3166-2-AX-M.json")
+   #adding custom Belfast province to Ireland (IE) - in-memory only (default)
+   iso.custom_subdivision("IE", "IE-BF", name="Belfast", local_other_name="Béal Feirste", type_="province", lat_lng=[54.596, -5.931], parent_code=None, flag=None)
 
-   #adding custom Alaska province to Russia with additional population and area attribute values
-   iso.custom_subdivision("RU", "RU-ASK", name="Alaska Oblast", local_other_name="Аляска", type_="Republic", lat_lng=[63.588, 154.493], parent_code=None, flag=None, 
-      custom_attributes={"gini": "0.43", "gdpPerCapita": "71,996"})
+   #adding custom Mariehamn province to Aland Islands (AX), saving to a new separate file
+   iso.custom_subdivision("AX", "AX-M", name="Mariehamn", local_other_name="Maarianhamina", type_="province", lat_lng=[60.0969, 19.934], parent_code=None, flag=None,
+      save_new=True, save_new_filename="iso3166-2-AX-M.json")
 
-   #deleting above custom subdivisions from object
-   iso.custom_subdivision("IE", "IE-BF", delete=1)
-   iso.custom_subdivision("AX", "AX-M", delete=1)
-   iso.custom_subdivision("RU", "RU-ASK", delete=1)
+   #adding custom Alaska province to Russia and persisting the change to the installed data file
+   iso.custom_subdivision("RU", "RU-ASK", name="Alaska Oblast", local_other_name="Аляска", type_="Republic", lat_lng=[63.588, 154.493], parent_code=None, flag=None,
+      custom_attributes={"gini": "0.43", "gdpPerCapita": "71,996"}, persist=True)
+
+   #deleting above custom subdivisions from object (in-memory only)
+   iso.custom_subdivision("IE", "IE-BF", delete=True)
+   iso.custom_subdivision("AX", "AX-M", delete=True)
+   #deleting the persisted subdivision and writing the removal back to the installed file
+   iso.custom_subdivision("RU", "RU-ASK", delete=True, persist=True)
 
 .. warning::
     When adding a custom subdivision the software will be out of sync with the official ISO 3166-2 dataset, therefore its important to keep track

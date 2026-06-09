@@ -92,7 +92,7 @@ class UpdateSubdivisionsTests(unittest.TestCase):
                                                                       flag=test_subdivision_lt["flag"], iso3166_2_filename=self.test_iso3166_2_copy, rest_countries_keys=test_subdivision_lt["rest_countries_keys"], export=True)
         expected_test_subdivision_lt_output = {"name": "Vilnius 2.0 municipality", "localOtherName": "Vilnius 2.0 municipality", "type": "City municipality", 
                                          "latLng": [], "parentCode": "LT-UT", "flag": "https://github.com/amckenna41/iso3166-flags/blob/main/iso3166-2-flags/LT/LT-100.svg",
-                                         "currencies": {"EUR": {"name": "Euro", "symbol": "€"}}, "carSigns": ["LT"], "idd": "Root: +3, Suffixes: ['70']"}
+                                         "currencies": {"EUR": {"name": "euro", "symbol": "€"}}, "carSigns": ["LT"], "idd": "Root: +3, Suffixes: ['70']"}
         
         #import json with newly added subdivision
         with open(self.test_iso3166_2_copy, "r") as subdivision_update_json:

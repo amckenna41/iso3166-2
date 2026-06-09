@@ -1,7 +1,7 @@
 iso3166-2>=1.7.0
 requests>=2.28.1
 # pycountry>=22.3.5
-pycountry
+pycountry>=24.6.1
 googlemaps>=4.10.0
 tqdm>=4.64.0
 natsort>=8.4.0
@@ -16,3 +16,4 @@ shapely>=2.0.1
 SPARQLWrapper>=2.0.0
 emoji-country-flag
 wikidata
+iso3166-updates

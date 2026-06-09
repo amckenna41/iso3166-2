@@ -1,0 +1,4 @@
+natsort>=8.4.0
+requests>=2.28.1
+thefuzz>=0.22.1
+pycountry>=24.6.1

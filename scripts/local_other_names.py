@@ -12,8 +12,8 @@ try:
 except ImportError:
     from utils import *
 
-def add_local_other_names(all_subdivision_data: Dict[str, Dict[str, Dict[str, any]]], remove_duplicate_translations: bool = False, max_local_other_names: Optional[int] = None, 
-    filepath: str = os.path.join("iso3166_2_resources", "local_other_names.csv")) -> Dict[str, Dict[str, Dict[str, any]]]:
+def add_local_other_names(all_subdivision_data: Dict[str, Dict[str, Dict[str, Any]]], remove_duplicate_translations: bool = False, max_local_other_names: Optional[int] = None, 
+    filepath: str = os.path.join("iso3166_2_resources", "local_other_names.csv")) -> Dict[str, Dict[str, Dict[str, Any]]]:
     """
     Adding subdivision's local or other names taken from iso3166_2_resources/local_other_names.csv. 
     These values are mostly translations of the subdivision name into one or more local language 
@@ -78,7 +78,7 @@ def add_local_other_names(all_subdivision_data: Dict[str, Dict[str, Dict[str, an
     """
     #set the max number of local/other names in rows, remove any additional names
     if not (max_local_other_names is None):
-        def limit_local_other_names(row):
+        def limit_local_other_names(row: pd.Series) -> pd.Series:
             """ Auxiliary function that limits the total number of local/other names per row, removing additional ones after reordering/sorting. """
             #skip rows with no local/other name in them
             if (row["localOtherName"]):    

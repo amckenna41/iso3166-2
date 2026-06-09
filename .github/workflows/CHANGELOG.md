@@ -1,6 +1,41 @@
-# Change Log 🔄
+# Changelog
 
-## v1.8.1/v1.8.2 - February 2026
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [1.8.3] - 2026-04-01
+
+### Added
+- Added `__iter__` and `__contains__` to `Subdivisions` class, making it fully Pythonic: `"CA" in iso`, `"CA-AB" in iso`, `for code in iso`
+- Added `apply` parameter to `check_for_updates()`: when `apply=True` and new data is found, the latest `iso3166-2.json` is written to disk and reloaded in-memory without requiring a full package reinstall
+- Added `code` attribute to every subdivision object returned by `search()` (available on both list and dict return shapes, and when `filter_attribute` is used)
+- Created MCP (Model Context Protocol) server (`mcp_server.py`) exposing the iso3166-2 API as LLM-consumable tools: `get_subdivisions_by_country`, `get_subdivision`, `search_subdivisions`, `get_subdivisions_by_country_name`, `list_subdivision_codes`, `get_random_subdivision`, `get_all_subdivisions`
+- Added `.github/dependabot.yml` to automate weekly dependency-update PRs for both pip and GitHub Actions ecosystems
+- Added neighbours bidirectionality validation to `test_geo_cache_file`: verifies that if subdivision A lists B as a neighbour, B also lists A
+- Added unit tests `test_iter_and_contains` and `test_search_includes_code_attribute` in `tests/test_iso3166_2.py`
+- Added custom exception hierarchy in `iso3166_2/exceptions.py` with domain-specific errors and compatibility with existing `ValueError` handling
+- Added `reverse_lookup()` method for lat/lng -> subdivision reverse lookups with radius and region filtering
+- Added CLI `reverse` command and enhanced CLI `search` filters (`--filter`, `--type`, `--parent`, `--region`, `--include-match-score`)
+- Added CLI integration tests in `tests/test_cli_integration.py`
+- Added troubleshooting guide in `docs/troubleshooting.rst`
+- Added `py.typed` marker at `iso3166_2/py.typed`
+
+### Changed
+- API query parameter `filterAttributes` renamed to `filter` consistently across `API.md` and `README.md`; updated all example URLs and descriptions. The `filter` parameter now explicitly documented as working on `/api/all` in addition to other endpoints
+- Fixed copy-paste URL drift in `API.md` JavaScript examples: `/api/search`, `/api/country_name`, and `/api/list_subdivisions` JS snippets now correctly point to `iso3166-2-api.vercel.app` instead of `iso3166-updates.com`
+- Fixed `likeness` vs `likeness_score` inconsistency in `README.md` and `iso3166_2/README.md` example code — all examples now consistently use `likeness_score` to match the actual function signature
+- Removed `iso3166` from runtime dependencies in `pyproject.toml`; `pycountry` already covers all country-code lookup needs. Updated `tests/test_local_other_names.py` to use `pycountry.countries` instead of `iso3166.countries_by_alpha2`
+- `latLng` attribute description updated in `README.md` to clarify that coordinates are the geographic centroid of the subdivision polygon (derived from OpenStreetMap), not the capital or administrative centre
+- Added comprehensive type hints to `iso3166_2/iso3166_2.py` including return annotations and typed internal helpers
+- Enhanced `search()` relevance ranking and advanced filtering support (`subdivision_type`, `parent_code`, `region`)
+- Improved invalid input errors to include suggestions (`Did you mean...`) for country/subdivision/attribute inputs
+- Moved script-only dependencies `tqdm` and `Unidecode` to optional extra group `scripts` in `pyproject.toml`
+
+## [1.8.1] / [1.8.2] - 2026-02-01
 
 ### Added
 - Updated accuracy of all latLng attributes for all subdivisions, using the centroid of the subdivision as the new value
@@ -38,7 +73,7 @@
 - Fixed accuracy of some of the latLng attribute values for some subdivisions, using the OSM as a data source rather than the previous Google Maps API 
 
 
-## v1.8.0 - September 2025
+## [1.8.0] - 2025-09-01
 
 ### Added
 
@@ -77,7 +112,7 @@
 - Fixed small vulnerability with try/except in metadata export module
 - Fixed the bandit & package calls in workflow, passing in specific directories 
 
-## v1.7.0 - 1.7.2 - July 2025
+## [1.7.0] / [1.7.2] - 2025-07-01
 
 ### Added
 - Add list of cities for each subdivision using the country-states-city API
@@ -168,7 +203,7 @@
 - Changed the search output attributes to all camelCasing
 - Changed the parameter in /scripts from exclude_default_attributes to filter_attributes, to be more intuitive
 
-## v1.6.1 - June 2024
+## [1.6.1] - 2024-06-01
 
 
 ### Added
@@ -187,7 +222,7 @@
 - Raise TypeError if invalid data type input to export_iso3166_2 function rather than system crashing
 - When getting the coordinates (latitude/longitude) per subdivision, a more granular and accurate response is ensured by appending the country name to the subdivision name when searching via the Google Maps API
 
-## v1.6.0 - June 2024
+## [1.6.0] - 2024-06-01
 
 ### Added 
 - New dataset object exported with flagUrl attribute now flag
@@ -229,7 +264,7 @@
 - Error when adding a new subdivision, now will raise an error if the input parent code is invalid/not a country subdivision
 - In get_flag_url function in update_subdivision script, you can pass in the full subdivision code or just the RHS of it
 
-## v1.5.4 - March 2024
+## [1.5.4] - 2024-03-01
 
 
 ### Added
@@ -252,7 +287,7 @@
 
 
 
-## v1.4.0 - December 2023
+## [1.4.0] - 2023-12-01
 
 ### Added
 - readthedocs documentation added
@@ -270,7 +305,7 @@
 ### Fixed
 
 
-## v1.3.0 - December 2023
+## [1.3.0] - 2023-12-01
 
 ### Added
 - Added subdivision_updates.csv that lists rows of updates made to the ISO 3166-2 subdivision data
@@ -286,7 +321,7 @@
 - Subdivision codes not sorting alphabetically in output
 
 
-## <=v1.2.0 - <September 2023
+## [1.2.0] - 2023-09-01
 
 ### Added
 - Initial software release
@@ -294,3 +329,17 @@
 - Added any missing iso3166-2 subdivision data to object that may have been missing from initial export
 - Initial attributes include: country code, subdivision code, parent code, type and flag URL
 - Created custom-built iso3166-updates software used to track all updates made by the ISO to the ISO 3166
+
+[unreleased]: https://github.com/amckenna41/iso3166-2/compare/v1.8.3...HEAD
+[1.8.3]: https://github.com/amckenna41/iso3166-2/compare/v1.8.2...v1.8.3
+[1.8.2]: https://github.com/amckenna41/iso3166-2/compare/v1.8.1...v1.8.2
+[1.8.1]: https://github.com/amckenna41/iso3166-2/compare/v1.8.0...v1.8.1
+[1.8.0]: https://github.com/amckenna41/iso3166-2/compare/v1.7.2...v1.8.0
+[1.7.2]: https://github.com/amckenna41/iso3166-2/compare/v1.7.0...v1.7.2
+[1.7.0]: https://github.com/amckenna41/iso3166-2/compare/v1.6.1...v1.7.0
+[1.6.1]: https://github.com/amckenna41/iso3166-2/compare/v1.6.0...v1.6.1
+[1.6.0]: https://github.com/amckenna41/iso3166-2/compare/v1.5.4...v1.6.0
+[1.5.4]: https://github.com/amckenna41/iso3166-2/compare/v1.4.0...v1.5.4
+[1.4.0]: https://github.com/amckenna41/iso3166-2/compare/v1.3.0...v1.4.0
+[1.3.0]: https://github.com/amckenna41/iso3166-2/compare/v1.2.0...v1.3.0
+[1.2.0]: https://github.com/amckenna41/iso3166-2/releases/tag/v1.2.0

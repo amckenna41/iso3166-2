@@ -7,7 +7,7 @@ test-iso3166_2/
 test_iso3166-2/
 iso3166-2-data-archive/
 # get_iso3166_2.py
-.DS_Store
+**/.DS_Store
 poetry.lock
 
 .vscode
@@ -167,3 +167,9 @@ geo_anomalies.json
 geo_anomalies_look_into.json
 
 scripts/geo_anomalies_check.py
+
+mcp_server.py
+
+compare_iso3166_2.py
+
+/demos

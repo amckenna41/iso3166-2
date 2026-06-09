@@ -165,7 +165,7 @@ The Python software and accompanying API are solely developed and maintained by 
 
 .. |version_link| raw:: html
 
-   <a href="https://pypi.org/project/iso3166-2/" target="_blank">v1.8.2</a>
+   <a href="https://pypi.org/project/iso3166-2/" target="_blank">v1.8.3</a>
 
 .. |updates_md_link| raw:: html
 
@@ -211,6 +211,7 @@ Contents
 
    usage
    api
+   troubleshooting
    changelog
 
 `Back to top ↑ <#welcome-to-iso-3166-2-s-documentation>`_

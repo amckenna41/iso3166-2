@@ -1,7 +1,11 @@
 import os
 import sys
 import json
+import difflib
+import math
 from dataclasses import dataclass
+from importlib.metadata import version as _pkg_version
+from typing import Dict, List, Union, Optional, Any, Iterator, Tuple
 from pycountry import countries
 from thefuzz import fuzz
 from urllib.parse import unquote_plus
@@ -9,6 +13,24 @@ import pprint
 import natsort
 import requests
 from collections import OrderedDict
+try:
+    from .exceptions import (
+        InvalidCountryCode,
+        InvalidSubdivisionCode,
+        SubdivisionNotFound,
+        InvalidAttributeError,
+        InvalidSearchInput,
+        DataFileError,
+    )
+except ImportError:
+    from exceptions import (  # type: ignore
+        InvalidCountryCode,
+        InvalidSubdivisionCode,
+        SubdivisionNotFound,
+        InvalidAttributeError,
+        InvalidSearchInput,
+        DataFileError,
+    )
 
 class Subdivisions():
     """
@@ -81,6 +103,10 @@ class Subdivisions():
         compare the current object in the software with the same object in the repo (which will
         be the latest version of the dataset). Output any differences in the objects, suggesting
         to update/reinstall the software if there's a mismatch in the data.
+    remove_attributes(attributes_to_remove, overwrite_data=False):
+        remove one or more default attributes (e.g. latLng, flag, history) from every
+        subdivision in the dataset, reducing in-memory size. Set overwrite_data=True to
+        also persist the change to the iso3166-2.json file on disk.
     convert_to_alpha2(alpha_code):
         converts an ISO 3166 country's 3 letter alpha-3 code or numeric code into its 2 
         letter alpha-2 counterpart. 
@@ -89,6 +115,10 @@ class Subdivisions():
         subscriptable, according to its ISO 3166-1 alpha-2, alpha-3 or numeric code.
     __len__:
         get total length of ISO 3166-2 subdivisions object - number of individual subdivisions.
+    __iter__:
+        iterate over country alpha-2 codes in the object.
+    __contains__(item):
+        check if a country alpha-2 code or subdivision code (e.g. 'CA-AB') is in the object.
     __str__:
         string representation of the instance.
     __repr__:
@@ -161,38 +191,51 @@ class Subdivisions():
     #check for the latest updates - compare current installed object with the latest on the repo
     all_subdivisions.check_for_updates()
 
+    #remove the 'flag' and 'history' attributes from all subdivisions to reduce memory usage
+    all_subdivisions = Subdivisions()
+    all_subdivisions.remove_attributes(["flag", "history"])
+
+    #remove 'latLng' and persist the change to the iso3166-2.json data file on disk
+    all_subdivisions.remove_attributes(["latLng"], overwrite_data=True)
+
     #get total number of subdivisions in object
     len(all_subdivisions)
     """
-    def __init__(self, country_code: str="", iso3166_2_filepath: str="", filter_attributes: str=""):
+    def __init__(self, country_code: str="", iso3166_2_filepath: str="", filter_attributes: str="") -> None:
 
         self.country_code = country_code
         self.iso3166_2_filepath = iso3166_2_filepath
         self.iso3166_json_filename= "iso3166-2.json"
         self.filter_attributes = filter_attributes
-        self.__version__ = "1.8.2"
+        #resolve version from installed package metadata; fall back to literal if not installed
+        try:
+            self.__version__ = _pkg_version("iso3166-2")
+        except Exception:
+            self.__version__ = "1.8.3"
 
         #get full path to default object
         self.iso3166_2_module_path = os.path.join(os.path.dirname(os.path.abspath(sys.modules[self.__module__].__file__)), self.iso3166_json_filename)
 
         #raise error if iso3166-2 json doesn't exist in the data folder
         if not (os.path.isfile(self.iso3166_2_module_path)):
-            raise OSError(f"Issue finding data file {self.iso3166_json_filename} in module directory: {self.iso3166_2_module_path}.")
+            raise DataFileError(
+                f"Issue finding data file {self.iso3166_json_filename} in module directory: {self.iso3166_2_module_path}."
+            )
 
         #using custom object at filepath
         if (self.iso3166_2_filepath != ""):
             self.iso3166_2_module_path = self.iso3166_2_filepath
             if not (os.path.isfile(self.iso3166_2_module_path)):
-                raise OSError(f"Issue finding custom data file directory: {self.iso3166_2_module_path}.")
+                raise DataFileError(f"Issue finding custom data file directory: {self.iso3166_2_module_path}.")
 
         #importing all subdivision data from JSON, open iso3166-2 json file and load it into class variable, raise error if issue reading in JSON
         try:
             with open(self.iso3166_2_module_path, encoding="utf-8") as fp:
                 self.all = json.load(fp)
         except FileNotFoundError: 
-            raise OSError("Error ❗: The ISO 3166-2 file was not found.")
+            raise DataFileError("Error ❗: The ISO 3166-2 file was not found.")
         except json.JSONDecodeError as e:
-            raise ValueError(
+            raise DataFileError(
                 "Error ❗: The ISO 3166-2 file contains invalid JSON. "
                 f"{e.msg} at line {e.lineno}, column {e.colno} (char {e.pos})."
             )
@@ -202,7 +245,9 @@ class Subdivisions():
             # Validate that country code is not just whitespace or commas
             country_code_stripped = self.country_code.strip()
             if not country_code_stripped or all(c in ", " for c in country_code_stripped):
-                raise ValueError("Error ❗: Invalid country code input - cannot be empty or contain only whitespace/commas.")
+                raise InvalidCountryCode(
+                    "Invalid country code input. The value cannot be empty or contain only whitespace/commas."
+                )
             
             temp_subdivision_data = {}
             self.country_code = self.country_code.upper().replace(" ", "").split(',')
@@ -213,7 +258,9 @@ class Subdivisions():
 
                 #raise error if invalid alpha-2 code input
                 if not (self.country_code[code] in ([country.alpha_2 for country in countries])) or not (self.country_code[code] in list(self.all.keys())):
-                    raise ValueError(f"Invalid alpha-2 country code input: {self.country_code[code]}.")
+                    suggestion = self._suggest_country_codes(self.country_code[code])
+                    hint = f" Did you mean: {', '.join(suggestion)}?" if suggestion else ""
+                    raise InvalidCountryCode(f"Invalid alpha-2 country code input: {self.country_code[code]}.{hint}")
                 
                 #create temporary subdivision data object
                 temp_subdivision_data[self.country_code[code]] = {}
@@ -241,7 +288,11 @@ class Subdivisions():
                 #iterate over all input keys, raise error if invalid key input
                 for key in filter_attributes_converted_list:
                     if not (key in filter_attributes_expected):
-                        raise ValueError(f"Attribute/field ({key}) invalid, please refer to list of the acceptable default attributes below:\n{filter_attributes_expected}.")
+                        suggestion = self._suggest_attribute_keys(key, filter_attributes_expected)
+                        hint = f" Did you mean: {', '.join(suggestion)}?" if suggestion else ""
+                        raise InvalidAttributeError(
+                            f"Attribute/field ({key}) invalid. Acceptable attributes: {filter_attributes_expected}.{hint}"
+                        )
                 
                 self.filter_attributes = filter_attributes_converted_list
 
@@ -266,7 +317,7 @@ class Subdivisions():
         #get list of all countries by their numeric code
         #self.numeric = [country.numeric for country in countries]
 
-    def subdivision_codes(self, alpha_code: str="") -> dict|list:
+    def subdivision_codes(self, alpha_code: str="") -> Union[Dict[str, List[str]], List[str]]:
         """
         Return a list or dict of all ISO 3166-2 subdivision codes for one or more
         countries specified by their ISO 3166-1 alpha-2, alpha-3 or numeric country
@@ -319,8 +370,10 @@ class Subdivisions():
 
                 #raise error if country data not imported on object instantiation 
                 if not (alpha_code[code] in list(self.all.keys())):
-                    raise ValueError(f"Valid alpha-2 code input {alpha_code[code]}, but country data not available as country code parameter was input on class instantiation,"
-                                    " try creating another instance of the class with no initial input parameter value, e.g iso = Subdivisions().")
+                    raise InvalidCountryCode(
+                        f"Valid alpha-2 code input {alpha_code[code]}, but country data not available as country code parameter was input on class instantiation,"
+                        " try creating another instance of the class with no initial input parameter value, e.g iso = Subdivisions()."
+                    )
                 
                 #append list of subdivision codes to dict
                 subdivision_codes_[alpha_code[code]] = list(self.all[alpha_code[code]])
@@ -334,7 +387,7 @@ class Subdivisions():
             else:
                 return subdivision_codes_
 
-    def subdivision_names(self, alpha_code: str="") -> dict|list:
+    def subdivision_names(self, alpha_code: str="") -> Union[Dict[str, List[str]], List[str]]:
         """
         Return a list or dict of all ISO 3166-2 subdivision names for one or more countries 
         specified by their ISO 3166-1 alpha-2, alpha-3 or numeric country codes. If the 
@@ -367,7 +420,7 @@ class Subdivisions():
 
         #raise error if name attribute was excluded on class instantiation 
         if ("name" not in self.filter_attributes):
-            raise ValueError("Name attribute was excluded from subdivision outputs on class instantiation,\
+            raise InvalidAttributeError("Name attribute was excluded from subdivision outputs on class instantiation,\
                              create a new object of the class without excluding the name attribute.")
 
         #if no value passed into parameter, return all subdivision names for all countries
@@ -393,8 +446,10 @@ class Subdivisions():
 
                 #raise error if country data not imported on object instantiation 
                 if not (alpha_code[code] in list(self.all.keys())):
-                    raise ValueError(f"Valid alpha-2 code input {alpha_code[code]}, but country data not available as country code parameter was input on class instantiation,"
-                                    " try creating another instance of the class with no initial input parameter value, e.g iso = Subdivisions().")
+                    raise InvalidCountryCode(
+                        f"Valid alpha-2 code input {alpha_code[code]}, but country data not available as country code parameter was input on class instantiation,"
+                        " try creating another instance of the class with no initial input parameter value, e.g iso = Subdivisions()."
+                    )
                 
                 #append list of subdivision names to dict
                 subdivision_names_[alpha_code[code]] = [self.all[alpha_code[code]][x]["name"] for x in self.all[alpha_code[code]]]
@@ -408,10 +463,10 @@ class Subdivisions():
             else:
                 return subdivision_names_
     
-    def custom_subdivision(self, alpha_code: str, subdivision_code: str, name: str=None, local_other_name: str=None, type_: str=None, 
-                           lat_lng: list|str=None, parent_code: str=None, flag: str=None,
-                           history: str=None, delete: bool=False, copy: bool=0, custom_attributes: dict={}, custom_subdivision_object: dict={}, 
-                           save_new: bool=False, save_new_filename: str="iso3166_2_copy.json") -> None:
+    def custom_subdivision(self, alpha_code: str, subdivision_code: str, name: Optional[str]=None, local_other_name: Optional[str]=None, type_: Optional[str]=None, 
+                           lat_lng: Union[List[float], str, None]=None, parent_code: Optional[str]=None, flag: Optional[str]=None,
+                           history: Optional[str]=None, delete: bool=False, copy: bool=False, custom_attributes: Optional[Dict[str, Any]]=None, custom_subdivision_object: Optional[Dict[str, Any]]=None, 
+                           persist: bool=False, save_new: bool=False, save_new_filename: str="iso3166_2_copy.json") -> None:
         """ 
         Add or delete a custom subdivision to an existing country in the main iso3166-2.json 
         object. The purpose of this functionality is similar to that of the user-assigned 
@@ -458,16 +513,20 @@ class Subdivisions():
         :copy: bool (default=0)
             create a duplicate copy of the iso3166-2.json object such that there remains
             a copy of the original json prior to custom subdivision change.  
-        :custom_attributes: dict (default={})
+        :custom_attributes: dict (default=None)
             for each custom subdivision, you can also add custom attributes e.g population,
             area, gdp etc. Both the attribute and its value need to be input in a dict.
-        :custom_subdivision_object: dict (default={})
+        :custom_subdivision_object: dict (default=None)
             object of the new custom subdivision object with the required attributes and values. 
             If this object is populated, the values in this object will be prioritised over the 
             individual parameter values. 
+        :persist: bool (default=False)
+            set to True to write the updated dataset back to the installed package's iso3166-2.json
+            file on disk. By default changes are applied in-memory only and do not survive the
+            current Python session.
         :save_new: bool (default=False)
-            save a new copy of the iso3166-2.json object with the new changes applied,
-            such that the original object is not overwritten. 
+            save a new copy of the iso3166-2.json object with the new changes applied to a
+            separate file, leaving the installed package's data file untouched.
         :save_new_filename: str (default="iso3166_2_copy.json")
             filename for copied iso3166-2.json object with the new changes applied.
 
@@ -513,7 +572,13 @@ class Subdivisions():
  
         #raise type error if type isn't a string or None
         if not (isinstance(type_, str)) and not type_ is None:
-            raise TypeError(f"Input subdivision type parameter is not of correct datatype string, got {type(type_)}.")  
+            raise TypeError(f"Input subdivision type parameter is not of correct datatype string, got {type(type_)}.")
+
+        #avoid mutable default argument bugs - assign empty dicts inside the function body
+        if custom_attributes is None:
+            custom_attributes = {}
+        if custom_subdivision_object is None:
+            custom_subdivision_object = {}  
 
         #parse lat_lng attribute, should be array of 2 str, can accept just a comma separated str, raise error if invalid input
         if (lat_lng != None and lat_lng != []):
@@ -522,7 +587,7 @@ class Subdivisions():
                     temp_lat_lng = []
                     temp_lat_lng = [lat_lng.split(',')[0], lat_lng.split(',')[1]]
                     lat_lng = temp_lat_lng  
-                except:
+                except (IndexError, ValueError):
                     raise ValueError(f"Error parsing lat_lng attribute, expected a comma separated string of 2 inputs, got {lat_lng}.")
             elif not (isinstance(lat_lng, list)):
                 raise TypeError(f"lat_lng attribute expected to be a list of floats or strings or a comma separated list of 2 elements, got {lat_lng}.")
@@ -605,24 +670,35 @@ class Subdivisions():
         if (save_new):
             with open(save_new_filename, 'w', encoding='utf-8') as output_json:
                 json.dump(self.all, output_json, ensure_ascii=False, indent=4)  
-        #export new subdivision object to existing object
-        else:
+        #persist changes to the installed package's data file only if explicitly requested
+        elif (persist):
             with open(os.path.join(self.iso3166_2_module_path), 'w', encoding='utf-8') as output_json:
                 json.dump(self.all, output_json, ensure_ascii=False, indent=4)
-        
+        #default: changes are applied in-memory only, no disk write
+
         #print informative message when new subdivision added
         if (new_update_object and not delete):
-            print(
-                f"\n✓ Custom subdivision '{subdivision_code}' has been successfully added to the dataset for {alpha_code}. "
-                f"Dataset path: {self.iso3166_2_module_path}"
-            )
+            if (persist or save_new):
+                dest = self.iso3166_2_module_path if persist else save_new_filename
+                print(f"\n✓ Custom subdivision '{subdivision_code}' has been successfully added to the dataset for {alpha_code}. Dataset path: {dest}")
+            else:
+                print(f"\n✓ Custom subdivision '{subdivision_code}' has been successfully added in-memory for {alpha_code} (changes are not persisted to disk).")
             print("\n⚠️  IMPORTANT: This custom subdivision is now out of sync with the official ISO 3166-2 dataset.")
             print("   It is your responsibility to keep track of this custom subdivision and manage it accordingly.")
             print(f"\n   To delete this custom subdivision, run:")
-            print(f"   custom_subdivision('{alpha_code}', '{subdivision_code}', delete=1)\n")  
+            print(f"   custom_subdivision('{alpha_code}', '{subdivision_code}', delete=1)\n")
 
-    def search(self, input_search_term: str, likeness_score: int=100, filter_attribute: str="", local_other_name_search: bool=True, 
-               exclude_match_score: bool=1) -> dict:
+    def search(
+        self,
+        input_search_term: str,
+        likeness_score: int=100,
+        filter_attribute: str="",
+        local_other_name_search: bool=True,
+        exclude_match_score: bool=True,
+        subdivision_type: str="",
+        parent_code: str="",
+        region: str="",
+    ) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
         """
         Search for a subdivision and its corresponding data using it's subdivision name. 
         The 'likeness_score' input parameter determines if the function searches for an exact 
@@ -691,7 +767,11 @@ class Subdivisions():
 
         #raise error if invalid likeness score input (has to between 1 and 100)
         if not (0 <= likeness_score <= 100):
-            raise ValueError(f"Likeness score must be between 0 and 100, got {likeness_score}.")
+            raise InvalidSearchInput(f"Likeness score must be between 0 and 100, got {likeness_score}.")
+
+        region_filter = ""
+        if region:
+            region_filter = self._resolve_region_filter(region)
 
         #create list of subdivision attributes to search across, add localOtherName to list if applicable
         attributes_list = ["name"]
@@ -730,28 +810,54 @@ class Subdivisions():
         for term in terms:
             matches = []
             for norm_name, alpha2, code in entries:
-                likeness = fuzz.ratio(term, norm_name)
-                if likeness_score == 100 and likeness == 100:
-                    matches.append((alpha2, code, likeness))
-                elif likeness_score < 100 and likeness >= likeness_score:
-                    matches.append((alpha2, code, likeness))
+                base_likeness = fuzz.ratio(term, norm_name)
+                relevance = self._score_relevance(term, norm_name)
+                if likeness_score == 100 and base_likeness == 100:
+                    matches.append((alpha2, code, relevance))
+                elif likeness_score < 100 and base_likeness >= likeness_score:
+                    matches.append((alpha2, code, relevance))
 
             #fallback: if no matches found, reduce the likeness slightly
             if likeness_score == 100 and not matches:
                 for norm_name, alpha2, code in entries:
-                    likeness = fuzz.ratio(term, norm_name)
-                    if likeness >= 85:
-                        matches.append((alpha2, code, likeness))
+                    base_likeness = fuzz.ratio(term, norm_name)
+                    relevance = self._score_relevance(term, norm_name)
+                    if base_likeness >= 85:
+                        matches.append((alpha2, code, relevance))
 
             #add found matching objects to found object, including % Match Score, Country & Subdivision Code
             for alpha2, code, score in matches:
-                if code not in found:
+                if code not in found or score > int(found[code].get("matchScore", 0)):
                     found[code] = {
                         **self.all[alpha2][code],
+                        "code": code,
                         "matchScore": score,
                         "countryCode": alpha2,
                         "subdivisionCode": code
                     }
+
+        if subdivision_type:
+            lowered_type = subdivision_type.strip().lower()
+            found = {
+                code: data
+                for code, data in found.items()
+                if str(data.get("type") or "").strip().lower() == lowered_type
+            }
+
+        if parent_code:
+            parent_code_u = parent_code.strip().upper()
+            found = {
+                code: data
+                for code, data in found.items()
+                if str(data.get("parentCode") or "").upper() == parent_code_u
+            }
+
+        if region_filter:
+            found = {
+                code: data
+                for code, data in found.items()
+                if str(data.get("countryCode") or "").upper() == region_filter
+            }
 
         #filter out attributes from subdivision object, if applicable
         if filter_attribute:
@@ -762,12 +868,18 @@ class Subdivisions():
                 filter_list = list(valid_attrs)
             #raise error if invalid attribute input
             elif not all(attr in valid_attrs for attr in filter_list):
-                raise ValueError(f"Invalid attribute(s) in filter_attribute: {filter_list}")
+                bad_attrs = [attr for attr in filter_list if attr not in valid_attrs]
+                suggestions = []
+                for attr in bad_attrs:
+                    suggestions.extend(self._suggest_attribute_keys(attr, sorted(valid_attrs)))
+                hint = f" Did you mean: {', '.join(sorted(set(suggestions)))}?" if suggestions else ""
+                raise InvalidAttributeError(f"Invalid attribute(s) in filter_attribute: {filter_list}.{hint}")
             #iterate over search results, filtering out the non-required attributes & keeping the main default attributes
             for code in list(found.keys()):
                 match_score = found[code].get("matchScore")
                 country_code = found[code].get("countryCode")
                 filtered = {k: v for k, v in found[code].items() if k in filter_list}
+                filtered["code"] = code
                 filtered["subdivisionCode"] = code
                 filtered["countryCode"] = country_code
                 if not exclude_match_score and match_score is not None:
@@ -803,6 +915,93 @@ class Subdivisions():
 
             return final_results
 
+    def reverse_lookup(
+        self,
+        latitude: float,
+        longitude: float,
+        radius_km: float = 50.0,
+        max_results: int = 10,
+        filter_attribute: str = "",
+        region: str = "",
+    ) -> List[Dict[str, Any]]:
+        """
+        Find the nearest subdivision(s) to the supplied coordinates.
+
+        Parameters
+        ==========
+        :latitude: float
+            Latitude in decimal degrees.
+        :longitude: float
+            Longitude in decimal degrees.
+        :radius_km: float (default=50.0)
+            Maximum distance in kilometers to include in the results.
+        :max_results: int (default=10)
+            Maximum number of results to return.
+        :filter_attribute: str (default="")
+            Comma-separated set of attributes to keep in each output object.
+        :region: str (default="")
+            Region/country filter. Accepts alpha-2, alpha-3, numeric or country name.
+        """
+        if not isinstance(latitude, (int, float)) or not isinstance(longitude, (int, float)):
+            raise InvalidSearchInput("Latitude and longitude must be numeric values.")
+        if radius_km <= 0:
+            raise InvalidSearchInput("radius_km must be greater than 0.")
+        if max_results <= 0:
+            raise InvalidSearchInput("max_results must be greater than 0.")
+
+        region_filter = ""
+        if region:
+            region_filter = self._resolve_region_filter(region)
+
+        valid_attrs = {"name", "localOtherName", "type", "parentCode", "flag", "latLng", "history"}
+        filter_list: List[str] = []
+        if filter_attribute:
+            filter_list = filter_attribute.replace(" ", "").split(",")
+            if "*" in filter_list:
+                filter_list = list(valid_attrs)
+            elif not all(attr in valid_attrs for attr in filter_list):
+                bad_attrs = [attr for attr in filter_list if attr not in valid_attrs]
+                suggestions = []
+                for attr in bad_attrs:
+                    suggestions.extend(self._suggest_attribute_keys(attr, sorted(valid_attrs)))
+                hint = f" Did you mean: {', '.join(sorted(set(suggestions)))}?" if suggestions else ""
+                raise InvalidAttributeError(f"Invalid attribute(s) in filter_attribute: {filter_list}.{hint}")
+
+        results: List[Dict[str, Any]] = []
+        for alpha2, country_data in self.all.items():
+            if region_filter and alpha2 != region_filter:
+                continue
+            for code, subdivision in country_data.items():
+                lat_lng = subdivision.get("latLng")
+                if not lat_lng or not isinstance(lat_lng, list) or len(lat_lng) != 2:
+                    continue
+                try:
+                    sub_lat = float(lat_lng[0])
+                    sub_lng = float(lat_lng[1])
+                except (TypeError, ValueError):
+                    continue
+
+                distance_km = self._haversine_km(float(latitude), float(longitude), sub_lat, sub_lng)
+                if distance_km <= radius_km:
+                    entry: Dict[str, Any] = {
+                        "countryCode": alpha2,
+                        "subdivisionCode": code,
+                        "code": code,
+                        "distanceKm": round(distance_km, 3),
+                        **subdivision,
+                    }
+                    if filter_list:
+                        filtered = {k: v for k, v in entry.items() if k in filter_list}
+                        filtered["countryCode"] = alpha2
+                        filtered["subdivisionCode"] = code
+                        filtered["code"] = code
+                        filtered["distanceKm"] = round(distance_km, 3)
+                        entry = filtered
+                    results.append(entry)
+
+        results.sort(key=lambda x: x.get("distanceKm", float("inf")))
+        return results[:max_results]
+
     @staticmethod
     def convert_to_alpha2(alpha_code: str) -> str:
         """ 
@@ -831,11 +1030,11 @@ class Subdivisions():
         """
         #raise error if invalid type input
         if not (isinstance(alpha_code, str)):
-            raise TypeError(f"Expected input alpha code to be a string, got {type(alpha_code)}.")
+            raise InvalidCountryCode(f"Expected input alpha code to be a string, got {type(alpha_code)}.")
 
         #raise error if more than 1 country code input
         if ("," in alpha_code):
-            raise ValueError(f"Only one country code should be input into the function: {alpha_code}.")
+            raise InvalidCountryCode(f"Only one country code should be input into the function: {alpha_code}.")
         
         #uppercase alpha code, remove leading/trailing whitespace
         alpha_code = alpha_code.upper().strip()
@@ -856,9 +1055,11 @@ class Subdivisions():
                 return countries.get(alpha_3=alpha_code).alpha_2
         
         #return error by default if input country code invalid and can't be converted into alpha-2
-        raise ValueError(f"Invalid ISO 3166-1 country code input {alpha_code}.")
+        suggestions = Subdivisions._suggest_country_codes(alpha_code)
+        hint = f" Did you mean: {', '.join(suggestions)}?" if suggestions else ""
+        raise InvalidCountryCode(f"Invalid ISO 3166-1 country code input {alpha_code}.{hint}")
 
-    def __getitem__(self, alpha_code: str) -> dict:
+    def __getitem__(self, alpha_code: str) -> Union['Subdivision', 'CountrySubdivisions', Dict[str, 'CountrySubdivisions']]:
         """
         Return all of a country's subdivision data by making the class subscriptable via
         its ISO 3166-1 alpha-2, alpha-3 or numeric country codes, or directly via a 
@@ -924,7 +1125,7 @@ class Subdivisions():
         """
         #raise type error if input isn't a string
         if not (isinstance(alpha_code, str)):
-            raise TypeError(f"Input parameter {alpha_code} is not of correct datatype string, got {type(alpha_code)}.")       
+            raise InvalidCountryCode(f"Input parameter {alpha_code} is not of correct datatype string, got {type(alpha_code)}.")
 
         #check if input is a subdivision code (contains hyphen and matches pattern XX-YYY)
         if '-' in alpha_code and ',' not in alpha_code:
@@ -935,17 +1136,23 @@ class Subdivisions():
             #validate country code exists
             try:
                 country_code = self.convert_to_alpha2(country_code)
-            except ValueError:
-                raise ValueError(f"Invalid subdivision code format: {alpha_code}. Country code portion '{country_code}' is not valid.")
+            except InvalidCountryCode:
+                raise InvalidSubdivisionCode(
+                    f"Invalid subdivision code format: {alpha_code}. Country code portion '{country_code}' is not valid."
+                )
             
             #check if country data is available
             if country_code not in list(self.all.keys()):
-                raise ValueError(f"Valid alpha-2 code input {country_code}, but country data not available as country code parameter was input on class instantiation,"
-                                 " try creating another instance of the class with no initial input parameter value, e.g iso = Subdivisions().")
+                raise InvalidCountryCode(
+                    f"Valid alpha-2 code input {country_code}, but country data not available as country code parameter was input on class instantiation,"
+                    " try creating another instance of the class with no initial input parameter value, e.g iso = Subdivisions()."
+                )
             
             #check if subdivision code exists for this country
             if subdivision_code not in self.all[country_code]:
-                raise ValueError(f"Subdivision code '{subdivision_code}' not found for country {country_code}.")
+                suggestions = self._suggest_subdivision_codes(country_code, subdivision_code)
+                hint = f" Did you mean: {', '.join(suggestions)}?" if suggestions else ""
+                raise SubdivisionNotFound(f"Subdivision code '{subdivision_code}' not found for country {country_code}.{hint}")
             
             #return the specific subdivision as a Subdivision dataclass object
             subdivision_data = self.all[country_code][subdivision_code]
@@ -974,8 +1181,10 @@ class Subdivisions():
 
             #raise error if country data not imported on object instantiation 
             if not (alpha_code[code] in list(self.all.keys())):
-                raise ValueError(f"Valid alpha-2 code input {alpha_code[code]}, but country data not available as country code parameter was input on class instantiation,"
-                                 " try creating another instance of the class with no initial input parameter value, e.g iso = Subdivisions().")
+                raise InvalidCountryCode(
+                    f"Valid alpha-2 code input {alpha_code[code]}, but country data not available as country code parameter was input on class instantiation,"
+                    " try creating another instance of the class with no initial input parameter value, e.g iso = Subdivisions()."
+                )
                 
             #add subdivision specific data to output object 
             country[alpha_code[code]] = self.all[alpha_code[code]]
@@ -1001,15 +1210,22 @@ class Subdivisions():
         # else:
         #     return country
     
-    def check_for_updates(self):
+    def check_for_updates(self, apply: bool = False) -> None:
         """ 
         Pull the latest version of the object from the repo, comparing it with the current 
         version of the object installed in the software. If new updates/changes are found
         output them and a message encouraging the user to download latest version.
 
+        When apply=True and updates are found the latest iso3166-2.json is written directly
+        to the local module directory, hot-patching the in-memory data without requiring a
+        full package reinstall. This is particularly useful for long-running server processes.
+
         Parameters
         ==========
-        None
+        :apply: bool (default=False)
+            when True and updates are found, overwrite the local iso3166-2.json with the
+            latest version from the repository so that the in-memory data is updated
+            immediately without requiring ``pip install iso3166-2 --upgrade``.
 
         Returns
         =======
@@ -1022,7 +1238,7 @@ class Subdivisions():
         """
         #pull latest data object from repo using requests library
         try:
-            response = requests.get("https://raw.githubusercontent.com/amckenna41/iso3166-2/main/iso3166_2/iso3166-2.json")
+            response = requests.get("https://raw.githubusercontent.com/amckenna41/iso3166-2/main/iso3166_2/iso3166-2.json", timeout=10)
             response.raise_for_status()
             latest_iso3166_2_json = response.json()
         except requests.exceptions.RequestException as e:
@@ -1072,11 +1288,22 @@ class Subdivisions():
                 country_name = countries.get(alpha_2=code).name
                 print(f"{country_name} ({code}):")
                 pprint.pprint(updates, compact=True)
+
+            #if apply=True, write the latest json directly to disk and reload into memory
+            if apply:
+                try:
+                    with open(self.iso3166_2_module_path, 'w', encoding='utf-8') as f:
+                        json.dump(latest_iso3166_2_json, f, ensure_ascii=False, indent=4)
+                    self.all = latest_iso3166_2_json
+                    print("\nLatest iso3166-2 data applied successfully. In-memory data has been updated.")
+                except OSError as e:
+                    print(f"\nFailed to write updated data to {self.iso3166_2_module_path}: {e}")
+                    print("Run 'pip install iso3166-2 --upgrade' to apply the update manually.")
         #no updates found
         else:
             print("No new updates found for iso3166-2.")
     
-    def remove_attributes(self, attributes_to_remove: list[str], overwrite_data: bool = False) -> None:
+    def remove_attributes(self, attributes_to_remove: List[str], overwrite_data: bool = False) -> None:
         """
         Remove any non-standard ISO 3166-2 attributes from the subdivision dataset, that you don't need.
         For example, for your project you only need the subdivision name, type and flag, removing the
@@ -1107,7 +1334,11 @@ class Subdivisions():
         valid_attributes = {"name", "localOtherName", "type", "parentCode", "flag", "latLng", "history"}
         for attribute in attributes_to_remove:
             if attribute not in valid_attributes:
-                raise ValueError(f"Invalid attribute to remove: {attribute}. Valid attributes are: {valid_attributes}.")
+                suggestions = self._suggest_attribute_keys(attribute, sorted(valid_attributes))
+                hint = f" Did you mean: {', '.join(suggestions)}?" if suggestions else ""
+                raise InvalidAttributeError(
+                    f"Invalid attribute to remove: {attribute}. Valid attributes are: {valid_attributes}.{hint}"
+                )
 
         #iterate over all countries and their subdivisions, removing the inputted attributes from each subdivision object
         for alpha_code, subdivisions in self.all.items():
@@ -1135,12 +1366,114 @@ class Subdivisions():
     def __len__(self) -> int:
         """ Return total number of ISO 3166-2 subdivisions. """
         return sum(len(subdivisions) for subdivisions in self.all.values())
-    
-    def __sizeof__(self):
+
+    def __iter__(self) -> Iterator[str]:
+        """ Iterate over the country alpha-2 codes present in the object. """
+        return iter(self.all)
+
+    def __contains__(self, item: str) -> bool:
+        """
+        Check membership for a country alpha-2 code or a subdivision code (e.g. 'CA-AB').
+
+        Parameters
+        ==========
+        :item: str
+            ISO 3166-1 alpha-2 country code (e.g. 'CA') or ISO 3166-2 subdivision code
+            (e.g. 'CA-AB').
+
+        Returns
+        =======
+        :bool:
+            True if the code exists in the object, False otherwise.
+        """
+        if item in self.all:
+            return True
+        if '-' in item:
+            country_code = item.split('-', 1)[0]
+            return country_code in self.all and item in self.all[country_code]
+        return False
+
+    def __sizeof__(self) -> float:
         """ Return size of instance of Subdivisions class/iso3166-2 object. """
         size_in_bytes = os.path.getsize(self.iso3166_2_module_path)  
         size_in_mb = size_in_bytes / (1024 * 1024) 
         return round(size_in_mb, 3)
+
+    @staticmethod
+    def _suggest_country_codes(query: str, max_results: int = 3) -> List[str]:
+        country_codes = [country.alpha_2 for country in countries]
+        country_codes.extend([country.alpha_3 for country in countries if hasattr(country, "alpha_3")])
+        country_codes.extend([country.numeric for country in countries if hasattr(country, "numeric")])
+        normalized = query.upper().strip()
+        return difflib.get_close_matches(normalized, country_codes, n=max_results, cutoff=0.5)
+
+    @staticmethod
+    def _suggest_attribute_keys(query: str, candidates: List[str], max_results: int = 3) -> List[str]:
+        return difflib.get_close_matches(query.strip(), candidates, n=max_results, cutoff=0.5)
+
+    def _suggest_subdivision_codes(self, alpha2: str, query: str, max_results: int = 3) -> List[str]:
+        candidates = list(self.all.get(alpha2, {}).keys())
+        return difflib.get_close_matches(query.strip().upper(), candidates, n=max_results, cutoff=0.5)
+
+    def _resolve_region_filter(self, region: str) -> str:
+        region_clean = region.strip()
+        try:
+            return self.convert_to_alpha2(region_clean)
+        except InvalidCountryCode:
+            names_to_alpha2 = {
+                country.name.lower(): country.alpha_2
+                for country in countries
+                if hasattr(country, "name")
+            }
+            found = names_to_alpha2.get(region_clean.lower())
+            if found:
+                return found
+
+            suggestions = difflib.get_close_matches(region_clean.lower(), list(names_to_alpha2.keys()), n=3, cutoff=0.6)
+            if suggestions:
+                suggestion_codes = [names_to_alpha2[s] for s in suggestions]
+                raise InvalidCountryCode(
+                    f"Invalid region/country filter '{region}'. Did you mean: {', '.join(suggestion_codes)}?"
+                )
+            raise InvalidCountryCode(f"Invalid region/country filter '{region}'.")
+
+    @staticmethod
+    def _score_relevance(term: str, candidate: str) -> int:
+        if not term or not candidate:
+            return 0
+
+        # Preserve exact-match semantics used by existing tests and API behavior.
+        if term == candidate:
+            return 100
+
+        ratio_score = fuzz.ratio(term, candidate)
+        token_score = fuzz.token_set_ratio(term, candidate)
+        partial_score = fuzz.partial_ratio(term, candidate)
+
+        term_tokens = [t for t in term.split() if t]
+        if not term_tokens:
+            coverage = 0.0
+        else:
+            matched_tokens = sum(1 for token in term_tokens if token in candidate)
+            coverage = matched_tokens / len(term_tokens)
+
+        weighted = (0.40 * ratio_score) + (0.35 * token_score) + (0.20 * partial_score) + (0.05 * coverage * 100)
+        return int(round(weighted))
+
+    @staticmethod
+    def _haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+        # Earth radius in kilometers.
+        radius_km = 6371.0088
+        dlat = math.radians(lat2 - lat1)
+        dlon = math.radians(lon2 - lon1)
+        a = (
+            math.sin(dlat / 2.0) ** 2
+            + math.cos(math.radians(lat1))
+            * math.cos(math.radians(lat2))
+            * math.sin(dlon / 2.0) ** 2
+        )
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+        return radius_km * c
     
 @dataclass
 class Subdivision:
@@ -1171,12 +1504,12 @@ class Subdivision:
     """
     code: str
     name: str
-    localOtherName: str | None = None
-    type: str | None = None
-    parentCode: str | None = None
-    latLng: list[float] | None = None
-    flag: str | None = None
-    history: str | None = None
+    localOtherName: Optional[str] = None
+    type: Optional[str] = None
+    parentCode: Optional[str] = None
+    latLng: Optional[List[float]] = None
+    flag: Optional[str] = None
+    history: Optional[str] = None
 
     def __repr__(self) -> str:
         return (f"Subdivision(code='{self.code}', name='{self.name}', localOtherName={self.localOtherName}, "
@@ -1215,7 +1548,7 @@ class Map(dict):
     ==========
     [1]: https://stackoverflow.com/questions/2352181/how-to-use-a-dot-to-access-members-of-dictionary
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super(Map, self).__init__(*args, **kwargs)
         for arg in args:
             if isinstance(arg, dict):
@@ -1225,20 +1558,20 @@ class Map(dict):
             for k, v in kwargs.items():
                 self[k] = v
 
-    def __getattr__(self, attr):
+    def __getattr__(self, attr: str) -> Any:
         return self.get(attr)
 
-    def __setattr__(self, key, value):
+    def __setattr__(self, key: str, value: Any) -> None:
         self.__setitem__(key, value)
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key: str, value: Any) -> None:
         super(Map, self).__setitem__(key, value)
         self.__dict__.update({key: value})
 
-    def __delattr__(self, item):
+    def __delattr__(self, item: str) -> None:
         self.__delitem__(item)
 
-    def __delitem__(self, key):
+    def __delitem__(self, key: str) -> None:
         super(Map, self).__delitem__(key)
         del self.__dict__[key]
         
@@ -1247,15 +1580,15 @@ class CountrySubdivisions(Map):
     Auxiliary class for the subscriptable subdivision data via the Map class,
     allowing the subdivision_codes() and subdivision_names() functions to be called.
    ."""
-    def __init__(self, parent: "Subdivisions", alpha2: str, data: dict):
+    def __init__(self, parent: "Subdivisions", alpha2: str, data: Dict[str, Any]) -> None:
         super().__init__(data)
         object.__setattr__(self, "_parent", parent)
         object.__setattr__(self, "_alpha2", alpha2)
 
-    def subdivision_codes(self) -> list[str]:
+    def subdivision_codes(self) -> List[str]:
         #call the function of the parent via the country's alpha-2
         return self._parent.subdivision_codes(self._alpha2)
 
-    def subdivision_names(self) -> list[str]:
+    def subdivision_names(self) -> List[str]:
         #call the function of the parent via the country's alpha-2
         return self._parent.subdivision_names(self._alpha2)

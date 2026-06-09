@@ -41,7 +41,7 @@ There are three main query string parameters that can be passed through several 
 inputted search terms have to match to the subdivision data in the subdivision code, name and local/other name attributes. This can be used with the `/api/search` and `/api_country_name` endpoints. Having a higher value should return more exact and less total matches and 
 having a lower value will return less exact but more total matches, e.g ``/api/search/Paris?likeness=50``, 
 ``/api/country_name/Tajikist?likeness=90`` (default=100).
-* **filterAttributes** - this is a list of the default supported attributes that you want to include in the output. By default all attributes will be returned but this parameter is useful if you only require a subset of attributes, e.g `api/alpha/DEU?filter=latLng,flag`, `api/subdivision/PL-02?filter=localOtherName`.
+* **filter** - this is a list of the default supported attributes that you want to include in the output. By default all attributes will be returned but this parameter is useful if you only require a subset of attributes, e.g `api/alpha/DEU?filter=latLng,flag`, `api/subdivision/PL-02?filter=localOtherName`. This parameter works on all endpoints including `/api/all`.
 * **excludeMatchScore** - this allows you to exclude the matchScore attribute from the search results when using the `/api/search endpoint`. The match score is the % of a match each returned subdivision data object is to the search terms, with 100% being an exact match. By default the match score is returned for each object, e.g `/api/search/Bucharest?excludeMatchScore=1`, ``/api/search/Oregon?excludeMatchScore=1`` (default=0).
 
 > A demo of the software and API is available [here][demo].
@@ -368,7 +368,7 @@ let params = {"likeness": "90"} //pass a likeness score of 90 to the request
 
 function getData() {
   const response = 
-    await fetch(`https://iso3166-updates.com/api/search/${input_subdivision_name}`, params); 
+    await fetch(`https://iso3166-2-api.vercel.app/api/search/${input_subdivision_name}`, params); 
   const data = await response.json()
 }
 
@@ -440,7 +440,7 @@ let input_name = "Tajikistan"; //Seychelles, Uganda
 
 function getData() {
   const response = 
-    await fetch(`https://iso3166-updates.com/api/country_name/${input_name}`); 
+    await fetch(`https://iso3166-2-api.vercel.app/api/country_name/${input_name}`); 
   const data = await response.json()
 }
 
@@ -494,8 +494,8 @@ all_request.json()
 ```javascript
 function getData() {
   const response = 
-    await fetch(`https://iso3166-updates.com/api/list_subdivisions`); 
-    // await fetch(`https://iso3166-updates.com/api/list_subdivisions/LK`); 
+    await fetch(`https://iso3166-2-api.vercel.app/api/list_subdivisions`); 
+    // await fetch(`https://iso3166-2-api.vercel.app/api/list_subdivisions/LK`); 
   const data = await response.json()
 }
 

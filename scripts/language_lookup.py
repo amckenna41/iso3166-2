@@ -699,7 +699,7 @@ class LanguageLookup:
 
         #use requests library to get language code page data
         iso_639_2_url = "https://www.loc.gov/standards/iso639-2/php/langcodes-search.php"
-        response = requests.get(iso_639_2_url, headers={"User-Agent": user_agent_header})
+        response = requests.get(iso_639_2_url, headers={"User-Agent": user_agent_header}, timeout=10)
 
         #scrape language code url using bs4
         soup = BeautifulSoup(response.text, 'html.parser')

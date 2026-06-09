@@ -190,6 +190,20 @@ class Geo:
         # Load or initialize cache
         self.geo_cache = self._load_cache()
 
+    def _ensure_geo_cache_schema(self) -> None:
+        """Ensure geo_cache has expected columns and dtypes."""
+        if self.geo_cache is None:
+            return
+
+        expected_columns = ['subdivisionCode', 'latLng', 'boundingBox', 'geojson', 'perimeter', 'neighbours']
+        for column in expected_columns:
+            if column not in self.geo_cache.columns:
+                self.geo_cache[column] = None
+
+        for column in ['latLng', 'boundingBox', 'geojson', 'neighbours']:
+            if self.geo_cache[column].dtype != object:
+                self.geo_cache[column] = self.geo_cache[column].astype('object')
+
     def get_lat_lng(self, country_code: Optional[str] = None, verbose: bool = False, export: bool = True) -> Dict[str, str]:
         """
         Get latLng for each ISO 3166-2 subdivision in the country or countries. Checks cache first, then fetches from 
@@ -309,11 +323,9 @@ class Geo:
                     # Update cache in memory
                     if self.geo_cache is None or self.geo_cache.empty:
                         self.geo_cache = pd.DataFrame(columns=['subdivisionCode', 'latLng', 'boundingBox', 'geojson', 'perimeter', 'neighbours'])
+                        self._ensure_geo_cache_schema()
                     else:
-                        if 'neighbours' not in self.geo_cache.columns:
-                            self.geo_cache['neighbours'] = None
-                        if 'geojson' in self.geo_cache.columns and self.geo_cache['geojson'].dtype != object:
-                            self.geo_cache['geojson'] = self.geo_cache['geojson'].astype('object')
+                        self._ensure_geo_cache_schema()
                     
                     # Update or append to cache DataFrame
                     if subdivision_code in self.geo_cache['subdivisionCode'].values:
@@ -598,10 +610,6 @@ class Geo:
         geojsons = {}
         newly_fetched_codes = set()
         
-        # Initialize geojsons dict with all subdivision codes (set to empty dict initially)
-        for subdivision_code in subdivision_codes:
-            geojsons[subdivision_code] = {}
-        
         # Iterate over subdivision codes, checking cache and fetching as needed
         for subdivision_code in subdivision_codes:
             geojson_data = None
@@ -635,11 +643,9 @@ class Geo:
                     # Update cache in memory
                     if self.geo_cache is None or self.geo_cache.empty:
                         self.geo_cache = pd.DataFrame(columns=['subdivisionCode', 'latLng', 'boundingBox', 'geojson', 'perimeter', 'neighbours'])
+                        self._ensure_geo_cache_schema()
                     else:
-                        if 'neighbours' not in self.geo_cache.columns:
-                            self.geo_cache['neighbours'] = None
-                        if 'geojson' in self.geo_cache.columns and self.geo_cache['geojson'].dtype != object:
-                            self.geo_cache['geojson'] = self.geo_cache['geojson'].astype('object')
+                        self._ensure_geo_cache_schema()
                     
                     # Serialize geojson to JSON string for storage
                     geojson_json = json.dumps(geojson_data)
@@ -1510,17 +1516,10 @@ class Geo:
             # Read CSV with subdivisionCode as string to preserve leading zeros
             cache = pd.read_csv(self.geo_cache_path, dtype={'subdivisionCode': str})
 
-            # Ensure expected columns exist and use object dtype for JSON/string columns
-            expected_columns = ['subdivisionCode', 'latLng', 'boundingBox', 'geojson', 'perimeter', 'neighbours']
-            for column in expected_columns:
-                if column not in cache.columns:
-                    cache[column] = None
+            self.geo_cache = cache
+            self._ensure_geo_cache_schema()
 
-            for column in ['latLng', 'boundingBox', 'geojson', 'neighbours']:
-                if column in cache.columns and cache[column].dtype != object:
-                    cache[column] = cache[column].astype('object')
-
-            return cache
+            return self.geo_cache
         except Exception as e:
             print(f"Error reading geo_cache CSV from {self.geo_cache_path}: {e}. Geo cache set to None.")
             return None

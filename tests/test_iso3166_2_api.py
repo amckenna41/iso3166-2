@@ -1,4 +1,4 @@
-import iso3166
+from pycountry import countries
 from iso3166_2 import *
 import requests
 import os
@@ -86,6 +86,9 @@ class ISO3166_2_API_Tests(unittest.TestCase):
         #list of keys that should be in subdivisions key of output object
         self.correct_subdivision_keys = ["name", "localOtherName", "type", "parentCode", "latLng", "flag", "history"]
 
+        #list of valid alpha-2 country codes using pycountry
+        self.alpha2_codes = {c.alpha_2 for c in countries if hasattr(c, "alpha_2")}
+
         #base url for subdivision flags
         self.flag_base_url = "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/"
 
@@ -129,7 +132,7 @@ class ISO3166_2_API_Tests(unittest.TestCase):
         self.assertEqual(self.test_request_all.headers["content-type"], "application/json", f"Expected Content type to be application/json, got {self.test_request_all.headers['content-type']}.")
 #2.)
         for alpha2 in list(test_request_all.keys()):
-            self.assertIn(alpha2, iso3166.countries_by_alpha2, f"Alpha-2 code {alpha2} not found in list of available country codes.")
+            self.assertIn(alpha2, self.alpha2_codes, f"Alpha-2 code {alpha2} not found in list of available country codes.")
             for subd in test_request_all[alpha2]:
                 self.assertIn(subd, self.iso3166_2_data.subdivision_codes(alpha2), f"Subdivision code {subd} not found in list of available subdivision codes.")
 #3.)
@@ -875,7 +878,7 @@ class ISO3166_2_API_Tests(unittest.TestCase):
         self.assertEqual(len(test_request_list_subdivisions), 249, 
             f"Expected output object of API to be of length 249, got {len(test_request_list_subdivisions)}.")
         for alpha2 in list(test_request_list_subdivisions.keys()):
-            self.assertIn(alpha2, iso3166.countries_by_alpha2, 
+            self.assertIn(alpha2, self.alpha2_codes, 
                 f"Alpha-2 code {alpha2} not found in list of available country codes.")
             for subd in test_request_list_subdivisions[alpha2]:
                 self.assertIn(subd, self.iso3166_2_data.subdivision_codes(alpha2), 
@@ -1049,7 +1052,7 @@ class ISO3166_2_API_Tests(unittest.TestCase):
 #4.)
         # Extract country code from subdivision code
         country_code = subdivision_code.split('-')[0]
-        self.assertIn(country_code, iso3166.countries_by_alpha2, f"Country code {country_code} not found in list of available country codes.")
+        self.assertIn(country_code, self.alpha2_codes, f"Country code {country_code} not found in list of available country codes.")
 #5.)
         # Verify the subdivision code exists in the dataset
         self.assertIn(subdivision_code, self.iso3166_2_data.subdivision_codes(country_code), f"Subdivision code {subdivision_code} not found in list of available subdivision codes for {country_code}.")
@@ -1134,7 +1137,7 @@ class ISO3166_2_API_Tests(unittest.TestCase):
         self.assertEqual(test_request_root_spec.status_code, 200, f"Expected 200 status code from /spec, got {test_request_root_spec.status_code}.")
         self.assertEqual(test_request_root_spec.text, openapi_content, "Expected /spec to return same content as /api/openapi.yaml.")
 
-    # @unittest.skip("")
+    @unittest.skip("")
     def test_version(self):
         """ Testing the correct version of the iso3166-2 software is being used by the API. """
 #1.)

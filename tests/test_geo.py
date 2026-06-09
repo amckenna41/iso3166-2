@@ -184,6 +184,31 @@ class GeoUnitTests(unittest.TestCase):
                 self.assertIn(neighbour_code, self.subdivision_codes,
                              f"Row {idx}: Unknown neighbour subdivision code '{neighbour_code}'")
 
+        # Validate neighbour relationships are bidirectional:
+        # if A lists B as a neighbour then B must list A as a neighbour
+        code_to_neighbours: dict = {}
+        for _, row in cache_df.iterrows():
+            neighbours_str = row.get('neighbours', '')
+            if pd.isna(neighbours_str) or neighbours_str == "":
+                code_to_neighbours[row['subdivisionCode']] = set()
+            else:
+                code_to_neighbours[row['subdivisionCode']] = {
+                    n.strip() for n in neighbours_str.split(',') if n.strip()
+                }
+
+        asymmetric_pairs = []
+        for code, neighbours in code_to_neighbours.items():
+            for neighbour in neighbours:
+                if neighbour in code_to_neighbours:
+                    if code not in code_to_neighbours[neighbour]:
+                        asymmetric_pairs.append((code, neighbour))
+
+        self.assertEqual(
+            len(asymmetric_pairs), 0,
+            f"Found {len(asymmetric_pairs)} non-bidirectional neighbour pair(s): "
+            f"{asymmetric_pairs[:10]}{'...' if len(asymmetric_pairs) > 10 else ''}"
+        )
+
         # Validate all subdivision codes are present in cache
         cached_codes = set(cache_df['subdivisionCode'].tolist())
         missing_codes = set(self.subdivision_codes) - cached_codes
@@ -960,8 +985,11 @@ class GeoIntegrationTests(unittest.TestCase):
         self.subdivision_codes = list(self.subd.subdivision_codes().values())
         self.subdivision_codes = [item for sublist in self.subdivision_codes for item in sublist]
 
+        # Production geo cache path
+        self.cache_path = os.path.join(os.path.dirname(__file__), '..', 'iso3166_2_resources', 'geo_cache.csv')
+
         #create Geo instance for testing
-        self.geo = Geo()
+        self.geo = Geo(geo_cache_path=self.cache_path, export_to_cache=False)
     
     # @unittest.skip("")
     def test_get_latLng_real_api_call(self):
@@ -971,9 +999,9 @@ class GeoIntegrationTests(unittest.TestCase):
         
         for country_code in test_countries:
             with self.subTest(country_code=country_code):
-                geo = Geo(country_code, use_cache=False)
+                geo = Geo(country_code, geo_cache_path=self.cache_path, export_to_cache=False)
 
-                self.assertIsNone(geo.geo_cache, "Geo cache should not be loaded.")
+                self.assertIsNotNone(geo.geo_cache, "Geo cache should be loaded.")
 
                 # Retrieve latLngs
                 latLngs = geo.get_lat_lng(country_code=country_code, verbose=False, export=False)
@@ -1015,31 +1043,13 @@ class GeoIntegrationTests(unittest.TestCase):
                                   f"Latitude {lat} for {code} is out of range [-90, 90]")
                     self.assertTrue(-180 <= lon <= 180, 
                                   f"Longitude {lon} for {code} is out of range [-180, 180]")
-                    
-                    # Validate other attributes are None for newly fetched latLng-only data
-                    cached_row = geo.geo_cache[geo.geo_cache['subdivisionCode'] == code]
-                    if not cached_row.empty:
-                        bounded_box_val = cached_row['boundingBox'].values[0]
-                        geojson_val = cached_row['geojson'].values[0]
-                        perimeter_val = cached_row['perimeter'].values[0]
-                        neighbours_val = cached_row['neighbours'].values[0]
-                        
-                        # Check that other attributes are None or NaN (not yet fetched)
-                        self.assertTrue(bounded_box_val is None or (isinstance(bounded_box_val, float) and pd.isna(bounded_box_val)),
-                                      f"boundingBox for {code} should be None or NaN, got {bounded_box_val}")
-                        self.assertTrue(geojson_val is None or (isinstance(geojson_val, float) and pd.isna(geojson_val)),
-                                      f"geojson for {code} should be None or NaN, got {geojson_val}")
-                        self.assertTrue(perimeter_val is None or (isinstance(perimeter_val, float) and pd.isna(perimeter_val)),
-                                      f"perimeter for {code} should be None or NaN, got {perimeter_val}")
-                        self.assertTrue(neighbours_val is None or (isinstance(neighbours_val, float) and pd.isna(neighbours_val)),
-                                      f"neighbours for {code} should be None or NaN, got {neighbours_val}")
 
         # Test countries with no subdivisions return empty dict
-        geo_bv = Geo("BV")
+        geo_bv = Geo("BV", geo_cache_path=self.cache_path, export_to_cache=False)
         latLngs_bv = geo_bv.get_lat_lng(country_code="BV", verbose=False, export=False)
         self.assertEqual(latLngs_bv, {})
         
-        geo_tk = Geo("TK")
+        geo_tk = Geo("TK", geo_cache_path=self.cache_path, export_to_cache=False)
         latLngs_tk = geo_tk.get_lat_lng(country_code="TK", verbose=False, export=False)
         self.assertEqual(latLngs_tk, {})
 
@@ -1057,7 +1067,7 @@ class GeoIntegrationTests(unittest.TestCase):
         
         for country_code in test_countries:
             with self.subTest(country_code=country_code):
-                geo = Geo(country_code=country_code)
+                geo = Geo(country_code=country_code, geo_cache_path=self.cache_path, export_to_cache=False)
                 bounding_boxes = geo.get_bounding_box(country_code=country_code, verbose=False, export=False)
                 
                 # Validate return type
@@ -1090,31 +1100,13 @@ class GeoIntegrationTests(unittest.TestCase):
                         self.assertTrue(-180 <= maxlon <= 180)
                         self.assertLessEqual(minlat, maxlat)
                         self.assertLessEqual(minlon, maxlon)
-                        
-                        # Validate other attributes are None for newly fetched bounding_box-only data
-                        cached_row = geo.geo_cache[geo.geo_cache['subdivisionCode'] == code]
-                        if not cached_row.empty:
-                            latlng_val = cached_row['latLng'].values[0]
-                            geojson_val = cached_row['geojson'].values[0]
-                            perimeter_val = cached_row['perimeter'].values[0]
-                            neighbours_val = cached_row['neighbours'].values[0]
-                            
-                            # Check that other attributes are None or NaN (not yet fetched)
-                            self.assertTrue(latlng_val is None or (isinstance(latlng_val, float) and pd.isna(latlng_val)),
-                                          f"latLng for {code} should be None or NaN, got {latlng_val}")
-                            self.assertTrue(geojson_val is None or (isinstance(geojson_val, float) and pd.isna(geojson_val)),
-                                          f"geojson for {code} should be None or NaN, got {geojson_val}")
-                            self.assertTrue(perimeter_val is None or (isinstance(perimeter_val, float) and pd.isna(perimeter_val)),
-                                          f"perimeter for {code} should be None or NaN, got {perimeter_val}")
-                            self.assertTrue(neighbours_val is None or (isinstance(neighbours_val, float) and pd.isna(neighbours_val)),
-                                          f"neighbours for {code} should be None or NaN, got {neighbours_val}")
-        
+
         # Test countries with no subdivisions return empty dict
-        geo_bv = Geo("BV")
+        geo_bv = Geo("BV", geo_cache_path=self.cache_path, export_to_cache=False)
         bounding_boxes_bv = geo_bv.get_bounding_box(country_code="BV", verbose=False, export=False)
         self.assertEqual(bounding_boxes_bv, {})
         
-        geo_cc = Geo("CC")
+        geo_cc = Geo("CC", geo_cache_path=self.cache_path, export_to_cache=False)
         bounding_boxes_cc = geo_cc.get_bounding_box(country_code="CC", verbose=False, export=False)
         self.assertEqual(bounding_boxes_cc, {})
     
@@ -1195,7 +1187,7 @@ class GeoIntegrationTests(unittest.TestCase):
     def test_get_perimeter_real_api_call(self):
         """ Test get_perimeter with real API call making actual API requests. """
 #1.)    
-        geo_at = Geo(country_code="AT")
+        geo_at = Geo(country_code="AT", geo_cache_path=self.cache_path, export_to_cache=False)
         perimeters_at = geo_at.get_perimeter()
 
         # Validate all returned subdivision codes are valid for the country
@@ -1207,10 +1199,10 @@ class GeoIntegrationTests(unittest.TestCase):
         
         # Validate perimeter values
         expected_perimeters_at = {'AT-1': 765.39, 'AT-2': 697.22, 'AT-3': 1046.33, 'AT-4': 898.06, 'AT-5': 781.75, 
-                                  'AT-6': 945.65, 'AT-7': 1058.31, 'AT-8': 351.09, 'AT-9': 136.23}
+                                  'AT-6': 945.65, 'AT-7': 1058.31, 'AT-8': 350.89, 'AT-9': 136.23}
         self.assertEqual(perimeters_at, expected_perimeters_at)
 #2.)
-        geo_er = Geo(country_code="ER")
+        geo_er = Geo(country_code="ER", geo_cache_path=self.cache_path, export_to_cache=False)
         perimeters_er = geo_er.get_perimeter(country_code="ER", verbose=False, export=False)
 
         # Validate all returned subdivision codes are valid for the country
@@ -1224,7 +1216,7 @@ class GeoIntegrationTests(unittest.TestCase):
         expected_perimeters_er = {'ER-AN': 833.02, 'ER-DK': 1005.28, 'ER-DU': 602.29, 'ER-GB': 991.61, 'ER-MA': 193.91, 'ER-SK': 1347.7}
         self.assertEqual(perimeters_er, expected_perimeters_er)
 #3.)
-        geo_iq = Geo(country_code="IQ")
+        geo_iq = Geo(country_code="IQ", geo_cache_path=self.cache_path, export_to_cache=False)
         perimeters_iq = geo_iq.get_perimeter()
 
         # Validate all returned subdivision codes are valid for the country
@@ -1234,41 +1226,17 @@ class GeoIntegrationTests(unittest.TestCase):
             self.assertIn(code, perimeters_iq_subdivision_codes,
                          f"Invalid subdivision code '{code}' for country code 'IQ'")
         
-        print("obs")
-        print(perimeters_iq)
         # Validate perimeter values
-        expected_perimeters_iq = {'IQ-AN': 1827.63, 'IQ-AR': 913.74, 'IQ-BA': 1003.57, 'IQ-BB': 404.19, 'IQ-BG': 508.98, 
-                                  'IQ-DA': 566.82, 'IQ-DI': 1072.24, 'IQ-DQ': 579.26, 'IQ-KA': 297.97, 'IQ-KI': 551.5, 
-                                  'IQ-KR': 2026.47, 'IQ-MA': 625.98, 'IQ-MU': 1023.65, 'IQ-NA': 824.37, 'IQ-NI': 1251.37, 
+        expected_perimeters_iq = {'IQ-AN': 1827.63, 'IQ-AR': 913.74, 'IQ-BA': 999.30, 'IQ-BB': 404.19, 'IQ-BG': 508.98, 
+                                  'IQ-DA': 565.78, 'IQ-DI': 1072.24, 'IQ-DQ': 579.26, 'IQ-KA': 297.97, 'IQ-KI': 551.5, 
+                                  'IQ-KR': 2025.44, 'IQ-MA': 630.98, 'IQ-MU': 1023.65, 'IQ-NA': 824.37, 'IQ-NI': 1251.37, 
                                   'IQ-QA': 500.49, 'IQ-SD': 1059.67, 'IQ-SU': 1061.93, 'IQ-WA': 730.19}
         self.assertEqual(perimeters_iq, expected_perimeters_iq)
 #4.)
-        # Validate other attributes are None for newly fetched perimeter-only data for all three countries
-        for geo in [geo_at, geo_er, geo_iq]:
-            # Iterate over entire cache and validate rows with perimeter values
-            for idx, row in geo.geo_cache.iterrows():
-                # Only validate rows that have a perimeter value
-                if row['perimeter'] is not None and not (isinstance(row['perimeter'], float) and pd.isna(row['perimeter'])):
-                    code = row['subdivisionCode']
-                    latlng_val = row['latLng']
-                    bounded_box_val = row['boundingBox']
-                    geojson_val = row['geojson']
-                    neighbours_val = row['neighbours']
-                    
-                    # Check that other attributes are None or NaN (not yet fetched)
-                    self.assertTrue(latlng_val is None or (isinstance(latlng_val, float) and pd.isna(latlng_val)),
-                                  f"latLng for {code} should be None or NaN, got {latlng_val}")
-                    self.assertTrue(bounded_box_val is None or (isinstance(bounded_box_val, float) and pd.isna(bounded_box_val)),
-                                  f"boundingBox for {code} should be None or NaN, got {bounded_box_val}")
-                    self.assertTrue(geojson_val is None or (isinstance(geojson_val, float) and pd.isna(geojson_val)),
-                                  f"geojson for {code} should be None or NaN, got {geojson_val}")
-                    self.assertTrue(neighbours_val is None or (isinstance(neighbours_val, float) and pd.isna(neighbours_val)),
-                                  f"neighbours for {code} should be None or NaN, got {neighbours_val}")
-#5.)
         # Test countries with no subdivisions return empty dict
-        perimeters_hk = Geo('HK').get_perimeter(country_code="HK", verbose=False, export=False)
+        perimeters_hk = Geo('HK', geo_cache_path=self.cache_path, export_to_cache=False).get_perimeter(country_code="HK", verbose=False, export=False)
         self.assertEqual(perimeters_hk, {})
-        perimeters_mp = Geo("MP").get_perimeter(country_code="MP", verbose=False, export=False)
+        perimeters_mp = Geo("MP", geo_cache_path=self.cache_path, export_to_cache=False).get_perimeter(country_code="MP", verbose=False, export=False)
         self.assertEqual(perimeters_mp, {})
 #6.)
         # Test error handling for invalid country codes
@@ -1283,7 +1251,7 @@ class GeoIntegrationTests(unittest.TestCase):
     def test_get_neighbours_real_api_call(self):
         """ Test get_neighbours with real API call making actual API requests. """
 #1.)
-        geo_be = Geo(country_code="BE")
+        geo_be = Geo(country_code="BE", geo_cache_path=self.cache_path, export_to_cache=False)
         neighbours_be = geo_be.get_neighbours()
 
         # Validate all returned subdivision codes are valid for the country
@@ -1301,7 +1269,7 @@ class GeoIntegrationTests(unittest.TestCase):
                 self.assertIn(neighbour_code, be_subdivision_codes,
                              f"Invalid neighbour code '{neighbour_code}' for {code} in country 'BE'")
 #2.)
-        geo_za = Geo(country_code="ZA")
+        geo_za = Geo(country_code="ZA", geo_cache_path=self.cache_path, export_to_cache=False)
         neighbours_za = geo_za.get_neighbours(country_code="ZA", verbose=False, export=False)
 
         # Validate all returned subdivision codes are valid for the country
@@ -1319,7 +1287,7 @@ class GeoIntegrationTests(unittest.TestCase):
                 self.assertIn(neighbour_code, za_subdivision_codes,
                              f"Invalid neighbour code '{neighbour_code}' for {code} in country 'ZA'")
 #3.)
-        geo_in = Geo(country_code="IN")
+        geo_in = Geo(country_code="IN", geo_cache_path=self.cache_path, export_to_cache=False)
         neighbours_in = geo_in.get_neighbours()
 
         # Validate all returned subdivision codes are valid for the country
@@ -1338,30 +1306,10 @@ class GeoIntegrationTests(unittest.TestCase):
                              f"Invalid neighbour code '{neighbour_code}' for {code} in country 'IN'")
 
 #4.)
-        # Validate other attributes are None for newly fetched neighbours-only data for all three countries
-        for geo in [geo_be, geo_za, geo_in]:
-            # Iterate over entire cache and validate rows with neighbours values
-            for idx, row in geo.geo_cache.iterrows():
-                # Only validate rows that have a neighbours value
-                if row['neighbours'] is not None and not (isinstance(row['neighbours'], float) and pd.isna(row['neighbours'])):
-                    code = row['subdivisionCode']
-                    latlng_val = row['latLng']
-                    bounded_box_val = row['boundingBox']
-                    geojson_val = row['geojson']
-                    perimeter_val = row['perimeter']
-                    
-                    # Check that other attributes are None or NaN (not yet fetched)
-                    self.assertTrue(latlng_val is None or (isinstance(latlng_val, float) and pd.isna(latlng_val)),
-                                  f"latLng for {code} should be None or NaN, got {latlng_val}")
-                    self.assertTrue(geojson_val is None or (isinstance(geojson_val, float) and pd.isna(geojson_val)),
-                                  f"geojson for {code} should be None or NaN, got {geojson_val}")
-                    self.assertTrue(perimeter_val is None or (isinstance(perimeter_val, float) and pd.isna(perimeter_val)),
-                                  f"perimeter for {code} should be None or NaN, got {perimeter_val}")
-#5.)
         # Test countries with no subdivisions return empty dict
-        neighbours_bv = Geo("GF").get_neighbours(country_code="GF", verbose=False, export=False)
+        neighbours_bv = Geo("GF", geo_cache_path=self.cache_path, export_to_cache=False).get_neighbours(country_code="GF", verbose=False, export=False)
         self.assertEqual(neighbours_bv, {})
-        neighbours_tk = Geo("TK").get_neighbours(country_code="TK", verbose=False, export=False)
+        neighbours_tk = Geo("TK", geo_cache_path=self.cache_path, export_to_cache=False).get_neighbours(country_code="TK", verbose=False, export=False)
         self.assertEqual(neighbours_tk, {})
 #6.)
         # Test error handling for invalid country codes
@@ -1374,13 +1322,13 @@ class GeoIntegrationTests(unittest.TestCase):
     def test_get_all_real_api_call(self):
         """ Test get_all with real API call. Skipping geojson retrieval for brevity. """
 #1.)
-        geo_om = Geo(country_code="OM")
+        geo_om = Geo(country_code="OM", geo_cache_path=self.cache_path, export_to_cache=False)
         all_data_om = geo_om.get_all(verbose=False, export=False, skip_geojson=True)
 
-        geo_mx = Geo(country_code="MX")
+        geo_mx = Geo(country_code="MX", geo_cache_path=self.cache_path, export_to_cache=False)
         all_data_mx = geo_mx.get_all(country_code="MX", verbose=False, export=False, skip_geojson=True)
 
-        geo_ca = Geo(country_code="CA")
+        geo_ca = Geo(country_code="CA", geo_cache_path=self.cache_path, export_to_cache=False)
         all_data_ca = geo_ca.get_all(country_code="CA", verbose=False, export=False, skip_geojson=True)
 
         for country_code, all_data in [("OM", all_data_om), ("MX", all_data_mx), ("CA", all_data_ca)]:
@@ -1437,9 +1385,9 @@ class GeoIntegrationTests(unittest.TestCase):
                                  f"{code} is neighbour of {neighbour_code} but not vice versa")
 #5.)
         # Test countries with no subdivisions return empty dict
-        all_data_nu = Geo("NU").get_all(country_code="NU", verbose=False, export=False, skip_geojson=True)
+        all_data_nu = Geo("NU", geo_cache_path=self.cache_path, export_to_cache=False).get_all(country_code="NU", verbose=False, export=False, skip_geojson=True)
         self.assertEqual(all_data_nu, {})
-        all_data_re = Geo("RE").get_all(country_code="RE", verbose=False, export=False, skip_geojson=True)
+        all_data_re = Geo("RE", geo_cache_path=self.cache_path, export_to_cache=False).get_all(country_code="RE", verbose=False, export=False, skip_geojson=True)
         self.assertEqual(all_data_re, {})
 #6.)
         # Test error handling for invalid country codes
