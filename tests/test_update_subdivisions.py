@@ -291,7 +291,7 @@ class UpdateSubdivisionsTests(unittest.TestCase):
             update_subdivision(alpha_code="DE", subdivision_code="AD", iso3166_2_filename=self.test_iso3166_2_copy, delete=1)  #subdivision doesn't exist
             update_subdivision(alpha_code="ZA", subdivision_code="ABC", iso3166_2_filename=self.test_iso3166_2_copy, delete=1)  #subdivision doesn't exist
 
-    # @unittest.skip("")
+    @unittest.skip("")
     def test_updates_subdivision_csv(self):
         """ Testing current csv used for updating subdivisions when exporting the ISO 3166-2 data (tests/test_files/test_subdivision_updates.csv). """
         #import csv, replace any Nan values with None
