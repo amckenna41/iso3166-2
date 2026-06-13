@@ -1,8 +1,24 @@
+import os
 import requests
 from typing import Optional, Dict, Any, List
+from dotenv import load_dotenv
 
-RESTCOUNTRIES_BASE_URL = "https://restcountries.com/v3.1/"
+load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
+
+RESTCOUNTRIES_BASE_URL = "https://api.restcountries.com/countries/v5/"
+
+# Configurable API key — override this value directly or set RESTCOUNTRIES_API_KEY in scripts/.env
+RESTCOUNTRIES_API_KEY = os.getenv("RESTCOUNTRIES_API_KEY", "")
+
 USER_AGENT_HEADER = {"User-Agent": "iso3166-2-exporter/1.0"}
+
+
+def _build_headers() -> dict:
+    headers = dict(USER_AGENT_HEADER)
+    if RESTCOUNTRIES_API_KEY:
+        headers["rc_live_demo"] = RESTCOUNTRIES_API_KEY
+    return headers
+
 
 def get_rest_countries_country_data(alpha2: str, fields: Optional[List[str]] = None, proxy: Optional[dict] = None) -> Optional[Dict[str, Any]]:
     """
@@ -17,7 +33,7 @@ def get_rest_countries_country_data(alpha2: str, fields: Optional[List[str]] = N
         list of specific fields to return. If None, returns all data.
     :proxy: Optional[dict]
         optional proxy settings for the requests.
-    
+
     Returns
     =======
     :Optional[Dict[str, Any]]
@@ -25,14 +41,13 @@ def get_rest_countries_country_data(alpha2: str, fields: Optional[List[str]] = N
     """
     url = f"{RESTCOUNTRIES_BASE_URL}alpha/{alpha2}"
     try:
-        resp = requests.get(url, headers=USER_AGENT_HEADER, proxies=proxy, timeout=12)
+        resp = requests.get(url, headers=_build_headers(), proxies=proxy, timeout=12)
         resp.raise_for_status()
         data = resp.json()
         if not data or not isinstance(data, list):
             return None
         country = data[0]
         if fields:
-            # Only return requested fields
             return {field: country.get(field) for field in fields}
         return country
     except Exception as e:
@@ -46,7 +61,7 @@ def get_supported_fields() -> List[str]:
     Parameters
     ==========
     None
-    
+
     Returns
     =======
     :List[str]

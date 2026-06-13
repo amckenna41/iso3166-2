@@ -44,7 +44,7 @@ The primary keys/attributes that can be exported by default are <i>name, localNa
 
 <!-- Demographics data including area and population can be exported via the <i>demographics</i> attribute via the [Wikidata][Wikidata] database. -->
 
-The [RestCountries API](https://restcountries.com/) allows for a plethora of additional country-level attributes to be appended to each subdivision, the fields supported are: idd, carSigns, carSide, continents, currencies, languages, postalCode, region, startOfWeek, subregion, timezones and tld. An explanation of each of these attributes can be seen on the [RestCountries](https://gitlab.com/restcountries/restcountries/-/blob/master/FIELDS.md) repo. These can be passed in as a string via the <i>rest_countries_keys</i> parameter. You can also get the city-level data per subdivision via the [CountryStateCityAPI][country-state-city] and setting the <i>state_city_data</i> parameter to True. To execute this you will need to set up an API key with the CountryStateCity API.
+The [RestCountries API](https://api.restcountries.com/countries/v5) allows for a plethora of additional country-level attributes to be appended to each subdivision, the fields supported are: idd, carSigns, carSide, continents, currencies, languages, postalCode, region, startOfWeek, subregion, timezones and tld. An explanation of each of these attributes can be seen on the [RestCountries](https://gitlab.com/restcountries/restcountries/-/blob/master/FIELDS.md) repo. These can be passed in as a string via the <i>rest_countries_keys</i> parameter. You can also get the city-level data per subdivision via the [CountryStateCityAPI][country-state-city] and setting the <i>state_city_data</i> parameter to True. To execute this you will need to set up an API key with the CountryStateCity API.
 
 By default, when running the script, the data will be exported to a <i>JSON</i> and a <i>CSV</i>, but you can also export to <i>XML</i> by setting the <i>export_xml</i> parameter to True.
 
@@ -325,7 +325,7 @@ export_metadata(iso3166_2_filename="iso3166_2/iso3166-2.json", export_filename="
 [Unidecode]: https://pypi.org/project/Unidecode/
 [dicttoxml]: https://pypi.org/project/dicttoxml/
 [pycountry]: https://github.com/flyingcircusio/pycountry
-[rest-countries-api]: https://restcountries.com/
+[rest-countries-api]: https://api.restcountries.com/countries/v5
 [googlemaps]: https://github.com/googlemaps/google-maps-services-python
 [country-state-city]: https://countrystatecity.in/
 [tqdm]: https://github.com/tqdm/tqdm

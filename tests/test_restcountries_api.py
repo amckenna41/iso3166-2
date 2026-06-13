@@ -1,4 +1,4 @@
-from scripts.restcountries_api import get_rest_countries_country_data, get_supported_fields, RESTCOUNTRIES_BASE_URL
+from scripts.restcountries_api import get_rest_countries_country_data, get_supported_fields, RESTCOUNTRIES_BASE_URL, RESTCOUNTRIES_API_KEY
 import unittest
 from unittest.mock import patch, Mock
 import requests
@@ -20,12 +20,12 @@ class RestCountriesAPIUnitTests(unittest.TestCase):
             "idd", "carSigns", "carSide", "continents", "currencies", "languages",
             "postalCode", "region", "startOfWeek", "subregion", "timezones", "tld", "unMember"
         ]
-        
+
         result = get_supported_fields()
         self.assertIsInstance(result, list)
         self.assertEqual(len(result), 13)
         self.assertEqual(result, expected_fields)
-        
+
         # Verify all expected fields are present
         for field in expected_fields:
             self.assertIn(field, result)
@@ -49,6 +49,8 @@ class RestCountriesAPIIntegrationTests(unittest.TestCase):
         testing API call handles timeouts properly.
     test_get_rest_countries_country_data_with_proxy:
         testing API call with proxy settings.
+    test_get_rest_countries_country_data_api_key_header:
+        testing API call sends rc_live_demo auth header.
     """
     @patch('scripts.restcountries_api.requests.get')
     def test_get_rest_countries_country_data_success(self, mock_get):
@@ -64,18 +66,32 @@ class RestCountriesAPIIntegrationTests(unittest.TestCase):
             "languages": {"eng": "English", "gle": "Irish"}
         }]
         mock_get.return_value = mock_response
-        
+
         result = get_rest_countries_country_data("IE")
-        
+
         # Verify request was made correctly
         mock_get.assert_called_once()
         call_args = mock_get.call_args
         self.assertIn(f"{RESTCOUNTRIES_BASE_URL}alpha/IE", call_args[0])
-        
+
         # Verify response
         self.assertIsNotNone(result)
         self.assertEqual(result["cca2"], "IE")
         self.assertEqual(result["region"], "Europe")
+
+    @patch('scripts.restcountries_api.requests.get')
+    def test_get_rest_countries_country_data_api_key_header(self, mock_get):
+        """ Testing API call includes rc_live_demo authentication header. """
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = [{"cca2": "IE", "region": "Europe"}]
+        mock_get.return_value = mock_response
+
+        get_rest_countries_country_data("IE")
+
+        call_kwargs = mock_get.call_args[1]
+        self.assertIn("rc_live_demo", call_kwargs["headers"])
+        self.assertEqual(call_kwargs["headers"]["rc_live_demo"], RESTCOUNTRIES_API_KEY)
 
     @patch('scripts.restcountries_api.requests.get')
     def test_get_rest_countries_country_data_with_fields(self, mock_get):
@@ -91,9 +107,9 @@ class RestCountriesAPIIntegrationTests(unittest.TestCase):
             "languages": {"fra": "French"}
         }]
         mock_get.return_value = mock_response
-        
+
         result = get_rest_countries_country_data("FR", fields=["region", "currencies"])
-        
+
         self.assertIsNotNone(result)
         self.assertIn("region", result)
         self.assertIn("currencies", result)
@@ -108,9 +124,9 @@ class RestCountriesAPIIntegrationTests(unittest.TestCase):
         mock_response.status_code = 404
         mock_response.raise_for_status.side_effect = requests.exceptions.HTTPError("404 Not Found")
         mock_get.return_value = mock_response
-        
+
         result = get_rest_countries_country_data("ZZ")
-        
+
         self.assertIsNone(result)
 
     @patch('builtins.print')
@@ -118,9 +134,9 @@ class RestCountriesAPIIntegrationTests(unittest.TestCase):
     def test_get_rest_countries_country_data_network_error(self, mock_get, mock_print):
         """ Testing API call handles network errors and returns None. """
         mock_get.side_effect = requests.exceptions.ConnectionError("Network error")
-        
+
         result = get_rest_countries_country_data("US")
-        
+
         self.assertIsNone(result)
 
     @patch('builtins.print')
@@ -128,9 +144,9 @@ class RestCountriesAPIIntegrationTests(unittest.TestCase):
     def test_get_rest_countries_country_data_timeout(self, mock_get, mock_print):
         """ Testing API call handles timeout and returns None. """
         mock_get.side_effect = requests.exceptions.Timeout("Request timeout")
-        
+
         result = get_rest_countries_country_data("DE")
-        
+
         self.assertIsNone(result)
 
     @patch('scripts.restcountries_api.requests.get')
@@ -140,10 +156,10 @@ class RestCountriesAPIIntegrationTests(unittest.TestCase):
         mock_response.status_code = 200
         mock_response.json.return_value = [{"cca2": "GB", "name": {"common": "United Kingdom"}}]
         mock_get.return_value = mock_response
-        
+
         proxy_settings = {"http": "http://proxy.example.com:8080"}
         result = get_rest_countries_country_data("GB", proxy=proxy_settings)
-        
+
         # Verify proxy was passed to request
         call_kwargs = mock_get.call_args[1]
         self.assertEqual(call_kwargs["proxies"], proxy_settings)
@@ -156,9 +172,9 @@ class RestCountriesAPIIntegrationTests(unittest.TestCase):
         mock_response.status_code = 200
         mock_response.json.return_value = []
         mock_get.return_value = mock_response
-        
+
         result = get_rest_countries_country_data("XX")
-        
+
         self.assertIsNone(result)
 
     @patch('scripts.restcountries_api.requests.get')
@@ -168,9 +184,9 @@ class RestCountriesAPIIntegrationTests(unittest.TestCase):
         mock_response.status_code = 200
         mock_response.json.return_value = "not a list"
         mock_get.return_value = mock_response
-        
+
         result = get_rest_countries_country_data("CA")
-        
+
         self.assertIsNone(result)
 
 # Run the tests

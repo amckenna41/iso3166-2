@@ -503,7 +503,7 @@ Below are some of my other **custom-built** repositories that relate to the ISO 
 [iso3166]: https://github.com/deactivated/python-iso3166
 [iso3166_2]: https://github.com/amckenna41/iso3166-2
 [pycountry]: https://github.com/flyingcircusio/pycountry
-[rest]: https://restcountries.com/
+[rest]: https://api.restcountries.com/countries/v5
 [googlemaps]: https://github.com/googlemaps/google-maps-services-python
 [tqdm]: https://github.com/tqdm/tqdm
 [natsort]: https://pypi.org/project/natsort/
