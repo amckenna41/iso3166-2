@@ -23,7 +23,7 @@ jobs:
 
     # build distribution package using poetry tool and upload to the test PYPi server via custom github action
     - name: Build and publish to Test PyPI
-      uses: JRubics/poetry-publish@v2.0
+      uses: JRubics/poetry-publish@v2.1
       with:
         pypi_token: ${{ secrets.PYPI_TEST }}
         repository_name: "testpypi"
