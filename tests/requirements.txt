@@ -1,5 +1,5 @@
 #package requirements for testing
-requests>=2.33.0
+requests>=2.34.2
 iso3166-2>=1.8.2
 iso3166-updates>=1.8.8
 tqdm>=4.66.3
