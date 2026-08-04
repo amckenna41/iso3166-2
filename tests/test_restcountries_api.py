@@ -1,4 +1,4 @@
-from scripts.restcountries_api import get_rest_countries_country_data, get_supported_fields, RESTCOUNTRIES_BASE_URL, RESTCOUNTRIES_API_KEY
+from scripts.restcountries_api import get_rest_countries_country_data, get_supported_fields, RESTCOUNTRIES_BASE_URL
 import unittest
 from unittest.mock import patch, Mock
 import requests
@@ -79,9 +79,10 @@ class RestCountriesAPIIntegrationTests(unittest.TestCase):
         self.assertEqual(result["cca2"], "IE")
         self.assertEqual(result["region"], "Europe")
 
+    @patch('scripts.restcountries_api.RESTCOUNTRIES_API_KEY', 'test_api_key')
     @patch('scripts.restcountries_api.requests.get')
     def test_get_rest_countries_country_data_api_key_header(self, mock_get):
-        """ Testing API call includes rc_live_demo authentication header. """
+        """ Testing API call includes rc_live_demo authentication header, when an API key is set. """
         mock_response = Mock()
         mock_response.status_code = 200
         mock_response.json.return_value = [{"cca2": "IE", "region": "Europe"}]
@@ -91,7 +92,7 @@ class RestCountriesAPIIntegrationTests(unittest.TestCase):
 
         call_kwargs = mock_get.call_args[1]
         self.assertIn("rc_live_demo", call_kwargs["headers"])
-        self.assertEqual(call_kwargs["headers"]["rc_live_demo"], RESTCOUNTRIES_API_KEY)
+        self.assertEqual(call_kwargs["headers"]["rc_live_demo"], "test_api_key")
 
     @patch('scripts.restcountries_api.requests.get')
     def test_get_rest_countries_country_data_with_fields(self, mock_get):
