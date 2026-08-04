@@ -38,7 +38,7 @@ iso3166-2 Stats 🔢
 
 Quick Start 🏃
 -------------
-* 🗺️ Front-end map app for the ISO 3166 suite of software is available [here][https://iso3166-flags.vercel.app/].
+* 🗺️ Front-end map app for the ISO 3166 suite of software is available [here](https://iso3166-flags.vercel.app/).
 * 🚀 A <b>demo</b> of the software and API is available [here][demo].
 * 💻 The front-end <b>API</b> is available [here][api].
 * 📚 The **documentation** for the software & API is available [here](https://iso3166-2.readthedocs.io/en/latest/).
