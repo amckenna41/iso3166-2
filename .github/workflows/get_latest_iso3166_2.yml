@@ -188,7 +188,7 @@ jobs:
 
       - name: Create pull request
         if: steps.compare.outputs.changed == 'true'
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           branch: update-iso3166-2-dataset
           title: "Update ISO 3166-2 dataset with latest export"
