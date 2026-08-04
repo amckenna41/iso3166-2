@@ -2,7 +2,7 @@
 requests>=2.33.0
 iso3166-2>=1.8.2
 iso3166-updates>=1.8.8
-tqdm>=4.66.3
+tqdm>=4.70.0
 natsort
 pandas
 numpy
