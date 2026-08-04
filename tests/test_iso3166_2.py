@@ -1,4 +1,5 @@
 from iso3166_2 import *
+from iso3166_2 import __version__
 from pycountry import countries
 import requests
 import re
@@ -299,7 +300,7 @@ class ISO3166_2_Unit_Tests(unittest.TestCase):
                 'parentCode': 'GB-NIR', 
                 'flag': 'https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/GB/GB-ABC.png', 
                 'latLng': [54.3853, -6.4249], 
-                'history': [{'Change': 'Change of subdivision name of GB-ABC, GB-DRS; modification of remark part 2; update list source. (Remark part 2: BS 6879 gives alternative name forms in Welsh (cy) for some of the Welsh unitary authorities (together with alternative code elements). Since this part of ISO 3166 does not allow for duplicate coding of identical subdivisions, such alternative names in Welsh and code elements are shown for information purposes only in square brackets after the English name of the subdivision. BS 6879 has been superseded but remains the original source of the codes. Included for completeness: EAW England and Wales; GBN Great Britain; UKM United Kingdom).', 'Description of Change': None, 'Date Issued': '2019-11-22', 'Source': 'Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:GB.'}, {'Change': 'Deletion of district council areas GB-ANT, GB-ARD, GB-ARM, GB-BLA, GB-BLY, GB-BNB, GB-CKF, GB-CSR, GB-CLR, GB-CKT, GB-CGV, GB-DRY, GB-DOW, GB-DGN, GB-FER, GB-LRN, GB-LMV, GB-LSB, GB-MFT, GB-MYL, GB-NYM, GB-NTA, GB-NDN, GB-OMH, GB-STB; change of subdivision category from district council area to district GB-BFS; addition of districts GB-ANN, GB-AND, GB-ABC, GB-CCG, GB-DRS, GB-FMO, GB-LBC, GB-MEA, GB-MUL, GB-NMD; update List Source.', 'Description of Change': None, 'Date Issued': '2015-11-27', 'Source': 'Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:GB.'}], 
+                'history': [{'Change': 'Change of subdivision name of GB-ABC, GB-DRS; modification of remark part 2; update list source. (Remark part 2: BS 6879 gives alternative name forms in Welsh (cy) for some of the Welsh unitary authorities (together with alternative code elements). Since this part of ISO 3166 does not allow for duplicate coding of identical subdivisions, such alternative names in Welsh and code elements are shown for information purposes only in square brackets after the English name of the subdivision. BS 6879 has been superseded but remains the original source of the codes.\r Included for completeness:\r EAW England and Wales;\r GBN Great Britain;\r UKM United Kingdom).', 'Description of Change': None, 'Date Issued': '2019-11-22', 'Source': 'Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:GB.'}, {'Change': 'Deletion of district council areas GB-ANT, GB-ARD, GB-ARM, GB-BLA, GB-BLY, GB-BNB, GB-CKF, GB-CSR, GB-CLR, GB-CKT, GB-CGV, GB-DRY, GB-DOW, GB-DGN, GB-FER, GB-LRN, GB-LMV, GB-LSB, GB-MFT, GB-MYL, GB-NYM, GB-NTA, GB-NDN, GB-OMH, GB-STB; change of subdivision category from district council area to district GB-BFS; addition of districts GB-ANN, GB-AND, GB-ABC, GB-CCG, GB-DRS, GB-FMO, GB-LBC, GB-MEA, GB-MUL, GB-NMD; update List Source.', 'Description of Change': None, 'Date Issued': '2015-11-27', 'Source': 'Online Browsing Platform (OBP) - https://www.iso.org/obp/ui/#iso:code:3166:GB.'}], 
                 'code': 'GB-ABC',
                 'matchScore': 100}, 
             {
@@ -422,7 +423,7 @@ class ISO3166_2_Unit_Tests(unittest.TestCase):
     @unittest.skip("")
     def test_repr(self):
         """ Testing __repr__ function returns correct object representation for class object. """
-        self.assertEqual(repr(self.all_iso3166_2), "<iso3166-2(version=1.8.3, total_countries=249, total_subdivisions=5046, source_file=iso3166-2.json)>",
+        self.assertEqual(repr(self.all_iso3166_2), f"<iso3166-2(version={__version__}, total_countries=249, total_subdivisions=5046, source_file=iso3166-2.json)>",
                 f"Expected and observed object representation for class instance do not match:\n{repr(self.all_iso3166_2)}.")
 
     # @unittest.skip("")
@@ -1257,6 +1258,35 @@ class ISO3166_2_Integration_Tests(unittest.TestCase):
         self.assertIn("DE-BY", self.all_iso3166_2)
         self.assertNotIn("CA-ZZ", self.all_iso3166_2)
         self.assertNotIn("XX-01", self.all_iso3166_2)
+#4.) __contains__ — membership is case-insensitive, matching the rest of the lookup API
+        self.assertIn("ca", self.all_iso3166_2)
+        self.assertIn("ca-ab", self.all_iso3166_2)
+        self.assertIn("De-By", self.all_iso3166_2)
+#5.) __contains__ — non-string input returns False rather than raising
+        self.assertNotIn(123, self.all_iso3166_2)
+        self.assertNotIn(None, self.all_iso3166_2)
+
+    # @unittest.skip("")
+    def test_to_dataframe(self):
+        """ Testing to_dataframe() method that exports the loaded subdivision data as a pandas DataFrame. """
+        try:
+            import pandas as pd
+        except ImportError:
+            self.skipTest("pandas not installed - skipping to_dataframe test.")
+#1.) DataFrame for a single country (Canada)
+        ca_df = Subdivisions("CA").to_dataframe()
+        self.assertIsInstance(ca_df, pd.DataFrame)
+        #one row per subdivision
+        self.assertEqual(len(ca_df), len(Subdivisions("CA")))
+        #countryCode and subdivisionCode added as columns alongside the default attributes
+        for col in ["countryCode", "subdivisionCode", "name", "type"]:
+            self.assertIn(col, ca_df.columns)
+        self.assertTrue((ca_df["countryCode"] == "CA").all())
+        self.assertTrue(ca_df["subdivisionCode"].str.startswith("CA-").all())
+#2.) DataFrame for all countries - row count matches total subdivisions
+        all_df = self.all_iso3166_2.to_dataframe()
+        self.assertIsInstance(all_df, pd.DataFrame)
+        self.assertEqual(len(all_df), len(self.all_iso3166_2))
 
     # @unittest.skip("")
     def test_search_includes_code_attribute(self):

@@ -6,7 +6,6 @@ All of the modules and functionalities of `iso3166-2` are thoroughly tested usin
 
 * `test_iso3166_2` - unit tests for `iso3166-2` package.
 * `test_main` - unit tests for `main.py` script that pulls the ISO 3166-2 subdivision data from the data sources.
-* `test_update_subdivisions` - unit tests for `update_subdivisions.py` script that is used for the streamlining of subdivision additions, changes or deletions to the ISO 3166-2 data object.
 * `test_local_other_names` - unit tests for 
 * `test_language_lookup` - unit tests for Language Lookup class which encapsulates all the language codes from the local/other names csv.
 * `test_utils` - unit tests for `utils.py` module that has a series of utils functions used throughout project.

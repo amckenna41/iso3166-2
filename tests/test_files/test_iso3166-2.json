@@ -7384,7 +7384,7 @@
             "history": null
         },
         "BY-HM": {
-            "name": "Horad Minsk",
+            "name": "Gorod Minsk",
             "localOtherName": "Горад Мінск (bel), Город Минск (rus), Gorod Minsk (rus), Minsk City (eng)",
             "type": "City",
             "parentCode": null,
@@ -7409,7 +7409,7 @@
             ]
         },
         "BY-HO": {
-            "name": "Homieĺskaja voblasć'",
+            "name": "Gomel'skaja oblast'",
             "localOtherName": "Гомельская вобласць (bel), Homyelskaya voblasts (bel), Гомельская область (rus), Gomelskaja oblast (rus), Gomel (eng)",
             "type": "Oblast",
             "parentCode": null,
@@ -7421,7 +7421,7 @@
             "history": null
         },
         "BY-HR": {
-            "name": "Hrodzienskaja voblasć'",
+            "name": "Grodnenskaja oblast'",
             "localOtherName": "Гродзенская вобласць (bel), Hrodzyenskaya voblasts (bel), Grodno (eng)",
             "type": "Oblast",
             "parentCode": null,
@@ -7452,7 +7452,7 @@
             "history": null
         },
         "BY-MI": {
-            "name": "Minskaja voblasć'",
+            "name": "Minskaja oblast'",
             "localOtherName": "Мінская вобласць (bel), Minskaya voblasts (bel), Minsk (eng)",
             "type": "Oblast",
             "parentCode": null,
@@ -8621,7 +8621,7 @@
             ]
         },
         "CH-BE": {
-            "name": "Bern",
+            "name": "Berne",
             "localOtherName": "Berne (fra), Berna (roh), Berna (ita)",
             "type": "Canton",
             "parentCode": null,
@@ -11395,7 +11395,7 @@
             ]
         },
         "CY-05": {
-            "name": "Pafos",
+            "name": "Baf",
             "localOtherName": "Πάφος (ell), Baf (tur), Paphos (eng)",
             "type": "District",
             "parentCode": null,
@@ -11407,7 +11407,7 @@
             "history": null
         },
         "CY-06": {
-            "name": "Keryneia",
+            "name": "Girne",
             "localOtherName": "Κερύνεια (ell), Girne (tur), Kyrenia (eng)",
             "type": "District",
             "parentCode": null,
@@ -34742,7 +34742,7 @@
             ]
         },
         "KG-C": {
-            "name": "Chüy",
+            "name": "Chuyskaya oblast'",
             "localOtherName": "Чүй (kir), Чуйская область (rus), Čujskaja oblast (rus), Chuy (eng)",
             "type": "Region",
             "parentCode": null,
@@ -34786,7 +34786,7 @@
             ]
         },
         "KG-GO": {
-            "name": "Osh Shaary",
+            "name": "Gorod Osh",
             "localOtherName": "Ош шаары (kir), Город Ош (rus), Gorod Osh (rus), Gorod Oš (rus), Osh City (eng)",
             "type": "City",
             "parentCode": null,
@@ -34811,7 +34811,7 @@
             ]
         },
         "KG-J": {
-            "name": "Jalal-Abad",
+            "name": "Dzhalal-Abadskaya oblast'",
             "localOtherName": "Жалал-Абад (kir), Джалал-Абадская область (rus), Dzhalal-Abadskaya oblast (rus), Jalal-Abad (eng)",
             "type": "Region",
             "parentCode": null,
@@ -34859,7 +34859,7 @@
             "history": null
         },
         "KG-Y": {
-            "name": "Ysyk-Köl",
+            "name": "Issyk-Kul'skaja oblast'",
             "localOtherName": "Ысык-Көл (kir), Иссык-Кульская область (rus), Issyk-Kulskaya oblast (rus), Issyk-Kulskaja oblast (rus), Issyk-Kul (eng)",
             "type": "Region",
             "parentCode": null,
@@ -35937,7 +35937,7 @@
         "KR-42": {
             "name": "Gangwon-teukbyeoljachido",
             "localOtherName": "강원특별자치도 (kor), Gangwon-do (kor), Gangwon (eng), Gangwon Special Self-Governing Province (eng)",
-            "type": "special self-governing province",
+            "type": "Special self-governing province",
             "parentCode": null,
             "flag": "https://raw.githubusercontent.com/amckenna41/iso3166-flags/main/iso3166-2-flags/KR/KR-42.svg",
             "latLng": [
@@ -36141,7 +36141,7 @@
     "KY": {},
     "KZ": {
         "KZ-10": {
-            "name": "Abay oblysy",
+            "name": "Abajskaja oblast’",
             "localOtherName": "Абай облысы (kaz), Абайская область (rus), Abayskaya oblast (rus)",
             "type": "Region",
             "parentCode": null,
@@ -36160,7 +36160,7 @@
             ]
         },
         "KZ-11": {
-            "name": "Aqmola oblysy",
+            "name": "Akmolinskaja oblast'",
             "localOtherName": "Ақмола облысы (kaz), Акмолинская область (rus), Akmolinskaja oblast (rus)",
             "type": "Region",
             "parentCode": null,
@@ -36179,7 +36179,7 @@
             ]
         },
         "KZ-15": {
-            "name": "Aqtöbe oblysy",
+            "name": "Aktjubinskaja oblast'",
             "localOtherName": "Ақтөбе облысы (kaz), Актюбинская область (rus), Aktjubinskaja oblast (rus)",
             "type": "Region",
             "parentCode": null,
@@ -36198,7 +36198,7 @@
             ]
         },
         "KZ-19": {
-            "name": "Almaty oblysy",
+            "name": "Almatinskaja oblast'",
             "localOtherName": "Алматы облысы (kaz), Алматинская область (rus), Almatinskaja oblast (rus)",
             "type": "Region",
             "parentCode": null,
@@ -36217,7 +36217,7 @@
             ]
         },
         "KZ-23": {
-            "name": "Atyraū oblysy",
+            "name": "Atyrauskaja oblast'",
             "localOtherName": "Атырау облысы (kaz), Атырауская область (rus), Atyrauskaja oblast (rus)",
             "type": "Region",
             "parentCode": null,
@@ -36293,7 +36293,7 @@
             ]
         },
         "KZ-35": {
-            "name": "Qaraghandy oblysy",
+            "name": "Karagandinskaja oblast'",
             "localOtherName": "Қарағанды облысы (kaz), Карагандинская область (rus), Karagandinskaya oblast (rus)",
             "type": "Region",
             "parentCode": null,
@@ -36312,7 +36312,7 @@
             ]
         },
         "KZ-39": {
-            "name": "Qostanay oblysy",
+            "name": "Kostanajskaja oblast'",
             "localOtherName": "Қостанай облысы (kaz), Костанайская область (rus), Kostanajskaja oblast (rus)",
             "type": "Region",
             "parentCode": null,
@@ -36331,7 +36331,7 @@
             ]
         },
         "KZ-43": {
-            "name": "Qyzylorda oblysy",
+            "name": "Kyzylordinskaja oblast'",
             "localOtherName": "Қызылорда облысы (kaz), Кызылординская область (rus), Kyzylordinskaja oblast (rus)",
             "type": "Region",
             "parentCode": null,
@@ -36388,7 +36388,7 @@
             ]
         },
         "KZ-59": {
-            "name": "Soltüstik Qazaqstan oblysy",
+            "name": "Severo-Kazahstanskaja oblast'",
             "localOtherName": "Солтүстік Қазақстан облысы (kaz), Северо-Казахстанская область (rus), Severo-Kazahstanskaja oblast (rus)",
             "type": "Region",
             "parentCode": null,
@@ -36407,7 +36407,7 @@
             ]
         },
         "KZ-61": {
-            "name": "Türkistan oblysy",
+            "name": "Turkestankaya oblast'",
             "localOtherName": "Түркістан облысы (kaz), Туркестанская область (rus), Turkestankaya oblast (rus)",
             "type": "Region",
             "parentCode": null,
@@ -36432,7 +36432,7 @@
             ]
         },
         "KZ-62": {
-            "name": "Ulytaū oblysy",
+            "name": "Ulytauskaja oblast’",
             "localOtherName": "Улытау облысы (kaz), Улытауская область (rus), Ulytauskaya oblast (rus)",
             "type": "Region",
             "parentCode": null,
@@ -51063,7 +51063,7 @@
     },
     "PE": {
         "PE-AMA": {
-            "name": "Amazonas",
+            "name": "Amarumayu",
             "localOtherName": "Amarumayu (que), Amasunu (aym), Anqash suy (inb)",
             "type": "Region",
             "parentCode": null,
@@ -51087,7 +51087,7 @@
             "history": null
         },
         "PE-APU": {
-            "name": "Apurímac",
+            "name": "Apurimaq",
             "localOtherName": "Apurimaq (que), Apurimaq (aym)",
             "type": "Region",
             "parentCode": null,
@@ -51195,7 +51195,7 @@
             "history": null
         },
         "PE-JUN": {
-            "name": "Junín",
+            "name": "Hunin",
             "localOtherName": "Hunin (que), Junin (aym)",
             "type": "Region",
             "parentCode": null,
@@ -51341,7 +51341,7 @@
             "history": null
         },
         "PE-SAM": {
-            "name": "San Martín",
+            "name": "San Martin",
             "localOtherName": "San Martin (que), San Martín (aym), St Martin (eng), San Martin suyu (inb)",
             "type": "Region",
             "parentCode": null,
@@ -63707,7 +63707,7 @@
             "history": null
         },
         "TL-LA": {
-            "name": "Lautém",
+            "name": "Lautein",
             "localOtherName": "Lautein (tet)",
             "type": "Municipality",
             "parentCode": null,
@@ -63726,7 +63726,7 @@
             ]
         },
         "TL-LI": {
-            "name": "Liquiça",
+            "name": "Likisá",
             "localOtherName": "Likisá (tet)",
             "type": "Municipality",
             "parentCode": null,
@@ -63769,7 +63769,7 @@
             "history": null
         },
         "TL-OE": {
-            "name": "Oé-Cusse Ambeno",
+            "name": "Oekusi-Ambenu",
             "localOtherName": "Oekusi-Ambenu (tet), Oecusse (eng), Oecusse-Ambeno (eng), Special Administrative Region Oecusse-Ambeno (eng), Região Administrativa Especial Oé-Cusse Ambeno (por)",
             "type": "Special administrative region",
             "parentCode": null,
@@ -63788,7 +63788,7 @@
             ]
         },
         "TL-VI": {
-            "name": "Viqueque",
+            "name": "Vikeke",
             "localOtherName": "Vikeke (tet)",
             "type": "Municipality",
             "parentCode": null,

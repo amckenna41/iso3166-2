@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 
-RESTCOUNTRIES_BASE_URL = "https://api.restcountries.com/countries/v5/"
+RESTCOUNTRIES_BASE_URL = "https://restcountries.com/v3.1/"
 
 # Configurable API key — override this value directly or set RESTCOUNTRIES_API_KEY in scripts/.env
 RESTCOUNTRIES_API_KEY = os.getenv("RESTCOUNTRIES_API_KEY", "")

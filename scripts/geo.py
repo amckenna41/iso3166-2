@@ -13,7 +13,10 @@ from pycountry import countries
 from tqdm import tqdm
 from wikidata.client import Client
 from iso3166_2 import Subdivisions
-from scripts.utils import convert_to_alpha2
+try:
+    from scripts.utils import convert_to_alpha2
+except ImportError:
+    from utils import convert_to_alpha2
 
 # Nominatim API endpoints
 NOMINATIM_API_URL = 'https://nominatim.openstreetmap.org/search'

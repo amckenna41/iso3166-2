@@ -258,8 +258,11 @@ class UtilsIntegrationTests(unittest.TestCase):
         testing functionality for detecting null/None values in attributes 
         across subdivisions (file I/O).
     test_export_iso3166_2_data:
-        testing utilities function that exports the subdivision data to the 
+        testing utilities function that exports the subdivision data to the
         output files/folder (file I/O).
+    test_compare_iso3166_2:
+        testing functionality that compares two ISO 3166-2 JSON files and
+        outlines the differences between them (file I/O).
     """
     @classmethod
     def setUp(self):
@@ -429,13 +432,13 @@ class UtilsIntegrationTests(unittest.TestCase):
         result = get_nulls(iso3166_2_json_filepath=self.test_iso3166_2_json, attributes="*", export=False)
         
         self.assertIsInstance(result, dict, "Expected result to be a dictionary.")
-        expected_attributes = ['flag', 'latLng', 'localName', 'name', 'parentCode', 'type', 'history']
+        expected_attributes = ['flag', 'latLng', 'localOtherName', 'name', 'parentCode', 'type', 'history']
         for attr in expected_attributes:
             self.assertIn(attr, result, f"Expected '{attr}' attribute in result dictionary.")
 #4.)
         #test with export=True
         with patch('builtins.print'):
-            result = get_nulls(iso3166_2_json_filepath=self.test_iso3166_2_json, attributes="localName", 
+            result = get_nulls(iso3166_2_json_filepath=self.test_iso3166_2_json, attributes="localOtherName",
                               export=True, export_filename=os.path.join(self.test_utils_folder, "test_nulls.csv"))
         
         self.assertTrue(os.path.isfile(os.path.join(self.test_utils_folder, "test_nulls.csv")), 
@@ -532,6 +535,77 @@ class UtilsIntegrationTests(unittest.TestCase):
         test_iso3166_2_json_4 = pd.read_csv(os.path.join(self.test_utils_folder, "test_export_4.csv"))
         self.assertEqual(list(test_iso3166_2_json_4.columns), ['alphaCode', 'subdivisionCode', 'name', 'localOtherName', 'type', 'parentCode', 'flag', 'latLng', 'history'], 
                          f"Expected and observed column order for output CSV do not match:\n{list(test_iso3166_2_json_4.columns)}.")
+
+    # @unittest.skip("")
+    def test_compare_iso3166_2(self):
+        """ Testing functionality that compares two ISO 3166-2 JSON files. """
+        #load the test json, create a modified copy to compare against
+        with open(self.test_iso3166_2_json, encoding='utf-8') as output_json:
+            base_json = json.load(output_json)
+
+        #paths for the two files being compared
+        file_1 = os.path.join(self.test_utils_folder, "compare_1.json")
+        file_2 = os.path.join(self.test_utils_folder, "compare_2.json")
+
+        #write baseline file (file 1)
+        with open(file_1, 'w', encoding='utf-8') as f:
+            json.dump(base_json, f, ensure_ascii=False, indent=4)
+
+        #build a modified copy (file 2): modify one attribute, remove one subdivision, add one subdivision
+        import copy
+        modified_json = copy.deepcopy(base_json)
+        sample_country = sorted(modified_json.keys())[0]
+        subdivision_codes = sorted(modified_json[sample_country].keys())
+        modified_code = subdivision_codes[0]
+        removed_code = subdivision_codes[1]
+
+        #modify the 'name' attribute of the first subdivision
+        modified_json[sample_country][modified_code]["name"] = "CHANGED_NAME_FOR_TEST"
+        #remove the second subdivision
+        del modified_json[sample_country][removed_code]
+        #add a new custom subdivision
+        modified_json[sample_country]["XX-NEW"] = {"name": "New Test Subdivision", "type": "Test"}
+
+        with open(file_2, 'w', encoding='utf-8') as f:
+            json.dump(modified_json, f, ensure_ascii=False, indent=4)
+#1.)
+        comparison = compare_iso3166_2(file_1, file_2)
+        self.assertIsInstance(comparison, dict, "Expected comparison result to be a dictionary.")
+        self.assertEqual(sorted(comparison.keys()), ["added_subdivisions", "modified_subdivisions", "removed_subdivisions"],
+            f"Expected and observed comparison keys do not match:\n{sorted(comparison.keys())}.")
+#2.)
+        #the added subdivision should be captured
+        self.assertIn(sample_country, comparison["added_subdivisions"], f"Expected {sample_country} in added subdivisions.")
+        self.assertIn("XX-NEW", comparison["added_subdivisions"][sample_country], "Expected XX-NEW to be reported as added.")
+#3.)
+        #the removed subdivision should be captured
+        self.assertIn(sample_country, comparison["removed_subdivisions"], f"Expected {sample_country} in removed subdivisions.")
+        self.assertIn(removed_code, comparison["removed_subdivisions"][sample_country], f"Expected {removed_code} to be reported as removed.")
+#4.)
+        #the modified attribute should be captured with its from/to values
+        self.assertIn(sample_country, comparison["modified_subdivisions"], f"Expected {sample_country} in modified subdivisions.")
+        self.assertIn(modified_code, comparison["modified_subdivisions"][sample_country], f"Expected {modified_code} to be reported as modified.")
+        self.assertEqual(comparison["modified_subdivisions"][sample_country][modified_code]["name"]["to"], "CHANGED_NAME_FOR_TEST",
+            "Expected modified 'name' attribute to reflect the new value.")
+#5.)
+        #comparing a file with itself should yield no differences
+        identical_comparison = compare_iso3166_2(file_1, file_1)
+        self.assertEqual(identical_comparison, {"added_subdivisions": {}, "removed_subdivisions": {}, "modified_subdivisions": {}},
+            f"Expected no differences when comparing a file with itself:\n{identical_comparison}.")
+#6.)
+        #test export to JSON
+        export_path = os.path.join(self.test_utils_folder, "test_comparison.json")
+        compare_iso3166_2(file_1, file_2, export=True, export_filename=export_path)
+        self.assertTrue(os.path.isfile(export_path), "Expected comparison output to be exported to JSON.")
+        with open(export_path, encoding='utf-8') as exported:
+            exported_comparison = json.load(exported)
+        self.assertEqual(exported_comparison, comparison, "Expected exported comparison to match returned comparison.")
+#7.)
+        #test error handling - missing input files
+        with self.assertRaises(OSError):
+            compare_iso3166_2(os.path.join(self.test_utils_folder, "nonexistent.json"), file_2)
+        with self.assertRaises(OSError):
+            compare_iso3166_2(file_1, os.path.join(self.test_utils_folder, "nonexistent.json"))
 
     @classmethod
     def tearDown(self):

@@ -8,8 +8,6 @@ from typing import Tuple, List, Dict, Any, Optional, Union
 from pycountry import countries 
 from fake_useragent import UserAgent
 from dicttoxml import dicttoxml
-# import openai
-from dotenv import load_dotenv 
 import xml.etree.ElementTree as ET
 
 #set random user-agent string for requests library to avoid detection, using fake-useragent package
@@ -298,13 +296,14 @@ def get_flag_repo_url(alpha2_code: str, subdivision_code: str="") -> str|None:
     # if (requests.get(flag_icons_folder_base_url + alpha2_code, headers=USER_AGENT_HEADER, timeout=15).status_code != 404):
         
     #iterate over all image extensions checking existence of flag in repo, if no flag with extensions found then set to null
-    for extension in range(0, len(flag_file_extensions)):
-            #if subdivision has a valid flag in flag icons repo set to its GitHub url, else set to None
-            if (requests.get(alpha2_flag + flag_file_extensions[extension], headers=USER_AGENT_HEADER, timeout=15).status_code == 200):
-                time.sleep(1)
-                return alpha2_flag + flag_file_extensions[extension]
-            elif (extension == 4):
-                return None
+    for extension in flag_file_extensions:
+        #if subdivision has a valid flag in flag icons repo set to its GitHub url, else set to None
+        if (requests.get(alpha2_flag + extension, headers=USER_AGENT_HEADER, timeout=15).status_code == 200):
+            time.sleep(1)
+            return alpha2_flag + extension
+
+    #no flag found for any supported extension
+    return None
 
 def attributes_memory_usage(iso3166_2_json_filepath: str="iso3166-2.json", country_level_usage: bool=False, 
                             export: bool=True, export_folder="iso3166_2_resources") -> None:
@@ -348,17 +347,15 @@ def attributes_memory_usage(iso3166_2_json_filepath: str="iso3166-2.json", count
     total_json_size = os.path.getsize(iso3166_2_json_filepath) / 1024  #convert total size to KB
 
     #aggregate attribute sizes across the whole file
-    attribute_totals_global = {attribute: 0 for attribute in ['flag', 'latLng', 'localName', 'name', 'parentCode', 'type', 'history']}
-    total_data_size = 0
+    attribute_totals_global = {attribute: 0 for attribute in ['flag', 'latLng', 'localOtherName', 'name', 'parentCode', 'type', 'history']}
 
     #iterate over each country and subdivision code objects, calculate size of attribute and add to output object
     for country_code, country_content in iso3166_2_json.items():
         for region_code, region_data in country_content.items():
             if isinstance(region_data, dict):
-                total_data_size += json.dumps(region_data).encode('utf-8').__sizeof__() / 2024  #convert to KB
                 for attribute, value in region_data.items():
                     if attribute in attribute_totals_global:
-                        attribute_totals_global[attribute] += json.dumps({attribute: value}).encode('utf-8').__sizeof__()
+                        attribute_totals_global[attribute] += len(json.dumps({attribute: value}).encode('utf-8'))
     
     #object of memory usage data per attribute
     global_attribute_data = [
@@ -416,7 +413,7 @@ def attributes_memory_usage(iso3166_2_json_filepath: str="iso3166-2.json", count
             print("########################################\n")
             print(country_sizes_df)
 
-def export_iso3166_2_data(all_country_data: dict={}, input_filename: str="", export_filepath: str="iso366-2-export", export_csv: bool=True, export_xml: bool=True):
+def export_iso3166_2_data(all_country_data: Optional[dict]=None, input_filename: str="", export_filepath: str="iso3166-2-export", export_csv: bool=True, export_xml: bool=True):
     """
     Export the extracted ISO 3166-2 subdivision data to the output files. By default, the subdivision data
     is exported to JSON but it can also be exported to CSV and XML via the export_csv and export_xml
@@ -442,6 +439,10 @@ def export_iso3166_2_data(all_country_data: dict={}, input_filename: str="", exp
     =======
     None
     """
+    #assign empty dict inside body to avoid mutable default argument bug
+    if all_country_data is None:
+        all_country_data = {}
+
     #raise error if no filename for JSON data input to function, no data to work with
     if (not all_country_data and input_filename == ""):
         raise ValueError("No ISO 3166-2 data available, needs to be input via the all_country_data var or importing it via input_filename.")
@@ -577,7 +578,91 @@ def combine_multiple_exports(file_list: list, export_file_name: str) -> None:
     with open(export_file_name, 'w', encoding='utf-8') as f:
         json.dump(combined_json, f, ensure_ascii=False, indent=4)
 
-def get_nulls(iso3166_2_json_filepath: str, attributes: list|str, export: bool = False, 
+def compare_iso3166_2(iso3166_2_json_filepath_1: str, iso3166_2_json_filepath_2: str,
+                      export: bool = False, export_filename: str = "iso3166_2_comparison.json") -> dict:
+    """
+    Compare two ISO 3166-2 JSON files and outline the differences between them. The comparison
+    is symmetric and done at the subdivision-attribute level, capturing subdivision codes that
+    were added, removed or modified when going from the first file to the second. This is useful
+    for reviewing what has changed between two versions of the iso3166-2.json dataset.
+
+    Parameters
+    ==========
+    :iso3166_2_json_filepath_1: str
+        filepath to the first ("old"/baseline) ISO 3166-2 JSON file.
+    :iso3166_2_json_filepath_2: str
+        filepath to the second ("new") ISO 3166-2 JSON file to compare against the first.
+    :export: bool (default=False)
+        if True, export the comparison output to a JSON file.
+    :export_filename: str (default="iso3166_2_comparison.json")
+        filename for the exported comparison JSON. Only used when export=True.
+
+    Returns
+    =======
+    :comparison: dict
+        dictionary outlining the differences between the two files, with the keys:
+        {
+            'added_subdivisions': {alpha2: {subdivision_code: {...}}},    # only in file 2
+            'removed_subdivisions': {alpha2: {subdivision_code: {...}}},  # only in file 1
+            'modified_subdivisions': {alpha2: {subdivision_code: {attribute: {'from': ..., 'to': ...}}}}
+        }
+
+    Raises
+    ======
+    OSError:
+        One or both of the input ISO 3166-2 JSON files not found at given paths.
+    """
+    #raise error if either of the input JSON files aren't found
+    for filepath in (iso3166_2_json_filepath_1, iso3166_2_json_filepath_2):
+        if not os.path.isfile(filepath):
+            raise OSError(f"ISO 3166-2 JSON file not found: {filepath}.")
+
+    #load both JSON files
+    with open(iso3166_2_json_filepath_1, 'r', encoding='utf-8') as file:
+        json_1 = json.load(file)
+    with open(iso3166_2_json_filepath_2, 'r', encoding='utf-8') as file:
+        json_2 = json.load(file)
+
+    #output object holding the differences between the two files
+    comparison = {"added_subdivisions": {}, "removed_subdivisions": {}, "modified_subdivisions": {}}
+
+    #iterate over the union of country codes across both files
+    for alpha2 in sorted(json_1.keys() | json_2.keys()):
+        subdivs_1 = json_1.get(alpha2, {})
+        subdivs_2 = json_2.get(alpha2, {})
+
+        #subdivision codes only in file 2 (added) or only in file 1 (removed)
+        added = {code: subdivs_2[code] for code in subdivs_2.keys() - subdivs_1.keys()}
+        removed = {code: subdivs_1[code] for code in subdivs_1.keys() - subdivs_2.keys()}
+
+        #for subdivisions in both files, capture any per-attribute changes
+        modified = {}
+        for code in subdivs_1.keys() & subdivs_2.keys():
+            attribute_changes = {}
+            for attribute in subdivs_1[code].keys() | subdivs_2[code].keys():
+                value_1 = subdivs_1[code].get(attribute)
+                value_2 = subdivs_2[code].get(attribute)
+                if value_1 != value_2:
+                    attribute_changes[attribute] = {"from": value_1, "to": value_2}
+            if attribute_changes:
+                modified[code] = attribute_changes
+
+        #only add country to output if it has differences
+        if added:
+            comparison["added_subdivisions"][alpha2] = added
+        if removed:
+            comparison["removed_subdivisions"][alpha2] = removed
+        if modified:
+            comparison["modified_subdivisions"][alpha2] = modified
+
+    #export comparison output to JSON if parameter set
+    if export:
+        with open(export_filename, 'w', encoding='utf-8') as f:
+            json.dump(comparison, f, ensure_ascii=False, indent=4)
+
+    return comparison
+
+def get_nulls(iso3166_2_json_filepath: str, attributes: list|str, export: bool = False,
               export_filename: str = "iso3166_2_null_attributes.csv") -> dict:
     """
     Scans the ISO 3166-2 JSON file and identifies subdivision codes where specified
@@ -591,7 +676,7 @@ def get_nulls(iso3166_2_json_filepath: str, attributes: list|str, export: bool =
     :attributes: list|str
         list of attribute names or comma-separated string of attributes to check for null values. 
         This parameter is required. Use '*' to check all available attributes.
-        Valid attributes: 'flag', 'latLng', 'localName', 'name', 'parentCode', 'type', 'history', 'area', 'population'
+        Valid attributes: 'flag', 'latLng', 'localOtherName', 'name', 'parentCode', 'type', 'history', 'area', 'population'
     :export: bool (default=False)
         if True, exports the null mapping results to a CSV file.
     :export_filename: str (default="iso3166_2_null_attributes.csv")
@@ -618,7 +703,7 @@ def get_nulls(iso3166_2_json_filepath: str, attributes: list|str, export: bool =
         raise OSError(f"ISO 3166-2 JSON file not found: {iso3166_2_json_filepath}.")
 
     #define valid attribute names 
-    valid_attributes = ['flag', 'latLng', 'localName', 'name', 'parentCode', 'type', 'history']
+    valid_attributes = ['flag', 'latLng', 'localOtherName', 'name', 'parentCode', 'type', 'history']
 
     #convert string to list if comma-separated string provided
     if isinstance(attributes, str):
@@ -699,759 +784,3 @@ def get_nulls(iso3166_2_json_filepath: str, attributes: list|str, export: bool =
         print("-" * 40)
 
     return null_mapping
-
-
-
-# def anomaly_detection(iso3166_2_json_filepath: str, export_filename: str = "iso3166_2_anomalies.csv",
-#                       api_key: str = "", verbose: bool = True, batch_size: int = 50, max_subdivisions: int = 0) -> dict:
-#     """
-#     Detects anomalies and data quality issues in the ISO 3166-2 JSON file using OpenAI API.
-#     Processes subdivisions in batches to avoid token limits.
-#     Generates a comprehensive report of all detected anomalies and exports to CSV.
-
-#     Parameters
-#     ==========
-#     :iso3166_2_json_filepath: str
-#         filepath to the ISO 3166-2 JSON file to analyze.
-#     :export_filename: str (default="iso3166_2_anomolies.csv")
-#         filename for the exported CSV file containing detected anomalies.
-#     :api_key: str (default="")
-#         OpenAI API key (optional). If not provided, will attempt to load from OPENAI_API_KEY
-#         environment variable. Environment variable takes precedence.
-#     :verbose: bool (default=True)
-#         if True, prints progress messages during analysis.
-#     :batch_size: int (default=50)
-#         number of subdivisions to process per API call to avoid token limits.
-#     :max_subdivisions: int (default=0)
-#         maximum total number of subdivisions to process (for testing). If 0, processes all subdivisions.
-#         Use this to limit processing to e.g. first 100 subdivisions for testing purposes.
-
-#     Returns
-#     =======
-#     :anomalies_report: dict
-#         dictionary containing all detected anomalies and summary statistics.
-
-#     Raises
-#     ======
-#     OSError:
-#         ISO 3166-2 JSON file not found at given path.
-#     ValueError:
-#         API key not found or invalid JSON format.
-#     """
-#     # Check if file exists
-#     if not os.path.isfile(iso3166_2_json_filepath):
-#         raise OSError(f"ISO 3166-2 JSON file not found: {iso3166_2_json_filepath}.")
-    
-#     # Load environment variables from .env file
-#     load_dotenv()
-    
-#     # Get API key from environment variable first, then fallback to parameter
-#     env_api_key = os.getenv("OPENAI_API_KEY")
-    
-#     if env_api_key:
-#         final_api_key = env_api_key
-#     elif api_key:
-#         final_api_key = api_key
-#     else:
-#         raise ValueError("API key not found. Set OPENAI_API_KEY environment variable or pass api_key parameter.")
-    
-#     # Initialize OpenAI client
-#     client = openai.OpenAI(api_key=final_api_key)
-    
-#     if verbose:
-#         print(f"Starting anomaly detection analysis for {iso3166_2_json_filepath}")
-#         print("=" * 70)
-    
-#     # Load JSON file
-#     try:
-#         with open(iso3166_2_json_filepath, 'r', encoding='utf-8') as f:
-#             iso3166_2_json = json.load(f)
-#     except json.JSONDecodeError as e:
-#         raise ValueError(f"Invalid JSON format in {iso3166_2_json_filepath}. "
-#                         f"Error at line {e.lineno}, column {e.colno}: {e.msg}")
-    
-#     if verbose:
-#         total_countries = len(iso3166_2_json)
-#         total_subdivisions = sum(len(subs) for subs in iso3166_2_json.values())
-#         print(f"✓ JSON loaded successfully")
-#         print(f"  Countries: {total_countries}")
-#         print(f"  Total subdivisions available: {total_subdivisions}")
-#         if max_subdivisions > 0:
-#             print(f"  Processing only first {max_subdivisions} subdivisions (testing mode)")
-#         print(f"  Batch size: {batch_size} subdivisions per API call")
-    
-#     # Prepare the base analysis prompt
-#     audit_prompt_template = """You are a meticulous data quality auditor for a JSON dataset of ISO 3166-2 country subdivisions.
-
-# Your job: Check every attribute on every subdivision in this batch for possible anomalies.
-
-#     Validation rules:
-#     - name: required string, non-empty
-#     - type: required, non-empty string
-#     - parentCode: string or null
-#     - flag: URL string or null (must be HTTPS if present)
-#     - latLng: array of exactly 2 numeric values [latitude, longitude], or null
-#     - history: null or array of objects
-
-#     Detect and report ALL anomalies including:
-#     - Missing required attributes (name, type)
-#     - Wrong data types
-#     - latLng outside valid ranges or not exactly 2 numbers
-#     - Malformed URLs or non-HTTPS flags
-#     - Inconsistent data
-
-# Output ONLY valid JSON (no extra text):
-# {
-#   "anomalies": [
-#     {
-#       "country_code": string,
-#       "subdivision_code": string,
-#       "attribute": string,
-#       "value": any,
-#       "issue_type": string,
-#       "severity": "low" | "medium" | "high",
-#       "details": string
-#     }
-#   ]
-# }
-
-# Return { "anomalies": [] } if no anomalies found."""
-    
-#     # Create batches of subdivisions
-#     all_anomalies = []
-#     batch_count = 0
-#     total_batches = 0
-#     subdivisions_processed = 0
-    
-#     # Flatten all subdivisions with their country codes
-#     all_subdivisions = []
-#     for country_code, subdivisions in iso3166_2_json.items():
-#         for subdivision_code, subdivision_data in subdivisions.items():
-#             all_subdivisions.append((country_code, subdivision_code, subdivision_data))
-    
-#     # Limit to max_subdivisions if specified (for testing)
-#     if max_subdivisions > 0:
-#         all_subdivisions = all_subdivisions[:max_subdivisions]
-    
-#     # Calculate total batches
-#     total_batches = (len(all_subdivisions) + batch_size - 1) // batch_size
-    
-#     if verbose:
-#         print(f"  Total batches to process: {total_batches}\n")
-    
-#     # Process subdivisions in batches
-#     for i in range(0, len(all_subdivisions), batch_size):
-#         batch_count += 1
-#         batch_items = all_subdivisions[i:i + batch_size]
-        
-#         # Group batch items by country code for JSON structure
-#         batch_json = {}
-#         for country_code, subdivision_code, subdivision_data in batch_items:
-#             if country_code not in batch_json:
-#                 batch_json[country_code] = {}
-#             batch_json[country_code][subdivision_code] = subdivision_data
-        
-#         if verbose:
-#             print(f"  Processing batch {batch_count}/{total_batches} ({len(batch_items)} subdivisions)...")
-        
-#         try:
-#             response = client.chat.completions.create(
-#                 model="gpt-3.5-turbo",
-#                 messages=[
-#                     {
-#                         "role": "system",
-#                         "content": "You are a data quality analyst. Return only valid JSON with no additional text."
-#                     },
-#                     {
-#                         "role": "user",
-#                         "content": f"{audit_prompt_template}\n\n{json.dumps(batch_json)}"
-#                     }
-#                 ],
-#                 temperature=0,
-#                 timeout=60
-#             )
-            
-#             # Parse the response
-#             response_text = response.choices[0].message.content.strip()
-            
-#             # Extract JSON from response
-#             json_start = response_text.find('{')
-#             json_end = response_text.rfind('}') + 1
-            
-#             if json_start != -1 and json_end > json_start:
-#                 json_str = response_text[json_start:json_end]
-#                 anomalies_data = json.loads(json_str)
-#                 all_anomalies.extend(anomalies_data.get('anomalies', []))
-            
-#             # Rate limiting: small delay between requests
-#             time.sleep(0.5)
-            
-#         except Exception as e:
-#             print(f"  ⚠ Error processing batch {batch_count}: {str(e)}")
-#             continue
-    
-#     if verbose:
-#         print(f"\n✓ All batches processed")
-    
-#     # Perform comprehensive client-side validation to filter actual anomalies
-#     # and generate accurate descriptions
-#     export_data = []
-    
-#     # Rebuild ISO3166-2 JSON into flat structure for easy access
-#     subdivision_map = {}
-#     for country_code, subdivisions in iso3166_2_json.items():
-#         for subdivision_code, subdivision_data in subdivisions.items():
-#             full_code = f"{country_code}-{subdivision_code}"
-#             subdivision_map[full_code] = (country_code, subdivision_code, subdivision_data)
-    
-#     # Validate each subdivision's attributes
-#     for country_code, subdivisions in iso3166_2_json.items():
-#         for subdivision_code, subdivision_data in subdivisions.items():
-#             if not isinstance(subdivision_data, dict):
-#                 continue
-            
-#             # Check each attribute for actual data quality issues
-#             # name: required, must be non-empty string
-#             if 'name' not in subdivision_data or subdivision_data['name'] is None:
-#                 export_data.append({
-#                     'subdivision_code': f"{country_code}-{subdivision_code}",
-#                     'attribute': 'name',
-#                     'issue_type': 'Missing Required Attribute',
-#                     'severity': 'high',
-#                     'value': 'null',
-#                     'anomoly_description': 'Subdivision name is required but missing (null)'
-#                 })
-#             elif not isinstance(subdivision_data['name'], str) or subdivision_data['name'].strip() == '':
-#                 export_data.append({
-#                     'subdivision_code': f"{country_code}-{subdivision_code}",
-#                     'attribute': 'name',
-#                     'issue_type': 'Invalid Data Type',
-#                     'severity': 'high',
-#                     'value': str(subdivision_data['name']),
-#                     'anomoly_description': f"Name must be a non-empty string, got: {subdivision_data['name']}"
-#                 })
-            
-#             # type: required, must be non-empty string
-#             if 'type' not in subdivision_data or subdivision_data['type'] is None:
-#                 export_data.append({
-#                     'subdivision_code': f"{country_code}-{subdivision_code}",
-#                     'attribute': 'type',
-#                     'issue_type': 'Missing Required Attribute',
-#                     'severity': 'high',
-#                     'value': 'null',
-#                     'anomoly_description': 'Subdivision type is required but missing (null)'
-#                 })
-#             elif not isinstance(subdivision_data['type'], str) or subdivision_data['type'].strip() == '':
-#                 export_data.append({
-#                     'subdivision_code': f"{country_code}-{subdivision_code}",
-#                     'attribute': 'type',
-#                     'issue_type': 'Invalid Data Type',
-#                     'severity': 'high',
-#                     'value': str(subdivision_data['type']),
-#                     'anomoly_description': f"Type must be a non-empty string, got: {subdivision_data['type']}"
-#                 })
-            
-#             # flag: optional, but if present must be HTTPS URL with valid format
-#             if 'flag' in subdivision_data and subdivision_data['flag'] is not None:
-#                 flag_val = subdivision_data['flag']
-#                 if not isinstance(flag_val, str):
-#                     export_data.append({
-#                         'subdivision_code': f"{country_code}-{subdivision_code}",
-#                         'attribute': 'flag',
-#                         'issue_type': 'Invalid Data Type',
-#                         'severity': 'medium',
-#                         'value': str(flag_val),
-#                         'anomoly_description': f"Flag must be a string URL, got type {type(flag_val).__name__}"
-#                     })
-#                 elif not flag_val.startswith('https://'):
-#                     export_data.append({
-#                         'subdivision_code': f"{country_code}-{subdivision_code}",
-#                         'attribute': 'flag',
-#                         'issue_type': 'Non-HTTPS URL',
-#                         'severity': 'medium',
-#                         'value': flag_val[:100],
-#                         'anomoly_description': f"Flag URL must use HTTPS protocol: {flag_val[:80]}"
-#                     })
-#                 elif not any(flag_val.endswith(ext) for ext in ['.svg', '.png', '.jpeg', '.jpg']):
-#                     export_data.append({
-#                         'subdivision_code': f"{country_code}-{subdivision_code}",
-#                         'attribute': 'flag',
-#                         'issue_type': 'Unsupported Format',
-#                         'severity': 'low',
-#                         'value': flag_val[:100],
-#                         'anomoly_description': f"Flag URL has unsupported format (must be .svg, .png, .jpeg, or .jpg): {flag_val[:80]}"
-#                     })
-            
-#             # latLng: optional, but if present must be [lat, lng] with valid ranges
-#             if 'latLng' in subdivision_data and subdivision_data['latLng'] is not None:
-#                 lat_lng = subdivision_data['latLng']
-#                 if not isinstance(lat_lng, list) or len(lat_lng) != 2:
-#                     export_data.append({
-#                         'subdivision_code': f"{country_code}-{subdivision_code}",
-#                         'attribute': 'latLng',
-#                         'issue_type': 'Invalid Data Type',
-#                         'severity': 'high',
-#                         'value': str(lat_lng),
-#                         'anomoly_description': f"Coordinates must be [latitude, longitude] array with 2 elements, got: {lat_lng}"
-#                     })
-#                 else:
-#                     try:
-#                         lat, lng = float(lat_lng[0]), float(lat_lng[1])
-#                         if lat < -90 or lat > 90:
-#                             export_data.append({
-#                                 'subdivision_code': f"{country_code}-{subdivision_code}",
-#                                 'attribute': 'latLng',
-#                                 'issue_type': 'Out of Range',
-#                                 'severity': 'high',
-#                                 'value': str(lat_lng),
-#                                 'anomoly_description': f"Latitude out of valid range [-90, 90]: {lat}"
-#                             })
-#                         elif lng < -180 or lng > 180:
-#                             export_data.append({
-#                                 'subdivision_code': f"{country_code}-{subdivision_code}",
-#                                 'attribute': 'latLng',
-#                                 'issue_type': 'Out of Range',
-#                                 'severity': 'high',
-#                                 'value': str(lat_lng),
-#                                 'anomoly_description': f"Longitude out of valid range [-180, 180]: {lng}"
-#                             })
-#                     except (ValueError, TypeError):
-#                         export_data.append({
-#                             'subdivision_code': f"{country_code}-{subdivision_code}",
-#                             'attribute': 'latLng',
-#                             'issue_type': 'Invalid Data Type',
-#                             'severity': 'high',
-#                             'value': str(lat_lng),
-#                             'anomoly_description': f"Coordinates must contain numeric values, got: {lat_lng}"
-#                         })
-    
-#     # Build summary statistics from validated anomalies only
-#     anomalies_by_severity = {'high': 0, 'medium': 0, 'low': 0}
-#     anomalies_by_country = {}
-#     anomalies_by_type = {}
-    
-#     for anomaly_record in export_data:
-#         severity = anomaly_record.get('severity', 'low')
-#         anomalies_by_severity[severity] = anomalies_by_severity.get(severity, 0) + 1
-        
-#         # Extract country code from subdivision_code (format: "CC-XX")
-#         subd_code = anomaly_record.get('subdivision_code', '')
-#         if subd_code and '-' in subd_code:
-#             country_code = subd_code.split('-')[0]
-#             anomalies_by_country[country_code] = anomalies_by_country.get(country_code, 0) + 1
-        
-#         issue_type = anomaly_record.get('issue_type', 'unknown')
-#         anomalies_by_type[issue_type] = anomalies_by_type.get(issue_type, 0) + 1
-    
-#     if export_data:
-#         export_df = pd.DataFrame(export_data)
-#         export_df = export_df.sort_values(['subdivision_code', 'severity']).reset_index(drop=True)
-#         export_df.to_csv(export_filename, index=False)
-#     else:
-#         export_df = pd.DataFrame(columns=['subdivision_code', 'attribute', 'issue_type', 'severity', 'value', 'anomoly_description'])
-#         export_df.to_csv(export_filename, index=False)
-    
-#     if verbose:
-#         print(f"\n{'='*70}")
-#         print("Anomaly Detection Summary:")
-#         print(f"{'='*70}")
-#         print(f"  Total anomalies detected: {len(all_anomalies)}")
-#         print(f"  High severity: {anomalies_by_severity['high']}")
-#         print(f"  Medium severity: {anomalies_by_severity['medium']}")
-#         print(f"  Low severity: {anomalies_by_severity['low']}")
-#         if anomalies_by_type:
-#             print(f"\n  Anomalies by type (top 10):")
-#             sorted_types = sorted(anomalies_by_type.items(), key=lambda x: x[1], reverse=True)[:10]
-#             for issue_type, count in sorted_types:
-#                 print(f"    {issue_type}: {count}")
-#         if anomalies_by_country:
-#             print(f"\n  Countries with most anomalies (top 10):")
-#             sorted_countries = sorted(anomalies_by_country.items(), key=lambda x: x[1], reverse=True)[:10]
-#             for country, count in sorted_countries:
-#                 print(f"    {country}: {count}")
-#         print(f"\n✓ Anomaly report exported to: {export_filename}")
-#         print(f"{'='*70}\n")
-    
-#     return {
-#         'anomalies': all_anomalies,
-#         'total_anomalies': len(all_anomalies),
-#         'anomalies_by_severity': anomalies_by_severity,
-#         'anomalies_by_country': anomalies_by_country,
-#         'anomalies_by_type': anomalies_by_type,
-#         'export_path': export_filename
-#     }
-
-# def correct_demographics(iso3166_2_json_filepath: str, verbose: bool = True, export: bool = True,
-#                         export_filename: str = "") -> None:
-#     """
-#     Corrects None/null area and population values in the ISO 3166-2 JSON file by fetching
-#     demographics data from the demographics module using Wikidata SPARQL endpoint.
-#     Only modifies subdivisions where area or population is None/null, leaving all other data unchanged.
-
-#     Parameters
-#     ==========
-#     :iso3166_2_json_filepath: str
-#         filepath to the exported ISO 3166-2 JSON file to correct.
-#     :verbose: bool (default=True)
-#         if True, prints progress messages during correction process.
-#     :export: bool (default=True)
-#         if True (default), exports the corrected data to a new JSON file. If False, overwrites the original.
-#     :export_filename: str (default="")
-#         filename for the exported corrected JSON file. Required when export=True.
-#         Must be a valid non-empty filename string. Raises ValueError if empty or invalid when export=True.
-
-#     Returns
-#     =======
-#     None
-
-#     Raises
-#     ======
-#     OSError:
-#         ISO 3166-2 JSON file not found at given path.
-#     ValueError:
-#         If export=True but export_filename is empty or invalid.
-#         If unable to fetch or process demographics data.
-#     """
-#     #validate export_filename if export is True
-#     if export:
-#         if not export_filename or not isinstance(export_filename, str) or export_filename.strip() == "":
-#             raise ValueError("export_filename parameter is required and must be a non-empty string when export=True.")
-    
-#     #import demographics module
-#     try:
-#         from .demographics import export_demographics
-#     except ImportError:
-#         from demographics import export_demographics
-    
-#     #raise error if JSON file not found
-#     if not os.path.isfile(iso3166_2_json_filepath):
-#         raise OSError(f"ISO 3166-2 JSON file not found: {iso3166_2_json_filepath}.")
-
-#     #load the JSON file
-#     with open(iso3166_2_json_filepath, 'r', encoding='utf-8') as file:
-#         iso3166_2_json = json.load(file)
-
-#     #track statistics
-#     total_subdivisions = 0
-#     null_demo_count = 0
-#     corrected_count = 0
-#     failed_corrections = {}  # Changed to dict to store {full_code: (name, error_details)}
-#     successful_corrections = []
-
-#     if verbose:
-#         print(f"Starting demographics correction process for {iso3166_2_json_filepath}")
-#         print("=" * 70)
-
-#     #iterate over each country
-#     for country_code, country_data in iso3166_2_json.items():
-#         if verbose:
-#             print(f"\nProcessing country: {country_code}")
-        
-#         #track if any subdivisions in this country need correction
-#         country_has_nulls = False
-        
-#         for subdivision_code, subdivision_data in country_data.items():
-#             total_subdivisions += 1
-            
-#             #check if this subdivision has null area or population
-#             has_null_area = subdivision_data.get('area') is None
-#             has_null_pop = subdivision_data.get('population') is None
-            
-#             if has_null_area or has_null_pop:
-#                 null_demo_count += 1
-#                 if not country_has_nulls:
-#                     country_has_nulls = True
-        
-#         #if country has any subdivisions needing correction, fetch demographics data
-#         if country_has_nulls:
-#             try:
-#                 if verbose:
-#                     print(f"  Fetching demographics data from Wikidata for {country_code}...")
-                
-#                 #fetch demographics data for entire country
-#                 demographics_data = export_demographics(
-#                     country_code,
-#                     all_years=False,
-#                     include_pop_year=False,
-#                     include_population_rank=False,
-#                     include_metadata=False,
-#                     include_subdiv_name=False
-#                 )
-                
-#                 #iterate through subdivisions again to apply corrections
-#                 for subdivision_code, subdivision_data in country_data.items():
-#                     has_null_area = subdivision_data.get('area') is None
-#                     has_null_pop = subdivision_data.get('population') is None
-                    
-#                     if has_null_area or has_null_pop:
-#                         #try to find matching subdivision in demographics data
-#                         #ISO 3166-2 codes in JSON are full codes (e.g., "GB-ABC")
-#                         #but demographics returns data keyed by subdivision code without country
-#                         iso_code_suffix = subdivision_code.split('-', 1)[1] if '-' in subdivision_code else subdivision_code
-                        
-#                         #search for matching entry in demographics data
-#                         matching_demo = None
-#                         for demo_iso_code, demo_data in demographics_data.items():
-#                             if demo_iso_code.upper() == subdivision_code.upper() or demo_iso_code.upper().endswith(iso_code_suffix.upper()):
-#                                 matching_demo = demo_data
-#                                 break
-                        
-#                         if matching_demo:
-#                             #update area if it was null and we have data
-#                             if has_null_area and matching_demo.get('area') is not None:
-#                                 subdivision_data['area'] = matching_demo['area']
-#                                 if verbose:
-#                                     print(f"  ✓ Updated area for {subdivision_code}: {matching_demo['area']} km²")
-                            
-#                             #update population if it was null and we have data
-#                             if has_null_pop and matching_demo.get('population') is not None:
-#                                 subdivision_data['population'] = matching_demo['population']
-#                                 if verbose:
-#                                     print(f"  ✓ Updated population for {subdivision_code}: {matching_demo['population']}")
-                            
-#                             corrected_count += 1
-                            
-#                             #track successful correction
-#                             success_msg = f"{subdivision_code} ({subdivision_data.get('name', 'Unknown')})"
-#                             successful_corrections.append(success_msg)
-#                         else:
-#                             subdivision_name = subdivision_data.get('name', 'Unknown')
-#                             full_code = subdivision_code
-#                             error_details = f"No matching demographics data found for {full_code} ({subdivision_name}) in {country_code}"
-#                             failed_corrections[full_code] = (subdivision_name, error_details)
-                            
-#                             if verbose:
-#                                 print(f"  ✗ {error_details}")
-                
-#             except Exception as e:
-#                 error_msg = f"Error fetching demographics for {country_code}: {str(e)}"
-#                 failed_corrections[f"{country_code}-ERROR"] = (country_code, error_msg)
-                
-#                 if verbose:
-#                     print(f"  ⚠ {error_msg}")
-            
-#             #add delay to respect Wikidata API rate limits
-#             time.sleep(1)
-
-#     #print summary statistics
-#     if verbose:
-#         print("\n" + "=" * 70)
-#         print("Demographics Correction Summary:")
-#         print(f"  Total subdivisions processed: {total_subdivisions}")
-#         print(f"  Subdivisions with null area/population: {null_demo_count}")
-#         print(f"  Successfully corrected: {corrected_count}")
-#         print(f"  Failed corrections: {len(failed_corrections)}")
-#         print("=" * 70)
-
-#     #determine output filename
-#     output_file = export_filename if export else iso3166_2_json_filepath
-
-#     #save the corrected data to the JSON file
-#     with open(output_file, 'w', encoding='utf-8') as f:
-#         json.dump(iso3166_2_json, f, ensure_ascii=False, indent=4)
-
-#     if verbose:
-#         print(f"\n✓ Successfully saved corrected data to {output_file}")
-
-#     #output successful corrections if any
-#     if successful_corrections and verbose:
-#         print("\n" + "=" * 70)
-#         print("✓ Subdivisions with Successfully Corrected Demographics:")
-#         print("=" * 70)
-#         for success_msg in successful_corrections:
-#             print(f"  • {success_msg}")
-#         print("=" * 70)
-
-#     #output failed corrections if any
-#     if failed_corrections and verbose:
-#         print("\n" + "=" * 70)
-#         print("⚠ Subdivisions with Failed Demographics Corrections:")
-#         print("=" * 70)
-        
-#         for subdivision_code, (subdivision_name, error_details) in failed_corrections.items():
-#             print(f"\n{subdivision_code}: {subdivision_name}\n")
-            
-#             # Parse and format error details line by line
-#             error_lines = error_details.split('\n')
-#             for line in error_lines:
-#                 stripped_line = line.strip()
-#                 if stripped_line:
-#                     # Check if line already starts with a bullet point
-#                     if stripped_line.startswith('•'):
-#                         # Line already has bullet point, just print with indentation
-#                         print(f"  {stripped_line}")
-#                     else:
-#                         # Line doesn't have bullet point, add one
-#                         print(f"  • {stripped_line}")
-        
-#         print("\n" + "=" * 70)
-# def correct_lat_lng(iso3166_2_json_filepath: str, verbose: bool = True, export: bool = True,
-#                    export_filename: str = "iso3166_2_lat_lng_corrected.json") -> None:
-#     """
-#     Corrects None/null latLng values in the ISO 3166-2 JSON file by recalculating
-#     the lat_lng data using the Geo class. Only modifies subdivisions
-#     where latLng is None/null, leaving all other data unchanged.
-
-#     Parameters
-#     ==========
-#     :iso3166_2_json_filepath: str
-#         filepath to the exported ISO 3166-2 JSON file to correct.
-#     :verbose: bool (default=True)
-#         if True, prints progress messages during correction process.
-#     :export: bool (default=True)
-#         if True (default), exports the corrected data to a new JSON file. If False, overwrites the original.
-#     :export_filename: str (default="iso3166_2_lat_lng_corrected.json")
-#         filename for the exported corrected JSON file. Required when export=True.
-#         Must be a valid non-empty filename string. Raises ValueError if empty or invalid when export=True.
-
-#     Returns
-#     =======
-#     None
-
-#     Raises
-#     ======
-#     OSError:
-#         ISO 3166-2 JSON file not found at given path.
-#     ValueError:
-#         If export=True but export_filename is empty or invalid.
-#         If a valid relation ID and lat_lng cannot be found for a subdivision.
-#     """
-#     #validate export_filename if export is True
-#     if export:
-#         if not export_filename or not isinstance(export_filename, str) or export_filename.strip() == "":
-#             raise ValueError("export_filename parameter is required and must be a non-empty string when export=True.")
-    
-#     #raise error if JSON file not found
-#     if not os.path.isfile(iso3166_2_json_filepath):
-#         raise OSError(f"ISO 3166-2 JSON file not found: {iso3166_2_json_filepath}.")
-
-#     #load the JSON file
-#     with open(iso3166_2_json_filepath, 'r', encoding='utf-8') as file:
-#         iso3166_2_json = json.load(file)
-
-#     #track statistics
-#     total_subdivisions = 0
-#     null_lat_lng_count = 0
-#     corrected_count = 0
-#     failed_corrections = {}  # Changed to dict to store {full_code: (name, error_details)}
-#     successful_corrections = []
-
-#     if verbose:
-#         print(f"Starting latLng correction process for {iso3166_2_json_filepath}")
-#         print("=" * 70)
-
-#     #iterate over each country and subdivision
-#     for country_code, country_data in iso3166_2_json.items():
-#         if verbose:
-#             print(f"\nProcessing country: {country_code}")
-        
-#         for subdivision_code, subdivision_data in country_data.items():
-#             total_subdivisions += 1
-            
-#             #check if this subdivision has a None/null latLng value
-#             if subdivision_data.get('latLng') is None:
-#                 null_lat_lng_count += 1
-                
-#                 if verbose:
-#                     print(f"  Found null latLng for {subdivision_code} ({subdivision_data.get('name', 'Unknown')})")
-                
-#                 try:
-#                     #import Geo locally to avoid circular imports
-#                     from geo import Geo
-                    
-#                     #create Geo instance for this subdivision
-#                     osm_subdiv = Geo(subdivision_code, proxy=None)
-                    
-#                     #get the lat_lng using the enhanced get_lat_lng method
-#                     lat_lng = geo.get_lat_lng(verbose=verbose)
-                    
-#                     if lat_lng is not None:
-#                         #convert tuple to list format [lat, lng]
-#                         subdivision_data['latLng'] = list(lat_lng)
-#                         corrected_count += 1
-                        
-#                         #track successful correction
-#                         success_msg = f"{subdivision_code} ({subdivision_data.get('name', 'Unknown')}): {lat_lng}"
-#                         successful_corrections.append(success_msg)
-                        
-#                         if verbose:
-#                             print(f"  ✓ Successfully corrected {subdivision_code}: {lat_lng}")
-#                     else:
-#                         #lat_lng could not be found even after retries - use diagnostic info if available
-#                         subdivision_name = subdivision_data.get('name', 'Unknown')
-#                         full_code = subdivision_code
-                        
-#                         if hasattr(osm_subdiv, 'lat_lng_failure_reason') and osm_subdiv.lat_lng_failure_reason:
-#                             error_details = osm_subdiv.lat_lng_failure_reason
-#                         else:
-#                             error_details = f"Failed to get valid lat_lng for {full_code} ({subdivision_name}) in {country_code}"
-                        
-#                         failed_corrections[full_code] = (subdivision_name, error_details)
-                        
-#                         if verbose:
-#                             print(f"  ✗ Failed to correct {full_code}: {subdivision_name}")
-                
-#                 except Exception as e:
-#                     subdivision_name = subdivision_data.get('name', 'Unknown')
-#                     full_code = subdivision_code
-#                     error_details = f"Error processing {full_code} ({subdivision_name}) in {country_code}:\n{str(e)}"
-#                     failed_corrections[full_code] = (subdivision_name, error_details)
-                    
-#                     if verbose:
-#                         print(f"  ✗ {error_details}")
-                
-#                 #add delay to respect API rate limits
-#                 time.sleep(1)
-
-#     #print summary statistics
-#     if verbose:
-#         print("\n" + "=" * 70)
-#         print("Correction Summary:")
-#         print(f"  Total subdivisions processed: {total_subdivisions}")
-#         print(f"  Subdivisions with null latLng: {null_lat_lng_count}")
-#         print(f"  Successfully corrected: {corrected_count}")
-#         print(f"  Failed corrections: {len(failed_corrections)}")
-#         print("=" * 70)
-
-#     #determine output filename
-#     output_file = export_filename if export else iso3166_2_json_filepath
-
-#     #save the corrected data to the JSON file
-#     with open(output_file, 'w', encoding='utf-8') as f:
-#         json.dump(iso3166_2_json, f, ensure_ascii=False, indent=4)
-
-#     if verbose:
-#         print(f"\n✓ Successfully saved corrected data to {output_file}")
-
-#     #output successful corrections if any
-#     if successful_corrections and verbose:
-#         print("\n" + "=" * 70)
-#         print("✓ Subdivisions with Successfully Corrected latLng:")
-#         print("=" * 70)
-#         for success_msg in successful_corrections:
-#             print(f"  • {success_msg}")
-#         print("=" * 70)
-
-#     #output failed corrections if any
-#     if failed_corrections and verbose:
-#         print("\n" + "=" * 70)
-#         print("⚠ Subdivisions with Failed latLng Corrections:")
-#         print("=" * 70)
-        
-#         for subdivision_code, (subdivision_name, error_details) in failed_corrections.items():
-#             print(f"\n{subdivision_code}: {subdivision_name}\n")
-            
-#             # Parse and format error details line by line
-#             error_lines = error_details.split('\n')
-#             for line in error_lines:
-#                 stripped_line = line.strip()
-#                 if stripped_line:
-#                     # Check if line already starts with a bullet point
-#                     if stripped_line.startswith('•'):
-#                         # Line already has bullet point, just print with indentation
-#                         print(f"  {stripped_line}")
-#                     else:
-#                         # Line doesn't have bullet point, add one
-#                         print(f"  • {stripped_line}")
-        
-#         print("\n" + "=" * 70)

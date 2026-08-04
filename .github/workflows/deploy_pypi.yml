@@ -9,28 +9,27 @@ on:
   # allow for workflow to be manually initiated from the Actions tab
   workflow_dispatch:
 
+# least-privilege default for GITHUB_TOKEN, jobs opt into more if they need it
+permissions:
+  contents: read
+
 # build and deploy to PyPI server if test workflow was successful or manual trigger was selected
 jobs:
   test_success:
     name: Deploy to PyPI 📦
     runs-on: ubuntu-latest         # platform: [ubuntu-latest, macos-latest, windows-latest]
     if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
-    strategy:
-      matrix:
-        python-version: [3.10]  #deploying using one Python version on 1 runner
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     # build distribution package using poetry tool and upload to the PYPi server via custom github action
     - name: Build and publish to PyPI
-      uses: JRubics/poetry-publish@v2.0
+      uses: JRubics/poetry-publish@v2.1
       with:
         pypi_token: ${{ secrets.PYPI_TOKEN }}
 
     #sleep for 30 seconds to ensure that distribution package has finished uploading to PyPI
     - name: Wait / Sleep
-      uses: jakejarvis/wait-action@master
-      with:
-        time: '30s'
+      run: sleep 30
 
     # download package of iso3166_2 from PYPI server to ensure it uploaded correctly
     - name: Install iso3166_2 from PyPI
@@ -58,17 +57,22 @@ jobs:
       cancel-in-progress: true
     steps:
       - name: Ensure Vercel Deploy Hook is configured
+        env:
+          HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
         run: |
-          if [ -z "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}" ]; then
+          if [ -z "$HOOK_URL" ]; then
             echo "VERCEL_DEPLOY_HOOK_URL secret is not set"; exit 1;
           fi
 
       - name: Call Vercel Deploy Hook (with retry)
+        env:
+          HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+          RUN_ID: ${{ github.run_id }}
         run: |
           for i in 1 2 3; do
-            curl -fsS -X POST "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}" \
+            curl -fsS -X POST "$HOOK_URL" \
               -H "Content-Type: application/json" \
-              -d "{\"workflow\":\"Deploy to PyPI\",\"run_id\":\"${{ github.run_id }}\"}" \
+              -d "{\"workflow\":\"Deploy to PyPI\",\"run_id\":\"$RUN_ID\"}" \
               && exit 0 || echo "Retry $i failed, retrying..."
             sleep 5
           done

@@ -388,6 +388,30 @@ but you can optionally overwrite the original JSON file by setting the ``overwri
    When setting ``overwrite_data=True``, the original **iso3166-2.json** file will be permanently modified. It is recommended to create a backup before using this option. To restore the original data, you can reinstall the software package.
 
 
+Export subdivision data to a pandas DataFrame
+---------------------------------------------
+Return the currently loaded subdivision data as a flat ``pandas.DataFrame``, with one row per subdivision and the
+``countryCode`` and ``subdivisionCode`` added as columns alongside each subdivision's attributes. This is handy for
+analysis, filtering or exporting to CSV/Excel. This method requires the optional ``pandas`` dependency, which can be
+installed via ``pip install iso3166-2[export]``.
+
+.. code-block:: python
+
+   from iso3166_2 import *
+
+   #create instance of Subdivisions class
+   iso = Subdivisions()
+
+   #get a DataFrame of all subdivisions for all countries
+   df = iso.to_dataframe()
+
+   #get a DataFrame of just the Canadian subdivisions
+   ca_df = Subdivisions("CA").to_dataframe()
+
+   #export to CSV
+   df.to_csv("iso3166_2.csv", index=False)
+
+
 Check for the latest Subdivision data
 -------------------------------------
 Pull the latest subdivision data object from the `iso3166-2` GitHub repo and compare data with that of the object currently installed. If

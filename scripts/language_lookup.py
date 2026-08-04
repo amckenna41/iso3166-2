@@ -476,7 +476,7 @@ class LanguageLookup:
             
         return country_language_data
 
-    def add_language_code(self, new_language_object: dict={}, code: str="", name: str="", scope: str="", type_: str="", 
+    def add_language_code(self, new_language_object: "dict|None"=None, code: str="", name: str="", scope: str="", type_: str="",
                           countries: str="", total: int=0, source: str="", export: bool=True) -> None:
         """ 
         Add a custom language object to the language lookup table. The function

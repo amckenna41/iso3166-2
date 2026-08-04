@@ -1,6 +1,29 @@
 Changelog
 =========
 
+v1.8.4 - August 2026
+--------------------
+
+**Added**
+
+* Added ``to_dataframe()`` method to the ``Subdivisions`` class, exporting the loaded subdivision data as a flat ``pandas.DataFrame`` with one row per subdivision
+* Added optional ``export`` dependency extra (``pip install iso3166-2[export]``) providing ``pandas`` for ``to_dataframe()``
+
+**Removed**
+
+* Removed the ``scripts/update_subdivisions`` module, ``iso3166_2_resources/subdivision_updates.csv`` and ``tests/test_update_subdivisions.py``; the subdivision changes they applied are now part of the baseline exported dataset
+
+**Changed**
+
+* ``__contains__`` on the ``Subdivisions`` class is now case-insensitive and returns ``False`` for non-string input instead of raising
+* ``__version__`` is now resolved once in ``iso3166_2/iso3166_2.py`` and re-exported from ``__init__.py``, removing the duplicated hardcoded fallback literal
+* The docs ``|version_link|`` substitution is generated from ``release`` in ``docs/conf.py`` instead of being hardcoded in ``docs/index.rst``
+
+**Fixed**
+
+* Fixed ``custom_subdivision(copy=True)`` raising ``TypeError`` and ``custom_subdivision(custom_subdivision_object=...)`` raising ``KeyError`` on omitted optional keys
+* Various fixes across the ``/scripts`` data-generation tooling; see the full CHANGELOG for details
+
 v1.8.3 - April 2026
 --------------------
 
@@ -72,7 +95,6 @@ v1.8.0 - September 2025
 * Added Vercel webhook to the workflow, this redeploys the API vercel app once new version of the software released from this repo
 * In script dir added a metadata script that exports a plethora of useful metadata about the software and data object
 * Added functionality to the iso3166-2 main software such that the subdivision_codes() and subdivision_names() functions can be called through the subscripted country code object
-* Added optional 'archive' parameter to update_subdivisions() function that can be set to True/False and will archive the existing iso3166-2 object before any changes are made
 * Added CSV and XML of iso3166-2 dataset to iso3166_2_resources dir on repo
 * When exporting the individual data to JSON, CSV and XML, in the function you can now import an already exported JSON file to just export the CSV and XML files
 * Created function that allows you to combines multiple exports into one file, use case is for when alpha_codes_range was used to export a batch of export data and you need to combine into one master file
@@ -86,7 +108,6 @@ v1.8.0 - September 2025
 * Main export function name changed in get_iso3166_2 as it was very similar to the export data function in utils
 * Removed filter_attributes functionality from utils export function
 * Updated all references of iso3166-flag-icons to iso3166-flags to reflect updated repository name - including for each individual flag url in object
-* Removed filter_attributes functionality from update_subdivisions function
 * Changed export script name from get_iso3166_2 to export_iso3166_2
 * Removed any additional flags from the iso3166-1-flags dataset that aren't strictly in the ISO 3166-1, including eu, arab league, UN and XX flags
 * Updated the workflow such that unit tests for specific modules are only run when changes are made to those modules rather than all tests being run. If workflow dispatch is set then all tests will be run
@@ -140,7 +161,6 @@ v1.7.0 - 1.7.2 - July 2025
 * Added delete language object functionality to language lookup table
 * Added user agent functionality to language lookup script
 * In language lookup export function, you can now put in custom language code to export
-* In update_subdivisions module and function, you can now add custom attributes to a subdivision via the custom_attributes parameter
 * Added logic to ensure the custom order of attributes in exported iso3166-2 object is maintained
 * In extract script, optional proxy functionality added to requests.get functions to help avoid 429 errors and timeout errors
 * In custom subdivision function is sw, you can now pass in an object of updates attributes
@@ -162,7 +182,6 @@ v1.7.0 - 1.7.2 - July 2025
 
 **Fixed**
 
-* In the update_subdivisions function when editing a subdivision and its actual subdivision code, the flag attribute may have erroneous or null data
 
 
 v1.6.1 - June 2024
@@ -170,7 +189,6 @@ v1.6.1 - June 2024
 **Added**
 
 * list_subdivisions endpoint added to API that returns list of all subdivision codes per country
-* Unit tests for flag_url function in update_subdivisions script
 * Separate function for extracting and parsing data attributes from RestCountries API
 * Added raise_for_status error catcher for requests library
 
@@ -181,7 +199,6 @@ v1.6.1 - June 2024
 
 **Fixed**
 
-* Error in request URL for RestCountries API in update_subdivisions script
 * Raise TypeError if invalid data type input to export_iso3166_2 function rather than system crashing
 * When getting the coordinates (latitude/longitude) per subdivision, a more granular and accurate response is ensured by appending the country name to the subdivision name when searching via the Google Maps API
 
@@ -199,16 +216,13 @@ v1.6.0 - June 2024
 * Added more info to the error messages
 * Code coverage
 * Added additional unit tests for CSV export of ISO 3166-2 dataset from get_iso3166_2 script
-* Added unit tests for update_subdivisions functionality
 * Added export_csv parameter to get_iso3166_2 script to allow for optional export to CSV, JSON exported by default
 * Added iso3166 object filepath parameter to the ISO3166_2() class that allows for custom object to be imported on class instantiation
 
 **Changed**
 
 * flagUrl attribute changed to flag in dataset
-* Moved functionality for getting subdivision flag data into its own function in update_subdivisions.py script
 * When exporting data using get_iso3166_2 script, export to CSV by default
-* update_subdivisions script can be called by itself from the cmd line/terminal, passing in the required parameters
 * Added flag/parameter to custom_subdivisions function where if set you can create a hard copy of the existing iso3166-2.json object so that you aren't directly adding/amending/deleting a subdivision from the object
 * Sort rows in iso3166_2_updates/subdivision_updates.csv by date (newest first) rather than by alpha-2 country code
 * Update package description
@@ -216,21 +230,15 @@ v1.6.0 - June 2024
 * Split up jobs in build workflows into separate sections
 * Added more info for each functionality with additional examples in the software and API documentation
 * Upgrade checkout action in workflow from v3 to v4
-* Raise error in update_subdivisions script when trying to delete a subdivision that doesn't exist
 * In unit tests, exclude latLng attribute so gmaps API isn't called when running
 * When adding a custom subdivision via the respective function, the "name" and "type" attributes are no longer explicitly required
 
 **Fixed**
 
-* In the update_subdivisions function when editing a subdivision and its actual subdivision code, the flag attribute may have erroneous or null data
-* In the update_subdivisions function you can now put in the full subdivision code or just the right hand side of the code into the subdivision_code parameter
-* In the update_subdivisions function when amending an existing subdivision's code, the current flag URL attribute value points to the original flag URL, check on repo if flag with new subdivision code exists, otherwise keep the value to the original
-* In the update_subdivisions function when amending an existing subdivision's code, error now raised when the new subdivision code's country code does not match the original
 * If a custom subdivision object is input via its respective function, latLng attribute is set to 3d.p
 * Fixed syntax of some function parameters that can take multiple data types
 * Fixed parameter typing syntax for some function parameters that can be multiple data types
 * Error when adding a new subdivision, now will raise an error if the input parent code is invalid/not a country subdivision
-* In get_flag_url function in update_subdivision script, you can pass in the full subdivision code or just the RHS of it
 
 
 v1.5.4 - March 2024

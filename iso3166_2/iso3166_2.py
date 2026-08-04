@@ -32,6 +32,12 @@ except ImportError:
         DataFileError,
     )
 
+#resolve version from installed package metadata; fall back to literal if not installed
+try:
+    __version__ = _pkg_version("iso3166-2")
+except Exception:
+    __version__ = "1.8.4"  # fallback for development installs
+
 class Subdivisions():
     """
     This class is used to access all the ISO 3166-2 country subdivision data and attributes, with
@@ -207,11 +213,7 @@ class Subdivisions():
         self.iso3166_2_filepath = iso3166_2_filepath
         self.iso3166_json_filename= "iso3166-2.json"
         self.filter_attributes = filter_attributes
-        #resolve version from installed package metadata; fall back to literal if not installed
-        try:
-            self.__version__ = _pkg_version("iso3166-2")
-        except Exception:
-            self.__version__ = "1.8.3"
+        self.__version__ = __version__
 
         #get full path to default object
         self.iso3166_2_module_path = os.path.join(os.path.dirname(os.path.abspath(sys.modules[self.__module__].__file__)), self.iso3166_json_filename)
@@ -607,7 +609,7 @@ class Subdivisions():
 
         #create a copy of the original iso3166-2.json object prior to making any changes to it
         if (copy):
-            test_iso3166_2_copy = os.path.join(os.path.dirname(os.path.abspath(sys.modules[self.__module__])), "iso3166_2_copy.json")
+            test_iso3166_2_copy = os.path.join(os.path.dirname(os.path.abspath(sys.modules[self.__module__].__file__)), "iso3166_2_copy.json")
             with open(test_iso3166_2_copy, "w") as output_json:
                 json.dump(self.all, output_json)
 
@@ -640,7 +642,7 @@ class Subdivisions():
                 #     raise ValueError(f"Custom subdivision codes should be unique and not already present as an existing code: {custom_subdivision_object[subdivision_code]}.")
                 
                 #create object of new data to be added, reorder attributes
-                custom_subdivision_data = {key: custom_subdivision_object[key] for key in ['name', 'localOtherName', 'type', 'parentCode', 'flag', 'latLng', 'area', 'population', 'history']}
+                custom_subdivision_data = {key: custom_subdivision_object.get(key) for key in ['name', 'localOtherName', 'type', 'parentCode', 'flag', 'latLng', 'area', 'population', 'history']}
 
                 #add custom attributes to subdivision, if applicable
                 if (custom_attributes != {}):
@@ -1355,6 +1357,37 @@ class Subdivisions():
             with open(os.path.join(self.iso3166_2_module_path), 'w', encoding='utf-8') as output_json:
                 json.dump(self.all, output_json, ensure_ascii=False, indent=4)
 
+    def to_dataframe(self) -> Any:
+        """
+        Return the loaded ISO 3166-2 subdivision data as a flat pandas DataFrame, with one
+        row per subdivision. The countryCode and subdivisionCode are added as columns
+        alongside each subdivision's attributes (name, type, latLng, flag etc).
+
+        Requires the optional 'pandas' dependency (pip install "iso3166-2[export]").
+
+        Returns
+        =======
+        :pandas.DataFrame
+            DataFrame of all subdivisions currently loaded in the object.
+
+        Raises
+        ======
+        ImportError:
+            If pandas is not installed.
+        """
+        try:
+            import pandas as pd
+        except ImportError:
+            raise ImportError(
+                "The to_dataframe() method requires pandas. Install it with: pip install \"iso3166-2[export]\"."
+            )
+        rows = [
+            {"countryCode": alpha2, "subdivisionCode": code, **data}
+            for alpha2, subdivisions in self.all.items()
+            for code, data in subdivisions.items()
+        ]
+        return pd.DataFrame(rows)
+
     def __str__(self) -> str:
         """ Return string representation of the class instance. """
         return f"Instance of Subdivisions class. Path: {self.iso3166_2_module_path}, Version {self.__version__}."
@@ -1386,6 +1419,9 @@ class Subdivisions():
         :bool:
             True if the code exists in the object, False otherwise.
         """
+        if not isinstance(item, str):
+            return False
+        item = item.upper()
         if item in self.all:
             return True
         if '-' in item:
@@ -1446,18 +1482,14 @@ class Subdivisions():
         if term == candidate:
             return 100
 
+        # ponytail: terms are space-stripped upstream (search()), so the old multi-token
+        # coverage branch degenerated to a whole-string substring check; dropped it and
+        # rebalanced the three fuzz components to sum to 1.0.
         ratio_score = fuzz.ratio(term, candidate)
         token_score = fuzz.token_set_ratio(term, candidate)
         partial_score = fuzz.partial_ratio(term, candidate)
 
-        term_tokens = [t for t in term.split() if t]
-        if not term_tokens:
-            coverage = 0.0
-        else:
-            matched_tokens = sum(1 for token in term_tokens if token in candidate)
-            coverage = matched_tokens / len(term_tokens)
-
-        weighted = (0.40 * ratio_score) + (0.35 * token_score) + (0.20 * partial_score) + (0.05 * coverage * 100)
+        weighted = (0.45 * ratio_score) + (0.35 * token_score) + (0.20 * partial_score)
         return int(round(weighted))
 
     @staticmethod

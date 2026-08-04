@@ -1,13 +1,9 @@
 from .iso3166_2 import *
+from .iso3166_2 import __version__
 from .exceptions import *
-from importlib.metadata import version as _pkg_version
 
 #software metadata
 __name__ = 'iso3166-2'
-try:
-    __version__ = _pkg_version("iso3166-2")
-except Exception:
-    __version__ = "1.8.3"  # fallback for development installs
 __description__ = "A lightweight Python package, and accompanying RESTful API, used to access ALL of the world's most up-to-date and accurate ISO 3166-2 subdivision/regional data, including: subdivision code, name, local/other names, parent code, type, latitude/longitude, flag and history."
 __author__ = 'AJ McKenna, https://github.com/amckenna41'
 __authorEmail__ = 'amckenna41@qub.ac.uk'

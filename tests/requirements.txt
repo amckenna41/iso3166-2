@@ -1,8 +1,8 @@
 #package requirements for testing
-requests>=2.28.1
+requests>=2.33.0
 iso3166-2>=1.8.2
-iso3166-updates
-tqdm
+iso3166-updates>=1.8.8
+tqdm>=4.66.3
 natsort
 pandas
 numpy
@@ -14,7 +14,7 @@ emoji-country-flag
 jsonschema
 free-proxy
 shapely
-pytest 
+pytest>=9.0.3
 pytest-cov 
 bandit 
 safety 

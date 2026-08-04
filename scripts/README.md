@@ -3,7 +3,6 @@
 # Scripts for exporting and updating all ISO 3166-2 data
 
 *  [`main.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/main.py) - main pipeline script for pulling and exporting the latest ISO 3166-2 data from the various data sources and scripts
-* [`update_subdivisions.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/update_subdivisions.py) - script for adding, amending and or deleting subdivision data to the `iso3166-2` software and object
 * [`local_other_names.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/local_other_names.py) - script for adding the data from the [`local_other_names.csv`](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_resources/local_other_names.csv) dataset, including any validation checks on the data
 * [`utils.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/utils.py) - script of utility functions used throughout the software, mainly used by the [`main.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/main.py) script
 * [`language_lookup.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/language_lookup.py) - script containing the `LanguageLookup` class for extracting and working with the language lookup table and data
@@ -92,72 +91,6 @@ To download all of the latest ISO 3166-2 subdivision data for all countries, sav
 ```bash
 python3 scripts/main.py --export_filename=iso3166_2 --verbose --export_csv --save_each_iteration
 ```
-
-<!-- Requirements (update_subdivisions.py)
--------------------------------------
-* [python][python] >= 3.8
-* [iso3166][iso3166] >= 2.1.1
-* [natsort][natsort] >= 8.4.0
-* [pandas][pandas] >= 1.4.3
-* [numpy][numpy] >= 1.23.2 -->
-
-Usage: update_subdivisions.py
------------------------------
-The script [`update_subdivisions.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/update_subdivisions.py) has the `update_subdivision()` function that was created to streamline the addition, amendment and or deletion to any of the subdivisions within the iso3166-2 data object. This is an important functionality due to the ever-changing landscape of the subdivision data and attributes regularly published by the ISO. The main function can accept an individual subdivision change by passing in all the required attribute values to the function directly. Alternatively, a <b>CSV</b> file with rows of the individual changes can be passed in, allowing for hundreds of changes to be made in one go (this is the recommended and fastest approach), as can be seen in the CSV [subdivision_updates.csv](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_resources/subdivision_updates.csv).
-
-The primary input parameters to the `update_subdivision()` function are: <i>alpha_code, subdivision_code, name, local_name, type, lat_lng, parent_code, flag, history, custom_attributes</i> and <i>delete</i>. The first ten parameters represent the data to be added or changed to the specified country code and subdivision code (<i>alpha2_code, subdivision_code</i>) and <i>delete</i> is a boolean flag that should be set (0/1) if the input subdivision is to be deleted - by default this will be 0. For any addition, amendment and or deletion, the <i>country_code</i> and <i>subdivision_code</i> parameters are required, but the remainder of the parameters are optional. If these optional parameters are not input then they will be set to null for the subdivision, in the case of an addition or deletion, or remain as their previous value in the case of an amendment. You can also pass in custom attributes for a subdivision object e.g population, gini, gdp etc, via the <i>custom_attributes</i> parameter.  
-
-As mentioned, you can also pass in a <b>CSV</b> with rows of all the changes to be made to the subdivision object e.g [subdivision_updates.csv](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_resources/subdivision_updates.csv). The <b>CSV</b> has the same columns as the aforementioned function parameters, but additionally has the <i>notes</i> and <i>dateIssued</i> columns. <i>notes</i> just contains a small description about the addition, amendment and or deletion being made and <i>dateIssued</i> is the date that the subdivision change was communicated by the ISO. 
-
-```python
-from scripts.update_subdivisions import *
-
-#adding Timimoun Province of Algeria (DZ-49) to ISO 3166-2 object (from newsletter 2022-11-29)
-update_subdivision("DZ", "DZ-49", name="Timimoun", local_name="ولاية تيميمون", type_="Province", lat_lng=[29.263, 0.241], parent_code=None, flag=None, history=None)
-
-#adding Waterford County of Ireland (IE-WD) to ISO 3166-2 object - subdivision already present so no changes made
-update_subdivision("IE", "IE-WD", "Waterford", local_name="Port Láirge", type_="County", lat_lng=[52.260, -7.110], parent_code="IE-M", flag="https://github.com/amckenna41/iso3166-flags/blob/main/iso3166-2-flagss/IE/IE-WD.png")
-#iso.update_subdivision("IE", "IE-WD") - this will also work as only the first 2 params requried
-
-#amending the subdivision name of subdivision FI-17 from Satakunda to Satakunta (from newsletter 2022-11-29)
-update_subdivision("FI", "FI-17", name="Satakunta")
-
-#deleting FR-GP (Guadeloupe) and (FR-MQ Martinique) subdivisions (from newsletter 2021-11-25)
-update_subdivision("FR", "FR-GP", delete=1)
-update_subdivision("FR", "FR-MQ", delete=1)
-
-#error raised as both country_code and subdivision_code parameters required
-update_subdivision(type_="region", lat_lng=[], parent_code=None)
-
-#error raised as only one alpha code and subdivision code should be passed in - if multiple updates required pass in a CSV
-update_subdivision("IE", "IE-WD,IE-WW")
-
-#passing in a csv with rows of subdivision additions/updates/deletions
-update_subdivision(subdivision_csv="new_subdivisions.csv")
-```
-
-<!-- The above commands can also be executed via the terminal/cmd line:
-
-```bash
-python3 scripts/update_subdivisions.py --alpha_code=DZ --subdivision_code=DZ-99 --name=Timimoun --local_name="ولاية تيميمون" --type_=Province --lat_lng="[29.263, 0.241]"
-```
-
-```bash
-python3 scripts/update_subdivisions.py --alpha_code=IE --subdivision_code=IE-WD --name=Waterford --local_name="Port Láirge" --type_=County --lat_lng="[52.260, -7.110]" --parent_code=IE-M --flag="https://github.com/amckenna41/iso3166-flags/blob/main/iso3166-2-flagss/IE/IE-WD.png"
-```
-
-```bash
-python3 scripts/update_subdivisions.py --alpha_code=FI --subdivision_code=FI-17 --name=Satakunta
-```
-
-```bash
-python3 scripts/update_subdivisions.py --alpha_code=FR --subdivision_code=FR-GP --delete
-python3 scripts/update_subdivisions.py --alpha_code=FR --subdivision_code=FR-MQ --delete
-```
-
-```bash
-python3 scripts/update_subdivisions.py  --subdivision_csv=new_subdivisions.csv
-``` -->
 
 <!-- Requirements (local_other_names.py)
 -----------------------------------

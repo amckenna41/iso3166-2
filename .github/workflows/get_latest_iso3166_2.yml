@@ -1,0 +1,200 @@
+name: Get Latest ISO 3166-2
+
+# Re-export the latest ISO 3166-2 data using scripts/main.py, compare it against the
+# committed iso3166_2/iso3166-2.json via utils.compare_iso3166_2 and, if any differences
+# are found, open a pull request that replaces the dataset (and refreshes the test fixture)
+# with the newly exported data. No PR is opened when there are no differences.
+#
+# NOTE: workflow_dispatch is limited to 10 inputs, so the 6 path/infra/return-only arguments
+# of export_iso3166_2 (resources_folder, export, state_city_data, save_each_iteration,
+# use_proxy, geo_cache_path) are not exposed here and use their scripts/main.py defaults.
+
+on:
+  workflow_dispatch:
+    inputs:
+      alpha_codes:
+        description: 'One or more ISO 3166 alpha-2/alpha-3/numeric country codes (blank = all countries).'
+        required: false
+        default: ''
+      export_folder:
+        description: 'Output folder to store the exported objects.'
+        required: false
+        default: 'test_iso3166-2'
+      export_filename:
+        description: 'Output filename (without extension) for the exported JSON object.'
+        required: false
+        default: 'test_iso3166-2'
+      alpha_codes_range:
+        description: 'Range of alpha codes to export from, inclusive (e.g. AD-LV).'
+        required: false
+        default: ''
+      rest_countries_keys:
+        description: 'Comma separated RestCountries API fields to add to each subdivision object.'
+        required: false
+        default: ''
+      filter_attributes:
+        description: 'Subset of default attributes to include in each subdivision object.'
+        required: false
+        default: ''
+      export_csv:
+        description: 'Also export the dataset to CSV.'
+        type: boolean
+        required: false
+        default: true
+      export_xml:
+        description: 'Also export the dataset to XML.'
+        type: boolean
+        required: false
+        default: true
+      history:
+        description: 'Include historical update data for each subdivision.'
+        type: boolean
+        required: false
+        default: true
+      verbose:
+        description: 'Print out progress of the export.'
+        type: boolean
+        required: false
+        default: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  get-latest-iso3166-2:
+    name: Export, compare and open PR on changes
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e . || true
+          if [ -f scripts/requirements.txt ]; then pip install -r scripts/requirements.txt; fi
+          if [ -f tests/requirements.txt ]; then pip install -r tests/requirements.txt; fi
+
+      - name: Export latest ISO 3166-2 data
+        env:
+          ALPHA_CODES: ${{ github.event.inputs.alpha_codes }}
+          EXPORT_FOLDER: ${{ github.event.inputs.export_folder }}
+          EXPORT_FILENAME: ${{ github.event.inputs.export_filename }}
+          ALPHA_CODES_RANGE: ${{ github.event.inputs.alpha_codes_range }}
+          REST_COUNTRIES_KEYS: ${{ github.event.inputs.rest_countries_keys }}
+          FILTER_ATTRIBUTES: ${{ github.event.inputs.filter_attributes }}
+          EXPORT_CSV: ${{ github.event.inputs.export_csv }}
+          EXPORT_XML: ${{ github.event.inputs.export_xml }}
+          HISTORY: ${{ github.event.inputs.history }}
+          VERBOSE: ${{ github.event.inputs.verbose }}
+        run: |
+          #build the CLI args, emitting --flag/--no-flag for BooleanOptionalAction args
+          bool_flag() { [ "$2" = "true" ] && echo "--$1" || echo "--no-$1"; }
+          ARGS=(
+            --alpha_codes "$ALPHA_CODES"
+            --export_folder "$EXPORT_FOLDER"
+            --export_filename "$EXPORT_FILENAME"
+            --alpha_codes_range "$ALPHA_CODES_RANGE"
+            --rest_countries_keys "$REST_COUNTRIES_KEYS"
+            --filter_attributes "$FILTER_ATTRIBUTES"
+            $(bool_flag export_csv "$EXPORT_CSV")
+            $(bool_flag export_xml "$EXPORT_XML")
+            $(bool_flag history "$HISTORY")
+            $(bool_flag verbose "$VERBOSE")
+          )
+          python scripts/main.py "${ARGS[@]}"
+
+      - name: Compare against committed dataset and stage changes
+        id: compare
+        env:
+          EXPORT_FOLDER: ${{ github.event.inputs.export_folder }}
+          EXPORT_FILENAME: ${{ github.event.inputs.export_filename }}
+        run: |
+          python - <<'PY'
+          import json, os, shutil
+          from scripts.utils import compare_iso3166_2
+
+          new_file = os.path.join(os.environ["EXPORT_FOLDER"], os.environ["EXPORT_FILENAME"] + ".json")
+          current_file = os.path.join("iso3166_2", "iso3166-2.json")
+          test_file = os.path.join("tests", "test_files", "test_iso3166-2.json")
+
+          #compare committed (from) against newly exported (to)
+          comparison = compare_iso3166_2(current_file, new_file, export=True, export_filename="iso3166_2_comparison.json")
+
+          added = comparison["added_subdivisions"]
+          removed = comparison["removed_subdivisions"]
+          modified = comparison["modified_subdivisions"]
+          changed = bool(added or removed or modified)
+
+          def gha_output(key, value):
+              with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+                  f.write(f"{key}={value}\n")
+
+          gha_output("changed", "true" if changed else "false")
+
+          if not changed:
+              print("No differences found between committed and newly exported ISO 3166-2 data. No PR will be opened.")
+              raise SystemExit(0)
+
+          #build markdown summary outlining the differences for the PR body
+          lines = ["## ISO 3166-2 dataset changes", ""]
+          total = (sum(len(v) for v in added.values()) + sum(len(v) for v in removed.values())
+                   + sum(len(v) for v in modified.values()))
+          lines.append(f"**{total}** subdivision change(s) detected between the committed dataset and the latest export.")
+          lines.append("")
+
+          if added:
+              lines.append("### Added subdivisions")
+              for cc, subs in sorted(added.items()):
+                  lines.append(f"- **{cc}**: {', '.join(sorted(subs))}")
+              lines.append("")
+          if removed:
+              lines.append("### Removed subdivisions")
+              for cc, subs in sorted(removed.items()):
+                  lines.append(f"- **{cc}**: {', '.join(sorted(subs))}")
+              lines.append("")
+          if modified:
+              lines.append("### Modified subdivisions")
+              for cc, subs in sorted(modified.items()):
+                  for code, attrs in sorted(subs.items()):
+                      for attr, change in sorted(attrs.items()):
+                          lines.append(f"- **{code}** `{attr}`: `{change['from']!r}` → `{change['to']!r}`")
+              lines.append("")
+
+          with open("pr_body.md", "w", encoding="utf-8") as f:
+              f.write("\n".join(lines))
+
+          #replace the committed dataset with the newly exported one
+          shutil.copyfile(new_file, current_file)
+
+          #refresh the test fixture: update the countries already present in it with the latest data
+          with open(new_file, encoding="utf-8") as f:
+              new_json = json.load(f)
+          with open(test_file, encoding="utf-8") as f:
+              test_json = json.load(f)
+          for cc in list(test_json.keys()):
+              if cc in new_json:
+                  test_json[cc] = new_json[cc]
+          with open(test_file, "w", encoding="utf-8") as f:
+              json.dump(test_json, f, ensure_ascii=False, indent=4)
+
+          print(f"{total} change(s) found. Staged updates to {current_file} and {test_file}.")
+          PY
+
+      - name: Create pull request
+        if: steps.compare.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: update-iso3166-2-dataset
+          title: "Update ISO 3166-2 dataset with latest export"
+          body-path: pr_body.md
+          commit-message: "Update iso3166-2.json and test fixture with latest ISO 3166-2 data"
+          add-paths: |
+            iso3166_2/iso3166-2.json
+            tests/test_files/test_iso3166-2.json
+          delete-branch: true

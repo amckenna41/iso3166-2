@@ -1,5 +1,5 @@
 sphinx
 sphinx_autodoc_typehints==2.3.0
-sphinx_autodoc_defaultargs==0.1.2
+sphinx_autodoc_defaultargs==3.0.1
 sphinx-rtd-theme
 jinja2==3.1.6

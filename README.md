@@ -365,6 +365,19 @@ data from the dataset, overwriting the iso3166-2.json.
 iso.remove_attributes("parentCode, type", overwrite_data=True)
 ```
 
+**Export the subdivision data to a pandas DataFrame:**
+```python
+'''
+Return the loaded subdivision data as a flat pandas DataFrame, with one 
+row per subdivision and the countryCode/subdivisionCode added as columns.
+Requires the optional pandas dependency: pip install iso3166-2[export].
+'''
+df = iso.to_dataframe()
+
+#get a DataFrame of just the Canadian subdivisions
+ca_df = Subdivisions("CA").to_dataframe()
+```
+
 **Get total number of subdivisions in object:**
 ```python
 len(iso)
@@ -449,7 +462,6 @@ having a lower value will return less exact but more total matches, e.g ``/api/s
 
 <!-- ## ISO 3166-2 Scripts
 * [`scripts/main.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts) - used for pulling and exporting the latest ISO 3166-2 data from the various data sources. In this script you can also export additional attributes for each country/subdivision via the RestCountries and CountryStateCity APIs.
-* [`scripts/update_subdivisions.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts) - used for adding, amending and or deleting subdivisions to the `iso3166-2` software and object.
 * [`scripts/local_other_names.py`](https://github.com/amckenna41/iso3166-2/blob/main/iso3166_2_resources/local_other_names.csv) - used for adding the data from the local_other_names.csv dataset, including any validation checks on the data.
 * [`scripts/utils.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/utils.py) - a series of utility functions used throughout the `iso3166-2` project.
 * [`scripts/language_lookup.py`](https://github.com/amckenna41/iso3166-2/blob/main/scripts/language_lookup.py) - uses the `local_other_names.csv` dataset to encapsulate and validate the hundreds of language code used throughout the dataset and project.
@@ -464,8 +476,8 @@ Please visit the [README](https://github.com/amckenna41/iso3166-2/blob/main/scri
 * `/tests` - unit and integration tests for `iso3166-2`
 * `UPDATES.md` - markdown file listing all of the additions, amendments and deletions to the ISO 3166-2 dataset (dating from 2022), exported via the [`iso3166-updates`](https://github.com/amckenna41/iso3166-updates) software.
 
-<!-- * `/scripts` - scripts for pulling all the ISO 3166 data (*main.py*), for adding/amending/deleting subdivisions to the dataset (*update_subdivisions.py*), for adding/validating all the local/other name data in the local_other_names.csv (*local_other_names.py*) and for the various utility functions used throughout the project (*utils.py*).   -->
-<!-- contains CSV file for listing any changes/updates to be made to the dataset (*subdivision_updates.csv*) via functionality in the /scripts dir, a CSV of all subdivisions and their respective local/other names (local_other_names.csv) and a language lookup file for all the language codes mentioned for any of the local/other names (language_lookup.md). -->
+<!-- * `/scripts` - scripts for pulling all the ISO 3166 data (*main.py*), for adding/validating all the local/other name data in the local_other_names.csv (*local_other_names.py*) and for the various utility functions used throughout the project (*utils.py*).   -->
+<!-- contains a CSV of all subdivisions and their respective local/other names (local_other_names.csv) and a language lookup file for all the language codes mentioned for any of the local/other names (language_lookup.md). -->
 <!-- * `API.md` - info and useful commands/examples for this software's accompanying API - **iso3166-2-api** -->
 
 ## Issues or Contributing

@@ -163,10 +163,6 @@ The Python software and accompanying API are solely developed and maintained by 
 
    <a href="https://support.elucidat.com/hc/en-us/articles/6068623875217-IETF-language-tags" target="_blank">IETF</a>
 
-.. |version_link| raw:: html
-
-   <a href="https://pypi.org/project/iso3166-2/" target="_blank">v1.8.3</a>
-
 .. |updates_md_link| raw:: html
 
    <a href="https://github.com/amckenna41/iso3166-2/blob/main/UPDATES.MD" target="_blank">UPDATES.md</a>

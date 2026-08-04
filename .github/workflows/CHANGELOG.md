@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.4] - 2026-08-04
+
+### Added
+- Added `to_dataframe()` method to the `Subdivisions` class that exports the loaded subdivision data as a flat `pandas.DataFrame`, with one row per subdivision and `countryCode`/`subdivisionCode` added as columns
+- Added optional `export` dependency extra (`pip install iso3166-2[export]`) providing `pandas` for the new `to_dataframe()` method
+- Added unit test `test_to_dataframe` and extended `test_iter_and_contains` with case-insensitive and non-string membership assertions in `tests/test_iso3166_2.py`
+- Documented `to_dataframe()` in `docs/usage.rst`
+
+### Removed
+- **/scripts:** removed the `update_subdivisions` module and its `update_subdivision()` function; the subdivision additions/amendments/deletions it applied are now part of the baseline exported dataset
+- Removed `iso3166_2_resources/subdivision_updates.csv` and its documentation in `iso3166_2_resources/README.md` — the CSV was only consumed by `update_subdivision()`
+- Removed `tests/test_update_subdivisions.py`
+
+### Changed
+- `__contains__` on the `Subdivisions` class is now case-insensitive (e.g. `"ca-ab" in iso`) and returns `False` for non-string input instead of raising
+- `__version__` is now resolved once in `iso3166_2/iso3166_2.py` and re-exported from `__init__.py`, removing the duplicated hardcoded fallback literal
+- The docs `|version_link|` substitution is generated from `release` in `docs/conf.py` via `rst_epilog` instead of being hardcoded in `docs/index.rst`
+- **/scripts:** `export_iso3166_2()` no longer writes the in-progress subdivision object to disk and immediately reads it back; the round-trip existed only to hand `update_subdivision()` a file path
+
+### Fixed
+- Fixed `custom_subdivision(copy=True)` raising `TypeError`: it passed a module object to `os.path.abspath` instead of the module's `__file__`
+- Fixed `custom_subdivision(custom_subdivision_object=...)` raising `KeyError` when the supplied object omitted optional keys (e.g. `area`, `population`); missing keys now default to `None`
+- `search()` relevance scoring: removed a dead multi-token coverage branch (the search terms are space-stripped upstream) and rebalanced the fuzzy-match weights; exact matches still score 100
+- **/scripts (data-generation tooling):** corrected `localName` → `localOtherName` in `utils.py` (`get_nulls`, `attributes_memory_usage`) to match the dataset attribute name
+- **/scripts:** fixed the KB-conversion typo (`/2024`) and misuse of `.__sizeof__()` as a byte count in `attributes_memory_usage`
+- **/scripts:** corrected the RestCountries base URL in `restcountries_api.py` to `https://restcountries.com/v3.1/`
+- **/scripts:** guarded `history.add_history()` against `None` subdivision names and against empty-string terms that caused every historical update to be attached to a subdivision
+- **/scripts:** replaced mutable default arguments (`[]`/`{}`) and bare `except:` clauses across `utils.py`, `language_lookup.py` and `demographics.py`; standardised the `utils` import style in `city_data.py` and `geo.py`; removed ~750 lines of commented-out dead code from `utils.py`
+
 ## [1.8.3] - 2026-04-01
 
 ### Added
@@ -82,7 +111,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added Vercel webhook to the workflow, this redeploys the API vercel app once new version of the software released from this repo
 - In script dir added a metadata script that exports a plethora of useful metadata about the software and data object
 - Added functionality to the iso3166-2 main software such that the subdivision_codes() and subdivision_names() functions can be called through the subscripted country code object
-- Added optional 'archive' parameter to update_subdivisions() function that can be set to True/False and will archive the existing iso3166-2 object before any changes are made
 - Added CSV and XML of iso3166-2 dataset to iso3166_2_resources dir on repo
 - When exporting the individual data to JSON, CSV and XML, in the function you can now import an already exported JSON file to just export the CSV and XML files
 - Created function that allows you to combines multiple exports into one file, use case is for when alpha_codes_range was used to export a batch of export data and you need to combine into one master file
@@ -96,7 +124,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Main export function name changed in get_iso3166_2 as it was very similar to the export data function in utils
 - Removed filter_attributes functionality from utils export function
 - Updated all references of iso3166-flag-icons to iso3166-flags to reflect updated repository name - including for each individual flag url in object
-- Removed filter_attributes functionality from update_subdivisions function
 - Changed export script name from get_iso3166_2 to export_iso3166_2
 - Removed any additional flags from the iso3166-1-flags dataset that aren't strictly in the ISO 3166-1, including eu, arab league, UN and XX flags
 - Updated the workflow such that unit tests for specific modules are only run when changes are made to those modules rather than all tests being run. If workflow dispatch is set then all tests will be run
@@ -147,7 +174,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added delete language object functionality to language lookup table
 - Added user agent functionality to language lookup script
 - In language lookup export function, you can now put in custom language code to export 
-- In update_subdivisions module and function, you can now add custom attributes to a subdivision via the custom_attributes parameter
 - Added logic to ensure the custom order of attributes in exported iso3166-2 object is maintained 
 - In extract script, optional proxy functionality added to requests.get functions to help avoid 429 errors and timeout errors
 - In custom subdivision function is sw, you can now pass in an object of updates attributes
@@ -173,7 +199,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - In CSV with each subdivision's local name (iso3166_2_updates/local_names.csv), the localName column has been changed to localOtherName, meaning that its value can be a local translation of the subdivision name as well as just another name for it
 - If a subdivision doesn't have a local name or variant of its name then the attribute is now set to null
 - When adding new subdivision, latLng attribute value not explicitly required, if not provided it will be set to []
-- Changed add_local_names function in the update_subdivisions.py script to add_local_other_names to reflect "other" names being added to the attribute
 - local_other_names.csv contains the name column as well which is the official ISO subdivision name, added for readability of the file
 - Multiple subdivision names changed to match the language of the majority of their other subdivision names e.g some Finish subdivision name's have been changed from their Swedish name into Finish to match the majority of the subdivision's being in Finish. Also Haiti has majority subdivision's in French, hence 2 are changed from HT to FR languages
 - Removed the localNameSame column from subdivision_updates.csv. Changed the localName column to localOtherName, code to subdivisionCode and alpha_code to alphaCode.
@@ -208,7 +233,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - list_subdivisions endpoint added to API that returns list of all subdivision codes per country
-- Unit tests for flag_url function in update_subdivisions script
 - Separate function for extracting and parsing data attributes from RestCountries API
 - Added raise_for_status error catcher for requests library
 
@@ -218,7 +242,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Contributing page on docs updated
 
 ### Fixed
-- Error in request URL for RestCountries API in update_subdivisions script
 - Raise TypeError if invalid data type input to export_iso3166_2 function rather than system crashing
 - When getting the coordinates (latitude/longitude) per subdivision, a more granular and accurate response is ensured by appending the country name to the subdivision name when searching via the Google Maps API
 
@@ -233,15 +256,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added more info to the error messages 
 - Code coverage
 - Added additional unit tests for CSV export of ISO 3166-2 dataset from get_iso3166_2 script
-- Added unit tests for update_subdivisions functionality
 - Added export_csv parameter to get_iso3166_2 script to allow for optional export to CSV, JSON exported by default
 - Added iso3166 object filepath parameter to the ISO3166_2() class that allows for custom object to be imported on class instantiation 
 
 ### Changed 
 - flagUrl attribute changed to flag in dataset
-- Moved functionality for getting subdivision flag data into its own function in update_subdivisions.py script
 - When exporting data using get_iso3166_2 script, export to CSV by default
-- update_subdivisions script can be called by itself from the cmd line/terminal, passing in the required parameters
 - Added flag/parameter to custom_subdivisions function where if set you can create a hard copy of the existing iso3166-2.json object so that you aren't directly adding/amending/deleting a subdivision from the object
 - Sort rows in iso3166_2_updates/subdivision_updates.csv by date (newest first) rather than by alpha-2 country code
 - Update package description
@@ -249,20 +269,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Split up jobs in build workflows into separate sections
 - Added more info for each functionality with additional examples in the software and API documentation 
 - Upgrade checkout action in workflow from v3 to v4
-- Raise error in update_subdivisions script when trying to delete a subdivision that doesn't exist
 - In unit tests, exclude latLng attribute so gmaps API isn't called when running
 - When adding a custom subdivision via the respective function, the "name" and "type" attributes are no longer explicitly required
 
 ### Fixed
-- In the update_subdivisions function when editing a subdivision and its actual subdivision code, the flag attribute may have erroneous or null data
-- In the update_subdivisions function you can now put in the full subdivision code or just the right hand side of the code into the subdivision_code parameter
-- In the update_subdivisions function when amending an existing subdivision's code, the current flag URL attribute value points to the original flag URL, check on repo if flag with new subdivision code exists, otherwise keep the value to the original
-- In the update_subdivisions function when amending an existing subdivision's code, error now raised when the new subdivision code's country code does not match the original
 - If a custom subdivision object is input via its respective function, latLng attribute is set to 3d.p 
 - Fixed syntax of some function parameters that can take multiple data types
 - Fixed parameter typing syntax for some function parameters that can be multiple data types
 - Error when adding a new subdivision, now will raise an error if the input parent code is invalid/not a country subdivision
-- In get_flag_url function in update_subdivision script, you can pass in the full subdivision code or just the RHS of it
 
 ## [1.5.4] - 2024-03-01
 
@@ -330,7 +344,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial attributes include: country code, subdivision code, parent code, type and flag URL
 - Created custom-built iso3166-updates software used to track all updates made by the ISO to the ISO 3166
 
-[unreleased]: https://github.com/amckenna41/iso3166-2/compare/v1.8.3...HEAD
+[unreleased]: https://github.com/amckenna41/iso3166-2/compare/v1.8.4...HEAD
+[1.8.4]: https://github.com/amckenna41/iso3166-2/compare/v1.8.3...v1.8.4
 [1.8.3]: https://github.com/amckenna41/iso3166-2/compare/v1.8.2...v1.8.3
 [1.8.2]: https://github.com/amckenna41/iso3166-2/compare/v1.8.1...v1.8.2
 [1.8.1]: https://github.com/amckenna41/iso3166-2/compare/v1.8.0...v1.8.1

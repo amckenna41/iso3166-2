@@ -4,7 +4,6 @@ import os
 # this file is run directly (e.g. python3 scripts/main.py from repo root)
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import time
-import json
 import argparse
 import requests
 from typing import Optional, Dict, Any
@@ -16,7 +15,6 @@ import warnings
 import pandas as pd
 import numpy as np
 try:
-    from update_subdivisions import update_subdivision
     from local_other_names import add_local_other_names, validate_local_other_names
     from utils import export_iso3166_2_data, get_alpha_codes_list, get_flag_repo_url
     from geo import Geo
@@ -25,7 +23,6 @@ try:
     from history import add_history
     from iso3166_2 import Subdivisions
 except ImportError:
-    from scripts.update_subdivisions import update_subdivision
     from scripts.local_other_names import add_local_other_names, validate_local_other_names
     from scripts.utils import export_iso3166_2_data, get_alpha_codes_list, get_flag_repo_url
     from scripts.geo import Geo
@@ -57,9 +54,7 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
 
     The generated JSON is used as a baseline for the ISO 3166-2 data object, but additional and more
     up-to-date and accurate data is added with the help of the iso3166-updates software/API
-    (https://github.com/amckenna41/iso3166-updates). The update_subdivisions module is imported that
-    adds, amends and or deletes any subdivisions from this baseline object to make it up-to-date,
-    reliable and accurate to any recent updates to the ISO 3166-2 database, according to the ISO.
+    (https://github.com/amckenna41/iso3166-updates).
 
     When exporting this JSON you can also add additional fields/attributes to each country's subdivision
     object via the RestCountries API. The subset of supported fields include: idd, carSigns, carSide,
@@ -459,18 +454,6 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
             #ensure output directory still exists before writing
             os.makedirs(os.path.dirname(export_filepath) or ".", exist_ok=True)
 
-            #write json data with all country info to json output file
-            with open(export_filepath, 'w', encoding='utf-8') as f:
-                json.dump(all_country_data, f, ensure_ascii=False, indent=4)
-
-            #read json data with all current subdivision data
-            with open(export_filepath, 'r', encoding='utf-8') as input_json:
-                all_country_data = json.load(input_json)
-            
-            #append latest subdivision updates/changes from /iso3166_2_resources folder to the iso3166-2 object
-            all_country_data = update_subdivision(iso3166_2_filename=export_filepath, subdivision_csv=os.path.join(resources_folder, "subdivision_updates.csv"), export=0,
-                                                    rest_countries_keys=rest_countries_keys)
-
             #get local/other name data for each subdivision, unless localOtherName or name attributes to be excluded from export
             if (filter_attributes == "" or ("localOtherName" in filter_attributes)):
                 all_country_data = add_local_other_names(all_country_data, filepath=local_other_names_filepath)
@@ -528,27 +511,12 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
     #ensure output directory still exists before writing
     os.makedirs(os.path.dirname(export_filepath) or ".", exist_ok=True)
 
-    #write json data with all country info to json output file
-    with open(export_filepath, 'w', encoding='utf-8') as f:
-        json.dump(all_country_data, f, ensure_ascii=False, indent=4)
-
-    #read json data with all current subdivision data
-    with open(export_filepath, 'r', encoding='utf-8') as input_json:
-        all_country_data = json.load(input_json)
-    
-    #append latest subdivision updates/changes from /iso3166_2_resources folder to the iso3166-2 object
-    update_start = time.time()
-    all_country_data = update_subdivision(iso3166_2_filename=export_filepath, subdivision_csv=os.path.join(resources_folder, "subdivision_updates.csv"), export=0,
-                                          rest_countries_keys=rest_countries_keys)
-
     #get local Name data for each subdivision, unless localOtherName or name attributes to be excluded from export
     if (filter_attributes == "" or ("localOtherName" in filter_attributes or "name" in filter_attributes)):
-        local_start = time.time()
         all_country_data = add_local_other_names(all_country_data, filepath=local_other_names_filepath)
 
     #add historical subdivision data updates from iso3166-updates software - needs to be done here after all attribute values such as local name added to all subdivision objects
     if (history or "history" in filter_attributes):
-        history_start = time.time()
         all_country_data = add_history(all_country_data)
 
     #sort subdivision objects into natural order and convert to regular dicts
@@ -571,9 +539,6 @@ def export_iso3166_2(alpha_codes: str="", export_folder: str="test-iso3166-2-out
                     continue
                 if pd.isna(value):
                     all_country_data[country_code][subdivision_code][key] = None
-
-    #start export timer
-    export_start = time.time()
 
     #export the subdivision data object to the output files
     export_iso3166_2_data(all_country_data=all_country_data, export_filepath=export_filepath, export_csv=export_csv, export_xml=export_xml)

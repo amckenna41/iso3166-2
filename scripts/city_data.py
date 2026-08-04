@@ -2,7 +2,10 @@ import requests
 import os
 from typing import List, Dict, Optional
 from dotenv import load_dotenv
-from scripts.utils import convert_to_alpha2
+try:
+    from scripts.utils import convert_to_alpha2
+except ImportError:
+    from utils import convert_to_alpha2
 
 BASE_URL = "https://api.countrystatecity.in/v1/countries/"
 USER_AGENT_HEADER = {"User-Agent": "iso3166-2-exporter/1.0"}

@@ -9,7 +9,14 @@
 project = 'iso3166-2'
 copyright = '2024, AJ McKenna'
 author = 'AJ McKenna'
-release = '1.8.3'
+release = '1.8.4'
+
+#|version_link| substitution used in index.rst - defined here so the version is only declared once
+rst_epilog = f"""
+.. |version_link| raw:: html
+
+   <a href="https://pypi.org/project/iso3166-2/" target="_blank">v{release}</a>
+"""
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

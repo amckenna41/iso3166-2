@@ -43,7 +43,9 @@ def add_history(input_country_data: Dict[str, Any]) -> Dict[str, Any]:
             #create set for the matching attributes, add subdivision code, name and local/other name
             matching_attributes = set()
             matching_attributes.add(unquote_plus(subd.lower()))
-            matching_attributes.add(unquote_plus(input_country_data[alpha2][subd]["name"].lower().replace(' ', '')))
+            subd_name = input_country_data[alpha2][subd].get("name")
+            if isinstance(subd_name, str) and subd_name.strip():
+                matching_attributes.add(unquote_plus(subd_name.lower().replace(' ', '')))
 
             #if local/other name attribute not empty, append each of its names to the search list
             local_other_name = input_country_data[alpha2][subd].get("localOtherName")
@@ -52,7 +54,10 @@ def add_history(input_country_data: Dict[str, Any]) -> Dict[str, Any]:
                 local_other_cleaned = re.sub(r'\s*\(.*?\)', '', local_other_name)
                 local_names = re.split(r',\s*', local_other_cleaned)
                 for name in local_names:
-                    matching_attributes.add(unquote_plus(name.lower().strip()))
+                    normalized_name = unquote_plus(name.lower().strip())
+                    #skip empty strings - an empty term substring-matches every update
+                    if normalized_name:
+                        matching_attributes.add(normalized_name)
 
             #create history attribute in output object
             input_country_data[alpha2][subd]["history"] = []
