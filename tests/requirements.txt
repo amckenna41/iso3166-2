@@ -7,7 +7,7 @@ natsort
 pandas
 numpy
 BeautifulSoup4
-pycountry
+pycountry>=24.6.1
 dicttoxml
 fake_useragent
 emoji-country-flag
