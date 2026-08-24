@@ -1,6 +1,6 @@
 iso3166-2>=1.8.4
 requests>=2.34.2
-python-dotenv>=1.2.2
+python-dotenv>=1.2.3
 pycountry>=24.6.1
 googlemaps>=4.10.0
 tqdm>=4.70.0
